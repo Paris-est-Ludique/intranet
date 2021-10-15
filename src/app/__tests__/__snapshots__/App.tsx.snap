@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> renders 1`] = `
+<div
+  className="App"
+>
+  <a
+    className="header"
+    href="/"
+    onClick={[Function]}
+  >
+    <img
+      alt="Logo"
+      role="presentation"
+      src="IMAGE_MOCK"
+    />
+    <h1>
+      <em>
+        REACT COOL STARTER
+      </em>
+    </h1>
+  </a>
+  <hr />
+  <div>
+    <h1>
+      Welcome Home!
+    </h1>
+  </div>
+</div>
+`;

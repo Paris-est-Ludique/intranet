@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+
+# Testing
+coverage
+
+# Production
+public/*
+!public/favicon.ico
+!public/logo192.png
+!public/logo512.png
+!public/manifest.json
+
+# Access
+access/gsheets.json
+access/token.json
+
+# Misc
+.DS_Store
+*.log
