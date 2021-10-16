@@ -163,7 +163,7 @@
         "imagemin-jpegtran": "^7.0.0",
         "imagemin-optipng": "^8.0.0",
         "imagemin-svgo": "^9.0.0",
-        "jest": "^27.0.6",
+        "jest": "^27.2.5",
         "lint-staged": "^11.0.0",
         "mini-css-extract-plugin": "^2.1.0",
         "node-sass": "^6.0.1",
