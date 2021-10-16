@@ -4,6 +4,7 @@ import readline from "readline"
 import _ from "lodash"
 import { Request, Response, NextFunction } from "express"
 import { google } from "googleapis"
+import config from "../config"
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 const TOKEN_PATH = path.resolve(process.cwd(), "access/token.json")
@@ -18,12 +19,11 @@ export const getJAVGameList = async (
     const auth = await authorize(JSON.parse(fs.readFileSync(CRED_PATH, "utf8")))
     const sheets = google.sheets({ version: "v4", auth })
     const r = await sheets.spreadsheets.values.get({
-        spreadsheetId: "1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw",
-        range: "Ongoing!A1:T",
+        spreadsheetId: config.GOOGLE_SHEET_ID,
+        range: "JAV Games!A1:Z",
     })
 
-    console.log("r?.data?.values", r?.data?.values)
-    if (r?.data?.values && _.isArray(r.data.values)) {
+    if (_.isArray(r?.data?.values)) {
         const list = _.map(r.data.values, (val: any) => ({
             id: val[0],
             titre: val[1],

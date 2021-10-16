@@ -2,6 +2,7 @@ export default {
     HOST: "localhost",
     PORT: 3000,
     API_URL: "",
+    GOOGLE_SHEET_ID: "1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw",
     APP: {
         htmlAttributes: { lang: "en" },
         title: "REACT COOL STARTER",
