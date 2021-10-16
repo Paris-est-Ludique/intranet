@@ -164,7 +164,7 @@
         "imagemin-optipng": "^8.0.0",
         "imagemin-svgo": "^9.0.0",
         "jest": "^27.0.6",
-        "lint-staged": "^11.0.0",
+        "lint-staged": "^11.2.3",
         "mini-css-extract-plugin": "^2.1.0",
         "node-sass": "^6.0.1",
         "nodemon": "^2.0.9",
