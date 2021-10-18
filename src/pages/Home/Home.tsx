@@ -4,8 +4,8 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk } from "../../store"
-import { fetchJavGameListIfNeed } from "../../store/javGameList"
-import { JavGameList } from "../../components"
+import { fetchJeuxJavListIfNeed } from "../../store/jeuxJavList"
+import { JeuxJavList } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
@@ -26,20 +26,20 @@ function useList(stateToProp: (state: AppState) => any, fetchDataIfNeed: () => A
 
         if (readyStatus === "failure") return <p>Oops, Failed to load list!</p>
 
-        return <JavGameList items={items} />
+        return <JeuxJavList items={items} />
     }
 }
 
 const Home: FC<Props> = (): JSX.Element => (
     <div className={styles.Home}>
         <Helmet title="Home" />
-        {useList((state: AppState) => state.javGameList, fetchJavGameListIfNeed)()}
+        {useList((state: AppState) => state.jeuxJavList, fetchJeuxJavListIfNeed)()}
     </div>
 )
 
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [
-    fetchJavGameListIfNeed(),
+    fetchJeuxJavListIfNeed(),
     // More pre-fetched actions...
 ]
 

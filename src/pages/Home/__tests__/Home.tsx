@@ -4,13 +4,13 @@
 import { render } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 
-import { fetchJavGameListIfNeed } from "../../../store/javGameList"
+import { fetchJeuxJavListIfNeed } from "../../../store/jeuxJavList"
 import mockStore from "../../../utils/mockStore"
 import Home from "../Home"
 
 describe("<Home />", () => {
     const renderHelper = (reducer = { readyStatus: "invalid" }) => {
-        const { dispatch, ProviderWithStore } = mockStore({ javGameList: reducer })
+        const { dispatch, ProviderWithStore } = mockStore({ jeuxJavList: reducer })
         const { container } = render(
             <ProviderWithStore>
                 <MemoryRouter>
@@ -28,7 +28,7 @@ describe("<Home />", () => {
         const { dispatch } = renderHelper()
 
         expect(dispatch).toHaveBeenCalledTimes(1)
-        expect(dispatch.mock.calls[0][0].toString()).toBe(fetchJavGameListIfNeed().toString())
+        expect(dispatch.mock.calls[0][0].toString()).toBe(fetchJeuxJavListIfNeed().toString())
     })
 
     it("renders the loading status if data invalid", () => {

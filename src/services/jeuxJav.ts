@@ -2,7 +2,7 @@ import axios from "axios"
 
 import config from "../config"
 
-export interface JavGame {
+export interface JeuxJav {
     id: number
     titre: string
     auteur: string
@@ -12,36 +12,34 @@ export interface JavGame {
     duree: number
     type: "Ambiance" | "Famille" | "Expert" | ""
     poufpaf: string
-    photo: string
-    bggPhoto: string
     bggId: number
     exemplaires: number // Defaults to 1
     dispoPret: number
     nonRangee: number
-    horodatage: string
     ean: string
+    bggPhoto: string
 }
 
-export interface JavGameList {
-    data?: JavGame[]
+export interface JeuxJavList {
+    data?: JeuxJav[]
     error?: Error
 }
 
-export interface JavGameData {
-    data?: JavGame
+export interface JeuxJavData {
+    data?: JeuxJav
     error?: Error
 }
 
-export const getJavGameList = async (): Promise<JavGameList> => {
+export const getJeuxJavList = async (): Promise<JeuxJavList> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/javGames`)
+        const { data } = await axios.get(`${config.API_URL}/JeuxJav`)
         return { data }
     } catch (error) {
         return { error: error as Error }
     }
 }
 
-export const getJavGameData = async (id: string): Promise<JavGameData> => {
+export const getJeuxJavData = async (id: string): Promise<JeuxJavData> => {
     try {
         const { data } = await axios.get(`${config.API_URL}/users/${id}`)
         return { data }

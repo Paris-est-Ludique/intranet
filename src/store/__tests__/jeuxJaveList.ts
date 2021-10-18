@@ -1,13 +1,13 @@
 import axios from "axios"
 
 import mockStore from "../../utils/mockStore"
-import javGameList, {
+import JeuxJavList, {
     initialState,
     getRequesting,
     getSuccess,
     getFailure,
-    fetchJavGameList,
-} from "../javGameList"
+    fetchJeuxJavList,
+} from "../jeuxJavList"
 
 jest.mock("axios")
 
@@ -34,14 +34,14 @@ const mockData = [
 ]
 const mockError = "Oops! Something went wrong."
 
-describe("javGameList reducer", () => {
+describe("JeuxJavList reducer", () => {
     it("should handle initial state", () => {
         // @ts-expect-error
-        expect(javGameList(undefined, {})).toEqual(initialState)
+        expect(JeuxJavList(undefined, {})).toEqual(initialState)
     })
 
     it("should handle requesting correctly", () => {
-        expect(javGameList(undefined, { type: getRequesting.type })).toEqual({
+        expect(JeuxJavList(undefined, { type: getRequesting.type })).toEqual({
             readyStatus: "request",
             items: [],
             error: null,
@@ -49,7 +49,7 @@ describe("javGameList reducer", () => {
     })
 
     it("should handle success correctly", () => {
-        expect(javGameList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
+        expect(JeuxJavList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
             ...initialState,
             readyStatus: "success",
             items: mockData,
@@ -57,7 +57,7 @@ describe("javGameList reducer", () => {
     })
 
     it("should handle failure correctly", () => {
-        expect(javGameList(undefined, { type: getFailure.type, payload: mockError })).toEqual({
+        expect(JeuxJavList(undefined, { type: getFailure.type, payload: mockError })).toEqual({
             ...initialState,
             readyStatus: "failure",
             error: mockError,
@@ -65,8 +65,8 @@ describe("javGameList reducer", () => {
     })
 })
 
-describe("javGameList action", () => {
-    it("fetches javGame list successful", async () => {
+describe("JeuxJavList action", () => {
+    it("fetches JeuxJav list successful", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
             { type: getRequesting.type },
@@ -76,11 +76,11 @@ describe("javGameList action", () => {
         // @ts-expect-error
         axios.get.mockResolvedValue({ data: mockData })
 
-        await dispatch(fetchJavGameList())
+        await dispatch(fetchJeuxJavList())
         expect(getActions()).toEqual(expectedActions)
     })
 
-    it("fetches javGame list failed", async () => {
+    it("fetches JeuxJav list failed", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
             { type: getRequesting.type },
@@ -90,7 +90,7 @@ describe("javGameList action", () => {
         // @ts-expect-error
         axios.get.mockRejectedValue({ message: mockError })
 
-        await dispatch(fetchJavGameList())
+        await dispatch(fetchJeuxJavList())
         expect(getActions()).toEqual(expectedActions)
     })
 })

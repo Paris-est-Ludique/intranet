@@ -15,18 +15,17 @@ exports[`<Home /> renders the <List /> if loading was successful 1`] = `
   class="Home"
 >
   <div
-    class="JavGameList"
+    class="JeuxJavList"
   >
     <h4>
-      JAV Games
+      Jeux JAV
     </h4>
     <ul>
       <li>
-        <a
-          href="/UserInfo/5"
-        >
-          6 qui prend!
-        </a>
+        6 qui prend!
+         - [
+        432
+        ]
       </li>
     </ul>
   </div>

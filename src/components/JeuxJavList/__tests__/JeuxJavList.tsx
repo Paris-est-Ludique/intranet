@@ -22,14 +22,13 @@ describe("<List />", () => {
                             duree: 45,
                             type: "Ambiance",
                             poufpaf: "0-9-2/6-qui-prend-6-nimmt",
-                            photo: "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
-                            bggPhoto: "",
                             bggId: 432,
                             exemplaires: 1,
                             dispoPret: 1,
                             nonRangee: 0,
-                            horodatage: "0000-00-00",
                             ean: "3421272101313",
+                            bggPhoto:
+                                "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
                         },
                     ]}
                 />

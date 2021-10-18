@@ -3,14 +3,14 @@ import { connectRouter } from "connected-react-router"
 
 import userList from "./userList"
 import userData from "./userData"
-import javGameList from "./javGameList"
+import jeuxJavList from "./jeuxJavList"
 
 // Use inferred return type for making correctly Redux types
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default (history: History) => ({
     userList,
     userData,
-    javGameList,
+    jeuxJavList,
     router: connectRouter(history) as any,
     // Register more reducers...
 })

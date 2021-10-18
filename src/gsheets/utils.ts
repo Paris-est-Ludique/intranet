@@ -2,7 +2,6 @@ import path from "path"
 import fs from "fs"
 import readline from "readline"
 import _ from "lodash"
-import { Request, Response, NextFunction } from "express"
 import { google } from "googleapis"
 import config from "../config"
 
@@ -10,75 +9,33 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 const TOKEN_PATH = path.resolve(process.cwd(), "access/token.json")
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-// eslint-disable-next-line no-unused-vars
-export const getJAVGameList = async (
-    _request: Request,
-    response: Response,
-    _next: NextFunction
-): Promise<void> => {
+export const getList = async <T>(sheetName: string): Promise<T[] | undefined> => {
     const auth = await authorize(JSON.parse(fs.readFileSync(CRED_PATH, "utf8")))
     const sheets = google.sheets({ version: "v4", auth })
     const r = await sheets.spreadsheets.values.get({
         spreadsheetId: config.GOOGLE_SHEET_ID,
-        range: "JAV Games!A1:Z",
+        range: `${sheetName}!A1:Z`,
     })
 
     if (_.isArray(r?.data?.values)) {
-        const list = _.map(r.data.values, (val: any) => ({
-            id: val[0],
-            titre: val[1],
-        }))
-        response.status(200).json(list)
+        const rows = r.data.values as string[][]
+        const keys: string[] = rows[0]
+        rows.shift()
+        const list: T[] = _.map(
+            rows,
+            (row) =>
+                _.reduce(
+                    row,
+                    (game: any, val: any, collumn: number) => {
+                        game[keys[collumn]] = val
+                        return game
+                    },
+                    {}
+                ) as T
+        )
+        return list
     }
-    // if (r?.data?.values) {
-    //   const rows: JAVGame[] = r.data.values as JAVGame[]
-    //   if (rows) {
-    //     if (rows.length) {
-    //       console.log('Name, Major:')
-    //       // Print columns A and E, which correspond to indices 0 and 4.
-    //       rows.map((row) => {
-    //         console.log(`${row[0]}, ${row[4]}`)
-    //       })
-    //       return { data: rows }
-    //     } else {
-    //       console.log('No data found.')
-    //     }
-    //   }
-    // }
-}
-
-// eslint-disable-next-line no-unused-vars
-export const getJAVGameData = async (
-    _request: Request,
-    response: Response,
-    _next: NextFunction
-): Promise<void> => {
-    console.log("CRED_PATH", CRED_PATH)
-    console.log("fs.readFileSync(CRED_PATH, 'utf8')")
-    const auth = await authorize(JSON.parse(fs.readFileSync(CRED_PATH, "utf8")))
-    const sheets = google.sheets({ version: "v4", auth })
-    const r = await sheets.spreadsheets.values.get({
-        spreadsheetId: "1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw",
-        range: "Ongoing!A1:T",
-    })
-
-    console.log("r?.data?.values", r?.data?.values)
-    response.status(200).json(r?.data?.values)
-    // if (r?.data?.values) {
-    //   const rows: JAVGame[] = r.data.values as JAVGame[]
-    //   if (rows) {
-    //     if (rows.length) {
-    //       console.log('Name, Major:')
-    //       // Print columns A and E, which correspond to indices 0 and 4.
-    //       rows.map((row) => {
-    //         console.log(`${row[0]}, ${row[4]}`)
-    //       })
-    //       return { data: rows }
-    //     } else {
-    //       console.log('No data found.')
-    //     }
-    //   }
-    // }
+    return undefined
 }
 
 async function authorize(cred: any) {
@@ -131,3 +88,5 @@ async function readlineAsync(question: string) {
         })
     })
 }
+
+export { SCOPES }

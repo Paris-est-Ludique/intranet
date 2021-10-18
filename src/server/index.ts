@@ -10,7 +10,7 @@ import chalk from "chalk"
 import devServer from "./devServer"
 import ssr from "./ssr"
 
-import { getJAVGameList } from "../gsheets/jav"
+import { getJeuxJavList } from "../gsheets/jeuxJav"
 import config from "../config"
 
 const app = express()
@@ -31,7 +31,7 @@ app.use(express.static(path.resolve(process.cwd(), "public")))
 if (__DEV__) devServer(app)
 
 // Google Sheets requests
-app.get("/javGames", getJAVGameList)
+app.get("/JeuxJav", getJeuxJavList)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)
