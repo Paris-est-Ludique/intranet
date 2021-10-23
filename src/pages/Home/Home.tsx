@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk } from "../../store"
 import { fetchJeuxJavListIfNeed } from "../../store/jeuxJavList"
+import { fetchEnvieListIfNeed } from "../../store/envieList"
 import { JeuxJavList } from "../../components"
 import styles from "./styles.module.scss"
 
@@ -33,12 +34,17 @@ function useList(stateToProp: (state: AppState) => any, fetchDataIfNeed: () => A
 const Home: FC<Props> = (): JSX.Element => (
     <div className={styles.Home}>
         <Helmet title="Home" />
+        {/* {useList((state: AppState) => state.envieList, fetchEnvieListifNeed)()} */}
         {useList((state: AppState) => state.jeuxJavList, fetchJeuxJavListIfNeed)()}
+        {/* <button type="button" onClick={() => setList([{id: 3, joueurs: 4, duree: 5, description: "abcd"}])}>
+            Set list!
+        </button> */}
     </div>
 )
 
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [
+    fetchEnvieListIfNeed(),
     fetchJeuxJavListIfNeed(),
     // More pre-fetched actions...
 ]

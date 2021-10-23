@@ -2,22 +2,36 @@ import axios from "axios"
 
 import config from "../config"
 
-export interface JeuxJav {
-    id: number
-    titre: string
-    auteur: string
-    editeur: string
-    minJoueurs: number
-    maxJoueurs: number
-    duree: number
-    type: "Ambiance" | "Famille" | "Expert" | ""
-    poufpaf: string
-    bggId: number
-    exemplaires: number // Defaults to 1
-    dispoPret: number
-    nonRangee: number
-    ean: string
-    bggPhoto: string
+export class JeuxJav {
+    id = 0
+
+    titre = ""
+
+    auteur = ""
+
+    editeur = ""
+
+    minJoueurs = 0
+
+    maxJoueurs = 0
+
+    duree = 0
+
+    type: "Ambiance" | "Famille" | "Expert" | "" = ""
+
+    poufpaf = ""
+
+    bggId = 0
+
+    exemplaires = 1
+
+    dispoPret = 0
+
+    nonRangee = 0
+
+    ean = ""
+
+    bggPhoto = ""
 }
 
 export interface JeuxJavList {

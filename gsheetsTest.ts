@@ -1,10 +1,10 @@
+import * as _ from "lodash"
 import path from "path"
-import _ from "lodash"
 import { promises as fs } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
+const CRED_PATH = path.resolve(process.cwd(), "./access/gsheets.json")
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function getList<Element extends object>(
@@ -310,3 +310,87 @@ function formulaSafe(value: string): string {
 }
 
 export { SCOPES }
+
+class Test {
+    envieId = 5
+
+    envies = ""
+
+    dateAjout: Date = new Date(0)
+
+    ignore = false
+
+    membres: number[] = []
+
+    equipes: string[] = []
+
+    datesPossibles: Date[] = []
+
+    tictactoe: boolean[] = []
+}
+
+// Can't run it on every test, it requires private access to a google sheet
+async function testGSheetAPi(): Promise<void> {
+    const dataset: Test[] = [
+        {
+            envieId: 1,
+            envies: "Présenter le festival et son organisation à un nouveau bénévol au téléphone",
+            dateAjout: new Date("2021-10-18T22:00:00.000Z"),
+            ignore: true,
+            membres: [2, 5, 6, 4, 2, 7],
+            equipes: ["Accueillir les bénévoles"],
+            datesPossibles: [
+                new Date("2021-11-18T23:00:00.000Z"),
+                new Date("2021-11-19T23:00:00.000Z"),
+                new Date("2021-11-20T23:00:00.000Z"),
+            ],
+            tictactoe: [true, false, true, false, false, true],
+        },
+        {
+            envieId: 5,
+            envies: "Créer de jolies pages webs",
+            dateAjout: new Date("2021-10-18T22:00:00.000Z"),
+            ignore: false,
+            membres: [7],
+            equipes: ["Site Web Public", "Force Orange"],
+            datesPossibles: [],
+            tictactoe: [],
+        },
+        {
+            envieId: 6,
+            envies: "Modérer un salon Discord",
+            dateAjout: new Date("2021-10-18T22:00:00.000Z"),
+            ignore: true,
+            membres: [],
+            equipes: [],
+            datesPossibles: [new Date("2024-10-18T22:00:00.000Z")],
+            tictactoe: [false, false, false, false, true, true, true, true],
+        },
+    ]
+
+    console.log("Test d'écriture...")
+    const resultatEcriture = await setList<Test>("Tests de l'API", dataset)
+    if (!resultatEcriture) {
+        console.log("ECHEC de l'écriture")
+        return
+    }
+    console.log("Écriture réussie")
+
+    console.log("Test de lecture...")
+    const datasetLu = await getList<Test>("Tests de l'API", new Test())
+    if (!_.isEqual(datasetLu, dataset)) {
+        console.log("ECHEC de la lecture", datasetLu, dataset)
+        return
+    }
+    console.log("Lecture réussie")
+
+    console.log("Effacement des données...")
+    const resultatEffacement = await setList<Test>("Tests de l'API", [])
+    if (!resultatEffacement) {
+        console.log("ECHEC de l'effacement")
+        return
+    }
+    console.log("Effacement réussi")
+}
+
+testGSheetAPi().then(() => console.log("Done"))
