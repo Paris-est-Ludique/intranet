@@ -8,9 +8,13 @@ export const getJeuxJavList = async (
     response: Response,
     _next: NextFunction
 ): Promise<void> => {
-    const list = await getList<JeuxJav>("Jeux JAV", new JeuxJav())
-    if (list) {
-        response.status(200).json(list)
+    try {
+        const list = await getList<JeuxJav>("Jeux JAV", new JeuxJav())
+        if (list) {
+            response.status(200).json(list)
+        }
+    } catch (e: unknown) {
+        response.status(400).json(e)
     }
 }
 

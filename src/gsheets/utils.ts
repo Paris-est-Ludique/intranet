@@ -18,8 +18,7 @@ export async function getList<Element extends object>(
     const rows = (await sheet.getRows()) as StringifiedElement[]
     const elements: Element[] = []
     if (!rows[0]) {
-        // TODO: Report format error to database maintainers
-        return []
+        throw new Error(`No column types defined in sheet ${sheetName}`)
     }
     const types = _.pick(rows[0], Object.keys(specimen)) as Record<keyof Element, string>
     rows.shift()
@@ -47,7 +46,7 @@ export async function setList<Element extends object>(
     // Load sheet into an array of objects
     const rows = await sheet.getRows()
     if (!rows[0]) {
-        return undefined
+        throw new Error(`No column types defined in sheet ${sheetName}`)
     }
     const types = _.pick(rows[0], Object.keys(elements[0] || {})) as Record<keyof Element, string>
 
@@ -57,10 +56,6 @@ export async function setList<Element extends object>(
     for (const element of elements) {
         const row = rows[rowid]
         const stringifiedRow = stringifyElement(element, types)
-
-        if (stringifiedRow === undefined) {
-            return undefined
-        }
 
         if (!row) {
             // eslint-disable-next-line no-await-in-loop
@@ -94,6 +89,39 @@ export async function setList<Element extends object>(
     return true
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+export async function add<ElementNoId extends object, Element extends ElementNoId>(
+    sheetName: string,
+    idFieldName: string,
+    partialElement: Partial<ElementNoId>
+): Promise<Element | undefined> {
+    if (!partialElement) {
+        return undefined
+    }
+    const sheet = await getGSheet(sheetName)
+
+    // Load sheet into an array of objects
+    const rows = await sheet.getRows()
+    if (!rows[0]) {
+        throw new Error(`No column types defined in sheet ${sheetName}`)
+    }
+    const types = {
+        [idFieldName]: "number",
+        ...(_.pick(rows[0], Object.keys(partialElement || {})) as Record<keyof Element, string>),
+    }
+
+    // Create full element
+    rows.shift()
+    const highestId = rows.reduce((id: number, row) => Math.max(id, +row[idFieldName] || 0), 0)
+    const element = { [idFieldName]: highestId + 1, ...partialElement } as Element
+
+    // Add element
+    const stringifiedRow = stringifyElement(element, types)
+    await sheet.addRow(stringifiedRow)
+
+    return element
+}
+
 async function getGSheet(sheetName: string): Promise<GoogleSpreadsheetWorksheet> {
     const doc = new GoogleSpreadsheet("1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw")
     const creds = await fs.readFile(CRED_PATH)
@@ -108,13 +136,10 @@ function parseElement<Element extends object>(
     rawElement: Record<keyof Element, string>,
     types: Record<keyof Element, string>,
     specimen: Element
-): Element | undefined {
+): Element {
     const fullElement = _.reduce(
         types,
         (element: any, type: string, prop: string) => {
-            if (element === undefined) {
-                return undefined
-            }
             const rawProp: string = rawElement[prop as keyof Element]
             switch (type) {
                 case "string":
@@ -136,14 +161,13 @@ function parseElement<Element extends object>(
                         element[prop] = new Date(+matchDate[3], +matchDate[2] - 1, +matchDate[1])
                         break
                     }
-                    return undefined // TODO: Report format error to database maintainers
-                    break
+                    throw new Error(`Unable to read date from ${rawProp}`)
 
                 default:
                     // eslint-disable-next-line no-case-declarations
                     const matchArrayType = type.match(/^(number|string|boolean|date)\[([^\]]+)\]$/)
                     if (!matchArrayType) {
-                        return undefined
+                        throw new Error(`Unknown array type for ${type}`)
                     }
                     if (!rawProp) {
                         element[prop] = []
@@ -189,10 +213,11 @@ function parseElement<Element extends object>(
                                     return true
                                 })
                                 if (!rightFormat) {
-                                    return undefined
+                                    throw new Error(`One array item is not a date in ${rawProp}`)
                                 }
                                 break
                             default:
+                                throw new Error(`Unknown array type ${arrayType}`)
                         }
                     }
             }
@@ -207,17 +232,10 @@ function parseElement<Element extends object>(
 function stringifyElement<Element extends object>(
     element: Element,
     types: Record<keyof Element, string>
-): Record<keyof Element, string> | undefined {
-    const rawElement: Record<keyof Element, string> | undefined = _.reduce(
+): Record<keyof Element, string> {
+    const rawElement: Record<keyof Element, string> = _.reduce(
         types,
-        (
-            stringifiedElement: Record<keyof Element, string> | undefined,
-            type: string,
-            prop: string
-        ) => {
-            if (stringifiedElement === undefined) {
-                return undefined
-            }
+        (stringifiedElement: Record<keyof Element, string>, type: string, prop: string) => {
             const value = element[prop as keyof Element]
             switch (type) {
                 case "string":
@@ -233,22 +251,16 @@ function stringifyElement<Element extends object>(
                     break
 
                 case "date":
-                    if (value instanceof Date) {
-                        stringifiedElement[prop as keyof Element] = `${value.getDate()}/${
-                            value.getMonth() + 1
-                        }/${value.getFullYear()}`
-                        break
-                    } else {
-                        console.error("Wrong date format in stringifyElement")
-                        return undefined // TODO: Report format error to database maintainers
-                    }
+                    stringifiedElement[prop as keyof Element] = stringifiedDate(value)
+                    break
 
                 default:
                     // eslint-disable-next-line no-case-declarations
                     const matchArrayType = type.match(/^(number|string|boolean|date)\[([^\]]+)\]$/)
                     if (!matchArrayType || !_.isArray(value)) {
-                        console.error("Unknown matchArrayType or not an array in stringifyElement")
-                        return undefined
+                        throw new Error(
+                            "Unknown matchArrayType or not an array in stringifyElement"
+                        )
                     }
                     // eslint-disable-next-line no-case-declarations
                     const arrayType = matchArrayType[1]
@@ -258,7 +270,7 @@ function stringifyElement<Element extends object>(
                     switch (arrayType) {
                         case "string":
                             if (!_.every(value, _.isString)) {
-                                return undefined
+                                throw new Error(`Each date of ${value} is not a string`)
                             }
                             stringifiedElement[prop as keyof Element] = formulaSafe(
                                 value.join(delimiter)
@@ -267,14 +279,14 @@ function stringifyElement<Element extends object>(
 
                         case "number":
                             if (!_.every(value, _.isNumber)) {
-                                return undefined
+                                throw new Error(`Each date of ${value} is not a number`)
                             }
                             stringifiedElement[prop as keyof Element] = value.join(delimiter)
                             break
 
                         case "boolean":
                             if (!_.every(value, _.isBoolean)) {
-                                return undefined
+                                throw new Error(`Each date of ${value} is not a boolean`)
                             }
                             stringifiedElement[prop as keyof Element] = _.map(value, (val) =>
                                 val ? "X" : ""
@@ -283,7 +295,7 @@ function stringifyElement<Element extends object>(
 
                         case "date":
                             if (!_.every(value, _.isDate)) {
-                                return undefined
+                                throw new Error(`Each date of ${value} is not a date`)
                             }
                             stringifiedElement[prop as keyof Element] = _.map(
                                 value,
@@ -293,7 +305,7 @@ function stringifyElement<Element extends object>(
                             break
 
                         default:
-                            return undefined
+                            throw new Error(`Unknown array type ${arrayType}`)
                     }
             }
 
@@ -309,4 +321,19 @@ function formulaSafe(value: string): string {
     return value.replace(/^=+/, "")
 }
 
+function stringifiedDate(value: unknown): string {
+    let date: Date
+    if (value instanceof Date) {
+        date = value
+    } else if (typeof value === "string") {
+        try {
+            date = new Date(value)
+        } catch (e) {
+            throw new Error("Wrong date string format in stringifyElement")
+        }
+    } else {
+        throw new Error("Wrong date format in stringifyElement")
+    }
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+}
 export { SCOPES }

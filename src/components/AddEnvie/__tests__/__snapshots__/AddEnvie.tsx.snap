@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddEnvie /> renders 1`] = `
+<section
+  class="EnvieList"
+>
+  <h2>
+    Ajouter une nouvelle envie
+  </h2>
+  <form>
+    <label
+      for="postDomaine"
+    >
+      Domaine:
+      <input
+        id="postDomaine"
+        name="postDomaine"
+        type="text"
+        value=""
+      />
+    </label>
+    <label
+      for="postEnvies"
+    >
+      Envies:
+      <textarea
+        id="postEnvies"
+        name="postEnvies"
+      />
+    </label>
+    <label
+      for="postPrecisions"
+    >
+      Precisions:
+      <textarea
+        id="postPrecisions"
+        name="postPrecisions"
+      />
+    </label>
+    <label
+      for="postEquipes"
+    >
+      Equipes:
+      <input
+        id="postEquipes"
+        name="postEquipes"
+        type="text"
+        value=""
+      />
+    </label>
+    <label
+      for="postDateAjout"
+    >
+      DateAjout:
+      <input
+        id="postDateAjout"
+        name="postDateAjout"
+        type="date"
+        value=""
+      />
+    </label>
+    <button
+      type="button"
+    >
+      Save Post
+    </button>
+  </form>
+</section>
+`;

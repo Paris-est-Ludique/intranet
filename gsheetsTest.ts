@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import * as _ from "lodash"
 import path from "path"
 import { promises as fs } from "fs"
@@ -329,6 +330,20 @@ class Test {
     tictactoe: boolean[] = []
 }
 
+// class Membre {
+//     membreId = 0
+
+//     nom = ""
+
+//     prenom = ""
+
+//     mail = ""
+
+//     telephone = ""
+
+//     photo = ""
+// }
+
 // Can't run it on every test, it requires private access to a google sheet
 async function testGSheetAPi(): Promise<void> {
     const dataset: Test[] = [
@@ -367,6 +382,15 @@ async function testGSheetAPi(): Promise<void> {
             tictactoe: [false, false, false, false, true, true, true, true],
         },
     ]
+
+    // console.log("Lecture des Membres...")
+    // const datasetMembresLu = await getList<Membre>("Membres", new Membre())
+    // if (!datasetMembresLu) {
+    //     console.log("ECHEC de la lecture des membres", datasetMembresLu)
+    //     return
+    // }
+    // console.log("Extraction des membres réussie")
+    // await fs.writeFile("membres.json", JSON.stringify(datasetMembresLu))
 
     console.log("Test d'écriture...")
     const resultatEcriture = await setList<Test>("Tests de l'API", dataset)

@@ -3,23 +3,23 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { Envie, getEnvieList } from "../services/envies"
 import { AppThunk, AppState } from "."
 
-interface EnvieList {
+interface EnvieListRequest {
     readyStatus: string
     items: Envie[]
     error: string | null
 }
 
-export const initialState: EnvieList = {
+export const initialState: EnvieListRequest = {
     readyStatus: "invalid",
     items: [],
     error: null,
 }
 
 const envieList = createSlice({
-    name: "envieList",
+    name: "getEnvieList",
     initialState,
     reducers: {
-        getRequesting: (state: EnvieList) => {
+        getRequesting: (state: EnvieListRequest) => {
             state.readyStatus = "request"
         },
         getSuccess: (state, { payload }: PayloadAction<Envie[]>) => {

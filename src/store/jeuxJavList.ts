@@ -4,7 +4,7 @@ import { JeuxJav, getJeuxJavList } from "../services/jeuxJav"
 import { AppThunk, AppState } from "."
 
 interface JeuxJavList {
-    readyStatus: string
+    readyStatus: string // TODO Change it to: "invalid" | "request" | "success" | "failure"
     items: JeuxJav[]
     error: string | null
 }

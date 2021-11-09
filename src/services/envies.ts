@@ -3,32 +3,40 @@ import axios from "axios"
 import config from "../config"
 
 export class Envie {
+    envieId = 0
+
     domaine = ""
 
     envies = ""
 
     precisions = ""
 
-    equipes = []
+    equipes: string[] = []
 
-    dateAjout = new Date(0)
+    dateAjout = ""
 }
+export type EnvieWithoutId = Omit<Envie, "envieId">
 
-export interface EnviesResponse {
+export interface GetEnvieListResponse {
     data?: Envie[]
     error?: Error
 }
-export const getEnvieList = async (): Promise<EnviesResponse> => {
+export const getEnvieList = async (): Promise<GetEnvieListResponse> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/GetList`)
+        const { data } = await axios.get(`${config.API_URL}/GetEnvieList`)
         return { data }
     } catch (error) {
         return { error: error as Error }
     }
 }
-export const setEnvieList = async (list: Envie[]): Promise<EnviesResponse> => {
+
+export interface AddEnvieResponse {
+    data?: Envie
+    error?: Error
+}
+export const addEnvie = async (envieWithoutId: EnvieWithoutId): Promise<AddEnvieResponse> => {
     try {
-        const { data } = await axios.post(`${config.API_URL}/SetList`, list)
+        const { data } = await axios.post(`${config.API_URL}/AddEnvie`, envieWithoutId)
         return { data }
     } catch (error) {
         return { error: error as Error }
