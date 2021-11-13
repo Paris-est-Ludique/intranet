@@ -2,8 +2,8 @@ import axios from "axios"
 
 import config from "../config"
 
-export class JeuxJav {
-    id = 0
+export class JeuJav {
+    jeuId = 0
 
     titre = ""
 
@@ -34,26 +34,26 @@ export class JeuxJav {
     bggPhoto = ""
 }
 
-export interface JeuxJavList {
-    data?: JeuxJav[]
+export interface JeuJavList {
+    data?: JeuJav[]
     error?: Error
 }
 
-export interface JeuxJavData {
-    data?: JeuxJav
+export interface JeuJavData {
+    data?: JeuJav
     error?: Error
 }
 
-export const getJeuxJavList = async (): Promise<JeuxJavList> => {
+export const getJeuJavList = async (): Promise<JeuJavList> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/JeuxJav`)
+        const { data } = await axios.get(`${config.API_URL}/JeuJav`)
         return { data }
     } catch (error) {
         return { error: error as Error }
     }
 }
 
-export const getJeuxJavData = async (id: string): Promise<JeuxJavData> => {
+export const getJeuJavData = async (id: string): Promise<JeuJavData> => {
     try {
         const { data } = await axios.get(`${config.API_URL}/users/${id}`)
         return { data }

@@ -1,30 +1,26 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import { toast } from "react-toastify"
 
+import { StateRequest } from "./utils"
 import { Envie, getEnvieList } from "../services/envies"
 import { AppThunk, AppState } from "."
 
-interface EnvieListRequest {
-    readyStatus: string
-    items: Envie[]
-    error: string | null
-}
-
-export const initialState: EnvieListRequest = {
-    readyStatus: "invalid",
-    items: [],
-    error: null,
-}
+const envieAdapter = createEntityAdapter<Envie>({
+    selectId: (envie) => envie.envieId,
+})
 
 const envieList = createSlice({
     name: "getEnvieList",
-    initialState,
+    initialState: envieAdapter.getInitialState({
+        readyStatus: "idle",
+    } as StateRequest),
     reducers: {
-        getRequesting: (state: EnvieListRequest) => {
+        getRequesting: (state) => {
             state.readyStatus = "request"
         },
         getSuccess: (state, { payload }: PayloadAction<Envie[]>) => {
             state.readyStatus = "success"
-            state.items = payload
+            envieAdapter.setAll(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"
@@ -43,6 +39,15 @@ export const fetchEnvieList = (): AppThunk => async (dispatch) => {
 
     if (error) {
         dispatch(getFailure(error.message))
+        toast.error(`Erreur lors du chargement des envies: ${error.message}`, {
+            position: "top-center",
+            autoClose: 6000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })
     } else {
         dispatch(getSuccess(data as Envie[]))
     }

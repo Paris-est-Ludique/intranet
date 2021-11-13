@@ -4,15 +4,15 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk } from "../../store"
-import { User } from "../../services/jsonPlaceholder"
 import { fetchUserDataIfNeed } from "../../store/userData"
 import { Info } from "../../components"
 import styles from "./styles.module.scss"
 
-export type Props = RouteComponentProps<{ id: string }>
+export type Props = RouteComponentProps<{ memberId: string }>
 
 const UserInfo = ({ match }: Props): JSX.Element => {
-    const { id } = match.params
+    const { memberId: rawId } = match.params
+    const id = +rawId
     const dispatch = useDispatch()
     const userData = useSelector((state: AppState) => state.userData, shallowEqual)
 
@@ -21,13 +21,14 @@ const UserInfo = ({ match }: Props): JSX.Element => {
     }, [dispatch, id])
 
     const renderInfo = () => {
-        const userInfo = userData[id]
+        const userInfo = userData
 
         if (!userInfo || userInfo.readyStatus === "request") return <p>Loading...</p>
 
-        if (userInfo.readyStatus === "failure") return <p>Oops! Failed to load data.</p>
+        if (userInfo.readyStatus === "failure" || !userInfo.entity)
+            return <p>Oops! Failed to load data.</p>
 
-        return <Info item={userInfo.item as User} />
+        return <Info item={userInfo.entity} />
     }
 
     return (
@@ -39,7 +40,7 @@ const UserInfo = ({ match }: Props): JSX.Element => {
 }
 
 interface LoadDataArgs {
-    params: { id: string }
+    params: { id: number }
 }
 
 export const loadData = ({ params }: LoadDataArgs): AppThunk[] => [fetchUserDataIfNeed(params.id)]

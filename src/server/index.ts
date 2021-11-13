@@ -10,7 +10,7 @@ import chalk from "chalk"
 import devServer from "./devServer"
 import ssr from "./ssr"
 
-import { getJeuxJavList } from "../gsheets/jeuxJav"
+import { getJeuJavList } from "../gsheets/jeuJav"
 import { getEnvieList, addEnvie } from "../gsheets/envies"
 import config from "../config"
 
@@ -33,7 +33,7 @@ if (__DEV__) devServer(app)
 
 // Google Sheets requests
 app.use(express.json())
-app.get("/JeuxJav", getJeuxJavList)
+app.get("/JeuJav", getJeuJavList)
 app.get("/GetEnvieList", getEnvieList)
 app.post("/AddEnvie", addEnvie)
 

@@ -1,9 +1,10 @@
 import { createMemoryHistory, createBrowserHistory } from "history"
-import { Action, configureStore } from "@reduxjs/toolkit"
+import { Action, configureStore, EntityState } from "@reduxjs/toolkit"
 import { ThunkAction } from "redux-thunk"
 import { routerMiddleware } from "connected-react-router"
 
 import createRootReducer from "./rootReducer"
+import { StateRequest } from "./utils"
 
 interface Arg {
     initialState?: typeof window.__INITIAL_STATE__
@@ -37,5 +38,7 @@ export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 export type AppThunk = ThunkAction<void, AppState, unknown, Action<string>>
+
+export type EntitiesRequest<T> = EntityState<T> & StateRequest
 
 export default createStore

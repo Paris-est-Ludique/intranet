@@ -11,15 +11,15 @@ import userList, {
 
 jest.mock("axios")
 
-const mockData = [
-    {
-        id: 1,
+const mockData = {
+    "1": {
+        membreId: 1,
         name: "PeL",
         phone: "+886 0970...",
         email: "forceoranj@gmail.com",
         website: "https://www.parisestludique.fr",
     },
-]
+}
 const mockError = "Oops! Something went wrong."
 
 describe("userList reducer", () => {
@@ -31,8 +31,8 @@ describe("userList reducer", () => {
     it("should handle requesting correctly", () => {
         expect(userList(undefined, { type: getRequesting.type })).toEqual({
             readyStatus: "request",
-            items: [],
-            error: null,
+            ids: [],
+            entities: {},
         })
     })
 
@@ -40,7 +40,8 @@ describe("userList reducer", () => {
         expect(userList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
             ...initialState,
             readyStatus: "success",
-            items: mockData,
+            ids: [1],
+            entities: mockData,
         })
     })
 

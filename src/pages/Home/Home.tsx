@@ -3,17 +3,20 @@ import { RouteComponentProps } from "react-router-dom"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
-import { AppState, AppThunk } from "../../store"
-import { fetchJeuxJavListIfNeed } from "../../store/jeuxJavList"
+import { AppState, AppThunk, EntitiesRequest } from "../../store"
+import { fetchJeuJavListIfNeed } from "../../store/jeuJavList"
 import { fetchEnvieListIfNeed } from "../../store/envieList"
-import { JeuxJavList, AddEnvie } from "../../components"
+import { JeuJavList, AddEnvie } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
 
-function useList(stateToProp: (state: AppState) => any, fetchDataIfNeed: () => AppThunk) {
+function useList<Entity>(
+    stateToProp: (state: AppState) => EntitiesRequest<Entity>,
+    fetchDataIfNeed: () => AppThunk
+) {
     const dispatch = useDispatch()
-    const { readyStatus, items } = useSelector(stateToProp, shallowEqual)
+    const { readyStatus, ids } = useSelector(stateToProp, shallowEqual)
 
     // Fetch client-side data here
     useEffect(() => {
@@ -22,12 +25,12 @@ function useList(stateToProp: (state: AppState) => any, fetchDataIfNeed: () => A
     }, [dispatch])
 
     return () => {
-        if (!readyStatus || readyStatus === "invalid" || readyStatus === "request")
+        if (!readyStatus || readyStatus === "idle" || readyStatus === "request")
             return <p>Loading...</p>
 
         if (readyStatus === "failure") return <p>Oops, Failed to load list!</p>
 
-        return <JeuxJavList items={items} />
+        return <JeuJavList ids={ids} />
     }
 }
 
@@ -38,7 +41,7 @@ const Home: FC<Props> = (): JSX.Element => {
             <Helmet title="Home" />
             <AddEnvie dispatch={dispatch} />
             {/* {useList((state: AppState) => state.envieList, fetchEnvieListifNeed)()} */}
-            {useList((state: AppState) => state.jeuxJavList, fetchJeuxJavListIfNeed)()}
+            {useList((state: AppState) => state.jeuJavList, fetchJeuJavListIfNeed)()}
             {/* <button type="button" onClick={() => setList([{id: 3, joueurs: 4, duree: 5, description: "abcd"}])}>
             Set list!
         </button> */}
@@ -49,7 +52,7 @@ const Home: FC<Props> = (): JSX.Element => {
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [
     fetchEnvieListIfNeed(),
-    fetchJeuxJavListIfNeed(),
+    fetchJeuJavListIfNeed(),
     // More pre-fetched actions...
 ]
 

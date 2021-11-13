@@ -1,29 +1,35 @@
 import axios from "axios"
 
 import mockStore from "../../utils/mockStore"
-import userData, { getRequesting, getSuccess, getFailure, fetchUserData } from "../userData"
+import userData, {
+    getRequesting,
+    getSuccess,
+    getFailure,
+    fetchUserData,
+    initialState,
+} from "../userData"
 
 jest.mock("axios")
 
 const mockData = {
-    id: 1,
+    membreId: 1,
     name: "PeL",
     phone: "+886 0970...",
     email: "forceoranj@gmail.com",
     website: "https://www.parisestludique.fr",
 }
-const { id } = mockData
+const { membreId } = mockData
 const mockError = "Oops! Something went wrong."
 
 describe("userData reducer", () => {
     it("should handle initial state correctly", () => {
         // @ts-expect-error
-        expect(userData(undefined, {})).toEqual({})
+        expect(userData(undefined, {})).toEqual(initialState)
     })
 
     it("should handle requesting correctly", () => {
-        expect(userData(undefined, { type: getRequesting.type, payload: id })).toEqual({
-            [id]: { readyStatus: "request" },
+        expect(userData(undefined, { type: getRequesting.type, payload: membreId })).toEqual({
+            readyStatus: "request",
         })
     })
 
@@ -31,53 +37,47 @@ describe("userData reducer", () => {
         expect(
             userData(undefined, {
                 type: getSuccess.type,
-                payload: { id, item: mockData },
+                payload: mockData,
             })
-        ).toEqual({
-            [id]: { readyStatus: "success", item: mockData },
-        })
+        ).toEqual({ readyStatus: "success", entity: mockData })
     })
 
     it("should handle failure correctly", () => {
         expect(
             userData(undefined, {
                 type: getFailure.type,
-                payload: { id, error: mockError },
+                payload: mockError,
             })
-        ).toEqual({
-            [id]: { readyStatus: "failure", error: mockError },
-        })
+        ).toEqual({ readyStatus: "failure", error: mockError })
     })
 })
 
 describe("userData action", () => {
-    const strId = id.toString()
-
     it("fetches user data successful", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
-            { type: getRequesting.type, payload: strId },
-            { type: getSuccess.type, payload: { id: strId, item: mockData } },
+            { type: getRequesting.type },
+            { type: getSuccess.type, payload: mockData },
         ]
 
         // @ts-expect-error
         axios.get.mockResolvedValue({ data: mockData })
 
-        await dispatch(fetchUserData(strId))
+        await dispatch(fetchUserData(membreId))
         expect(getActions()).toEqual(expectedActions)
     })
 
     it("fetches user data failed", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
-            { type: getRequesting.type, payload: strId },
-            { type: getFailure.type, payload: { id: strId, error: mockError } },
+            { type: getRequesting.type },
+            { type: getFailure.type, payload: mockError },
         ]
 
         // @ts-expect-error
         axios.get.mockRejectedValue({ message: mockError })
 
-        await dispatch(fetchUserData(strId))
+        await dispatch(fetchUserData(membreId))
         expect(getActions()).toEqual(expectedActions)
     })
 })

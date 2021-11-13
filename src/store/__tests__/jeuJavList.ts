@@ -1,19 +1,19 @@
 import axios from "axios"
 
 import mockStore from "../../utils/mockStore"
-import JeuxJavList, {
+import JeuJavList, {
     initialState,
     getRequesting,
     getSuccess,
     getFailure,
-    fetchJeuxJavList,
-} from "../jeuxJavList"
+    fetchJeuJavList,
+} from "../jeuJavList"
 
 jest.mock("axios")
 
-const mockData = [
-    {
-        id: 5,
+const mockData = {
+    "5": {
+        jeuId: 5,
         titre: "6 qui prend!",
         auteur: "Wolfgang Kramer",
         editeur: "(uncredited) , Design Edge , B",
@@ -31,33 +31,34 @@ const mockData = [
         horodatage: "0000-00-00",
         ean: "3421272101313",
     },
-]
+}
 const mockError = "Oops! Something went wrong."
 
-describe("JeuxJavList reducer", () => {
+describe("JeuJavList reducer", () => {
     it("should handle initial state", () => {
         // @ts-expect-error
-        expect(JeuxJavList(undefined, {})).toEqual(initialState)
+        expect(JeuJavList(undefined, {})).toEqual(initialState)
     })
 
     it("should handle requesting correctly", () => {
-        expect(JeuxJavList(undefined, { type: getRequesting.type })).toEqual({
+        expect(JeuJavList(undefined, { type: getRequesting.type })).toEqual({
             readyStatus: "request",
-            items: [],
-            error: null,
+            ids: [],
+            entities: {},
         })
     })
 
     it("should handle success correctly", () => {
-        expect(JeuxJavList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
+        expect(JeuJavList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
             ...initialState,
             readyStatus: "success",
-            items: mockData,
+            ids: [5],
+            entities: mockData,
         })
     })
 
     it("should handle failure correctly", () => {
-        expect(JeuxJavList(undefined, { type: getFailure.type, payload: mockError })).toEqual({
+        expect(JeuJavList(undefined, { type: getFailure.type, payload: mockError })).toEqual({
             ...initialState,
             readyStatus: "failure",
             error: mockError,
@@ -65,8 +66,8 @@ describe("JeuxJavList reducer", () => {
     })
 })
 
-describe("JeuxJavList action", () => {
-    it("fetches JeuxJav list successful", async () => {
+describe("JeuJavList action", () => {
+    it("fetches JeuJav list successful", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
             { type: getRequesting.type },
@@ -76,11 +77,11 @@ describe("JeuxJavList action", () => {
         // @ts-expect-error
         axios.get.mockResolvedValue({ data: mockData })
 
-        await dispatch(fetchJeuxJavList())
+        await dispatch(fetchJeuJavList())
         expect(getActions()).toEqual(expectedActions)
     })
 
-    it("fetches JeuxJav list failed", async () => {
+    it("fetches JeuJav list failed", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
             { type: getRequesting.type },
@@ -90,7 +91,7 @@ describe("JeuxJavList action", () => {
         // @ts-expect-error
         axios.get.mockRejectedValue({ message: mockError })
 
-        await dispatch(fetchJeuxJavList())
+        await dispatch(fetchJeuJavList())
         expect(getActions()).toEqual(expectedActions)
     })
 })

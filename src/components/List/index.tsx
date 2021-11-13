@@ -12,9 +12,9 @@ const List = ({ items }: Props) => (
     <div className={styles.UserList}>
         <h4>User List</h4>
         <ul>
-            {items.map(({ id, name }) => (
-                <li key={id}>
-                    <Link to={`/UserInfo/${id}`}>{name}</Link>
+            {items.map(({ membreId, name }) => (
+                <li key={membreId}>
+                    <Link to={`/UserInfo/${membreId}`}>{name}</Link>
                 </li>
             ))}
         </ul>

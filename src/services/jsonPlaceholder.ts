@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export interface User {
-    id: number
+    membreId: number
     name: string
     phone: string
     email: string
@@ -27,7 +27,7 @@ export const getUserList = async (): Promise<UserList> => {
     }
 }
 
-export const getUserData = async (id: string): Promise<UserData> => {
+export const getUserData = async (id: number): Promise<UserData> => {
     try {
         const { data } = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)
         return { data }

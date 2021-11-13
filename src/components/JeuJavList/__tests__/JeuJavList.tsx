@@ -4,19 +4,16 @@
 import { render } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 
-import { fetchJeuJavListIfNeed } from "../../../store/jeuJavList"
 import mockStore from "../../../utils/mockStore"
-import Home from "../Home"
+import List from "../index"
 
-describe("<Home />", () => {
+describe("<List />", () => {
     const renderHelper = (reducer = { readyStatus: "idle" }) => {
         const { dispatch, ProviderWithStore } = mockStore({ jeuJavList: reducer })
         const { container } = render(
             <ProviderWithStore>
                 <MemoryRouter>
-                    {/*
-            @ts-expect-error */}
-                    <Home />
+                    <List ids={[5]} />
                 </MemoryRouter>
             </ProviderWithStore>
         )
@@ -24,30 +21,7 @@ describe("<Home />", () => {
         return { dispatch, firstChild: container.firstChild }
     }
 
-    it("should fetch data when page loaded", () => {
-        const { dispatch } = renderHelper()
-
-        expect(dispatch).toHaveBeenCalledTimes(1)
-        expect(dispatch.mock.calls[0][0].toString()).toBe(fetchJeuJavListIfNeed().toString())
-    })
-
-    it("renders the loading status if data invalid", () => {
-        expect(renderHelper().firstChild).toMatchSnapshot()
-    })
-
-    it("renders the loading status if requesting data", () => {
-        const reducer = { readyStatus: "request" }
-
-        expect(renderHelper(reducer).firstChild).toMatchSnapshot()
-    })
-
-    it("renders an error if loading failed", () => {
-        const reducer = { readyStatus: "failure" }
-
-        expect(renderHelper(reducer).firstChild).toMatchSnapshot()
-    })
-
-    it("renders the <List /> if loading was successful", () => {
+    it("renders", () => {
         const reducer = {
             readyStatus: "success",
             ids: [5],

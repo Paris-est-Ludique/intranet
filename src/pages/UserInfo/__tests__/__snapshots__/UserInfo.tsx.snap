@@ -47,7 +47,7 @@ exports[`<UserInfo /> renders the loading status if data invalid 1`] = `
   class="UserInfo"
 >
   <p>
-    Loading...
+    Oops! Failed to load data.
   </p>
 </div>
 `;

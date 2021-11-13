@@ -145,7 +145,7 @@ exports[`<Home /> renders the <List /> if loading was successful 1`] = `
     </form>
   </section>
   <div
-    class="JeuxJavList"
+    class="JeuJavList"
   >
     <h4>
       Jeux JAV

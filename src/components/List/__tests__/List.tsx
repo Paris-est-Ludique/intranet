@@ -13,7 +13,7 @@ describe("<List />", () => {
                 <List
                     items={[
                         {
-                            id: 1,
+                            membreId: 1,
                             name: "PeL",
                             phone: "+886 0970...",
                             email: "forceoranj@gmail.com",

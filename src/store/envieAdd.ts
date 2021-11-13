@@ -1,31 +1,26 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 
+import { StateRequest } from "./utils"
 import { Envie, EnvieWithoutId, addEnvie } from "../services/envies"
 import { AppThunk } from "."
 
-interface EnvieRequest {
-    readyStatus: string
-    items: Envie | null
-    error: string | null
-}
+const envieAdapter = createEntityAdapter<Envie>({
+    selectId: (envie) => envie.envieId,
+})
 
-export const initialState: EnvieRequest = {
-    readyStatus: "invalid",
-    items: null,
-    error: null,
-}
-
-const envieList = createSlice({
+const envieAdd = createSlice({
     name: "addEnvie",
-    initialState,
+    initialState: envieAdapter.getInitialState({
+        readyStatus: "idle",
+    } as StateRequest),
     reducers: {
-        getRequesting: (state: EnvieRequest) => {
+        getRequesting: (state) => {
             state.readyStatus = "request"
         },
         getSuccess: (state, { payload }: PayloadAction<Envie>) => {
             state.readyStatus = "success"
-            state.items = payload
+            envieAdapter.addOne(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"
@@ -34,8 +29,8 @@ const envieList = createSlice({
     },
 })
 
-export default envieList.reducer
-export const { getRequesting, getSuccess, getFailure } = envieList.actions
+export default envieAdd.reducer
+export const { getRequesting, getSuccess, getFailure } = envieAdd.actions
 
 export const postEnvie =
     (envieWithoutId: EnvieWithoutId): AppThunk =>
@@ -46,7 +41,7 @@ export const postEnvie =
 
         if (error) {
             dispatch(getFailure(error.message))
-            toast.error(`Erreur lors de l'ajout: ${error.message}`, {
+            toast.error(`Erreur lors de l'ajout d'une envie: ${error.message}`, {
                 position: "top-center",
                 autoClose: 6000,
                 hideProgressBar: true,

@@ -1,8 +1,8 @@
 import List from "./List"
-import JeuxJavList from "./JeuxJavList"
+import JeuJavList from "./JeuJavList"
 import Info from "./Info"
 import ErrorBoundary from "./ErrorBoundary"
 import Loading from "./Loading"
 import AddEnvie from "./AddEnvie"
 
-export { List, JeuxJavList, Info, ErrorBoundary, Loading, AddEnvie }
+export { List, JeuJavList, Info, ErrorBoundary, Loading, AddEnvie }
