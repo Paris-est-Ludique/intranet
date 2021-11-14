@@ -6,8 +6,10 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
+type ElementWithId = unknown & { id: number }
+
 // eslint-disable-next-line @typescript-eslint/ban-types
-export async function getList<Element extends object>(
+export async function getList<Element extends ElementWithId>(
     sheetName: string,
     specimen: Element
 ): Promise<Element[]> {
@@ -37,7 +39,17 @@ export async function getList<Element extends object>(
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export async function setList<Element extends object>(
+export async function get<Element extends ElementWithId>(
+    sheetName: string,
+    membreId: number,
+    specimen: Element
+): Promise<Element | undefined> {
+    const list = await getList<Element>(sheetName, specimen)
+    return list.find((element) => element.id === membreId)
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export async function setList<Element extends ElementWithId>(
     sheetName: string,
     elements: Element[]
 ): Promise<true | undefined> {
@@ -90,7 +102,7 @@ export async function setList<Element extends object>(
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export async function add<ElementNoId extends object, Element extends ElementNoId>(
+export async function add<ElementNoId extends object, Element extends ElementNoId & ElementWithId>(
     sheetName: string,
     idFieldName: string,
     partialElement: Partial<ElementNoId>

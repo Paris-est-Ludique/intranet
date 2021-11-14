@@ -2,7 +2,7 @@ import { RouteConfig } from "react-router-config"
 
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
-import AsyncUserInfo, { loadData as loadUserInfoData } from "../pages/UserInfo"
+import AsyncMembrePage, { loadData as loadMembrePageData } from "../pages/MembrePage"
 import NotFound from "../pages/NotFound"
 
 export default [
@@ -16,9 +16,9 @@ export default [
                 loadData: loadHomeData, // Add your pre-fetch method here
             },
             {
-                path: "/UserInfo/:id",
-                component: AsyncUserInfo,
-                loadData: loadUserInfoData,
+                path: "/MembrePage/:id",
+                component: AsyncMembrePage,
+                loadData: loadMembrePageData,
             },
             {
                 component: NotFound,

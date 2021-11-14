@@ -1,15 +1,15 @@
 import loadable from "@loadable/component"
 
 import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./UserInfo"
+import { Props, loadData } from "./MembrePage"
 
-const UserInfo = loadable(() => import("./UserInfo"), {
+const MembrePage = loadable(() => import("./MembrePage"), {
     fallback: <Loading />,
 })
 
 export default (props: Props): JSX.Element => (
     <ErrorBoundary>
-        <UserInfo {...props} />
+        <MembrePage {...props} />
     </ErrorBoundary>
 )
 export { loadData }

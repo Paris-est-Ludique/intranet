@@ -313,7 +313,7 @@ function formulaSafe(value: string): string {
 export { SCOPES }
 
 class Test {
-    envieId = 5
+    id = 5
 
     envies = ""
 
@@ -348,7 +348,7 @@ class Test {
 async function testGSheetAPi(): Promise<void> {
     const dataset: Test[] = [
         {
-            envieId: 1,
+            id: 1,
             envies: "Présenter le festival et son organisation à un nouveau bénévol au téléphone",
             dateAjout: new Date("2021-10-18T22:00:00.000Z"),
             ignore: true,
@@ -362,7 +362,7 @@ async function testGSheetAPi(): Promise<void> {
             tictactoe: [true, false, true, false, false, true],
         },
         {
-            envieId: 5,
+            id: 5,
             envies: "Créer de jolies pages webs",
             dateAjout: new Date("2021-10-18T22:00:00.000Z"),
             ignore: false,
@@ -372,7 +372,7 @@ async function testGSheetAPi(): Promise<void> {
             tictactoe: [],
         },
         {
-            envieId: 6,
+            id: 6,
             envies: "Modérer un salon Discord",
             dateAjout: new Date("2021-10-18T22:00:00.000Z"),
             ignore: true,

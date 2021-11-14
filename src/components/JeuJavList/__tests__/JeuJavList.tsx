@@ -5,7 +5,7 @@ import { render } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 
 import mockStore from "../../../utils/mockStore"
-import List from "../index"
+import JeuJavList from "../index"
 
 describe("<List />", () => {
     const renderHelper = (reducer = { readyStatus: "idle" }) => {
@@ -13,7 +13,7 @@ describe("<List />", () => {
         const { container } = render(
             <ProviderWithStore>
                 <MemoryRouter>
-                    <List ids={[5]} />
+                    <JeuJavList ids={[5]} />
                 </MemoryRouter>
             </ProviderWithStore>
         )

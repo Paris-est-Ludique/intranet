@@ -13,7 +13,7 @@ jest.mock("axios")
 
 const mockData = {
     "5": {
-        jeuId: 5,
+        id: 5,
         titre: "6 qui prend!",
         auteur: "Wolfgang Kramer",
         editeur: "(uncredited) , Design Edge , B",

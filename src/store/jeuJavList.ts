@@ -6,7 +6,7 @@ import { JeuJav, getJeuJavList } from "../services/jeuJav"
 import { AppThunk, AppState } from "."
 
 const jeuJavAdapter = createEntityAdapter<JeuJav>({
-    selectId: (jeuJav) => jeuJav.jeuId,
+    selectId: (jeuJav) => jeuJav.id,
 })
 
 export const initialState = jeuJavAdapter.getInitialState({

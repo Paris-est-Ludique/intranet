@@ -12,6 +12,7 @@ import ssr from "./ssr"
 
 import { getJeuJavList } from "../gsheets/jeuJav"
 import { getEnvieList, addEnvie } from "../gsheets/envies"
+import { getMembre } from "../gsheets/membres"
 import config from "../config"
 
 const app = express()
@@ -33,8 +34,9 @@ if (__DEV__) devServer(app)
 
 // Google Sheets requests
 app.use(express.json())
-app.get("/JeuJav", getJeuJavList)
+app.get("/JeuJavList", getJeuJavList)
 app.get("/GetEnvieList", getEnvieList)
+app.get("/GetMembre", getMembre)
 app.post("/AddEnvie", addEnvie)
 
 // Use React server-side rendering middleware

@@ -2,27 +2,25 @@ import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolki
 import { toast } from "react-toastify"
 
 import { StateRequest } from "./utils"
-import { User, getUserList } from "../services/jsonPlaceholder"
+import { Membre, getMembreList } from "../services/membres"
 import { AppThunk, AppState } from "."
 
-const userAdapter = createEntityAdapter<User>({
-    selectId: (user) => user.membreId,
-})
+const membreAdapter = createEntityAdapter<Membre>()
 
-export const initialState = userAdapter.getInitialState({
+export const initialState = membreAdapter.getInitialState({
     readyStatus: "idle",
 } as StateRequest)
 
-const userList = createSlice({
-    name: "userList",
+const membreList = createSlice({
+    name: "membreList",
     initialState,
     reducers: {
         getRequesting: (state) => {
             state.readyStatus = "request"
         },
-        getSuccess: (state, { payload }: PayloadAction<User[]>) => {
+        getSuccess: (state, { payload }: PayloadAction<Membre[]>) => {
             state.readyStatus = "success"
-            userAdapter.setAll(state, payload)
+            membreAdapter.setAll(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"
@@ -31,13 +29,13 @@ const userList = createSlice({
     },
 })
 
-export default userList.reducer
-export const { getRequesting, getSuccess, getFailure } = userList.actions
+export default membreList.reducer
+export const { getRequesting, getSuccess, getFailure } = membreList.actions
 
-export const fetchUserList = (): AppThunk => async (dispatch) => {
+export const fetchMembreList = (): AppThunk => async (dispatch) => {
     dispatch(getRequesting())
 
-    const { error, data } = await getUserList()
+    const { error, data } = await getMembreList()
 
     if (error) {
         dispatch(getFailure(error.message))
@@ -51,14 +49,14 @@ export const fetchUserList = (): AppThunk => async (dispatch) => {
             progress: undefined,
         })
     } else {
-        dispatch(getSuccess(data as User[]))
+        dispatch(getSuccess(data as Membre[]))
     }
 }
 
-const shouldFetchUserList = (state: AppState) => state.userList.readyStatus !== "success"
+const shouldFetchMembreList = (state: AppState) => state.membreList.readyStatus !== "success"
 
-export const fetchUserListIfNeed = (): AppThunk => (dispatch, getState) => {
-    if (shouldFetchUserList(getState())) return dispatch(fetchUserList())
+export const fetchMembreListIfNeed = (): AppThunk => (dispatch, getState) => {
+    if (shouldFetchMembreList(getState())) return dispatch(fetchMembreList())
 
     return null
 }

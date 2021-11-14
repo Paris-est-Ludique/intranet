@@ -23,7 +23,7 @@ export const addEnvie = async (
     _next: NextFunction
 ): Promise<void> => {
     try {
-        const envie = await add<EnvieWithoutId, Envie>("Envies d'aider", "envieId", request.body)
+        const envie = await add<EnvieWithoutId, Envie>("Envies d'aider", "id", request.body)
         if (envie) {
             response.status(200).json(envie)
         }

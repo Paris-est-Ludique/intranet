@@ -4,33 +4,49 @@
 import { render } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 
+import { fetchMembreDataIfNeed } from "../../../store/membre"
 import mockStore from "../../../utils/mockStore"
-import UserInfo from "../UserInfo"
+import MembrePage from "../MembrePage"
 
-describe("<UserInfo />", () => {
+describe("<MembrePage />", () => {
     const mockData = {
-        memberId: 1,
-        name: "PeL",
-        phone: "+886 0970...",
-        email: "forceoranj@gmail.com",
-        website: "https://www.parisestludique.fr",
+        id: 1,
+        nom: "Aupeix",
+        prenom: "Amélie",
+        mail: "pakouille.lakouille@yahoo.fr",
+        telephone: "0675650392",
+        photo: "images/membres/$taille/amélie_aupeix.jpg",
+        alimentation: "Végétarien",
+        majeur: 1,
+        privilege: 0,
+        actif: 0,
+        commentaire: "",
+        horodatage: "0000-00-00",
+        passe: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
     }
-    const { memberId } = mockData
+    const { id } = mockData
 
     const renderHelper = (reducer = {}) => {
-        const { dispatch, ProviderWithStore } = mockStore({ userData: reducer })
+        const { dispatch, ProviderWithStore } = mockStore({ membre: reducer })
         const { container } = render(
             <ProviderWithStore>
                 <MemoryRouter>
                     {/*
             @ts-expect-error */}
-                    <UserInfo match={{ params: { memberId } }} />
+                    <MembrePage match={{ params: { id } }} />
                 </MemoryRouter>
             </ProviderWithStore>
         )
 
         return { dispatch, firstChild: container.firstChild }
     }
+
+    it("should fetch data when page loaded", () => {
+        const { dispatch } = renderHelper()
+
+        expect(dispatch).toHaveBeenCalledTimes(1)
+        expect(dispatch.mock.calls[0][0].toString()).toBe(fetchMembreDataIfNeed(id).toString())
+    })
 
     it("renders the loading status if data invalid", () => {
         expect(renderHelper().firstChild).toMatchSnapshot()

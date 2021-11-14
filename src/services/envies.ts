@@ -3,7 +3,7 @@ import axios from "axios"
 import config from "../config"
 
 export class Envie {
-    envieId = 0
+    id = 0
 
     domaine = ""
 
@@ -15,7 +15,7 @@ export class Envie {
 
     dateAjout = ""
 }
-export type EnvieWithoutId = Omit<Envie, "envieId">
+export type EnvieWithoutId = Omit<Envie, "id">
 
 export interface GetEnvieListResponse {
     data?: Envie[]

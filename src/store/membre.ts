@@ -2,23 +2,23 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 
 import { StateRequest } from "./utils"
-import { User, getUserData } from "../services/jsonPlaceholder"
+import { Membre, getMembre } from "../services/membres"
 import { AppThunk, AppState } from "."
 
-type StateUser = { entity?: User } & StateRequest
+type StateMembre = { entity?: Membre } & StateRequest
 
-export const initialState: StateUser = {
+export const initialState: StateMembre = {
     readyStatus: "idle",
 }
 
-const userData = createSlice({
-    name: "userData",
+const membre = createSlice({
+    name: "membre",
     initialState,
     reducers: {
         getRequesting: (_) => ({
             readyStatus: "request",
         }),
-        getSuccess: (_, { payload }: PayloadAction<User>) => ({
+        getSuccess: (_, { payload }: PayloadAction<Membre>) => ({
             readyStatus: "success",
             entity: payload,
         }),
@@ -29,19 +29,19 @@ const userData = createSlice({
     },
 })
 
-export default userData.reducer
-export const { getRequesting, getSuccess, getFailure } = userData.actions
+export default membre.reducer
+export const { getRequesting, getSuccess, getFailure } = membre.actions
 
-export const fetchUserData =
+export const fetchMembreData =
     (id: number): AppThunk =>
     async (dispatch) => {
         dispatch(getRequesting())
 
-        const { error, data } = await getUserData(id)
+        const { error, data } = await getMembre(id)
 
         if (error) {
             dispatch(getFailure(error.message))
-            toast.error(`Erreur lors du chargement de l'utilisateur ${id}: ${error.message}`, {
+            toast.error(`Erreur lors du chargement du membre ${id}: ${error.message}`, {
                 position: "top-center",
                 autoClose: 6000,
                 hideProgressBar: true,
@@ -51,18 +51,17 @@ export const fetchUserData =
                 progress: undefined,
             })
         } else {
-            dispatch(getSuccess(data as User))
+            dispatch(getSuccess(data as Membre))
         }
     }
 
-const shouldFetchUserData = (state: AppState, id: number) =>
-    state.userData.readyStatus !== "success" ||
-    (state.userData.entity && state.userData.entity.membreId !== id)
+const shouldFetchMembreData = (state: AppState, id: number) =>
+    state.membre.readyStatus !== "success" || (state.membre.entity && state.membre.entity.id !== id)
 
-export const fetchUserDataIfNeed =
+export const fetchMembreDataIfNeed =
     (id: number): AppThunk =>
     (dispatch, getState) => {
-        if (shouldFetchUserData(getState(), id)) return dispatch(fetchUserData(id))
+        if (shouldFetchMembreData(getState(), id)) return dispatch(fetchMembreData(id))
 
         return null
     }

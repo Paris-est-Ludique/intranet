@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MembreList /> renders 1`] = `
+<div
+  class="MembreList"
+>
+  <h4>
+    Membre List
+  </h4>
+  <ul>
+    <li>
+      <a
+        href="/Membre/1"
+      >
+        <b>
+          Amélie
+        </b>
+         
+        Aupeix
+      </a>
+    </li>
+  </ul>
+</div>
+`;

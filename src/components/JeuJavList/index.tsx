@@ -10,7 +10,7 @@ interface Props {
     ids: EntityId[]
 }
 
-const List = ({ ids }: Props) => {
+const JeuJavList = ({ ids }: Props) => {
     const { entities: jeuxJav } = useSelector((state: AppState) => state.jeuJavList, shallowEqual)
     return (
         <div className={styles.JeuJavList}>
@@ -33,4 +33,4 @@ const List = ({ ids }: Props) => {
     )
 }
 
-export default memo(List)
+export default memo(JeuJavList)

@@ -6,7 +6,7 @@ import { Envie, EnvieWithoutId, addEnvie } from "../services/envies"
 import { AppThunk } from "."
 
 const envieAdapter = createEntityAdapter<Envie>({
-    selectId: (envie) => envie.envieId,
+    selectId: (envie) => envie.id,
 })
 
 const envieAdd = createSlice({

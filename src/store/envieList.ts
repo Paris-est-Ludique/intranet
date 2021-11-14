@@ -6,7 +6,7 @@ import { Envie, getEnvieList } from "../services/envies"
 import { AppThunk, AppState } from "."
 
 const envieAdapter = createEntityAdapter<Envie>({
-    selectId: (envie) => envie.envieId,
+    selectId: (envie) => envie.id,
 })
 
 const envieList = createSlice({
