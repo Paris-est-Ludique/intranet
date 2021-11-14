@@ -10,9 +10,9 @@ import chalk from "chalk"
 import devServer from "./devServer"
 import ssr from "./ssr"
 
-import { getJeuJavList } from "../gsheets/jeuJav"
-import { getEnvieList, addEnvie } from "../gsheets/envies"
-import { getMembre } from "../gsheets/membres"
+import { jeuJavListGet } from "../gsheets/jeuJav"
+import { envieListGet, envieAdd } from "../gsheets/envies"
+import { membreGet, membreSet } from "../gsheets/membres"
 import config from "../config"
 
 const app = express()
@@ -34,10 +34,11 @@ if (__DEV__) devServer(app)
 
 // Google Sheets requests
 app.use(express.json())
-app.get("/JeuJavList", getJeuJavList)
-app.get("/GetEnvieList", getEnvieList)
-app.get("/GetMembre", getMembre)
-app.post("/AddEnvie", addEnvie)
+app.get("/JeuJavListGet", jeuJavListGet)
+app.get("/EnvieListGet", envieListGet)
+app.get("/MembreGet", membreGet)
+app.post("/MembreSet", membreSet)
+app.post("/EnvieAdd", envieAdd)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)

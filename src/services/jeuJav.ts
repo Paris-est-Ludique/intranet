@@ -34,28 +34,26 @@ export class JeuJav {
     bggPhoto = ""
 }
 
-export interface JeuJavList {
+export interface JeuJavListResponse {
     data?: JeuJav[]
     error?: Error
 }
-
-export interface JeuJavData {
-    data?: JeuJav
-    error?: Error
-}
-
-export const getJeuJavList = async (): Promise<JeuJavList> => {
+export const getJeuJavList = async (): Promise<JeuJavListResponse> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/JeuJavList`)
+        const { data } = await axios.get(`${config.API_URL}/JeuJavListGet`)
         return { data }
     } catch (error) {
         return { error: error as Error }
     }
 }
 
-export const getJeuJavData = async (id: string): Promise<JeuJavData> => {
+export interface JeuJavResponse {
+    data?: JeuJav
+    error?: Error
+}
+export const getJeuJavData = async (id: string): Promise<JeuJavResponse> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/JeuJav`, { params: { id } })
+        const { data } = await axios.get(`${config.API_URL}/JeuJavGet`, { params: { id } })
         return { data }
     } catch (error) {
         return { error: error as Error }

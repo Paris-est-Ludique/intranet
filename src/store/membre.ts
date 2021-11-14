@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 
 import { StateRequest } from "./utils"
-import { Membre, getMembre } from "../services/membres"
+import { Membre, membreGet } from "../services/membres"
 import { AppThunk, AppState } from "."
 
 type StateMembre = { entity?: Membre } & StateRequest
@@ -37,7 +37,7 @@ export const fetchMembreData =
     async (dispatch) => {
         dispatch(getRequesting())
 
-        const { error, data } = await getMembre(id)
+        const { error, data } = await membreGet(id)
 
         if (error) {
             dispatch(getFailure(error.message))

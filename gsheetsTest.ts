@@ -330,20 +330,6 @@ class Test {
     tictactoe: boolean[] = []
 }
 
-// class Membre {
-//     membreId = 0
-
-//     nom = ""
-
-//     prenom = ""
-
-//     mail = ""
-
-//     telephone = ""
-
-//     photo = ""
-// }
-
 // Can't run it on every test, it requires private access to a google sheet
 async function testGSheetAPi(): Promise<void> {
     const dataset: Test[] = [

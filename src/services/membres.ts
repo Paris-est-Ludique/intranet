@@ -29,41 +29,54 @@ export class Membre {
 
     passe = ""
 }
-export type MembreWithoutId = Omit<Membre, "membreId">
+export type MembreWithoutId = Omit<Membre, "id">
 
-export interface GetMembreListResponse {
+export interface MembreListGetResponse {
     data?: Membre[]
     error?: Error
 }
-export const getMembreList = async (): Promise<GetMembreListResponse> => {
+export const membreListGet = async (): Promise<MembreListGetResponse> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/GetMembreList`)
+        const { data } = await axios.get(`${config.API_URL}/MembreListGet`)
         return { data }
     } catch (error) {
         return { error: error as Error }
     }
 }
 
-export interface GetMembreResponse {
+export interface MembreGetResponse {
     data?: Membre
     error?: Error
 }
-export const getMembre = async (id: number): Promise<GetMembreResponse> => {
+export const membreGet = async (id: number): Promise<MembreGetResponse> => {
     try {
-        const { data } = await axios.get(`${config.API_URL}/GetMembre`, { params: { id } })
+        const { data } = await axios.get(`${config.API_URL}/MembreGet`, { params: { id } })
         return { data }
     } catch (error) {
         return { error: error as Error }
     }
 }
 
-export interface AddMembreResponse {
+export interface MembreSetResponse {
     data?: Membre
     error?: Error
 }
-export const addMembre = async (membreWithoutId: MembreWithoutId): Promise<AddMembreResponse> => {
+export const membreSet = async (membre: Membre): Promise<MembreSetResponse> => {
     try {
-        const { data } = await axios.post(`${config.API_URL}/AddMembre`, membreWithoutId)
+        const { data } = await axios.post(`${config.API_URL}/MembreSet`, membre)
+        return { data }
+    } catch (error) {
+        return { error: error as Error }
+    }
+}
+
+export interface MembreAddResponse {
+    data?: Membre
+    error?: Error
+}
+export const membreAdd = async (membreWithoutId: MembreWithoutId): Promise<MembreAddResponse> => {
+    try {
+        const { data } = await axios.post(`${config.API_URL}/MembreAdd`, membreWithoutId)
         return { data }
     } catch (error) {
         return { error: error as Error }

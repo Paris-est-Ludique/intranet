@@ -14,22 +14,71 @@ exports[`<MembrePage /> renders the <Info /> if loading was successful 1`] = `
 <div
   class="Membre"
 >
-  <div
-    class="MembreCard"
-  >
-    <h4>
-      Membre Info
-    </h4>
-    <ul>
-      <li>
-        Prénom: 
-        Amélie
-      </li>
-      <li>
-        Nom: 
-        Aupeix
-      </li>
-    </ul>
+  <div>
+    <div
+      class="MembreCard"
+    >
+      <h4>
+        Membre Info
+      </h4>
+      <ul>
+        <li>
+          Prénom: 
+          Amélie
+        </li>
+        <li>
+          Nom: 
+          Aupeix
+        </li>
+      </ul>
+    </div>
+    <section
+      class="MembreList"
+    >
+      <h2>
+        Modifier un membre
+      </h2>
+      <form>
+        <label
+          for="postPrenom"
+        >
+          Prenom:
+          <input
+            id="postPrenom"
+            name="postPrenom"
+            type="text"
+            value="Amélie"
+          />
+        </label>
+        <label
+          for="postNom"
+        >
+          Nom:
+          <input
+            id="postNom"
+            name="postNom"
+            type="text"
+            value="Aupeix"
+          />
+        </label>
+        <label
+          for="postMajeur"
+        >
+          Majeur:
+          <input
+            id="postMajeur"
+            name="postMajeur"
+            type="text"
+            value="1"
+          />
+        </label>
+        <button
+          type="button"
+        >
+          Save changes
+        </button>
+      </form>
+    </section>
   </div>
 </div>
 `;

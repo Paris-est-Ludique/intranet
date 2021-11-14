@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SetMembre /> renders 1`] = `
+<section
+  class="MembreList"
+>
+  <h2>
+    Modifier un membre
+  </h2>
+  <form>
+    <label
+      for="postPrenom"
+    >
+      Prenom:
+      <input
+        id="postPrenom"
+        name="postPrenom"
+        type="text"
+        value="Amélie"
+      />
+    </label>
+    <label
+      for="postNom"
+    >
+      Nom:
+      <input
+        id="postNom"
+        name="postNom"
+        type="text"
+        value="Aupeix"
+      />
+    </label>
+    <label
+      for="postMajeur"
+    >
+      Majeur:
+      <input
+        id="postMajeur"
+        name="postMajeur"
+        type="text"
+        value="1"
+      />
+    </label>
+    <button
+      type="button"
+    >
+      Save changes
+    </button>
+  </form>
+</section>
+`;

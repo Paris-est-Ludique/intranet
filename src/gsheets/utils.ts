@@ -102,9 +102,37 @@ export async function setList<Element extends ElementWithId>(
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
+export async function set<Element extends ElementWithId>(
+    sheetName: string,
+    element: Element
+): Promise<Element | undefined> {
+    if (!element) {
+        return undefined
+    }
+    const sheet = await getGSheet(sheetName)
+
+    // Load sheet into an array of objects
+    const rows = await sheet.getRows()
+    if (!rows[0]) {
+        throw new Error(`No column types defined in sheet ${sheetName}`)
+    }
+    const types = _.pick(rows[0], Object.keys(element || {})) as Record<keyof Element, string>
+    rows.shift()
+
+    // Replace previous row
+    const stringifiedRow = stringifyElement(element, types)
+    const row = rows.find((rowItem) => +rowItem.id === element.id)
+    if (!row) {
+        return undefined
+    }
+    Object.assign(row, stringifiedRow)
+    await row.save()
+    return element
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
 export async function add<ElementNoId extends object, Element extends ElementNoId & ElementWithId>(
     sheetName: string,
-    idFieldName: string,
     partialElement: Partial<ElementNoId>
 ): Promise<Element | undefined> {
     if (!partialElement) {
@@ -118,14 +146,17 @@ export async function add<ElementNoId extends object, Element extends ElementNoI
         throw new Error(`No column types defined in sheet ${sheetName}`)
     }
     const types = {
-        [idFieldName]: "number",
-        ...(_.pick(rows[0], Object.keys(partialElement || {})) as Record<keyof Element, string>),
+        id: "number",
+        ...(_.pick(rows[0], Object.keys(partialElement || {})) as Record<
+            keyof ElementNoId,
+            string
+        >),
     }
 
     // Create full element
     rows.shift()
-    const highestId = rows.reduce((id: number, row) => Math.max(id, +row[idFieldName] || 0), 0)
-    const element = { [idFieldName]: highestId + 1, ...partialElement } as Element
+    const highestId = rows.reduce((id: number, row) => Math.max(id, +row.id || 0), 0)
+    const element = { id: highestId + 1, ...partialElement } as Element
 
     // Add element
     const stringifiedRow = stringifyElement(element, types)
@@ -241,9 +272,9 @@ function parseElement<Element extends object>(
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-function stringifyElement<Element extends object>(
+function stringifyElement<ElementNoId extends object, Element extends ElementNoId & ElementWithId>(
     element: Element,
-    types: Record<keyof Element, string>
+    types: { id: string } & Record<keyof ElementNoId, string>
 ): Record<keyof Element, string> {
     const rawElement: Record<keyof Element, string> = _.reduce(
         types,

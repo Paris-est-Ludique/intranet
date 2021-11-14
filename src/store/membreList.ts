@@ -2,7 +2,7 @@ import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolki
 import { toast } from "react-toastify"
 
 import { StateRequest } from "./utils"
-import { Membre, getMembreList } from "../services/membres"
+import { Membre, membreListGet } from "../services/membres"
 import { AppThunk, AppState } from "."
 
 const membreAdapter = createEntityAdapter<Membre>()
@@ -35,7 +35,7 @@ export const { getRequesting, getSuccess, getFailure } = membreList.actions
 export const fetchMembreList = (): AppThunk => async (dispatch) => {
     dispatch(getRequesting())
 
-    const { error, data } = await getMembreList()
+    const { error, data } = await membreListGet()
 
     if (error) {
         dispatch(getFailure(error.message))

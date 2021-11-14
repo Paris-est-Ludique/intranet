@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express"
-import { getList, get, add } from "./utils"
+import { getList, get, set, add } from "./utils"
 import { Membre, MembreWithoutId } from "../services/membres"
 
-export const getMembreList = async (
+export const membreListGet = async (
     _request: Request,
     response: Response,
     _next: NextFunction
@@ -17,7 +17,7 @@ export const getMembreList = async (
     }
 }
 
-export const getMembre = async (
+export const membreGet = async (
     request: Request,
     response: Response,
     _next: NextFunction
@@ -31,13 +31,28 @@ export const getMembre = async (
     }
 }
 
-export const addMembre = async (
+export const membreSet = async (
     request: Request,
     response: Response,
     _next: NextFunction
 ): Promise<void> => {
     try {
-        const membre = await add<MembreWithoutId, Membre>("Membres", "membreId", request.body)
+        const envie = await set<Membre>("Membres", request.body)
+        if (envie) {
+            response.status(200).json(envie)
+        }
+    } catch (e: unknown) {
+        response.status(400).json(e)
+    }
+}
+
+export const membreAdd = async (
+    request: Request,
+    response: Response,
+    _next: NextFunction
+): Promise<void> => {
+    try {
+        const membre = await add<MembreWithoutId, Membre>("Membres", request.body)
         if (membre) {
             response.status(200).json(membre)
         }

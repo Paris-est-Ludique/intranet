@@ -2,7 +2,7 @@ import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolki
 import { toast } from "react-toastify"
 
 import { StateRequest } from "./utils"
-import { Envie, getEnvieList } from "../services/envies"
+import { Envie, envieListGet } from "../services/envies"
 import { AppThunk, AppState } from "."
 
 const envieAdapter = createEntityAdapter<Envie>({
@@ -35,7 +35,7 @@ export const { getRequesting, getSuccess, getFailure } = envieList.actions
 export const fetchEnvieList = (): AppThunk => async (dispatch) => {
     dispatch(getRequesting())
 
-    const { error, data } = await getEnvieList()
+    const { error, data } = await envieListGet()
 
     if (error) {
         dispatch(getFailure(error.message))

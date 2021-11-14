@@ -3,7 +3,7 @@ import { toast } from "react-toastify"
 
 import { AppDispatch } from "../../store"
 
-import { postEnvie } from "../../store/envieAdd"
+import { sendAddEnvie } from "../../store/envieAdd"
 import styles from "./styles.module.scss"
 
 interface Props {
@@ -29,7 +29,7 @@ const AddEnvie = ({ dispatch }: Props) => {
     const onSavePostClicked = () => {
         if (domaine && envies) {
             dispatch(
-                postEnvie({
+                sendAddEnvie({
                     domaine,
                     envies,
                     precisions,

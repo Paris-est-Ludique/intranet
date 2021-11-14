@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk } from "../../store"
 import { fetchMembreDataIfNeed } from "../../store/membre"
-import { MembreInfo } from "../../components"
+import { MembreInfo, MembreSet } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps<{ id: string }>
@@ -28,7 +28,12 @@ const MembrePage = ({ match }: Props): JSX.Element => {
         if (membreInfo.readyStatus === "failure" || !membreInfo.entity)
             return <p>Oops! Failed to load data.</p>
 
-        return <MembreInfo item={membreInfo.entity} />
+        return (
+            <div>
+                <MembreInfo item={membreInfo.entity} />
+                <MembreSet dispatch={dispatch} membre={membreInfo.entity} />
+            </div>
+        )
     }
 
     return (

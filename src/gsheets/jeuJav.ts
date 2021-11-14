@@ -3,7 +3,7 @@ import _ from "lodash"
 import { getList } from "./utils"
 import { JeuJav } from "../services/jeuJav"
 
-export const getJeuJavList = async (
+export const jeuJavListGet = async (
     _request: Request,
     response: Response,
     _next: NextFunction
@@ -18,7 +18,7 @@ export const getJeuJavList = async (
     }
 }
 
-export const getJeuJavData = async (
+export const jeuJavGet = async (
     _request: Request,
     response: Response,
     _next: NextFunction

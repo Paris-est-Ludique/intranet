@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import { getList, add } from "./utils"
 import { Envie, EnvieWithoutId } from "../services/envies"
 
-export const getEnvieList = async (
+export const envieListGet = async (
     _request: Request,
     response: Response,
     _next: NextFunction
@@ -17,13 +17,13 @@ export const getEnvieList = async (
     }
 }
 
-export const addEnvie = async (
+export const envieAdd = async (
     request: Request,
     response: Response,
     _next: NextFunction
 ): Promise<void> => {
     try {
-        const envie = await add<EnvieWithoutId, Envie>("Envies d'aider", "id", request.body)
+        const envie = await add<EnvieWithoutId, Envie>("Envies d'aider", request.body)
         if (envie) {
             response.status(200).json(envie)
         }
