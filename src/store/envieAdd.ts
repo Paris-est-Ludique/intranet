@@ -1,13 +1,9 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
-import { toast } from "react-toastify"
 
-import { StateRequest } from "./utils"
-import { Envie, EnvieWithoutId, envieAdd } from "../services/envies"
-import { AppThunk } from "."
+import { StateRequest, toastError, toastSuccess, elementAddFetch } from "./utils"
+import { Envie, envieAdd } from "../services/envies"
 
-const envieAdapter = createEntityAdapter<Envie>({
-    selectId: (envie) => envie.id,
-})
+const envieAdapter = createEntityAdapter<Envie>()
 
 const envieAddSlice = createSlice({
     name: "addEnvie",
@@ -32,34 +28,11 @@ const envieAddSlice = createSlice({
 export default envieAddSlice.reducer
 export const { getRequesting, getSuccess, getFailure } = envieAddSlice.actions
 
-export const sendAddEnvie =
-    (envieWithoutId: EnvieWithoutId): AppThunk =>
-    async (dispatch) => {
-        dispatch(getRequesting())
-
-        const { error, data } = await envieAdd(envieWithoutId)
-
-        if (error) {
-            dispatch(getFailure(error.message))
-            toast.error(`Erreur lors de l'ajout d'une envie: ${error.message}`, {
-                position: "top-center",
-                autoClose: 6000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
-        } else {
-            dispatch(getSuccess(data as Envie))
-            toast.success("Envie ajoutée !", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
-        }
-    }
+export const fetchEnvieAdd = elementAddFetch(
+    envieAdd,
+    getRequesting,
+    getSuccess,
+    getFailure,
+    (error: Error) => toastError(`Erreur lors de l'ajout d'une envie: ${error.message}`),
+    () => toastSuccess("Envie ajoutée !")
+)

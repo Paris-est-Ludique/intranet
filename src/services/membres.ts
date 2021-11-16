@@ -1,6 +1,4 @@
-import axios from "axios"
-
-import config from "../config"
+import { get, listGet, add, set } from "./accessors"
 
 export class Membre {
     id = 0
@@ -29,56 +27,13 @@ export class Membre {
 
     passe = ""
 }
+
 export type MembreWithoutId = Omit<Membre, "id">
 
-export interface MembreListGetResponse {
-    data?: Membre[]
-    error?: Error
-}
-export const membreListGet = async (): Promise<MembreListGetResponse> => {
-    try {
-        const { data } = await axios.get(`${config.API_URL}/MembreListGet`)
-        return { data }
-    } catch (error) {
-        return { error: error as Error }
-    }
-}
+export const membreGet = get<Membre>("Membre")
 
-export interface MembreGetResponse {
-    data?: Membre
-    error?: Error
-}
-export const membreGet = async (id: number): Promise<MembreGetResponse> => {
-    try {
-        const { data } = await axios.get(`${config.API_URL}/MembreGet`, { params: { id } })
-        return { data }
-    } catch (error) {
-        return { error: error as Error }
-    }
-}
+export const membreListGet = listGet<Membre>("Membre")
 
-export interface MembreSetResponse {
-    data?: Membre
-    error?: Error
-}
-export const membreSet = async (membre: Membre): Promise<MembreSetResponse> => {
-    try {
-        const { data } = await axios.post(`${config.API_URL}/MembreSet`, membre)
-        return { data }
-    } catch (error) {
-        return { error: error as Error }
-    }
-}
+export const membreAdd = add<MembreWithoutId, Membre>("Membre")
 
-export interface MembreAddResponse {
-    data?: Membre
-    error?: Error
-}
-export const membreAdd = async (membreWithoutId: MembreWithoutId): Promise<MembreAddResponse> => {
-    try {
-        const { data } = await axios.post(`${config.API_URL}/MembreAdd`, membreWithoutId)
-        return { data }
-    } catch (error) {
-        return { error: error as Error }
-    }
-}
+export const membreSet = set<Membre>("Membre")

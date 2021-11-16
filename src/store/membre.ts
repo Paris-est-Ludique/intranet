@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { toast } from "react-toastify"
 
-import { StateRequest } from "./utils"
+import { StateRequest, toastError, elementFetch } from "./utils"
 import { Membre, membreGet } from "../services/membres"
 import { AppThunk, AppState } from "."
 
@@ -32,36 +31,21 @@ const membre = createSlice({
 export default membre.reducer
 export const { getRequesting, getSuccess, getFailure } = membre.actions
 
-export const fetchMembreData =
-    (id: number): AppThunk =>
-    async (dispatch) => {
-        dispatch(getRequesting())
+export const fetchMembre = elementFetch(
+    membreGet,
+    getRequesting,
+    getSuccess,
+    getFailure,
+    (error: Error) => toastError(`Erreur lors du chargement d'un membre: ${error.message}`)
+)
 
-        const { error, data } = await membreGet(id)
-
-        if (error) {
-            dispatch(getFailure(error.message))
-            toast.error(`Erreur lors du chargement du membre ${id}: ${error.message}`, {
-                position: "top-center",
-                autoClose: 6000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
-        } else {
-            dispatch(getSuccess(data as Membre))
-        }
-    }
-
-const shouldFetchMembreData = (state: AppState, id: number) =>
+const shouldFetchMembre = (state: AppState, id: number) =>
     state.membre.readyStatus !== "success" || (state.membre.entity && state.membre.entity.id !== id)
 
-export const fetchMembreDataIfNeed =
+export const fetchMembreIfNeed =
     (id: number): AppThunk =>
     (dispatch, getState) => {
-        if (shouldFetchMembreData(getState(), id)) return dispatch(fetchMembreData(id))
+        if (shouldFetchMembre(getState(), id)) return dispatch(fetchMembre(id))
 
         return null
     }

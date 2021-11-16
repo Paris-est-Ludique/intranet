@@ -1,6 +1,4 @@
-import axios from "axios"
-
-import config from "../config"
+import { get, listGet, add, set } from "./accessors"
 
 export class Envie {
     id = 0
@@ -15,30 +13,13 @@ export class Envie {
 
     dateAjout = ""
 }
+
 export type EnvieWithoutId = Omit<Envie, "id">
 
-export interface EnvieListGetResponse {
-    data?: Envie[]
-    error?: Error
-}
-export const envieListGet = async (): Promise<EnvieListGetResponse> => {
-    try {
-        const { data } = await axios.get(`${config.API_URL}/EnvieListGet`)
-        return { data }
-    } catch (error) {
-        return { error: error as Error }
-    }
-}
+export const envieGet = get<Envie>("Envie")
 
-export interface EnvieAddResponse {
-    data?: Envie
-    error?: Error
-}
-export const envieAdd = async (envieWithoutId: EnvieWithoutId): Promise<EnvieAddResponse> => {
-    try {
-        const { data } = await axios.post(`${config.API_URL}/EnvieAdd`, envieWithoutId)
-        return { data }
-    } catch (error) {
-        return { error: error as Error }
-    }
-}
+export const envieListGet = listGet<Envie>("Envie")
+
+export const envieAdd = add<EnvieWithoutId, Envie>("Envie")
+
+export const envieSet = set<Envie>("Envie")

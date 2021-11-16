@@ -1,13 +1,10 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
-import { toast } from "react-toastify"
 
-import { StateRequest } from "./utils"
-import { JeuJav, getJeuJavList } from "../services/jeuJav"
+import { StateRequest, toastError, elementListFetch } from "./utils"
+import { JeuJav, jeuJavListGet } from "../services/jeuxJav"
 import { AppThunk, AppState } from "."
 
-const jeuJavAdapter = createEntityAdapter<JeuJav>({
-    selectId: (jeuJav) => jeuJav.id,
-})
+const jeuJavAdapter = createEntityAdapter<JeuJav>()
 
 export const initialState = jeuJavAdapter.getInitialState({
     readyStatus: "idle",
@@ -34,26 +31,13 @@ const jeuJavList = createSlice({
 export default jeuJavList.reducer
 export const { getRequesting, getSuccess, getFailure } = jeuJavList.actions
 
-export const fetchJeuJavList = (): AppThunk => async (dispatch) => {
-    dispatch(getRequesting())
-
-    const { error, data } = await getJeuJavList()
-
-    if (error) {
-        dispatch(getFailure(error.message))
-        toast.error(`Erreur lors du chargement des jeux JAV: ${error.message}`, {
-            position: "top-center",
-            autoClose: 6000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
-    } else {
-        dispatch(getSuccess(data as JeuJav[]))
-    }
-}
+export const fetchJeuJavList = elementListFetch(
+    jeuJavListGet,
+    getRequesting,
+    getSuccess,
+    getFailure,
+    (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`)
+)
 
 const shouldFetchJeuJavList = (state: AppState) => state.jeuJavList.readyStatus !== "success"
 

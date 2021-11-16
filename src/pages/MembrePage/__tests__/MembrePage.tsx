@@ -4,7 +4,7 @@
 import { render } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 
-import { fetchMembreDataIfNeed } from "../../../store/membre"
+import { fetchMembreIfNeed } from "../../../store/membre"
 import mockStore from "../../../utils/mockStore"
 import MembrePage from "../MembrePage"
 
@@ -45,7 +45,7 @@ describe("<MembrePage />", () => {
         const { dispatch } = renderHelper()
 
         expect(dispatch).toHaveBeenCalledTimes(1)
-        expect(dispatch.mock.calls[0][0].toString()).toBe(fetchMembreDataIfNeed(id).toString())
+        expect(dispatch.mock.calls[0][0].toString()).toBe(fetchMembreIfNeed(id).toString())
     })
 
     it("renders the loading status if data invalid", () => {

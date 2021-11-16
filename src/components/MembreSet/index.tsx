@@ -3,7 +3,7 @@ import { toast } from "react-toastify"
 
 import { AppDispatch } from "../../store"
 
-import { sendMembreSet } from "../../store/membreSet"
+import { fetchMembreSet } from "../../store/membreSet"
 import { Membre } from "../../services/membres"
 import styles from "./styles.module.scss"
 
@@ -24,7 +24,7 @@ const MembreSet = ({ dispatch, membre }: Props) => {
     const onSavePostClicked = () => {
         if (prenom && nom) {
             dispatch(
-                sendMembreSet({
+                fetchMembreSet({
                     ...membre,
                     prenom,
                     nom,

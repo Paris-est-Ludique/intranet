@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
-import { toast } from "react-toastify"
 
-import { StateRequest } from "./utils"
+import { StateRequest, toastError, elementListFetch } from "./utils"
 import { Membre, membreListGet } from "../services/membres"
 import { AppThunk, AppState } from "."
 
@@ -32,26 +31,13 @@ const membreList = createSlice({
 export default membreList.reducer
 export const { getRequesting, getSuccess, getFailure } = membreList.actions
 
-export const fetchMembreList = (): AppThunk => async (dispatch) => {
-    dispatch(getRequesting())
-
-    const { error, data } = await membreListGet()
-
-    if (error) {
-        dispatch(getFailure(error.message))
-        toast.error(`Erreur lors du chargement des utilisateurs: ${error.message}`, {
-            position: "top-center",
-            autoClose: 6000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
-    } else {
-        dispatch(getSuccess(data as Membre[]))
-    }
-}
+export const fetchMembreList = elementListFetch(
+    membreListGet,
+    getRequesting,
+    getSuccess,
+    getFailure,
+    (error: Error) => toastError(`Erreur lors du chargement des membres: ${error.message}`)
+)
 
 const shouldFetchMembreList = (state: AppState) => state.membreList.readyStatus !== "success"
 

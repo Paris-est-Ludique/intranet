@@ -1,13 +1,7 @@
 import axios from "axios"
 
 import mockStore from "../../utils/mockStore"
-import membre, {
-    getRequesting,
-    getSuccess,
-    getFailure,
-    fetchMembreData,
-    initialState,
-} from "../membre"
+import membre, { getRequesting, getSuccess, getFailure, fetchMembre, initialState } from "../membre"
 
 jest.mock("axios")
 
@@ -71,7 +65,7 @@ describe("membre action", () => {
         // @ts-expect-error
         axios.get.mockResolvedValue({ data: mockData })
 
-        await dispatch(fetchMembreData(id))
+        await dispatch(fetchMembre(id))
         expect(getActions()).toEqual(expectedActions)
     })
 
@@ -85,7 +79,7 @@ describe("membre action", () => {
         // @ts-expect-error
         axios.get.mockRejectedValue({ message: mockError })
 
-        await dispatch(fetchMembreData(id))
+        await dispatch(fetchMembre(id))
         expect(getActions()).toEqual(expectedActions)
     })
 })

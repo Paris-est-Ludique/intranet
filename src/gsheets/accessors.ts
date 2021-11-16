@@ -6,10 +6,9 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-type ElementWithId = unknown & { id: number }
+export type ElementWithId = unknown & { id: number }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export async function getList<Element extends ElementWithId>(
+export async function listGet<Element extends ElementWithId>(
     sheetName: string,
     specimen: Element
 ): Promise<Element[]> {
@@ -38,17 +37,15 @@ export async function getList<Element extends ElementWithId>(
     return elements
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export async function get<Element extends ElementWithId>(
     sheetName: string,
     membreId: number,
     specimen: Element
 ): Promise<Element | undefined> {
-    const list = await getList<Element>(sheetName, specimen)
+    const list = await listGet<Element>(sheetName, specimen)
     return list.find((element) => element.id === membreId)
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export async function setList<Element extends ElementWithId>(
     sheetName: string,
     elements: Element[]
@@ -101,7 +98,6 @@ export async function setList<Element extends ElementWithId>(
     return true
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export async function set<Element extends ElementWithId>(
     sheetName: string,
     element: Element

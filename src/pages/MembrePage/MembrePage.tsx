@@ -4,7 +4,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk } from "../../store"
-import { fetchMembreDataIfNeed } from "../../store/membre"
+import { fetchMembreIfNeed } from "../../store/membre"
 import { MembreInfo, MembreSet } from "../../components"
 import styles from "./styles.module.scss"
 
@@ -17,7 +17,7 @@ const MembrePage = ({ match }: Props): JSX.Element => {
     const membre = useSelector((state: AppState) => state.membre, shallowEqual)
 
     useEffect(() => {
-        dispatch(fetchMembreDataIfNeed(id))
+        dispatch(fetchMembreIfNeed(id))
     }, [dispatch, id])
 
     const renderInfo = () => {
@@ -48,6 +48,6 @@ interface LoadDataArgs {
     params: { id: number }
 }
 
-export const loadData = ({ params }: LoadDataArgs): AppThunk[] => [fetchMembreDataIfNeed(params.id)]
+export const loadData = ({ params }: LoadDataArgs): AppThunk[] => [fetchMembreIfNeed(params.id)]
 
 export default memo(MembrePage)
