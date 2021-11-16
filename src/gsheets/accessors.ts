@@ -3,6 +3,10 @@ import _ from "lodash"
 import { promises as fs } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 
+import sequentialDBOperations from "./sequentialDBOperations"
+
+const addDBOperation = sequentialDBOperations()
+
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
@@ -13,28 +17,30 @@ export async function listGet<Element extends ElementWithId>(
     specimen: Element
 ): Promise<Element[]> {
     type StringifiedElement = Record<keyof Element, string>
-    const sheet = await getGSheet(sheetName)
+    return addDBOperation(async () => {
+        const sheet = await getGSheet(sheetName)
 
-    // Load sheet into an array of objects
-    const rows = (await sheet.getRows()) as StringifiedElement[]
-    const elements: Element[] = []
-    if (!rows[0]) {
-        throw new Error(`No column types defined in sheet ${sheetName}`)
-    }
-    const types = _.pick(rows[0], Object.keys(specimen)) as Record<keyof Element, string>
-    rows.shift()
-    rows.forEach((row) => {
-        const stringifiedElement = _.pick(row, Object.keys(specimen)) as Record<
-            keyof Element,
-            string
-        >
-        const element = parseElement<Element>(stringifiedElement, types, specimen)
-        if (element !== undefined) {
-            elements.push(element)
+        // Load sheet into an array of objects
+        const rows = (await sheet.getRows()) as StringifiedElement[]
+        const elements: Element[] = []
+        if (!rows[0]) {
+            throw new Error(`No column types defined in sheet ${sheetName}`)
         }
-    })
+        const types = _.pick(rows[0], Object.keys(specimen)) as Record<keyof Element, string>
+        rows.shift()
+        rows.forEach((row) => {
+            const stringifiedElement = _.pick(row, Object.keys(specimen)) as Record<
+                keyof Element,
+                string
+            >
+            const element = parseElement<Element>(stringifiedElement, types, specimen)
+            if (element !== undefined) {
+                elements.push(element)
+            }
+        })
 
-    return elements
+        return elements
+    })
 }
 
 export async function get<Element extends ElementWithId>(
@@ -42,6 +48,7 @@ export async function get<Element extends ElementWithId>(
     membreId: number,
     specimen: Element
 ): Promise<Element | undefined> {
+    // No need to addDBOperation here, since listGet does it already
     const list = await listGet<Element>(sheetName, specimen)
     return list.find((element) => element.id === membreId)
 }
@@ -50,52 +57,57 @@ export async function setList<Element extends ElementWithId>(
     sheetName: string,
     elements: Element[]
 ): Promise<true | undefined> {
-    const sheet = await getGSheet(sheetName)
+    return addDBOperation(async () => {
+        const sheet = await getGSheet(sheetName)
 
-    // Load sheet into an array of objects
-    const rows = await sheet.getRows()
-    if (!rows[0]) {
-        throw new Error(`No column types defined in sheet ${sheetName}`)
-    }
-    const types = _.pick(rows[0], Object.keys(elements[0] || {})) as Record<keyof Element, string>
+        // Load sheet into an array of objects
+        const rows = await sheet.getRows()
+        if (!rows[0]) {
+            throw new Error(`No column types defined in sheet ${sheetName}`)
+        }
+        const types = _.pick(rows[0], Object.keys(elements[0] || {})) as Record<
+            keyof Element,
+            string
+        >
 
-    // Update received rows
-    let rowid = 1
-    // eslint-disable-next-line no-restricted-syntax
-    for (const element of elements) {
-        const row = rows[rowid]
-        const stringifiedRow = stringifyElement(element, types)
+        // Update received rows
+        let rowid = 1
+        // eslint-disable-next-line no-restricted-syntax
+        for (const element of elements) {
+            const row = rows[rowid]
+            const stringifiedRow = stringifyElement(element, types)
 
-        if (!row) {
-            // eslint-disable-next-line no-await-in-loop
-            await sheet.addRow(stringifiedRow)
-        } else {
-            const keys = Object.keys(stringifiedRow)
-            const sameCells = _.every(
-                keys,
-                (key: keyof Element) => row[key as string] === stringifiedRow[key]
-            )
-            if (!sameCells) {
-                keys.forEach((key) => {
-                    row[key] = stringifiedRow[key as keyof Element]
-                })
+            if (!row) {
                 // eslint-disable-next-line no-await-in-loop
-                await row.save()
+                await sheet.addRow(stringifiedRow)
+            } else {
+                const keys = Object.keys(stringifiedRow)
+                const sameCells = _.every(
+                    keys,
+                    (key: keyof Element) => row[key as string] === stringifiedRow[key]
+                )
+                if (!sameCells) {
+                    keys.forEach((key) => {
+                        row[key] = stringifiedRow[key as keyof Element]
+                    })
+                    // eslint-disable-next-line no-await-in-loop
+                    await row.save()
+                }
+            }
+
+            rowid += 1
+        }
+
+        // Delete all following rows
+        for (let rowToDelete = sheet.rowCount - 1; rowToDelete >= rowid; rowToDelete -= 1) {
+            if (rows[rowToDelete]) {
+                // eslint-disable-next-line no-await-in-loop
+                await rows[rowToDelete].delete()
             }
         }
 
-        rowid += 1
-    }
-
-    // Delete all following rows
-    for (let rowToDelete = sheet.rowCount - 1; rowToDelete >= rowid; rowToDelete -= 1) {
-        if (rows[rowToDelete]) {
-            // eslint-disable-next-line no-await-in-loop
-            await rows[rowToDelete].delete()
-        }
-    }
-
-    return true
+        return true
+    })
 }
 
 export async function set<Element extends ElementWithId>(
@@ -105,25 +117,27 @@ export async function set<Element extends ElementWithId>(
     if (!element) {
         return undefined
     }
-    const sheet = await getGSheet(sheetName)
+    return addDBOperation(async () => {
+        const sheet = await getGSheet(sheetName)
 
-    // Load sheet into an array of objects
-    const rows = await sheet.getRows()
-    if (!rows[0]) {
-        throw new Error(`No column types defined in sheet ${sheetName}`)
-    }
-    const types = _.pick(rows[0], Object.keys(element || {})) as Record<keyof Element, string>
-    rows.shift()
+        // Load sheet into an array of objects
+        const rows = await sheet.getRows()
+        if (!rows[0]) {
+            throw new Error(`No column types defined in sheet ${sheetName}`)
+        }
+        const types = _.pick(rows[0], Object.keys(element || {})) as Record<keyof Element, string>
+        rows.shift()
 
-    // Replace previous row
-    const stringifiedRow = stringifyElement(element, types)
-    const row = rows.find((rowItem) => +rowItem.id === element.id)
-    if (!row) {
-        return undefined
-    }
-    Object.assign(row, stringifiedRow)
-    await row.save()
-    return element
+        // Replace previous row
+        const stringifiedRow = stringifyElement(element, types)
+        const row = rows.find((rowItem) => +rowItem.id === element.id)
+        if (!row) {
+            return undefined
+        }
+        Object.assign(row, stringifiedRow)
+        await row.save()
+        return element
+    })
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -134,31 +148,33 @@ export async function add<ElementNoId extends object, Element extends ElementNoI
     if (!partialElement) {
         return undefined
     }
-    const sheet = await getGSheet(sheetName)
+    return addDBOperation(async () => {
+        const sheet = await getGSheet(sheetName)
 
-    // Load sheet into an array of objects
-    const rows = await sheet.getRows()
-    if (!rows[0]) {
-        throw new Error(`No column types defined in sheet ${sheetName}`)
-    }
-    const types = {
-        id: "number",
-        ...(_.pick(rows[0], Object.keys(partialElement || {})) as Record<
-            keyof ElementNoId,
-            string
-        >),
-    }
+        // Load sheet into an array of objects
+        const rows = await sheet.getRows()
+        if (!rows[0]) {
+            throw new Error(`No column types defined in sheet ${sheetName}`)
+        }
+        const types = {
+            id: "number",
+            ...(_.pick(rows[0], Object.keys(partialElement || {})) as Record<
+                keyof ElementNoId,
+                string
+            >),
+        }
 
-    // Create full element
-    rows.shift()
-    const highestId = rows.reduce((id: number, row) => Math.max(id, +row.id || 0), 0)
-    const element = { id: highestId + 1, ...partialElement } as Element
+        // Create full element
+        rows.shift()
+        const highestId = rows.reduce((id: number, row) => Math.max(id, +row.id || 0), 0)
+        const element = { id: highestId + 1, ...partialElement } as Element
 
-    // Add element
-    const stringifiedRow = stringifyElement(element, types)
-    await sheet.addRow(stringifiedRow)
+        // Add element
+        const stringifiedRow = stringifyElement(element, types)
+        await sheet.addRow(stringifiedRow)
 
-    return element
+        return element
+    })
 }
 
 async function getGSheet(sheetName: string): Promise<GoogleSpreadsheetWorksheet> {
