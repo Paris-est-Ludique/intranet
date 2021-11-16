@@ -3,9 +3,9 @@ import _ from "lodash"
 import { promises as fs } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 
-import sequentialDBOperations from "./sequentialDBOperations"
+import DBManager from "./DBManager"
 
-const addDBOperation = sequentialDBOperations()
+const addDBOperation = DBManager()
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
@@ -17,7 +17,7 @@ export async function listGet<Element extends ElementWithId>(
     specimen: Element
 ): Promise<Element[]> {
     type StringifiedElement = Record<keyof Element, string>
-    return addDBOperation(async () => {
+    return addDBOperation("list", async () => {
         const sheet = await getGSheet(sheetName)
 
         // Load sheet into an array of objects
@@ -57,7 +57,7 @@ export async function setList<Element extends ElementWithId>(
     sheetName: string,
     elements: Element[]
 ): Promise<true | undefined> {
-    return addDBOperation(async () => {
+    return addDBOperation("listSet", async () => {
         const sheet = await getGSheet(sheetName)
 
         // Load sheet into an array of objects
@@ -117,7 +117,7 @@ export async function set<Element extends ElementWithId>(
     if (!element) {
         return undefined
     }
-    return addDBOperation(async () => {
+    return addDBOperation("set", async () => {
         const sheet = await getGSheet(sheetName)
 
         // Load sheet into an array of objects
@@ -148,7 +148,7 @@ export async function add<ElementNoId extends object, Element extends ElementNoI
     if (!partialElement) {
         return undefined
     }
-    return addDBOperation(async () => {
+    return addDBOperation("add", async () => {
         const sheet = await getGSheet(sheetName)
 
         // Load sheet into an array of objects
