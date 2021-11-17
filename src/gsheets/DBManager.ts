@@ -16,7 +16,6 @@ export default function DBManager<OperationReturn>(): any {
     const operations: Operation[] = []
 
     async function addDBOperation(type: OperationType, task: () => Promise<OperationReturn>) {
-        console.log(`New ${type} DB Operation in line.`)
         return new Promise(
             (resolve: (value: OperationReturn) => void, reject: (reason: unknown) => void) => {
                 operations.push({ task, type, resolve, reject })
@@ -29,7 +28,6 @@ export default function DBManager<OperationReturn>(): any {
 
     function runNextDBOperation(): void {
         operations.shift()
-        console.log("DB Operation completed.")
         if (operations[0]) {
             runOperation(operations[0])
         }
@@ -40,11 +38,9 @@ export default function DBManager<OperationReturn>(): any {
         if (type === "list") {
             const now = +new Date()
             if (now < cacheTime + CACHE_RENEW_DELAY) {
-                console.log("Using cache")
                 resolve(cache)
                 runNextDBOperation()
             } else {
-                console.log("Refreshing cache")
                 task()
                     .then((val: OperationReturn) => {
                         cache = val
