@@ -48,7 +48,7 @@ I use [cross-env](https://github.com/kentcdodds/cross-env) to set and use enviro
 | ---------------- | ---------------------------------------------------------------------------------- |
 | `dev`            | Runs your app on the development server at `localhost:3000`. HMR will be enabled.  |
 | `dev:build`      | Bundles server-side files in development mode and put it to the `./public/server`. |
-| `start`          | Runs your app on the production server only at `localhost:8080`.                   |
+| `start`          | Runs your app on the production server only at `localhost:8088`.                   |
 | `build`          | Bundles both server-side and client-side files.                                    |
 | `build:server`   | Bundles server-side files in production mode and put it to the `./public/server`.  |
 | `build:client`   | Bundles client-side files in production mode and put it to the `./public/assets`.  |
