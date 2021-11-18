@@ -1,12 +1,15 @@
-import { listGetRequest, getRequest, setRequest, addRequest } from "./expressAccessors"
+import getExpressAccessors from "./expressAccessors"
 import { Membre, MembreWithoutId } from "../services/membres"
 
-const sheetName = "Membres"
+const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
+    MembreWithoutId,
+    Membre
+>("Membres", new Membre())
 
-export const membreListGet = listGetRequest(sheetName, new Membre())
+export const membreListGet = listGetRequest()
 
-export const membreGet = getRequest(sheetName, new Membre())
+export const membreGet = getRequest()
 
-export const membreAdd = addRequest<MembreWithoutId, Membre>(sheetName)
+export const membreAdd = addRequest()
 
-export const membreSet = setRequest(sheetName)
+export const membreSet = setRequest()

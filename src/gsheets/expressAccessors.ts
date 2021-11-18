@@ -1,61 +1,69 @@
 import { Request, Response, NextFunction } from "express"
-import { ElementWithId, get, listGet, add, set } from "./accessors"
+import getAccessors, { ElementWithId } from "./accessors"
 
-export function getRequest<Element extends { id: number }>(sheetName: string, specimen: Element) {
-    return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
-        try {
-            const id = parseInt(request.query.id as string, 10) || -1
-            const elements = await get<Element>(sheetName, id, specimen)
-            if (elements) {
-                response.status(200).json(elements)
+export default function getExpressAccessors<
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    ElementNoId extends object,
+    Element extends ElementNoId & ElementWithId
+>(sheetName: string, specimen: Element): any {
+    const { get, listGet, add, set } = getAccessors(sheetName, specimen)
+
+    function listGetRequest() {
+        return async (
+            _request: Request,
+            response: Response,
+            _next: NextFunction
+        ): Promise<void> => {
+            try {
+                const elements = await listGet()
+                if (elements) {
+                    response.status(200).json(elements)
+                }
+            } catch (e: unknown) {
+                response.status(400).json(e)
             }
-        } catch (e: unknown) {
-            response.status(400).json(e)
         }
     }
-}
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function addRequest<ElementNoId extends object, Element extends ElementNoId & ElementWithId>(
-    sheetName: string
-) {
-    return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
-        try {
-            const element = await add<ElementNoId, Element>(sheetName, request.body)
-            if (element) {
-                response.status(200).json(element)
+    function getRequest() {
+        return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
+            try {
+                const id = parseInt(request.query.id as string, 10) || -1
+                const elements = await get(id)
+                if (elements) {
+                    response.status(200).json(elements)
+                }
+            } catch (e: unknown) {
+                response.status(400).json(e)
             }
-        } catch (e: unknown) {
-            response.status(400).json(e)
         }
     }
-}
 
-export function listGetRequest<Element extends { id: number }>(
-    sheetName: string,
-    specimen: Element
-) {
-    return async (_request: Request, response: Response, _next: NextFunction): Promise<void> => {
-        try {
-            const elements = await listGet<Element>(sheetName, specimen)
-            if (elements) {
-                response.status(200).json(elements)
+    function addRequest() {
+        return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
+            try {
+                const element = await add(request.body)
+                if (element) {
+                    response.status(200).json(element)
+                }
+            } catch (e: unknown) {
+                response.status(400).json(e)
             }
-        } catch (e: unknown) {
-            response.status(400).json(e)
         }
     }
-}
 
-export function setRequest<Element extends { id: number }>(sheetName: string) {
-    return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
-        try {
-            const element = await set<Element>(sheetName, request.body)
-            if (element) {
-                response.status(200).json(element)
+    function setRequest() {
+        return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
+            try {
+                const element = await set(request.body)
+                if (element) {
+                    response.status(200).json(element)
+                }
+            } catch (e: unknown) {
+                response.status(400).json(e)
             }
-        } catch (e: unknown) {
-            response.status(400).json(e)
         }
     }
+
+    return { getRequest, addRequest, listGetRequest, setRequest }
 }

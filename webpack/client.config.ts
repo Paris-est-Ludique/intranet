@@ -53,6 +53,10 @@ const config: Configuration = {
     },
     optimization: { minimizer: [new CssMinimizerPlugin()] },
     plugins: getPlugins(),
+    performance: {
+        maxAssetSize: 512000,
+        maxEntrypointSize: 512000,
+    },
 }
 
 export default merge(baseConfig(true), config)

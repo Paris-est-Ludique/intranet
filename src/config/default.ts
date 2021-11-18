@@ -1,7 +1,7 @@
 export default {
     HOST: "localhost",
     PORT: 3000,
-    API_URL: "",
+    API_URL: "http://localhost:3000",
     GOOGLE_SHEET_ID: "1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw",
     APP: {
         htmlAttributes: { lang: "en" },

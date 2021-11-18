@@ -1,7 +1,12 @@
 const CACHE_RENEW_DELAY = 10000
 
-export default function DBManager<OperationReturn>(): any {
+const cache: { [sheetName: string]: any } = {}
+const cacheTime: { [sheetName: string]: number } = {}
+
+export default function DBManager<OperationReturn>(sheetName: string): any {
     type OperationType = "add" | "list" | "set"
+
+    cacheTime[sheetName] = 0
 
     interface Operation {
         task: () => Promise<OperationReturn>
@@ -9,9 +14,6 @@ export default function DBManager<OperationReturn>(): any {
         resolve: (value: OperationReturn) => void
         reject: (reason: unknown) => void
     }
-
-    let cache: any
-    let cacheTime = 0
 
     const operations: Operation[] = []
 
@@ -37,21 +39,21 @@ export default function DBManager<OperationReturn>(): any {
         const { task, type, resolve, reject } = operation
         if (type === "list") {
             const now = +new Date()
-            if (now < cacheTime + CACHE_RENEW_DELAY) {
-                resolve(cache)
+            if (now < cacheTime[sheetName] + CACHE_RENEW_DELAY) {
+                resolve(cache[sheetName])
                 runNextDBOperation()
             } else {
                 task()
                     .then((val: OperationReturn) => {
-                        cache = val
-                        cacheTime = now
+                        cache[sheetName] = val
+                        cacheTime[sheetName] = now
                         resolve(val)
                     })
                     .catch(reject)
                     .finally(runNextDBOperation)
             }
         } else {
-            cacheTime = 0
+            cacheTime[sheetName] = 0
             task().then(resolve).catch(reject).finally(runNextDBOperation)
         }
     }
