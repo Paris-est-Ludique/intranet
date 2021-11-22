@@ -1,11 +1,8 @@
 const PORT = 4000
-const HOST_LOCALLY = true
+const HOST = process.env.INTRANET_HOST || "fo.parisestludique.fr"
 
 export default {
     PORT,
-    HOST: HOST_LOCALLY ? "localhost" : "fo.parisestludique.fr",
-    API_URL:
-        __SERVER__ || HOST_LOCALLY
-            ? `http://localhost:${PORT}`
-            : `http://fo.parisestludique.fr:${PORT}`,
+    HOST: "0.0.0.0",
+    API_URL: `http://${HOST}:${PORT}`,
 }
