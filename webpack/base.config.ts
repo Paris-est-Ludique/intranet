@@ -16,7 +16,7 @@ const getStyleLoaders = (isWeb: boolean, isSass?: boolean) => {
                 importLoaders: isSass ? 2 : 1,
                 modules: {
                     auto: true,
-                    localIdentName: isDev ? "[path][name]__[local]" : "[hash:base64]",
+                    localIdentName: "[path][name]__[local]", // Don't use hash:base64, a bug makes it generate different hashes in the .js and the .css files
                     exportOnlyLocals: !isWeb,
                 },
             },

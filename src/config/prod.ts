@@ -1,9 +1,11 @@
-import os from "os"
-
-const hostname = os.hostname()
+const PORT = 4000
+const HOST_LOCALLY = true
 
 export default {
-    PORT: 4000,
-    HOST: hostname === "ns3075300" ? "fo.parisestludique.fr" : "localhost",
-    API_URL: hostname === "ns3075300" ? "http://fo.parisestludique.fr" : "http://localhost:4000",
+    PORT,
+    HOST: HOST_LOCALLY ? "localhost" : "fo.parisestludique.fr",
+    API_URL:
+        __SERVER__ || HOST_LOCALLY
+            ? `http://localhost:${PORT}`
+            : `http://fo.parisestludique.fr:${PORT}`,
 }
