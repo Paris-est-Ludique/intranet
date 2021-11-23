@@ -49,6 +49,7 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
         "testing-library/no-node-access": "off",
         "testing-library/render-result-naming-convention": "off",
+        "jsx-a11y/label-has-associated-control": "off",
     },
     globals: {
         __CLIENT__: true,

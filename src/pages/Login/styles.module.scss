@@ -1,0 +1,36 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.Login {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.form {
+    @include page-content-wrapper;
+}
+
+.LoginIntro {
+    margin-bottom: 10px;
+}
+
+.formLine {
+    padding: 5px 0;
+
+    label {
+        display: block;
+        margin-left: 5px;
+    }
+    input {
+        width: 100%;
+        border: 1px solid #333;
+        border-radius: 4px;
+    }
+}
+
+.formButtons {
+    margin-top: 10px;
+    padding: 5px 0;
+    text-align: center;
+}
