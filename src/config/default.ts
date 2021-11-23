@@ -5,8 +5,9 @@ export default {
     GOOGLE_SHEET_ID: "1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw",
     APP: {
         htmlAttributes: { lang: "en" },
-        title: "REACT COOL STARTER",
-        titleTemplate: "REACT COOL STARTER - %s",
+        title: "Force Orange",
+        description: "Le site des bénévoles",
+        titleTemplate: "Force Orange - %s",
         meta: [
             {
                 name: "description",
