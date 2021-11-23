@@ -1,14 +1,14 @@
 @import "../../theme/variables";
 
-.UserList {
+.user-list {
     color: $color-white;
 
     ul {
         padding-left: 17px;
+    }
 
-        li {
-            margin-bottom: 0.5em;
-        }
+    li {
+        margin-bottom: 0.5em;
     }
 
     a {

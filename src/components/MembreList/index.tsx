@@ -9,7 +9,7 @@ interface Props {
 }
 
 const MembreList = ({ items }: Props) => (
-    <div className={styles.MembreList}>
+    <div className={styles["user-list"]}>
         <h4>Membre List</h4>
         <ul>
             {items.map(({ id, nom, prenom }) => (

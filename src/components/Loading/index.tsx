@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss"
 
 const Loading = (): JSX.Element => (
-    <div className={styles.Loading}>
+    <div className={styles.loading}>
         <p>Loading...</p>
     </div>
 )

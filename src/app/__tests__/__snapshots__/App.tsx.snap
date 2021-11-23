@@ -2,7 +2,7 @@
 
 exports[`<App /> renders 1`] = `
 <div
-  className="App"
+  className="app"
 >
   <a
     className="header"

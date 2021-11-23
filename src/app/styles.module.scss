@@ -5,21 +5,13 @@ body {
     font-family: "Helvetica-Light", Helvetica, Arial, sans-serif;
 }
 
-.App {
+.app {
     color: $color-white;
 
-    .header {
-        color: inherit;
-        display: block;
-        overflow: auto;
-        padding: 15px;
-        text-decoration: none;
-
-        img {
-            float: left;
-            height: 70px;
-            margin-right: 1em;
-        }
+    img {
+        float: left;
+        height: 70px;
+        margin-right: 1em;
     }
 
     hr {
@@ -27,4 +19,12 @@ body {
         margin-top: 0;
         opacity: 0.15;
     }
+}
+
+.header {
+    color: inherit;
+    display: block;
+    overflow: auto;
+    padding: 15px;
+    text-decoration: none;
 }

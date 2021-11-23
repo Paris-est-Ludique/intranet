@@ -15,7 +15,7 @@ interface Route {
 }
 
 const App = ({ route }: Route): JSX.Element => (
-    <div className={styles.App}>
+    <div className={styles.app}>
         <Helmet {...config.APP} />
         <Link to="/" className={styles.header}>
             <img src={logo} alt="Logo" role="presentation" />

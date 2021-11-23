@@ -37,7 +37,7 @@ function useList<Entity>(
 const Home: FC<Props> = (): JSX.Element => {
     const dispatch = useDispatch()
     return (
-        <div className={styles.Home}>
+        <div className={styles.home}>
             <Helmet title="Home" />
             <AddEnvie dispatch={dispatch} />
             {/* {useList((state: AppState) => state.envieList, fetchEnvieListifNeed)()} */}

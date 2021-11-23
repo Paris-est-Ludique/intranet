@@ -37,7 +37,7 @@ const MembrePage = ({ match }: Props): JSX.Element => {
     }
 
     return (
-        <div className={styles.Membre}>
+        <div className={styles.membre}>
             <Helmet title="User Info" />
             {renderInfo()}
         </div>
