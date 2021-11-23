@@ -23,6 +23,9 @@ const getPlugins = () => {
             ...plugins,
             new webpack.HotModuleReplacementPlugin(),
             new ReactRefreshWebpackPlugin({ overlay: { sockIntegration: "whm" } }),
+            new webpack.DefinePlugin({
+                process: "process/browser",
+            }),
         ]
 
     if (!isDev)

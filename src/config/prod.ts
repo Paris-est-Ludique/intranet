@@ -1,5 +1,6 @@
 const PORT = 4000
-const HOST = process.env.INTRANET_HOST || "fo.parisestludique.fr"
+const HOST =
+    __SERVER__ && !__DEV__ ? process.env.INTRANET_HOST || "fo.parisestludique.fr" : "localhost"
 
 export default {
     PORT,

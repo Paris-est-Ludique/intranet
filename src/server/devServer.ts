@@ -1,8 +1,6 @@
 import { Express } from "express"
 import chalk from "chalk"
 
-import config from "../config"
-
 export default (app: Express): void => {
     const webpack = require("webpack")
     const webpackConfig = require("../../webpack/client.config").default
@@ -22,7 +20,6 @@ export default (app: Express): void => {
     )
 
     instance.waitUntilValid(() => {
-        const url = `http://${config.HOST}:${config.PORT}`
-        console.info(chalk.green(`==> 🌎  Listening at ${url}`))
+        console.info(chalk.green("webpack-dev-middleware activated"))
     })
 }
