@@ -1,5 +1,5 @@
 import getExpressAccessors from "./expressAccessors"
-import { JeuJav, JeuJavWithoutId } from "../services/jeuxJav"
+import { JeuJav, JeuJavWithoutId } from "../../services/jeuxJav"
 
 const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
     JeuJavWithoutId,

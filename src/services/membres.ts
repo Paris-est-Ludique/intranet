@@ -28,6 +28,17 @@ export class Membre {
     passe = ""
 }
 
+export const emailRegexp =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
+export const passwordMinLength = 4
+
+export interface MemberLogin {
+    membre?: {
+        prenom: string
+    }
+    error?: string
+}
+
 export type MembreWithoutId = Omit<Membre, "id">
 
 export const membreGet = get<Membre>("Membre")

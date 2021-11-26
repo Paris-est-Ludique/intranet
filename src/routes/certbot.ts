@@ -7,7 +7,6 @@ const certbotRouter: Router = Router()
 certbotRouter.use((request: Request, response: Response, _next: NextFunction) => {
     const filename = request.originalUrl.replace(/.*\//, "")
     const resolvedPath: string = path.resolve(`../certbot/.well-known/acme-challenge/${filename}`)
-    console.log("response", resolvedPath)
     response.setHeader("Content-Type", "text/html")
     return response.sendFile(resolvedPath)
 })

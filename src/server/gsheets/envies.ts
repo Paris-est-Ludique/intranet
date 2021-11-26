@@ -1,5 +1,5 @@
 import getExpressAccessors from "./expressAccessors"
-import { Envie, EnvieWithoutId } from "../services/envies"
+import { Envie, EnvieWithoutId } from "../../services/envies"
 
 const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
     EnvieWithoutId,

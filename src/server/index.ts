@@ -15,9 +15,10 @@ import devServer from "./devServer"
 import ssr from "./ssr"
 
 import certbotRouter from "../routes/certbot"
-import { jeuJavListGet } from "../gsheets/jeuJav"
-import { envieListGet, envieAdd } from "../gsheets/envies"
-import { membreGet, membreSet } from "../gsheets/membres"
+import { jeuJavListGet } from "./gsheets/jeuJav"
+import { envieListGet, envieAdd } from "./gsheets/envies"
+import { membreGet, membreSet } from "./gsheets/membres"
+import signInHandler from "./userManagement/signIn"
 import config from "../config"
 
 const app = express()
@@ -42,13 +43,20 @@ app.use(express.static(path.resolve(process.cwd(), "public")))
 // Enable dev-server in development
 if (__DEV__) devServer(app)
 
-// Google Sheets requests
+/**
+ * APIs
+ */
+
+// Google Sheets API
 app.use(express.json())
 app.get("/JeuJavListGet", jeuJavListGet)
 app.get("/EnvieListGet", envieListGet)
 app.get("/MembreGet", membreGet)
 app.post("/MembreSet", membreSet)
 app.post("/EnvieAdd", envieAdd)
+
+// Sign in & up API
+app.post("/api/user/login", signInHandler)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)
