@@ -32,8 +32,11 @@ export async function signIn(rawEmail: string, rawPassword: string): Promise<Mem
     }
 
     const password = rawPassword.replace(/^\s*/, "").replace(/\s*$/, "")
+    if (password.length === 0) {
+        throw Error("Mot de passe nécessaire")
+    }
     if (password.length < passwordMinLength) {
-        throw Error("Mot de passe invalid")
+        throw Error("Mot de passe trop court")
     }
 
     const membres: Membre[] = await listGet()

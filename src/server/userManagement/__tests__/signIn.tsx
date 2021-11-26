@@ -27,11 +27,11 @@ describe("signIn with", () => {
     })
 
     it("invalid password length", async () => {
-        await expect(signIn("my.email@gmail.com", "11011")).rejects.toThrow("Mot de passe invalid")
+        await expect(signIn("my.email@gmail.com", "123")).rejects.toThrow("Mot de passe trop court")
     })
 
     it("empty password", async () => {
-        await expect(signIn("my.email@gmail.com", " ")).rejects.toThrow("Mot de passe invalid")
+        await expect(signIn("my.email@gmail.com", " ")).rejects.toThrow("Mot de passe nécessaire")
     })
 
     it("wrong password", async () => {
