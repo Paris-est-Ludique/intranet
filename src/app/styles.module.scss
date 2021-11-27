@@ -46,19 +46,11 @@
         font-weight: 400;
         text-decoration: none;
         color: $color-orange;
-        text-shadow: 2px 2px 2px black;
+        text-shadow: 2px 2px 2px $color-black;
     }
 }
 
 .siteDescription {
     font-size: 14px;
     color: #555;
-}
-
-.header {
-    color: inherit;
-    display: block;
-    overflow: auto;
-    padding: 15px;
-    text-decoration: none;
 }
