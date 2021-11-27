@@ -3,6 +3,7 @@ import { RouteConfig } from "react-router-config"
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncMembrePage, { loadData as loadMembrePageData } from "../pages/MembrePage"
+import Login from "../pages/Login"
 import NotFound from "../pages/NotFound"
 
 export default [
@@ -19,6 +20,10 @@ export default [
                 path: "/MembrePage/:id",
                 component: AsyncMembrePage,
                 loadData: loadMembrePageData,
+            },
+            {
+                path: "/login",
+                component: Login,
             },
             {
                 component: NotFound,
