@@ -2,15 +2,15 @@ import { RouteComponentProps } from "react-router-dom"
 import React, { memo } from "react"
 import { Helmet } from "react-helmet"
 import styles from "./styles.module.scss"
-import LoginForm from "../../components/LoginForm/LoginForm"
+import RegisterForm from "../../components/RegisterForm/RegisterForm"
 
 export type Props = RouteComponentProps
 
 const RegisterPage: React.FC<Props> = (): JSX.Element => (
-    <div className={styles.loginPage}>
-        <div className={styles.loginContent}>
+    <div className={styles.registerPage}>
+        <div className={styles.registerContent}>
             <Helmet title="RegisterPage" />
-            <LoginForm />
+            <RegisterForm />
         </div>
     </div>
 )

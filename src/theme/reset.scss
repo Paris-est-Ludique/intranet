@@ -2,6 +2,12 @@ body,
 h1,
 div,
 input,
-button {
+textarea,
+button,
+dl,
+dt,
+dd {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
