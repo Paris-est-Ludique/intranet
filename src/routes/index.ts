@@ -4,6 +4,7 @@ import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncMembrePage, { loadData as loadMembrePageData } from "../pages/MembrePage"
 import Login from "../pages/Login"
+import Register from "../pages/Register"
 import NotFound from "../pages/NotFound"
 
 export default [
@@ -24,6 +25,10 @@ export default [
             {
                 path: "/login",
                 component: Login,
+            },
+            {
+                path: "/register",
+                component: Register,
             },
             {
                 component: NotFound,

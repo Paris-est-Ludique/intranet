@@ -1,0 +1,9 @@
+@import "../../theme/mixins";
+
+.registerPage {
+    @include page-wrapper-center;
+}
+
+.registerContent {
+    @include page-content-wrapper(600px);
+}

@@ -1,0 +1,44 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.registerIntro {
+    dt {
+        font-weight: bold;
+    }
+    dd {
+        margin-bottom: 10px;
+    }
+}
+
+.formLine {
+    padding: 5px 0;
+
+    label {
+        display: block;
+        margin-left: 5px;
+    }
+    input,
+    textarea {
+        width: 100%;
+        padding: 4px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        outline: 0;
+    }
+    textarea {
+        height: 80px;
+    }
+    .inputRadio {
+        width: inherit;
+    }
+    .inputRadio + label {
+        display: inline;
+        margin: 0 20px 0 5px;
+    }
+}
+
+.formButtons {
+    margin-top: 10px;
+    padding: 5px 0;
+    text-align: center;
+}
