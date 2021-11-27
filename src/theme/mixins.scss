@@ -6,6 +6,16 @@
     }
 }
 
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+@mixin page-wrapper-center {
+    @include flex-center;
+}
+
 @mixin page-content-wrapper {
     margin: 10px;
     padding: 10px;
