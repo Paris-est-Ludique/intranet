@@ -18,3 +18,4 @@ access/token.json
 # Misc
 .DS_Store
 *.log
+.idea
