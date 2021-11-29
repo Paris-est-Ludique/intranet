@@ -5,7 +5,7 @@ import getAccessors from "../gsheets/accessors"
 
 const { listGet } = getAccessors("Membres", new Membre())
 
-export default async function signInHandler(
+export default async function loginHandler(
     request: Request,
     response: Response,
     _next: NextFunction
@@ -14,7 +14,7 @@ export default async function signInHandler(
         if (typeof request.body.email !== "string" || typeof request.body.password !== "string") {
             throw Error()
         }
-        const res = await signIn(request.body.email, request.body.password)
+        const res = await login(request.body.email, request.body.password)
         response.status(200).json(res)
     } catch (e: any) {
         if (e.message) {
@@ -25,7 +25,7 @@ export default async function signInHandler(
     }
 }
 
-export async function signIn(rawEmail: string, rawPassword: string): Promise<MemberLogin> {
+export async function login(rawEmail: string, rawPassword: string): Promise<MemberLogin> {
     const email = rawEmail.replace(/^\s*/, "").replace(/\s*$/, "")
     if (!emailRegexp.test(email)) {
         throw Error("Email invalid")

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { signIn } from "../signIn"
+import { login } from "../login"
 
 // Could do a full test with wget --header='Content-Type:application/json' --post-data='{"email":"pikiou.sub@gmail.com","password":"mot de passe"}' http://localhost:3000/api/user/login
 
@@ -16,9 +16,9 @@ jest.mock("../../gsheets/accessors", () => () => ({
     listGet: () => [mockUser],
 }))
 
-describe("signIn with", () => {
+describe("login with", () => {
     it("right password", async () => {
-        const res = await signIn("my.email@gmail.com", "12345678")
+        const res = await login("my.email@gmail.com", "12345678")
         expect(res).toEqual({
             membre: {
                 prenom: mockUser.prenom,
@@ -27,29 +27,29 @@ describe("signIn with", () => {
     })
 
     it("invalid password length", async () => {
-        await expect(signIn("my.email@gmail.com", "123")).rejects.toThrow("Mot de passe trop court")
+        await expect(login("my.email@gmail.com", "123")).rejects.toThrow("Mot de passe trop court")
     })
 
     it("empty password", async () => {
-        await expect(signIn("my.email@gmail.com", " ")).rejects.toThrow("Mot de passe nécessaire")
+        await expect(login("my.email@gmail.com", " ")).rejects.toThrow("Mot de passe nécessaire")
     })
 
     it("wrong password", async () => {
-        await expect(signIn("my.email@gmail.com", "1234567891011")).rejects.toThrow(
+        await expect(login("my.email@gmail.com", "1234567891011")).rejects.toThrow(
             "Mauvais mot de passe pour cet email"
         )
     })
 
     it("invalid email format", async () => {
-        await expect(signIn("my.email@gmail", "12345678")).rejects.toThrow("Email invalid")
+        await expect(login("my.email@gmail", "12345678")).rejects.toThrow("Email invalid")
     })
 
     it("empty email", async () => {
-        await expect(signIn("    ", "12345678")).rejects.toThrow("Email invalid")
+        await expect(login("    ", "12345678")).rejects.toThrow("Email invalid")
     })
 
     it("unknown email", async () => {
-        await expect(signIn("mon.emailBidon@gmail.com", "12345678")).rejects.toThrow(
+        await expect(login("mon.emailBidon@gmail.com", "12345678")).rejects.toThrow(
             "Cet email ne correspond à aucun utilisateur"
         )
     })

@@ -18,7 +18,7 @@ import certbotRouter from "../routes/certbot"
 import { jeuJavListGet } from "./gsheets/jeuJav"
 import { envieListGet, envieAdd } from "./gsheets/envies"
 import { membreGet, membreSet } from "./gsheets/membres"
-import signInHandler from "./userManagement/signIn"
+import loginHandler from "./userManagement/login"
 import config from "../config"
 
 const app = express()
@@ -56,7 +56,7 @@ app.post("/MembreSet", membreSet)
 app.post("/EnvieAdd", envieAdd)
 
 // Sign in & up API
-app.post("/api/user/login", signInHandler)
+app.post("/api/user/login", loginHandler)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)
