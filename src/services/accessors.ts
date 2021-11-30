@@ -1,6 +1,7 @@
 import axios from "axios"
 
 import config from "../config"
+import { axiosConfig } from "./auth"
 
 export type ElementWithId = unknown & { id: number }
 
@@ -15,6 +16,7 @@ export function get<Element>(elementName: string): (id: number) => Promise<{
     return async (id: number): Promise<ElementGetResponse> => {
         try {
             const { data } = await axios.get(`${config.API_URL}/${elementName}Get`, {
+                ...axiosConfig,
                 params: { id },
             })
             return { data }
@@ -34,7 +36,7 @@ export function listGet<Element>(elementName: string): () => Promise<{
     }
     return async (): Promise<ElementListGetResponse> => {
         try {
-            const { data } = await axios.get(`${config.API_URL}/${elementName}ListGet`)
+            const { data } = await axios.get(`${config.API_URL}/${elementName}ListGet`, axiosConfig)
             return { data }
         } catch (error) {
             return { error: error as Error }
@@ -57,7 +59,8 @@ export function add<ElementNoId extends object, Element extends ElementNoId & El
         try {
             const { data } = await axios.post(
                 `${config.API_URL}/${elementName}Add`,
-                membreWithoutId
+                membreWithoutId,
+                axiosConfig
             )
             return { data }
         } catch (error) {
@@ -76,7 +79,11 @@ export function set<Element>(elementName: string): (membre: Element) => Promise<
     }
     return async (membre: Element): Promise<ElementGetResponse> => {
         try {
-            const { data } = await axios.post(`${config.API_URL}/${elementName}Set`, membre)
+            const { data } = await axios.post(
+                `${config.API_URL}/${elementName}Set`,
+                membre,
+                axiosConfig
+            )
             return { data }
         } catch (error) {
             return { error: error as Error }

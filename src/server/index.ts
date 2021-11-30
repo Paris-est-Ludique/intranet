@@ -1,5 +1,5 @@
 import path from "path"
-import express from "express"
+import express, { RequestHandler } from "express"
 import logger from "morgan"
 import compression from "compression"
 import helmet from "helmet"
@@ -15,6 +15,7 @@ import devServer from "./devServer"
 import ssr from "./ssr"
 
 import certbotRouter from "../routes/certbot"
+import { secure } from "./secure"
 import { jeuJavListGet } from "./gsheets/jeuJav"
 import { envieListGet, envieAdd } from "./gsheets/envies"
 import { membreGet, membreSet } from "./gsheets/membres"
@@ -43,20 +44,22 @@ app.use(express.static(path.resolve(process.cwd(), "public")))
 // Enable dev-server in development
 if (__DEV__) devServer(app)
 
-/**
- * APIs
- */
-
-// Google Sheets API
 app.use(express.json())
-app.get("/JeuJavListGet", jeuJavListGet)
-app.get("/EnvieListGet", envieListGet)
-app.get("/MembreGet", membreGet)
-app.post("/MembreSet", membreSet)
-app.post("/EnvieAdd", envieAdd)
 
 // Sign in & up API
 app.post("/api/user/login", loginHandler)
+
+/**
+ * APIs
+ */
+// Google Sheets API
+app.get("/JeuJavListGet", jeuJavListGet)
+app.get("/EnvieListGet", envieListGet)
+app.post("/EnvieAdd", envieAdd)
+
+// Secured APIs
+app.get("/MembreGet", secure as RequestHandler, membreGet)
+app.post("/MembreSet", secure as RequestHandler, membreSet)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)

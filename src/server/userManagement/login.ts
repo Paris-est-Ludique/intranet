@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt"
 import { Membre, MemberLogin, emailRegexp, passwordMinLength } from "../../services/membres"
 import getAccessors from "../gsheets/accessors"
+import { getJwt } from "../secure"
 
 const { listGet } = getAccessors("Membres", new Membre())
 
@@ -50,9 +51,12 @@ export async function login(rawEmail: string, rawPassword: string): Promise<Memb
         throw Error("Mauvais mot de passe pour cet email")
     }
 
+    const jwt = await getJwt(email)
+
     return {
         membre: {
             prenom: membre.prenom,
         },
+        jwt,
     }
 }

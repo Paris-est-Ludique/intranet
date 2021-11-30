@@ -36,6 +36,7 @@ export interface MemberLogin {
     membre?: {
         prenom: string
     }
+    jwt?: string
     error?: string
 }
 

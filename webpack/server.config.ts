@@ -29,6 +29,9 @@ const config: Configuration = {
             banner: 'require("source-map-support").install();',
             raw: true,
         }),
+        new webpack.DefinePlugin({
+            localStorage: { getItem: () => null, setItem: () => null, removeItem: () => null },
+        }),
     ],
 }
 

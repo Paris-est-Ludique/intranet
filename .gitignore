@@ -13,7 +13,7 @@ public/*
 
 # Access
 access/gsheets.json
-access/token.json
+access/jwt_secret.json
 
 # Misc
 .DS_Store
