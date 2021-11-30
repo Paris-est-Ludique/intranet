@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import _ from "lodash"
 import { login } from "../login"
 
 // Could do a full test with wget --header='Content-Type:application/json' --post-data='{"email":"pikiou.sub@gmail.com","password":"mot de passe"}' http://localhost:3000/api/user/login
@@ -19,11 +20,12 @@ jest.mock("../../gsheets/accessors", () => () => ({
 describe("login with", () => {
     it("right password", async () => {
         const res = await login("my.email@gmail.com", "12345678")
-        expect(res).toEqual({
+        expect(_.omit(res, "jwt")).toEqual({
             membre: {
                 prenom: mockUser.prenom,
             },
         })
+        expect(res.jwt).toBeDefined()
     })
 
     it("invalid password length", async () => {
