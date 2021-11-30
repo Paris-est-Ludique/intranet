@@ -55,5 +55,6 @@ module.exports = {
         __CLIENT__: true,
         __SERVER__: true,
         __DEV__: true,
+        __LOCAL__: false,
     },
 }

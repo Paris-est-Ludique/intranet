@@ -1,9 +1,8 @@
 const PORT = 4000
-const HOST =
-    __SERVER__ && !__DEV__ ? process.env.INTRANET_HOST || "fo.parisestludique.fr" : "localhost"
+const API_URL = __DEV__ || __LOCAL__ ? `http://localhost:${PORT}` : "https://fo.parisestludique.fr"
 
 export default {
     PORT,
     HOST: "0.0.0.0",
-    API_URL: `http://${HOST}:${PORT}`,
+    API_URL,
 }

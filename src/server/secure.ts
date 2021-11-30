@@ -52,7 +52,7 @@ async function getSecret() {
 
 export async function getJwt(email: string): Promise<string> {
     const jwt = sign({ user: canonicalEmail(email), permissions: [] }, await getSecret(), {
-        expiresIn: "7d",
+        expiresIn: "365d",
     })
     return jwt
 }

@@ -21,6 +21,7 @@ module.exports = {
         __DEV__: true,
         __CLIENT__: true,
         __SERVER__: false,
+        __LOCAL__: false,
     },
     maxConcurrency: 50,
     maxWorkers: 1,

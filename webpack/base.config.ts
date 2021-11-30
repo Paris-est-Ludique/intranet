@@ -8,6 +8,7 @@ import LoadablePlugin from "@loadable/webpack-plugin"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 export const isDev = process.env.NODE_ENV === "development"
+const isLocal = process.env.LOCAL === "true"
 const getStyleLoaders = (isWeb: boolean, isSass?: boolean) => {
     let loaders: RuleSetUseItem[] = [
         {
@@ -47,6 +48,7 @@ const getPlugins = (isWeb: boolean) => {
             __CLIENT__: isWeb,
             __SERVER__: !isWeb,
             __DEV__: isDev,
+            __LOCAL__: isLocal,
         }),
     ]
 
