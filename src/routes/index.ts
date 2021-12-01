@@ -13,9 +13,7 @@ export default [
         routes: [
             {
                 path: "/",
-                exact: true,
-                component: AsyncHome, // Add your page here
-                loadData: loadHomeData, // Add your pre-fetch method here
+                component: Register,
             },
             {
                 path: "/MembrePage/:id",
@@ -28,7 +26,9 @@ export default [
             },
             {
                 path: "/register",
-                component: Register,
+                exact: true,
+                component: AsyncHome,
+                loadData: loadHomeData,
             },
             {
                 component: NotFound,

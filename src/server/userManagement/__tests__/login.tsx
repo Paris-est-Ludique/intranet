@@ -5,7 +5,9 @@
 import _ from "lodash"
 import { login } from "../login"
 
-// Could do a full test with wget --header='Content-Type:application/json' --post-data='{"email":"pikiou.sub@gmail.com","password":"mot de passe"}' http://localhost:3000/api/user/login
+// Could do a full test with: wget --header='Content-Type:application/json' --post-data='{"email":"pikiou.sub@gmail.com","password":"mot de passe"}' http://localhost:3000/api/user/login
+
+// Full test with Bearer: wget --header='Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGlraW91c3ViQGdlYWlsLmNvbSIsInBlcm1pc3Npb25zIjpbXSwiaWF0IjoxNjM4MjUzODgzLCJleHAiOjE2Mzg4NTg2ODN9.MknJ4NfcVlgW2ODeimfwZI1a4z8asdEXtHwHgViy6c4' http://localhost:3000/MembreGet?id=1
 
 const mockUser = {
     mail: "my.email@gmail.com",
