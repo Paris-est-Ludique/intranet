@@ -5,8 +5,8 @@ export default function getExpressAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementNoId & ElementWithId
->(sheetName: string, specimen: Element): any {
-    const { get, listGet, add, set } = getAccessors(sheetName, specimen)
+>(sheetName: string, specimen: Element, translation: { [k in keyof Element]: string }): any {
+    const { get, listGet, add, set } = getAccessors(sheetName, specimen, translation)
 
     function listGetRequest() {
         return async (

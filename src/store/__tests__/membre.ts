@@ -2,10 +2,11 @@ import axios from "axios"
 
 import mockStore from "../../utils/mockStore"
 import membre, { getRequesting, getSuccess, getFailure, fetchMembre, initialState } from "../membre"
+import { Membre } from "../../services/membres"
 
 jest.mock("axios")
 
-const mockData = {
+const mockFrenchData: any = {
     id: 1,
     nom: "Aupeix",
     prenom: "Amélie",
@@ -20,7 +21,23 @@ const mockData = {
     horodatage: "0000-00-00",
     passe: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
 }
-const { id } = mockData
+
+const mockEnglishData: Membre = {
+    id: 1,
+    lastname: "Aupeix",
+    firstname: "Amélie",
+    email: "pakouille.lakouille@yahoo.fr",
+    mobile: "0675650392",
+    photo: "images/membres/$taille/amélie_aupeix.jpg",
+    food: "Végétarien",
+    adult: 1,
+    privileges: 0,
+    active: 0,
+    comment: "",
+    timestamp: "0000-00-00",
+    password: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
+}
+const { id } = mockEnglishData
 const mockError = "Oops! Something went wrong."
 
 describe("membre reducer", () => {
@@ -39,9 +56,9 @@ describe("membre reducer", () => {
         expect(
             membre(undefined, {
                 type: getSuccess.type,
-                payload: mockData,
+                payload: mockEnglishData,
             })
-        ).toEqual({ readyStatus: "success", entity: mockData })
+        ).toEqual({ readyStatus: "success", entity: mockEnglishData })
     })
 
     it("should handle failure correctly", () => {
@@ -58,12 +75,12 @@ describe("membre action", () => {
     it("fetches membre data successful", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
-            { type: getRequesting.type },
-            { type: getSuccess.type, payload: mockData },
+            { type: getRequesting.type, payload: undefined },
+            { type: getSuccess.type, payload: mockEnglishData },
         ]
 
         // @ts-expect-error
-        axios.get.mockResolvedValue({ data: mockData })
+        axios.get.mockResolvedValue({ data: mockFrenchData })
 
         await dispatch(fetchMembre(id))
         expect(getActions()).toEqual(expectedActions)

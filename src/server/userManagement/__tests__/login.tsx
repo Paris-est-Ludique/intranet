@@ -10,9 +10,9 @@ import { login } from "../login"
 // Full test with Bearer: wget --header='Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicGlraW91c3ViQGdlYWlsLmNvbSIsInBlcm1pc3Npb25zIjpbXSwiaWF0IjoxNjM4MjUzODgzLCJleHAiOjE2Mzg4NTg2ODN9.MknJ4NfcVlgW2ODeimfwZI1a4z8asdEXtHwHgViy6c4' http://localhost:3000/MembreGet?id=1
 
 const mockUser = {
-    mail: "my.email@gmail.com",
-    passe: "$2y$10$cuKFHEow2IVSZSPtoVsw6uZFNFOOP/v1V7fubbyvrxhZdsnxLHr.2",
-    prenom: "monPrénom",
+    email: "my.email@gmail.com",
+    password: "$2y$10$cuKFHEow2IVSZSPtoVsw6uZFNFOOP/v1V7fubbyvrxhZdsnxLHr.2",
+    firstname: "monPrénom",
 }
 
 jest.mock("../../gsheets/accessors", () => () => ({
@@ -24,7 +24,7 @@ describe("login with", () => {
         const res = await login("my.email@gmail.com", "12345678")
         expect(_.omit(res, "jwt")).toEqual({
             membre: {
-                prenom: mockUser.prenom,
+                firstname: mockUser.firstname,
             },
         })
         expect(res.jwt).toBeDefined()

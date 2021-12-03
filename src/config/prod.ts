@@ -1,5 +1,7 @@
-const PORT = 4000
-const API_URL = __DEV__ || __LOCAL__ ? `http://localhost:${PORT}` : "https://fo.parisestludique.fr"
+const PROTOCOL = (typeof window !== "undefined" && window?.location?.protocol) || "http:"
+const PORT = 4000 + (PROTOCOL === "https:" ? 2 : 0)
+const API_URL =
+    __DEV__ || __LOCAL__ ? `${PROTOCOL}//localhost:${PORT}` : `${PROTOCOL}//fo.parisestludique.fr`
 
 export default {
     PORT,

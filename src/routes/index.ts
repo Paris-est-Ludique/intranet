@@ -13,6 +13,7 @@ export default [
         routes: [
             {
                 path: "/",
+                exact: true,
                 component: Register,
             },
             {
@@ -26,7 +27,6 @@ export default [
             },
             {
                 path: "/register",
-                exact: true,
                 component: AsyncHome,
                 loadData: loadHomeData,
             },

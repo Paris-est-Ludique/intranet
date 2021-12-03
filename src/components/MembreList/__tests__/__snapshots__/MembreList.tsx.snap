@@ -13,10 +13,10 @@ exports[`<MembreList /> renders 1`] = `
         href="/Membre/1"
       >
         <b>
-          Amélie
+          Aupeix
         </b>
          
-        Aupeix
+        Amélie
       </a>
     </li>
   </ul>

@@ -9,34 +9,34 @@ exports[`<SetMembre /> renders 1`] = `
   </h2>
   <form>
     <label
-      for="postPrenom"
+      for="postFirstname"
     >
-      Prenom:
+      Prénom:
       <input
-        id="postPrenom"
-        name="postPrenom"
-        type="text"
-        value="Amélie"
-      />
-    </label>
-    <label
-      for="postNom"
-    >
-      Nom:
-      <input
-        id="postNom"
-        name="postNom"
+        id="postFirstname"
+        name="postFirstname"
         type="text"
         value="Aupeix"
       />
     </label>
     <label
-      for="postMajeur"
+      for="postName"
+    >
+      Nom:
+      <input
+        id="postName"
+        name="postName"
+        type="text"
+        value="Amélie"
+      />
+    </label>
+    <label
+      for="postAdult"
     >
       Majeur:
       <input
-        id="postMajeur"
-        name="postMajeur"
+        id="postAdult"
+        name="postAdult"
         type="text"
         value="1"
       />

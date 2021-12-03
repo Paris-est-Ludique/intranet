@@ -16,6 +16,10 @@
     }
 }
 
+.lightTitle {
+    font-weight: normal;
+}
+
 .formLine {
     padding: 5px 0;
 
@@ -48,4 +52,25 @@
     margin-top: 10px;
     padding: 5px 0;
     text-align: center;
+
+    [disabled="true"] {
+        background-color: #333333c0;
+        color: #cccccce7;
+    }
+}
+
+.formReactions {
+    margin-top: 3px;
+    padding: 5px 0;
+    text-align: center;
+
+    .sending {
+        color: rgb(0, 0, 255);
+    }
+    .success {
+        color: rgb(0, 133, 0);
+    }
+    .error {
+        color: rgb(255, 0, 0);
+    }
 }

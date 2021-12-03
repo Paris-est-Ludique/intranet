@@ -1,10 +1,10 @@
 import getExpressAccessors from "./expressAccessors"
-import { JeuJav, JeuJavWithoutId } from "../../services/jeuxJav"
+import { JeuJav, JeuJavWithoutId, translationJeuJav } from "../../services/jeuxJav"
 
 const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
     JeuJavWithoutId,
     JeuJav
->("Jeux JAV", new JeuJav())
+>("Jeux JAV", new JeuJav(), translationJeuJav)
 
 export const jeuJavListGet = listGetRequest()
 

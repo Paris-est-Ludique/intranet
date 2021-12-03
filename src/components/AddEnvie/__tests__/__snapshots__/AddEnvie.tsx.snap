@@ -9,52 +9,52 @@ exports[`<AddEnvie /> renders 1`] = `
   </h2>
   <form>
     <label
-      for="postDomaine"
+      for="postDomain"
     >
       Domaine:
       <input
-        id="postDomaine"
-        name="postDomaine"
+        id="postDomain"
+        name="postDomain"
         type="text"
         value=""
       />
     </label>
     <label
-      for="postEnvies"
+      for="postWish"
     >
       Envies:
       <textarea
-        id="postEnvies"
-        name="postEnvies"
+        id="postWish"
+        name="postWish"
       />
     </label>
     <label
-      for="postPrecisions"
+      for="postDetails"
     >
       Precisions:
       <textarea
-        id="postPrecisions"
-        name="postPrecisions"
+        id="postDetails"
+        name="postDetails"
       />
     </label>
     <label
-      for="postEquipes"
+      for="postTeams"
     >
       Equipes:
       <input
-        id="postEquipes"
-        name="postEquipes"
+        id="postTeams"
+        name="postTeams"
         type="text"
         value=""
       />
     </label>
     <label
-      for="postDateAjout"
+      for="postAddedDate"
     >
-      DateAjout:
+      Date dajout:
       <input
-        id="postDateAjout"
-        name="postDateAjout"
+        id="postAddedDate"
+        name="postAddedDate"
         type="date"
         value=""
       />

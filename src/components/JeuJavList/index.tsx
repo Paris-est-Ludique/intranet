@@ -21,10 +21,10 @@ const JeuJavList = ({ ids }: Props) => {
                     if (!jeu) {
                         return <li key={id}>Le jeu #{id} n&apos;existe pas</li>
                     }
-                    const { titre, bggId } = jeu
+                    const { title, bggId } = jeu
                     return (
                         <li key={id}>
-                            {titre} - [{bggId}]
+                            {title} - [{bggId}]
                         </li>
                     )
                 })}

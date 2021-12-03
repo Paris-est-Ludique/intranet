@@ -1,4 +1,5 @@
 import axios from "axios"
+import _ from "lodash"
 
 import mockStore from "../../utils/mockStore"
 import JeuJavList, {
@@ -8,11 +9,12 @@ import JeuJavList, {
     getFailure,
     fetchJeuJavList,
 } from "../jeuJavList"
+import { JeuJav } from "../../services/jeuxJav"
 
 jest.mock("axios")
 
-const mockData = {
-    "5": {
+const mockFrenchData: any[] = [
+    {
         id: 5,
         titre: "6 qui prend!",
         auteur: "Wolfgang Kramer",
@@ -22,16 +24,35 @@ const mockData = {
         duree: 45,
         type: "Ambiance",
         poufpaf: "0-9-2/6-qui-prend-6-nimmt",
-        photo: "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
-        bggPhoto: "",
+        bggPhoto:
+            "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
         bggId: 432,
         exemplaires: 1,
         dispoPret: 1,
         nonRangee: 0,
-        horodatage: "0000-00-00",
         ean: "3421272101313",
     },
-}
+]
+const mockEnglishData: JeuJav[] = [
+    {
+        id: 5,
+        title: "6 qui prend!",
+        author: "Wolfgang Kramer",
+        editor: "(uncredited) , Design Edge , B",
+        playersMin: 2,
+        playersMax: 10,
+        duration: 45,
+        type: "Ambiance",
+        poufpaf: "0-9-2/6-qui-prend-6-nimmt",
+        bggPhoto:
+            "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
+        bggId: 432,
+        copies: 1,
+        lendAvailability: 1,
+        notStored: 0,
+        ean: "3421272101313",
+    },
+]
 const mockError = "Oops! Something went wrong."
 
 describe("JeuJavList reducer", () => {
@@ -49,11 +70,11 @@ describe("JeuJavList reducer", () => {
     })
 
     it("should handle success correctly", () => {
-        expect(JeuJavList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
+        expect(JeuJavList(undefined, { type: getSuccess.type, payload: mockEnglishData })).toEqual({
             ...initialState,
             readyStatus: "success",
-            ids: [5],
-            entities: mockData,
+            ids: _.map(mockEnglishData, "id"),
+            entities: _.keyBy(mockEnglishData, "id"),
         })
     })
 
@@ -70,12 +91,12 @@ describe("JeuJavList action", () => {
     it("fetches JeuJav list successful", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
-            { type: getRequesting.type },
-            { type: getSuccess.type, payload: mockData },
+            { type: getRequesting.type, payload: undefined },
+            { type: getSuccess.type, payload: mockEnglishData },
         ]
 
         // @ts-expect-error
-        axios.get.mockResolvedValue({ data: mockData })
+        axios.get.mockResolvedValue({ data: mockFrenchData })
 
         await dispatch(fetchJeuJavList())
         expect(getActions()).toEqual(expectedActions)

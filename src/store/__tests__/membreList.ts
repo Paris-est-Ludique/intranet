@@ -1,4 +1,5 @@
 import axios from "axios"
+import _ from "lodash"
 
 import mockStore from "../../utils/mockStore"
 import membreList, {
@@ -8,11 +9,12 @@ import membreList, {
     getFailure,
     fetchMembreList,
 } from "../membreList"
+import { Membre } from "../../services/membres"
 
 jest.mock("axios")
 
-const mockData = {
-    "1": {
+const mockFrenchData: any[] = [
+    {
         id: 1,
         nom: "Aupeix",
         prenom: "Amélie",
@@ -27,7 +29,25 @@ const mockData = {
         horodatage: "0000-00-00",
         passe: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
     },
-}
+]
+
+const mockEnglishData: Membre[] = [
+    {
+        id: 1,
+        lastname: "Aupeix",
+        firstname: "Amélie",
+        email: "pakouille.lakouille@yahoo.fr",
+        mobile: "0675650392",
+        photo: "images/membres/$taille/amélie_aupeix.jpg",
+        food: "Végétarien",
+        adult: 1,
+        privileges: 0,
+        active: 0,
+        comment: "",
+        timestamp: "0000-00-00",
+        password: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
+    },
+]
 const mockError = "Oops! Something went wrong."
 
 describe("membreList reducer", () => {
@@ -45,11 +65,11 @@ describe("membreList reducer", () => {
     })
 
     it("should handle success correctly", () => {
-        expect(membreList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
+        expect(membreList(undefined, { type: getSuccess.type, payload: mockEnglishData })).toEqual({
             ...initialState,
             readyStatus: "success",
-            ids: [1],
-            entities: mockData,
+            ids: _.map(mockEnglishData, "id"),
+            entities: _.keyBy(mockEnglishData, "id"),
         })
     })
 
@@ -66,12 +86,12 @@ describe("membreList action", () => {
     it("fetches membre list successful", async () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
-            { type: getRequesting.type },
-            { type: getSuccess.type, payload: mockData },
+            { type: getRequesting.type, payload: undefined },
+            { type: getSuccess.type, payload: mockEnglishData },
         ]
 
         // @ts-expect-error
-        axios.get.mockResolvedValue({ data: mockData })
+        axios.get.mockResolvedValue({ data: mockFrenchData })
 
         await dispatch(fetchMembreList())
         expect(getActions()).toEqual(expectedActions)

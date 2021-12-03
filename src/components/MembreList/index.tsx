@@ -12,10 +12,10 @@ const MembreList = ({ items }: Props) => (
     <div className={styles["user-list"]}>
         <h4>Membre List</h4>
         <ul>
-            {items.map(({ id, nom, prenom }) => (
+            {items.map(({ id, lastname, firstname }) => (
                 <li key={id}>
                     <Link to={`/Membre/${id}`}>
-                        <b>{prenom}</b> {nom}
+                        <b>{firstname}</b> {lastname}
                     </Link>
                 </li>
             ))}

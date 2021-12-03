@@ -1,50 +1,49 @@
 import React, { useState, memo } from "react"
 import { toast } from "react-toastify"
+import styles from "./styles.module.scss"
 
 import { AppDispatch } from "../../store"
-
 import { fetchEnvieAdd } from "../../store/envieAdd"
-import styles from "./styles.module.scss"
 
 interface Props {
     dispatch: AppDispatch
 }
 
 const AddEnvie = ({ dispatch }: Props) => {
-    const [domaine, setDomaine] = useState("")
-    const [envies, setEnvies] = useState("")
-    const [precisions, setPrecisions] = useState("")
-    const [equipes, setEquipes] = useState([""])
-    const [dateAjout, setDateAjout] = useState("")
+    const [domain, setDomain] = useState("")
+    const [wish, setWish] = useState("")
+    const [details, setDetails] = useState("")
+    const [teams, setTeams] = useState([""])
+    const [addedDate, setAddedDate] = useState("")
 
-    const onDomaineChanged = (e: React.ChangeEvent<HTMLInputElement>) => setDomaine(e.target.value)
-    const onEnviesChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setEnvies(e.target.value)
-    const onPrecisionsChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-        setPrecisions(e.target.value)
-    const onEquipesChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setEquipes(e.target.value.split(/, ?/))
-    const onDateAjoutChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setDateAjout(e.target.value)
+    const onDomainChanged = (e: React.ChangeEvent<HTMLInputElement>) => setDomain(e.target.value)
+    const onWishChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setWish(e.target.value)
+    const onDetailsChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+        setDetails(e.target.value)
+    const onTeamsChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setTeams(e.target.value.split(/, ?/))
+    const onAddedDateChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setAddedDate(e.target.value)
 
     const onSavePostClicked = () => {
-        if (domaine && envies) {
+        if (domain && wish) {
             dispatch(
                 fetchEnvieAdd({
-                    domaine,
-                    envies,
-                    precisions,
-                    equipes,
-                    dateAjout,
+                    domain,
+                    wish,
+                    details,
+                    teams,
+                    addedDate,
                 })
             )
 
-            setDomaine("")
-            setEnvies("")
-            setPrecisions("")
-            setEquipes([""])
-            setDateAjout("")
+            setDomain("")
+            setWish("")
+            setDetails("")
+            setTeams([""])
+            setAddedDate("")
         } else {
-            toast.warning("Il faut au moins préciser un domaine et l'envie", {
+            toast.warning("Il faut au moins préciser un domain et l'envie", {
                 position: "top-center",
                 autoClose: 6000,
                 hideProgressBar: true,
@@ -59,52 +58,47 @@ const AddEnvie = ({ dispatch }: Props) => {
         <section className={styles.EnvieList}>
             <h2>Ajouter une nouvelle envie</h2>
             <form>
-                <label htmlFor="postDomaine">
+                <label htmlFor="postDomain">
                     Domaine:
                     <input
                         type="text"
-                        id="postDomaine"
-                        name="postDomaine"
-                        value={domaine}
-                        onChange={onDomaineChanged}
+                        id="postDomain"
+                        name="postDomain"
+                        value={domain}
+                        onChange={onDomainChanged}
                     />
                 </label>
-                <label htmlFor="postEnvies">
+                <label htmlFor="postWish">
                     Envies:
-                    <textarea
-                        id="postEnvies"
-                        name="postEnvies"
-                        value={envies}
-                        onChange={onEnviesChanged}
-                    />
+                    <textarea id="postWish" name="postWish" value={wish} onChange={onWishChanged} />
                 </label>
-                <label htmlFor="postPrecisions">
+                <label htmlFor="postDetails">
                     Precisions:
                     <textarea
-                        id="postPrecisions"
-                        name="postPrecisions"
-                        value={precisions}
-                        onChange={onPrecisionsChanged}
+                        id="postDetails"
+                        name="postDetails"
+                        value={details}
+                        onChange={onDetailsChanged}
                     />
                 </label>
-                <label htmlFor="postEquipes">
+                <label htmlFor="postTeams">
                     Equipes:
                     <input
                         type="text"
-                        id="postEquipes"
-                        name="postEquipes"
-                        value={equipes.join(", ")}
-                        onChange={onEquipesChanged}
+                        id="postTeams"
+                        name="postTeams"
+                        value={teams.join(", ")}
+                        onChange={onTeamsChanged}
                     />
                 </label>
-                <label htmlFor="postDateAjout">
-                    DateAjout:
+                <label htmlFor="postAddedDate">
+                    Date dajout:
                     <input
                         type="date"
-                        id="postDateAjout"
-                        name="postDateAjout"
-                        value={dateAjout}
-                        onChange={onDateAjoutChanged}
+                        id="postAddedDate"
+                        name="postAddedDate"
+                        value={addedDate}
+                        onChange={onAddedDateChanged}
                     />
                 </label>
                 <button type="button" onClick={onSavePostClicked}>

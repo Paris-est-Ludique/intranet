@@ -1,10 +1,16 @@
 import { Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt"
-import { Membre, MemberLogin, emailRegexp, passwordMinLength } from "../../services/membres"
+import {
+    Membre,
+    MemberLogin,
+    emailRegexp,
+    passwordMinLength,
+    translationMember,
+} from "../../services/membres"
 import getAccessors from "../gsheets/accessors"
 import { getJwt } from "../secure"
 
-const { listGet } = getAccessors("Membres", new Membre())
+const { listGet } = getAccessors("Membres", new Membre(), translationMember)
 
 export default async function loginHandler(
     request: Request,
@@ -41,12 +47,12 @@ export async function login(rawEmail: string, rawPassword: string): Promise<Memb
     }
 
     const membres: Membre[] = await listGet()
-    const membre = membres.find((m) => m.mail === email)
+    const membre = membres.find((m) => m.email === email)
     if (!membre) {
         throw Error("Cet email ne correspond à aucun utilisateur")
     }
 
-    const passwordMatch = await bcrypt.compare(password, membre.passe.replace(/^\$2y/, "$2a"))
+    const passwordMatch = await bcrypt.compare(password, membre.password.replace(/^\$2y/, "$2a"))
     if (!passwordMatch) {
         throw Error("Mauvais mot de passe pour cet email")
     }
@@ -55,7 +61,7 @@ export async function login(rawEmail: string, rawPassword: string): Promise<Memb
 
     return {
         membre: {
-            prenom: membre.prenom,
+            firstname: membre.firstname,
         },
         jwt,
     }

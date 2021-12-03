@@ -1,28 +1,93 @@
-import React, { memo, useCallback } from "react"
+import React, { memo, useState } from "react"
+import { useSelector, shallowEqual } from "react-redux"
+import { toast } from "react-toastify"
+import _ from "lodash"
 import styles from "./styles.module.scss"
 
-const RegisterForm = (): JSX.Element => {
-    const onSubmit = useCallback((event: React.SyntheticEvent): void => {
-        event.preventDefault()
-        const target = event.target as typeof event.target & {
-            firstname: { value: string }
-            lastname: { value: string }
-            email: { value: string }
-            phone: { value: string }
+import { fetchPreMemberAdd } from "../../store/preMemberAdd"
+import { AppDispatch, AppState } from "../../store"
+
+interface Props {
+    dispatch: AppDispatch
+}
+
+const RegisterForm = ({ dispatch }: Props): JSX.Element => {
+    const [firstname, setFirstname] = useState("")
+    const [lastname, setLastname] = useState("")
+    const [email, setEmail] = useState("")
+    const [mobile, setMobile] = useState("")
+    const [alreadyVolunteer, setAlreadyVolunteer] = useState(false)
+    const [comment, setComment] = useState("")
+    const [sending, setSending] = useState(false)
+
+    const onFirstnameChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setFirstname(e.target.value)
+    const onLastnameChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setLastname(e.target.value)
+    const onEmailChanged = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
+    const onMobileChanged = (e: React.ChangeEvent<HTMLInputElement>) => setMobile(e.target.value)
+    const onAlreadyVolunteer = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setAlreadyVolunteer(!!e.target.value)
+    const onNotYesVolunteer = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setAlreadyVolunteer(!e.target.value)
+    const onCommentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+        setComment(e.target.value)
+
+    const onSubmit = () => {
+        if (firstname && lastname && email && mobile && !sending) {
+            dispatch(
+                fetchPreMemberAdd({
+                    firstname,
+                    lastname,
+                    email,
+                    mobile,
+                    alreadyVolunteer,
+                    comment,
+                })
+            )
+
+            setSending(true)
+        } else {
+            toast.warning("Il faut remplir tous les champs (sauf le dernier)", {
+                position: "top-center",
+                autoClose: 6000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
         }
-        const firstname = target.firstname.value
-        const lastname = target.lastname.value
-        const email = target.email.value
-        const phone = target.phone.value
+    }
 
-        console.log("register fields checked", firstname, lastname, email, phone)
+    const { error, entities: preMember } = useSelector(
+        (state: AppState) => state.preMemberAdd,
+        shallowEqual
+    )
 
-        // call service with fields
-    }, [])
+    let sendSuccess
+    if (!_.isEmpty(preMember)) {
+        if (sending) {
+            setSending(false)
+        }
+        sendSuccess = <span className={styles.success}>Formulaire envoyé !</span>
+    }
 
+    let sendError
+    if (error && _.isEmpty(preMember)) {
+        if (sending) {
+            setSending(false)
+        }
+        sendError = <span className={styles.error}>{error}</span>
+    }
+
+    let sendingElement
+    if (sending) {
+        sendingElement = <span className={styles.sending}>Envoi en cours...</span>
+    }
     /*
-    prenom
-    nom
+    firstname
+    lastname
     mail
     tel
     j'ai déjà été bénévole pour PEL
@@ -35,8 +100,8 @@ const RegisterForm = (): JSX.Element => {
                 <dt>Qu&apos;est-ce que Paris est Ludique ?</dt>
                 <dd>
                     <p>
-                        Cette grande fête est dédiée aux <b>jeux de société modernes</b> sous toutes
-                        leurs formes.
+                        Un festival en plein air dédiée aux <b>jeux de société modernes</b> sous
+                        toutes leurs formes.
                     </p>
                     <p>
                         En 2019 lors de la dernière édition, ce sont <b>16 000</b> joueurs qui se
@@ -53,60 +118,88 @@ const RegisterForm = (): JSX.Element => {
                 <dd>
                     <p>
                         L&apos;organisation du festival est <b>entièrement gérée par nous</b>, les
-                        bénévoles. À aucun moment ça ne doit devenir une corvée, donc nous faisons
-                        tout pour passer <b>un aussi bon moment que les visiteurs</b> :)
+                        bénévoles. À aucun moment ça ne ressemble à du travail : nous faisons tout
+                        pour passer <b>un aussi bon moment que les visiteurs</b> :)
                     </p>
                     <p>
-                        C&apos;est pour ça que chaque mois, ceux qui sont dispo prennent
-                        l&apos;apéro tous ensemble en jouant et discutant de l&apos;organisation.
+                        D&apos;ailleurs, un soir par mois nous nous réunissons pour un apéro ludique
+                        où discuter de l&apos;organisation ! On joue autant que les visiteurs, mais
+                        sur toute l&apos;année ^^
                     </p>
                     <p>
                         Pendant le festival de 2019, nous étions <b>187 bénévoles</b> organisés en
-                        équipes spécialisées qui chouchoutent les visiteurs en les accueillant, en
-                        s&apos;assurant que tout se passe bien, ou en expliquant des règles de jeux.
+                        équipes qui chouchoutent les visiteurs en les accueillant, en
+                        s&apos;assurant que tout se passe bien, ou encore en expliquant des règles
+                        de jeux.
                     </p>
                     <p>
-                        Une équipe s&apos;occupe même du bien être des bénévoles en leur servant à
-                        boire et à manger dans un espace à part où faire des pauses régulières.
+                        Une équipe est même dédiée au bien être des bénévoles en leur servant à
+                        boire et à manger dans un espace à part où faire des pauses régulières. Et
+                        puis nous hébergeons ceux d&apos;entre nous qui habitent loin de Paris. Le
+                        confort avant tout !
                     </p>
                     <p>
-                        Les deux jours avant et le jour après le festival, ceux qui le peuvent
-                        viennent tout préparer et ranger. Certains ne sont disponibles que ces jours
-                        là et c&apos;est déjà d&apos;une grande aide !
+                        Certains bénévoles sont visiteurs le samedi ou le dimanche pour vivre le
+                        festival de l&apos;intérieur. Les deux jours avant et le jour après le
+                        festival, ceux qui le peuvent viennent préparer et ranger. Bref, chacun
+                        participe à la hauteur de ses envies et disponibilités !
                     </p>
                     <p>
-                        Nous nous arrangeons pour héberger les bénévoles qui habitent loin de Paris,
-                        et certains ne viennent qu&apos;un seul jour du weekend pour être visiteur
-                        l&apos;autre.
-                    </p>
-                    <p>
-                        Le samedi soir, cerise sur le gâteau, nous prenons un{" "}
-                        <b>dîner avec les auteurs, illustrateurs et éditeurs</b> qui sont présents
-                        sur le festival !
+                        Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en
+                        dînant avec les auteurs, illustrateurs et éditeurs présents sur le festival.
                     </p>
                 </dd>
                 <dt>
-                    Si l&apos;expérience vous tente, n&apos;hésitez pas à remplir le formulaire
-                    suivant pour nous rencontrer lors d&apos;un des gros apéros mensuels !<br />
+                    Si l&apos;expérience pourrait vous tenter, remplissez le formulaire suivant pour
+                    en discuter lors d&apos;un des gros apéros mensuels !<br />
+                    Cette inscription ne vous oblige en rien il s&apos;agit juste d&apos;une prise
+                    de contact.
+                    <br />
                     Les prochains sont les 21 décembre et 27 janvier, mais nous vous appelerons
-                    d&apos;ici là pour discuter :)
+                    d&apos;ici là pour les détails :)
+                    <br />
+                    <span className={styles.lightTitle}>(Déjà au moins 8 inscrits !)</span>
                 </dt>
                 <dd>
                     <div className={styles.formLine} key="line-firstname">
                         <label htmlFor="firstname">Prénom</label>
-                        <input type="text" id="firstname" />
+                        <input
+                            type="text"
+                            id="firstname"
+                            required
+                            value={firstname}
+                            onChange={onFirstnameChanged}
+                        />
                     </div>
                     <div className={styles.formLine} key="line-lastname">
                         <label htmlFor="lastname">Nom</label>
-                        <input type="text" id="lastname" />
+                        <input
+                            type="text"
+                            id="lastname"
+                            required
+                            value={lastname}
+                            onChange={onLastnameChanged}
+                        />
                     </div>
                     <div className={styles.formLine} key="line-email">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" />
+                        <input
+                            type="email"
+                            id="email"
+                            required
+                            value={email}
+                            onChange={onEmailChanged}
+                        />
                     </div>
-                    <div className={styles.formLine} key="line-phone">
-                        <label htmlFor="phone">Téléphone</label>
-                        <input type="text" id="phone" />
+                    <div className={styles.formLine} key="line-mobile">
+                        <label htmlFor="mobile">Téléphone</label>
+                        <input
+                            type="text"
+                            id="mobile"
+                            required
+                            value={mobile}
+                            onChange={onMobileChanged}
+                        />
                     </div>
                     <div className={styles.formLine} key="line-already-volunteer">
                         <div>
@@ -116,6 +209,8 @@ const RegisterForm = (): JSX.Element => {
                                 name="alreadyVolunteer"
                                 id="alreadyVolunteer-yes"
                                 className={styles.inputRadio}
+                                checked={alreadyVolunteer}
+                                onChange={onAlreadyVolunteer}
                             />
                             <label htmlFor="alreadyVolunteer-yes">Oui</label>
                             <input
@@ -123,6 +218,8 @@ const RegisterForm = (): JSX.Element => {
                                 name="alreadyVolunteer"
                                 id="alreadyVolunteer-no"
                                 className={styles.inputRadio}
+                                checked={!alreadyVolunteer}
+                                onChange={onNotYesVolunteer}
                             />
                             <label htmlFor="alreadyVolunteer-no">Non</label>
                         </div>
@@ -132,10 +229,19 @@ const RegisterForm = (): JSX.Element => {
                             name="message"
                             id="message"
                             placeholder="Des petits mots sympas, questions, envies, des infos sur toi, des compétences dont tu aimerais te servir... ou rien de tout ça et nous en discuterons au téléphone :)"
+                            value={comment}
+                            onChange={onCommentChanged}
                         />
                     </div>
                     <div className={styles.formButtons}>
-                        <button type="submit">Envoyer</button>
+                        <button type="button" onClick={onSubmit} disabled={sending}>
+                            Envoyer
+                        </button>
+                    </div>
+                    <div className={styles.formReactions}>
+                        {sendingElement}
+                        {sendSuccess}
+                        {sendError}
                     </div>
                 </dd>
             </dl>

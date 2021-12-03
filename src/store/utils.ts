@@ -23,7 +23,7 @@ export function toastError(message: string): void {
 export function toastSuccess(message: string): void {
     toast.success(message, {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,

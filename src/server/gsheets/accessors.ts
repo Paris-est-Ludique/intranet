@@ -13,7 +13,12 @@ export default function getAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementNoId & ElementWithId
->(sheetName: string, specimen: Element): any {
+>(sheetName: string, specimen: Element, translation: { [k in keyof Element]: string }): any {
+    const frenchSpecimen = _.mapValues(
+        _.invert(translation),
+        (englishProp: string) => (specimen as any)[englishProp]
+    ) as Element
+
     const addDBOperation = DBManager(sheetName)
 
     async function listGet(): Promise<Element[]> {
@@ -27,10 +32,13 @@ export default function getAccessors<
             if (!rows[0]) {
                 throw new Error(`No column types defined in sheet ${sheetName}`)
             }
-            const types = _.pick(rows[0], Object.keys(specimen)) as Record<keyof Element, string>
+            const types = _.pick(rows[0], Object.values(translation)) as Record<
+                keyof Element,
+                string
+            >
             rows.shift()
             rows.forEach((row) => {
-                const stringifiedElement = _.pick(row, Object.keys(specimen)) as Record<
+                const stringifiedElement = _.pick(row, Object.values(translation)) as Record<
                     keyof Element,
                     string
                 >
@@ -274,7 +282,7 @@ export default function getAccessors<
                 }
                 return element
             },
-            JSON.parse(JSON.stringify(specimen))
+            JSON.parse(JSON.stringify(frenchSpecimen))
         )
         return fullElement
     }
@@ -365,7 +373,7 @@ export default function getAccessors<
 
                 return stringifiedElement
             },
-            JSON.parse(JSON.stringify(element))
+            JSON.parse(JSON.stringify(frenchSpecimen))
         )
 
         return rawElement

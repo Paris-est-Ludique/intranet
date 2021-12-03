@@ -31,6 +31,7 @@ const config: Configuration = {
         }),
         new webpack.DefinePlugin({
             localStorage: { getItem: () => null, setItem: () => null, removeItem: () => null },
+            "location.protocol": "http:",
         }),
     ],
 }

@@ -11,8 +11,8 @@ const MembreInfo = ({ item }: Props) => (
     <div className={styles.MembreCard}>
         <h4>Membre Info</h4>
         <ul>
-            <li>Prénom: {item.prenom}</li>
-            <li>Nom: {item.nom}</li>
+            <li>Prénom: {item.firstname}</li>
+            <li>Nom: {item.lastname}</li>
         </ul>
     </div>
 )

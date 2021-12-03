@@ -13,22 +13,23 @@ interface Props {
 }
 
 const MembreSet = ({ dispatch, membre }: Props) => {
-    const [prenom, setPrenom] = useState(membre.prenom)
-    const [nom, setNom] = useState(membre.nom)
-    const [majeur, setMajeur] = useState(membre.majeur)
+    const [firstname, setFirstname] = useState(membre.firstname)
+    const [lastname, setName] = useState(membre.lastname)
+    const [adult, setAdult] = useState(membre.adult)
 
-    const onPrenomChanged = (e: React.ChangeEvent<HTMLInputElement>) => setPrenom(e.target.value)
-    const onNomChanged = (e: React.ChangeEvent<HTMLInputElement>) => setNom(e.target.value)
-    const onMajeurChanged = (e: React.ChangeEvent<HTMLInputElement>) => setMajeur(+e.target.value)
+    const onFirstnameChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setFirstname(e.target.value)
+    const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)
+    const onAdultChanged = (e: React.ChangeEvent<HTMLInputElement>) => setAdult(+e.target.value)
 
     const onSavePostClicked = () => {
-        if (prenom && nom) {
+        if (firstname && lastname) {
             dispatch(
                 fetchMembreSet({
                     ...membre,
-                    prenom,
-                    nom,
-                    majeur,
+                    firstname,
+                    lastname,
+                    adult,
                 })
             )
         } else {
@@ -47,34 +48,34 @@ const MembreSet = ({ dispatch, membre }: Props) => {
         <section className={styles.MembreList}>
             <h2>Modifier un membre</h2>
             <form>
-                <label htmlFor="postPrenom">
-                    Prenom:
+                <label htmlFor="postFirstname">
+                    Prénom:
                     <input
                         type="text"
-                        id="postPrenom"
-                        name="postPrenom"
-                        value={prenom}
-                        onChange={onPrenomChanged}
+                        id="postFirstname"
+                        name="postFirstname"
+                        value={firstname}
+                        onChange={onFirstnameChanged}
                     />
                 </label>
-                <label htmlFor="postNom">
+                <label htmlFor="postName">
                     Nom:
                     <input
                         type="text"
-                        id="postNom"
-                        name="postNom"
-                        value={nom}
-                        onChange={onNomChanged}
+                        id="postName"
+                        name="postName"
+                        value={lastname}
+                        onChange={onNameChanged}
                     />
                 </label>
-                <label htmlFor="postMajeur">
+                <label htmlFor="postAdult">
                     Majeur:
                     <input
                         type="text"
-                        id="postMajeur"
-                        name="postMajeur"
-                        value={majeur}
-                        onChange={onMajeurChanged}
+                        id="postAdult"
+                        name="postAdult"
+                        value={adult}
+                        onChange={onAdultChanged}
                     />
                 </label>
                 <button type="button" onClick={onSavePostClicked}>

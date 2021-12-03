@@ -10,11 +10,11 @@ exports[`<MembreInfo /> renders 1`] = `
   <ul>
     <li>
       Prénom: 
-      Amélie
+      Aupeix
     </li>
     <li>
       Nom: 
-      Aupeix
+      Amélie
     </li>
   </ul>
 </div>

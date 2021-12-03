@@ -3,30 +3,48 @@ import { get, listGet, add, set } from "./accessors"
 export class Membre {
     id = 0
 
-    nom = ""
+    lastname = ""
 
-    prenom = ""
+    firstname = ""
 
-    mail = ""
+    email = ""
 
-    telephone = ""
+    mobile = ""
 
     photo = ""
 
-    alimentation = ""
+    food = ""
 
-    majeur = 1
+    adult = 1
 
-    privilege = 0
+    privileges = 0
 
-    actif = 0
+    active = 0
 
-    commentaire = ""
+    comment = ""
 
-    horodatage = ""
+    timestamp = ""
 
-    passe = ""
+    password = ""
 }
+
+export const translationMember: { [k in keyof Membre]: string } = {
+    id: "id",
+    lastname: "nom",
+    firstname: "prenom",
+    email: "mail",
+    mobile: "telephone",
+    photo: "photo",
+    food: "alimentation",
+    adult: "majeur",
+    privileges: "privilege",
+    active: "actif",
+    comment: "commentaire",
+    timestamp: "horodatage",
+    password: "passe",
+}
+
+const elementName = "Membre"
 
 export const emailRegexp =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
@@ -34,7 +52,7 @@ export const passwordMinLength = 4
 
 export interface MemberLogin {
     membre?: {
-        prenom: string
+        firstname: string
     }
     jwt?: string
     error?: string
@@ -42,10 +60,10 @@ export interface MemberLogin {
 
 export type MembreWithoutId = Omit<Membre, "id">
 
-export const membreGet = get<Membre>("Membre")
+export const membreGet = get<Membre>(elementName, translationMember)
 
-export const membreListGet = listGet<Membre>("Membre")
+export const membreListGet = listGet<Membre>(elementName, translationMember)
 
-export const membreAdd = add<MembreWithoutId, Membre>("Membre")
+export const membreAdd = add<MembreWithoutId, Membre>(elementName, translationMember)
 
-export const membreSet = set<Membre>("Membre")
+export const membreSet = set<Membre>(elementName, translationMember)
