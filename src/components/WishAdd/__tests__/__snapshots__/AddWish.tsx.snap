@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WishAdd /> renders 1`] = `
+<section
+  class="WishList"
+>
+  <h2>
+    Ajouter une nouvelle wish
+  </h2>
+  <form>
+    <label
+      for="postDomain"
+    >
+      Domaine:
+      <input
+        id="postDomain"
+        name="postDomain"
+        type="text"
+        value=""
+      />
+    </label>
+    <label
+      for="postWish"
+    >
+      Envies:
+      <textarea
+        id="postWish"
+        name="postWish"
+      />
+    </label>
+    <label
+      for="postDetails"
+    >
+      Precisions:
+      <textarea
+        id="postDetails"
+        name="postDetails"
+      />
+    </label>
+    <label
+      for="postTeams"
+    >
+      Equipes:
+      <input
+        id="postTeams"
+        name="postTeams"
+        type="text"
+        value=""
+      />
+    </label>
+    <label
+      for="postAddedDate"
+    >
+      Date dajout:
+      <input
+        id="postAddedDate"
+        name="postAddedDate"
+        type="date"
+        value=""
+      />
+    </label>
+    <button
+      type="button"
+    >
+      Save Post
+    </button>
+  </form>
+</section>
+`;

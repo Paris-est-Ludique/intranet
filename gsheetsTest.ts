@@ -315,13 +315,13 @@ export { SCOPES }
 class Test {
     id = 5
 
-    envies = ""
+    wishes = ""
 
     dateAjout: Date = new Date(0)
 
     ignore = false
 
-    membres: number[] = []
+    volunteers: number[] = []
 
     equipes: string[] = []
 
@@ -335,10 +335,10 @@ async function testGSheetAPi(): Promise<void> {
     const dataset: Test[] = [
         {
             id: 1,
-            envies: "Présenter le festival et son organisation à un nouveau bénévol au téléphone",
+            wishes: "Présenter le festival et son organisation à un nouveau bénévol au téléphone",
             dateAjout: new Date("2021-10-18T22:00:00.000Z"),
             ignore: true,
-            membres: [2, 5, 6, 4, 2, 7],
+            volunteers: [2, 5, 6, 4, 2, 7],
             equipes: ["Accueillir les bénévoles"],
             datesPossibles: [
                 new Date("2021-11-18T23:00:00.000Z"),
@@ -349,34 +349,34 @@ async function testGSheetAPi(): Promise<void> {
         },
         {
             id: 5,
-            envies: "Créer de jolies pages webs",
+            wishes: "Créer de jolies pages webs",
             dateAjout: new Date("2021-10-18T22:00:00.000Z"),
             ignore: false,
-            membres: [7],
+            volunteers: [7],
             equipes: ["Site Web Public", "Force Orange"],
             datesPossibles: [],
             tictactoe: [],
         },
         {
             id: 6,
-            envies: "Modérer un salon Discord",
+            wishes: "Modérer un salon Discord",
             dateAjout: new Date("2021-10-18T22:00:00.000Z"),
             ignore: true,
-            membres: [],
+            volunteers: [],
             equipes: [],
             datesPossibles: [new Date("2024-10-18T22:00:00.000Z")],
             tictactoe: [false, false, false, false, true, true, true, true],
         },
     ]
 
-    // console.log("Lecture des Membres...")
-    // const datasetMembresLu = await getList<Membre>("Membres", new Membre())
-    // if (!datasetMembresLu) {
-    //     console.log("ECHEC de la lecture des membres", datasetMembresLu)
+    // console.log("Lecture des Volunteers...")
+    // const datasetVolunteersLu = await getList<Volunteer>("Volunteers", new Volunteer())
+    // if (!datasetVolunteersLu) {
+    //     console.log("ECHEC de la lecture des volunteers", datasetVolunteersLu)
     //     return
     // }
-    // console.log("Extraction des membres réussie")
-    // await fs.writeFile("membres.json", JSON.stringify(datasetMembresLu))
+    // console.log("Extraction des volunteers réussie")
+    // await fs.writeFile("volunteers.json", JSON.stringify(datasetVolunteersLu))
 
     console.log("Test d'écriture...")
     const resultatEcriture = await setList<Test>("Tests de l'API", dataset)

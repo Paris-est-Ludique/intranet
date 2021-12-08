@@ -9,7 +9,14 @@ const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
 export type ElementWithId = unknown & { id: number }
 
-export default function getAccessors<
+export const sheetNames: { [name: string]: string } = {
+    JavGames: "Jeux JAV",
+    Volunteers: "Membres",
+    PreVolunteers: "PreMembres",
+    Wishes: "Envies d'aider",
+}
+
+export function getAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementNoId & ElementWithId
@@ -52,10 +59,10 @@ export default function getAccessors<
         })
     }
 
-    async function get(membreId: number): Promise<Element | undefined> {
+    async function get(volunteerId: number): Promise<Element | undefined> {
         // No need to addDBOperation here, since listGet does it already
         const list = await listGet()
-        return list.find((element) => element.id === membreId)
+        return list.find((element) => element.id === volunteerId)
     }
 
     async function setList(elements: Element[]): Promise<true | undefined> {

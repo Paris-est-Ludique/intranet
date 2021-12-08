@@ -1,16 +1,14 @@
 import { Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt"
 import {
-    Membre,
+    Volunteer,
     MemberLogin,
     emailRegexp,
     passwordMinLength,
     translationMember,
-} from "../../services/membres"
-import getAccessors from "../gsheets/accessors"
+} from "../../services/volunteers"
+import { getAccessors, sheetNames } from "../gsheets/accessors"
 import { getJwt } from "../secure"
-
-const { listGet } = getAccessors("Membres", new Membre(), translationMember)
 
 export default async function loginHandler(
     request: Request,
@@ -33,6 +31,8 @@ export default async function loginHandler(
 }
 
 export async function login(rawEmail: string, rawPassword: string): Promise<MemberLogin> {
+    const { listGet } = getAccessors(sheetNames.Volunteers, new Volunteer(), translationMember)
+
     const email = rawEmail.replace(/^\s*/, "").replace(/\s*$/, "")
     if (!emailRegexp.test(email)) {
         throw Error("Email invalid")
@@ -46,13 +46,13 @@ export async function login(rawEmail: string, rawPassword: string): Promise<Memb
         throw Error("Mot de passe trop court")
     }
 
-    const membres: Membre[] = await listGet()
-    const membre = membres.find((m) => m.email === email)
-    if (!membre) {
+    const volunteers: Volunteer[] = await listGet()
+    const volunteer = volunteers.find((m) => m.email === email)
+    if (!volunteer) {
         throw Error("Cet email ne correspond à aucun utilisateur")
     }
 
-    const passwordMatch = await bcrypt.compare(password, membre.password.replace(/^\$2y/, "$2a"))
+    const passwordMatch = await bcrypt.compare(password, volunteer.password.replace(/^\$2y/, "$2a"))
     if (!passwordMatch) {
         throw Error("Mauvais mot de passe pour cet email")
     }
@@ -60,8 +60,8 @@ export async function login(rawEmail: string, rawPassword: string): Promise<Memb
     const jwt = await getJwt(email)
 
     return {
-        membre: {
-            firstname: membre.firstname,
+        volunteer: {
+            firstname: volunteer.firstname,
         },
         jwt,
     }

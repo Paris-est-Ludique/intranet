@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VolunteerInfo /> renders 1`] = `
+<div
+  class="VolunteerCard"
+>
+  <h4>
+    Volunteer Info
+  </h4>
+  <ul>
+    <li>
+      Prénom: 
+      Aupeix
+    </li>
+    <li>
+      Nom: 
+      Amélie
+    </li>
+  </ul>
+</div>
+`;

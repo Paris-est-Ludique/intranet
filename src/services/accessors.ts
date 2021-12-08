@@ -75,7 +75,7 @@ export function listGet<Element>(
 export function add<ElementNoId extends object, Element extends ElementNoId & ElementWithId>(
     elementName: string,
     translation: ElementTranslation
-): (membreWithoutId: ElementNoId) => Promise<{
+): (volunteerWithoutId: ElementNoId) => Promise<{
     data?: Element
     error?: Error
 }> {
@@ -83,12 +83,13 @@ export function add<ElementNoId extends object, Element extends ElementNoId & El
         data?: Element
         error?: Error
     }
-    return async (membreWithoutId: ElementNoId): Promise<ElementGetResponse> => {
+    return async (volunteerWithoutId: ElementNoId): Promise<ElementGetResponse> => {
         try {
             const invertedTranslationWithoutId = _.invert(_.omit(translation, "id"))
             const frenchDataWithoutId = _.mapValues(
                 invertedTranslationWithoutId,
-                (englishProp: string, _frenchProp: string) => (membreWithoutId as any)[englishProp]
+                (englishProp: string, _frenchProp: string) =>
+                    (volunteerWithoutId as any)[englishProp]
             )
 
             const { data } = await axios.post(
@@ -114,7 +115,7 @@ export function add<ElementNoId extends object, Element extends ElementNoId & El
 export function set<Element>(
     elementName: string,
     translation: ElementTranslation
-): (membre: Element) => Promise<{
+): (volunteer: Element) => Promise<{
     data?: Element
     error?: Error
 }> {
@@ -122,12 +123,12 @@ export function set<Element>(
         data?: Element
         error?: Error
     }
-    return async (membre: Element): Promise<ElementGetResponse> => {
+    return async (volunteer: Element): Promise<ElementGetResponse> => {
         try {
             const invertedTranslation = _.invert(translation)
             const frenchData = _.mapValues(
                 invertedTranslation,
-                (englishProp: string) => (membre as any)[englishProp]
+                (englishProp: string) => (volunteer as any)[englishProp]
             )
 
             const { data } = await axios.post(

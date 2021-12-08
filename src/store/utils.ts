@@ -64,7 +64,7 @@ export function elementFetch<Element>(
 }
 
 export function elementAddFetch<Element>(
-    elementAddService: (membreWithoutId: Omit<Element, "id">) => Promise<{
+    elementAddService: (volunteerWithoutId: Omit<Element, "id">) => Promise<{
         data?: Element | undefined
         error?: Error | undefined
     }>,
@@ -77,12 +77,12 @@ export function elementAddFetch<Element>(
     successMessage: () => void = () => {
         /* Meant to be empty */
     }
-): (membreWithoutId: Omit<Element, "id">) => AppThunk {
-    return (membreWithoutId: Omit<Element, "id">): AppThunk =>
+): (volunteerWithoutId: Omit<Element, "id">) => AppThunk {
+    return (volunteerWithoutId: Omit<Element, "id">): AppThunk =>
         async (dispatch) => {
             dispatch(getRequesting())
 
-            const { error, data } = await elementAddService(membreWithoutId)
+            const { error, data } = await elementAddService(volunteerWithoutId)
 
             if (error) {
                 dispatch(getFailure(error.message))
@@ -125,7 +125,7 @@ export function elementListFetch<Element>(
 }
 
 export function elementSet<Element>(
-    elementSetService: (membre: Element) => Promise<{
+    elementSetService: (volunteer: Element) => Promise<{
         data?: Element | undefined
         error?: Error | undefined
     }>,

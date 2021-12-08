@@ -16,10 +16,10 @@ import ssr from "./ssr"
 
 import certbotRouter from "../routes/certbot"
 import { secure } from "./secure"
-import { jeuJavListGet } from "./gsheets/jeuJav"
-import { envieListGet, envieAdd } from "./gsheets/envies"
-import { preMemberAdd } from "./gsheets/preMembers"
-import { membreGet, membreSet } from "./gsheets/membres"
+import { javGameListGet } from "./gsheets/javGames"
+import { wishListGet, wishAdd } from "./gsheets/wishes"
+import { preMemberAdd } from "./gsheets/preVolunteers"
+import { volunteerGet, volunteerSet } from "./gsheets/volunteers"
 import loginHandler from "./userManagement/login"
 import config from "../config"
 
@@ -54,14 +54,14 @@ app.post("/api/user/login", loginHandler)
  * APIs
  */
 // Google Sheets API
-app.get("/JeuJavListGet", jeuJavListGet)
-app.get("/EnvieListGet", envieListGet)
-app.post("/EnvieAdd", envieAdd)
+app.get("/JavGameListGet", javGameListGet)
+app.get("/WishListGet", wishListGet)
+app.post("/WishAdd", wishAdd)
 app.post("/PreMemberAdd", preMemberAdd)
 
 // Secured APIs
-app.get("/MembreGet", secure as RequestHandler, membreGet)
-app.post("/MembreSet", secure as RequestHandler, membreSet)
+app.get("/VolunteerGet", secure as RequestHandler, volunteerGet)
+app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)

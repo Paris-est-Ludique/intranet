@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import _ from "lodash"
 import styles from "./styles.module.scss"
 
-import { fetchPreMemberAdd } from "../../store/preMemberAdd"
+import { fetchPreMemberAdd } from "../../store/preVolunteerAdd"
 import { AppDispatch, AppState } from "../../store"
 
 interface Props {
@@ -142,7 +142,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         Certains bénévoles sont visiteurs le samedi ou le dimanche pour vivre le
                         festival de l&apos;intérieur. Les deux jours avant et le jour après le
                         festival, ceux qui le peuvent viennent préparer et ranger. Bref, chacun
-                        participe à la hauteur de ses envies et disponibilités !
+                        participe à la hauteur de ses wishes et disponibilités !
                     </p>
                     <p>
                         Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en
@@ -228,7 +228,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         <textarea
                             name="message"
                             id="message"
-                            placeholder="Des petits mots sympas, questions, envies, des infos sur toi, des compétences dont tu aimerais te servir... ou rien de tout ça et nous en discuterons au téléphone :)"
+                            placeholder="Des petits mots sympas, questions, wishes, des infos sur toi, des compétences dont tu aimerais te servir... ou rien de tout ça et nous en discuterons au téléphone :)"
                             value={comment}
                             onChange={onCommentChanged}
                         />

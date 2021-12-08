@@ -1,9 +1,9 @@
-import MembreList from "./MembreList"
-import JeuJavList from "./JeuJavList"
-import MembreInfo from "./MembreInfo"
-import MembreSet from "./MembreSet"
+import VolunteerList from "./VolunteerList"
+import JavGameList from "./JavGameList"
+import VolunteerInfo from "./VolunteerInfo"
+import VolunteerSet from "./VolunteerSet"
 import ErrorBoundary from "./ErrorBoundary"
 import Loading from "./Loading"
-import AddEnvie from "./AddEnvie"
+import WishAdd from "./WishAdd"
 
-export { MembreList, JeuJavList, MembreInfo, MembreSet, ErrorBoundary, Loading, AddEnvie }
+export { VolunteerList, JavGameList, VolunteerInfo, VolunteerSet, ErrorBoundary, Loading, WishAdd }

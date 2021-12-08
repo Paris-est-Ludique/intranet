@@ -2,7 +2,7 @@ import { RouteConfig } from "react-router-config"
 
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
-import AsyncMembrePage, { loadData as loadMembrePageData } from "../pages/MembrePage"
+import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
 import Register from "../pages/Register"
 import NotFound from "../pages/NotFound"
@@ -17,9 +17,9 @@ export default [
                 component: Register,
             },
             {
-                path: "/MembrePage/:id",
-                component: AsyncMembrePage,
-                loadData: loadMembrePageData,
+                path: "/VolunteerPage/:id",
+                component: AsyncVolunteerPage,
+                loadData: loadVolunteerPageData,
             },
             {
                 path: "/login",

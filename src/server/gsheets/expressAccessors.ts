@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import getAccessors, { ElementWithId } from "./accessors"
+import { ElementWithId, getAccessors } from "./accessors"
 
 export default function getExpressAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
