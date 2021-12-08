@@ -1,4 +1,4 @@
-import { get, listGet, add, set } from "./accessors"
+import getServiceAccessors from "./accessors"
 
 export class Wish {
     id = 0
@@ -27,10 +27,12 @@ const elementName = "Wish"
 
 export type WishWithoutId = Omit<Wish, "id">
 
-export const wishGet = get<Wish>(elementName, translationWish)
+const { listGet, get, set, add } = getServiceAccessors<WishWithoutId, Wish>(
+    elementName,
+    translationWish
+)
 
-export const wishListGet = listGet<Wish>(elementName, translationWish)
-
-export const wishAdd = add<WishWithoutId, Wish>(elementName, translationWish)
-
-export const wishSet = set<Wish>(elementName, translationWish)
+export const wishListGet = listGet()
+export const wishGet = get()
+export const wishAdd = add()
+export const wishSet = set()

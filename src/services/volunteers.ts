@@ -1,4 +1,4 @@
-import { get, listGet, add, set } from "./accessors"
+import getServiceAccessors from "./accessors"
 
 export class Volunteer {
     id = 0
@@ -60,10 +60,12 @@ export interface MemberLogin {
 
 export type VolunteerWithoutId = Omit<Volunteer, "id">
 
-export const volunteerGet = get<Volunteer>(elementName, translationMember)
+const { listGet, get, set, add } = getServiceAccessors<VolunteerWithoutId, Volunteer>(
+    elementName,
+    translationMember
+)
 
-export const volunteerListGet = listGet<Volunteer>(elementName, translationMember)
-
-export const volunteerAdd = add<VolunteerWithoutId, Volunteer>(elementName, translationMember)
-
-export const volunteerSet = set<Volunteer>(elementName, translationMember)
+export const volunteerListGet = listGet()
+export const volunteerGet = get()
+export const volunteerAdd = add()
+export const volunteerSet = set()

@@ -1,4 +1,4 @@
-import { get, listGet, add, set } from "./accessors"
+import getServiceAccessors from "./accessors"
 
 export class PreMember {
     id = 0
@@ -30,10 +30,12 @@ const elementName = "PreMember"
 
 export type PreMemberWithoutId = Omit<PreMember, "id">
 
-export const preMemberGet = get<PreMember>(elementName, translationPreMember)
+const { listGet, get, set, add } = getServiceAccessors<PreMemberWithoutId, PreMember>(
+    elementName,
+    translationPreMember
+)
 
-export const preMemberListGet = listGet<PreMember>(elementName, translationPreMember)
-
-export const preMemberAdd = add<PreMemberWithoutId, PreMember>(elementName, translationPreMember)
-
-export const preMemberSet = set<PreMember>(elementName, translationPreMember)
+export const preMemberListGet = listGet()
+export const preMemberGet = get()
+export const preMemberAdd = add()
+export const preMemberSet = set()
