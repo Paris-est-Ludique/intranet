@@ -18,7 +18,7 @@ import certbotRouter from "../routes/certbot"
 import { secure } from "./secure"
 import { javGameListGet } from "./gsheets/javGames"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
-import { preMemberAdd } from "./gsheets/preVolunteers"
+import { preVolunteerAdd } from "./gsheets/preVolunteers"
 import { volunteerGet, volunteerSet } from "./gsheets/volunteers"
 import loginHandler from "./userManagement/login"
 import config from "../config"
@@ -57,7 +57,7 @@ app.post("/api/user/login", loginHandler)
 app.get("/JavGameListGet", javGameListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
-app.post("/PreMemberAdd", preMemberAdd)
+app.post("/PreVolunteerAdd", preVolunteerAdd)
 
 // Secured APIs
 app.get("/VolunteerGet", secure as RequestHandler, volunteerGet)

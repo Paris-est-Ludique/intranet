@@ -1,6 +1,6 @@
 import getServiceAccessors from "./accessors"
 
-export class PreMember {
+export class PreVolunteer {
     id = 0
 
     firstname = ""
@@ -16,7 +16,7 @@ export class PreMember {
     comment = ""
 }
 
-export const translationPreMember: { [k in keyof PreMember]: string } = {
+export const translationPreVolunteer: { [k in keyof PreVolunteer]: string } = {
     id: "id",
     firstname: "prenom",
     lastname: "nom",
@@ -26,16 +26,16 @@ export const translationPreMember: { [k in keyof PreMember]: string } = {
     comment: "commentaire",
 }
 
-const elementName = "PreMember"
+const elementName = "PreVolunteer"
 
-export type PreMemberWithoutId = Omit<PreMember, "id">
+export type PreVolunteerWithoutId = Omit<PreVolunteer, "id">
 
-const { listGet, get, set, add } = getServiceAccessors<PreMemberWithoutId, PreMember>(
+const { listGet, get, set, add } = getServiceAccessors<PreVolunteerWithoutId, PreVolunteer>(
     elementName,
-    translationPreMember
+    translationPreVolunteer
 )
 
-export const preMemberListGet = listGet()
-export const preMemberGet = get()
-export const preMemberAdd = add()
-export const preMemberSet = set()
+export const preVolunteerListGet = listGet()
+export const preVolunteerGet = get()
+export const preVolunteerAdd = add()
+export const preVolunteerSet = set()

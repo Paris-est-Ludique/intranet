@@ -28,7 +28,7 @@ export class Volunteer {
     password = ""
 }
 
-export const translationMember: { [k in keyof Volunteer]: string } = {
+export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     id: "id",
     lastname: "nom",
     firstname: "prenom",
@@ -50,7 +50,7 @@ export const emailRegexp =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 export const passwordMinLength = 4
 
-export interface MemberLogin {
+export interface VolunteerLogin {
     volunteer?: {
         firstname: string
     }
@@ -62,7 +62,7 @@ export type VolunteerWithoutId = Omit<Volunteer, "id">
 
 const { listGet, get, set, add } = getServiceAccessors<VolunteerWithoutId, Volunteer>(
     elementName,
-    translationMember
+    translationVolunteer
 )
 
 export const volunteerListGet = listGet()

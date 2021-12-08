@@ -1,22 +1,22 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
 import { StateRequest, elementAddFetch } from "./utils"
-import { PreMember, preMemberAdd } from "../services/preVolunteers"
+import { PreVolunteer, preVolunteerAdd } from "../services/preVolunteers"
 
-const preMemberAdapter = createEntityAdapter<PreMember>()
+const preVolunteerAdapter = createEntityAdapter<PreVolunteer>()
 
-const preMemberAddSlice = createSlice({
-    name: "addPreMember",
-    initialState: preMemberAdapter.getInitialState({
+const preVolunteerAddSlice = createSlice({
+    name: "addPreVolunteer",
+    initialState: preVolunteerAdapter.getInitialState({
         readyStatus: "idle",
     } as StateRequest),
     reducers: {
         getRequesting: (state) => {
             state.readyStatus = "request"
         },
-        getSuccess: (state, { payload }: PayloadAction<PreMember>) => {
+        getSuccess: (state, { payload }: PayloadAction<PreVolunteer>) => {
             state.readyStatus = "success"
-            preMemberAdapter.addOne(state, payload)
+            preVolunteerAdapter.addOne(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"
@@ -25,11 +25,11 @@ const preMemberAddSlice = createSlice({
     },
 })
 
-export default preMemberAddSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = preMemberAddSlice.actions
+export default preVolunteerAddSlice.reducer
+export const { getRequesting, getSuccess, getFailure } = preVolunteerAddSlice.actions
 
-export const fetchPreMemberAdd = elementAddFetch(
-    preMemberAdd,
+export const fetchPreVolunteerAdd = elementAddFetch(
+    preVolunteerAdd,
     getRequesting,
     getSuccess,
     getFailure,

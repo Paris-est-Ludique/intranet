@@ -1,16 +1,20 @@
 import getExpressAccessors from "./expressAccessors"
 import { sheetNames } from "./accessors"
-import { PreMember, PreMemberWithoutId, translationPreMember } from "../../services/preVolunteers"
+import {
+    PreVolunteer,
+    PreVolunteerWithoutId,
+    translationPreVolunteer,
+} from "../../services/preVolunteers"
 
 const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
-    PreMemberWithoutId,
-    PreMember
->(sheetNames.PreVolunteers, new PreMember(), translationPreMember)
+    PreVolunteerWithoutId,
+    PreVolunteer
+>(sheetNames.PreVolunteers, new PreVolunteer(), translationPreVolunteer)
 
-export const preMemberListGet = listGetRequest()
+export const preVolunteerListGet = listGetRequest()
 
-export const preMemberGet = getRequest()
+export const preVolunteerGet = getRequest()
 
-export const preMemberAdd = addRequest()
+export const preVolunteerAdd = addRequest()
 
-export const preMemberSet = setRequest()
+export const preVolunteerSet = setRequest()

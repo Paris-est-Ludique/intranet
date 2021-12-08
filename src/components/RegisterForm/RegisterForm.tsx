@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import _ from "lodash"
 import styles from "./styles.module.scss"
 
-import { fetchPreMemberAdd } from "../../store/preVolunteerAdd"
+import { fetchPreVolunteerAdd } from "../../store/preVolunteerAdd"
 import { AppDispatch, AppState } from "../../store"
 
 interface Props {
@@ -36,7 +36,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const onSubmit = () => {
         if (firstname && lastname && email && mobile && !sending) {
             dispatch(
-                fetchPreMemberAdd({
+                fetchPreVolunteerAdd({
                     firstname,
                     lastname,
                     email,
@@ -60,13 +60,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         }
     }
 
-    const { error, entities: preMember } = useSelector(
-        (state: AppState) => state.preMemberAdd,
+    const { error, entities: preVolunteer } = useSelector(
+        (state: AppState) => state.preVolunteerAdd,
         shallowEqual
     )
 
     let sendSuccess
-    if (!_.isEmpty(preMember)) {
+    if (!_.isEmpty(preVolunteer)) {
         if (sending) {
             setSending(false)
         }
@@ -74,7 +74,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     }
 
     let sendError
-    if (error && _.isEmpty(preMember)) {
+    if (error && _.isEmpty(preVolunteer)) {
         if (sending) {
             setSending(false)
         }

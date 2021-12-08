@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt"
 import {
     Volunteer,
-    MemberLogin,
+    VolunteerLogin,
     emailRegexp,
     passwordMinLength,
-    translationMember,
+    translationVolunteer,
 } from "../../services/volunteers"
 import { getAccessors, sheetNames } from "../gsheets/accessors"
 import { getJwt } from "../secure"
@@ -30,8 +30,8 @@ export default async function loginHandler(
     }
 }
 
-export async function login(rawEmail: string, rawPassword: string): Promise<MemberLogin> {
-    const { listGet } = getAccessors(sheetNames.Volunteers, new Volunteer(), translationMember)
+export async function login(rawEmail: string, rawPassword: string): Promise<VolunteerLogin> {
+    const { listGet } = getAccessors(sheetNames.Volunteers, new Volunteer(), translationVolunteer)
 
     const email = rawEmail.replace(/^\s*/, "").replace(/\s*$/, "")
     if (!emailRegexp.test(email)) {
