@@ -37,7 +37,7 @@ const VolunteerPage = ({ match }: Props): JSX.Element => {
     }
 
     return (
-        <div className={styles.volunteer}>
+        <div className={styles.VolunteerPage}>
             <Helmet title="User Info" />
             {renderInfo()}
         </div>

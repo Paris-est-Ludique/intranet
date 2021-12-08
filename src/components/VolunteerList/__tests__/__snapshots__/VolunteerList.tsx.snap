@@ -2,7 +2,7 @@
 
 exports[`<VolunteerList /> renders 1`] = `
 <div
-  class="user-list"
+  class="VolunteerList"
 >
   <h4>
     Volunteer List
