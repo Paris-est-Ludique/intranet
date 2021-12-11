@@ -147,5 +147,26 @@ export default function getServiceAccessors<
         }
     }
 
-    return { listGet, get, set, add }
+    function countGet(): () => Promise<{
+        data?: number
+        error?: Error
+    }> {
+        interface ElementCountGetResponse {
+            data?: number
+            error?: Error
+        }
+        return async (): Promise<ElementCountGetResponse> => {
+            try {
+                const { data } = await axios.get(
+                    `${config.API_URL}/${elementName}CountGet`,
+                    axiosConfig
+                )
+                return { data }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
+    return { listGet, get, set, add, countGet }
 }

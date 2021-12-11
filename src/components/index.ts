@@ -5,5 +5,15 @@ import VolunteerSet from "./VolunteerSet"
 import ErrorBoundary from "./ErrorBoundary"
 import Loading from "./Loading"
 import WishAdd from "./WishAdd"
+import RegisterForm from "./RegisterForm"
 
-export { VolunteerList, JavGameList, VolunteerInfo, VolunteerSet, ErrorBoundary, Loading, WishAdd }
+export {
+    VolunteerList,
+    JavGameList,
+    VolunteerInfo,
+    VolunteerSet,
+    ErrorBoundary,
+    Loading,
+    WishAdd,
+    RegisterForm,
+}

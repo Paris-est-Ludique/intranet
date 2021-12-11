@@ -9,9 +9,10 @@ import { AppDispatch, AppState } from "../../store"
 
 interface Props {
     dispatch: AppDispatch
+    preVolunteerCount: number | undefined
 }
 
-const RegisterForm = ({ dispatch }: Props): JSX.Element => {
+const RegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element => {
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
@@ -158,7 +159,10 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     Les prochains sont les 21 décembre et 27 janvier, mais nous vous appelerons
                     d&apos;ici là pour les détails :)
                     <br />
-                    <span className={styles.lightTitle}>(Déjà au moins 8 inscrits !)</span>
+                    {/*  */}
+                    <span className={styles.lightTitle} hidden={(preVolunteerCount || 0) < 3}>
+                        (Déjà {preVolunteerCount} inscrits !)
+                    </span>
                 </dt>
                 <dd>
                     <div className={styles.formLine} key="line-firstname">

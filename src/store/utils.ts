@@ -154,3 +154,33 @@ export function elementSet<Element>(
             }
         }
 }
+
+export function elementValueFetch<Element>(
+    elementListService: () => Promise<{
+        data?: Element | undefined
+        error?: Error | undefined
+    }>,
+    getRequesting: ActionCreatorWithoutPayload<string>,
+    getSuccess: ActionCreatorWithPayload<Element, string>,
+    getFailure: ActionCreatorWithPayload<string, string>,
+    errorMessage: (error: Error) => void = (_error) => {
+        /* Meant to be empty */
+    },
+    successMessage: () => void = () => {
+        /* Meant to be empty */
+    }
+): () => AppThunk {
+    return (): AppThunk => async (dispatch) => {
+        dispatch(getRequesting())
+
+        const { error, data } = await elementListService()
+
+        if (error) {
+            dispatch(getFailure(error.message))
+            errorMessage(error)
+        } else {
+            dispatch(getSuccess(data as Element))
+            successMessage()
+        }
+    }
+}

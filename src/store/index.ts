@@ -41,4 +41,6 @@ export type AppThunk = ThunkAction<void, AppState, unknown, Action<string>>
 
 export type EntitiesRequest<T> = EntityState<T> & StateRequest
 
+export type ValueRequest<T> = { value?: T } & StateRequest
+
 export default createStore

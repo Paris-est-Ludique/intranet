@@ -8,7 +8,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-const REMOTE_SAVE_DELAY = 20000
+const REMOTE_UPDATE_DELAY = 20000
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
@@ -32,7 +32,7 @@ setInterval(
         Object.values(sheetList).forEach((sheet: Sheet<object, ElementWithId<object>>) =>
             sheet.dbUpdate()
         ),
-    REMOTE_SAVE_DELAY
+    REMOTE_UPDATE_DELAY
 )
 
 export function getSheet<
@@ -51,7 +51,7 @@ export function getSheet<
     return sheetList[sheetName] as Sheet<ElementNoId, Element>
 }
 
-class Sheet<
+export class Sheet<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementWithId<ElementNoId>
@@ -88,7 +88,7 @@ class Sheet<
         return JSON.parse(JSON.stringify(this._state))
     }
 
-    setList(newState: Element[] | undefined) {
+    setList(newState: Element[] | undefined): void {
         this._state = JSON.parse(JSON.stringify(newState))
         this.modifiedSinceSave = true
     }

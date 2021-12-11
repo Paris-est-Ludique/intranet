@@ -50,10 +50,6 @@ const Home: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => [
-    fetchWishListIfNeed(),
-    fetchJavGameListIfNeed(),
-    // More pre-fetched actions...
-]
+export const loadData = (): AppThunk[] => [fetchWishListIfNeed(), fetchJavGameListIfNeed()]
 
 export default memo(Home)

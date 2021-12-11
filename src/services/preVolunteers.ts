@@ -30,12 +30,13 @@ const elementName = "PreVolunteer"
 
 export type PreVolunteerWithoutId = Omit<PreVolunteer, "id">
 
-const { listGet, get, set, add } = getServiceAccessors<PreVolunteerWithoutId, PreVolunteer>(
-    elementName,
-    translationPreVolunteer
-)
+const { listGet, get, set, add, countGet } = getServiceAccessors<
+    PreVolunteerWithoutId,
+    PreVolunteer
+>(elementName, translationPreVolunteer)
 
 export const preVolunteerListGet = listGet()
 export const preVolunteerGet = get()
 export const preVolunteerAdd = add()
 export const preVolunteerSet = set()
+export const preVolunteerCountGet = countGet()

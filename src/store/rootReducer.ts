@@ -9,6 +9,7 @@ import volunteerAdd from "./volunteerAdd"
 import volunteerList from "./volunteerList"
 import volunteerSet from "./volunteerSet"
 import preVolunteerAdd from "./preVolunteerAdd"
+import preVolunteerCount from "./preVolunteerCount"
 
 // Use inferred return type for making correctly Redux types
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -21,6 +22,7 @@ export default (history: History) => ({
     volunteerList,
     volunteerSet,
     preVolunteerAdd,
+    preVolunteerCount,
     router: connectRouter(history) as any,
     // Register more reducers...
 })

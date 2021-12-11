@@ -1,15 +1,16 @@
-import getExpressAccessors from "./expressAccessors"
+import ExpressAccessors from "./expressAccessors"
 import { Wish, WishWithoutId, translationWish } from "../../services/wishes"
 
-const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
-    WishWithoutId,
-    Wish
->("Wishes", new Wish(), translationWish)
+const expressAccessor = new ExpressAccessors<WishWithoutId, Wish>(
+    "Wishes",
+    new Wish(),
+    translationWish
+)
 
-export const wishListGet = listGetRequest()
+export const wishListGet = expressAccessor.listGet()
 
-export const wishGet = getRequest()
+export const wishGet = expressAccessor.get()
 
-export const wishAdd = addRequest()
+export const wishAdd = expressAccessor.add()
 
-export const wishSet = setRequest()
+export const wishSet = expressAccessor.set()

@@ -1,15 +1,16 @@
-import getExpressAccessors from "./expressAccessors"
+import ExpressAccessors from "./expressAccessors"
 import { JavGame, JavGameWithoutId, translationJavGame } from "../../services/javGames"
 
-const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
-    JavGameWithoutId,
-    JavGame
->("JavGames", new JavGame(), translationJavGame)
+const expressAccessor = new ExpressAccessors<JavGameWithoutId, JavGame>(
+    "JavGames",
+    new JavGame(),
+    translationJavGame
+)
 
-export const javGameListGet = listGetRequest()
+export const javGameListGet = expressAccessor.listGet()
 
-export const javGameGet = getRequest()
+export const javGameGet = expressAccessor.get()
 
-export const javGameAdd = addRequest()
+export const javGameAdd = expressAccessor.add()
 
-export const javGameSet = setRequest()
+export const javGameSet = expressAccessor.set()

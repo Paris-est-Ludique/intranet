@@ -1,15 +1,16 @@
-import getExpressAccessors from "./expressAccessors"
+import ExpressAccessors from "./expressAccessors"
 import { Volunteer, VolunteerWithoutId, translationVolunteer } from "../../services/volunteers"
 
-const { listGetRequest, getRequest, setRequest, addRequest } = getExpressAccessors<
-    VolunteerWithoutId,
-    Volunteer
->("Volunteers", new Volunteer(), translationVolunteer)
+const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
+    "Volunteers",
+    new Volunteer(),
+    translationVolunteer
+)
 
-export const volunteerListGet = listGetRequest()
+export const volunteerListGet = expressAccessor.listGet()
 
-export const volunteerGet = getRequest()
+export const volunteerGet = expressAccessor.get()
 
-export const volunteerAdd = addRequest()
+export const volunteerAdd = expressAccessor.add()
 
-export const volunteerSet = setRequest()
+export const volunteerSet = expressAccessor.set()
