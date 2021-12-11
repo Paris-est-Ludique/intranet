@@ -1,12 +1,16 @@
 import { Request, Response, NextFunction } from "express"
-import { ElementWithId, getAccessors } from "./accessors"
+import { SheetNames, ElementWithId, getSheet } from "./accessors"
 
 export default function getExpressAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
-    Element extends ElementNoId & ElementWithId
->(sheetName: string, specimen: Element, translation: { [k in keyof Element]: string }): any {
-    const { get, listGet, add, set } = getAccessors(sheetName, specimen, translation)
+    Element extends ElementWithId<ElementNoId>
+>(
+    sheetName: keyof SheetNames,
+    specimen: Element,
+    translation: { [k in keyof Element]: string }
+): any {
+    const sheet = getSheet<ElementNoId, Element>(sheetName, specimen, translation)
 
     function listGetRequest() {
         return async (
@@ -15,7 +19,7 @@ export default function getExpressAccessors<
             _next: NextFunction
         ): Promise<void> => {
             try {
-                const elements = await listGet()
+                const elements = await sheet.getList()
                 if (elements) {
                     response.status(200).json(elements)
                 }
@@ -29,9 +33,10 @@ export default function getExpressAccessors<
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
                 const id = parseInt(request.query.id as string, 10) || -1
-                const elements = await get(id)
+                const elements = await sheet.getList()
                 if (elements) {
-                    response.status(200).json(elements)
+                    const element = elements.find((e: Element) => e.id === id)
+                    response.status(200).json(element)
                 }
             } catch (e: unknown) {
                 response.status(400).json(e)
@@ -42,7 +47,11 @@ export default function getExpressAccessors<
     function addRequest() {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                const element = await add(request.body)
+                sheet.add(request.body)
+                const elements: Element[] = (await sheet.getList()) || []
+                const element: Element = { id: await sheet.nextId(), ...request.body }
+                elements.push(element)
+                await sheet.setList(elements)
                 if (element) {
                     response.status(200).json(element)
                 }
@@ -55,10 +64,8 @@ export default function getExpressAccessors<
     function setRequest() {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                const element = await set(request.body)
-                if (element) {
-                    response.status(200).json(element)
-                }
+                await sheet.set(request.body)
+                response.status(200)
             } catch (e: unknown) {
                 response.status(400).json(e)
             }

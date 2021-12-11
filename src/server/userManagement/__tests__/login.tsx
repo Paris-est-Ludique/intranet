@@ -3,7 +3,7 @@
  */
 
 import _ from "lodash"
-import { getAccessors } from "../../gsheets/accessors"
+import { getSheet } from "../../gsheets/accessors"
 import { login } from "../login"
 
 // Could do a full test with: wget --header='Content-Type:application/json' --post-data='{"email":"pikiou.sub@gmail.com","password":"mot de passe"}' http://localhost:3000/api/user/login
@@ -20,8 +20,8 @@ jest.mock("../../gsheets/accessors")
 
 describe("login with", () => {
     beforeAll(() => {
-        ;(getAccessors as jest.Mock).mockImplementation(() => ({
-            listGet: () => [mockUser],
+        ;(getSheet as jest.Mock).mockImplementation(() => ({
+            getList: async () => [mockUser],
         }))
     })
 

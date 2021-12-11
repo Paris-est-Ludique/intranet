@@ -203,7 +203,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     </div>
                     <div className={styles.formLine} key="line-already-volunteer">
                         <div>
-                            J&apos;ai déjà été bénévole
+                            J&apos;ai déjà été bénévole à PeL
                             <input
                                 type="radio"
                                 name="alreadyVolunteer"

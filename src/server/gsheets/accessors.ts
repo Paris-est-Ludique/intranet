@@ -1,197 +1,262 @@
+// eslint-disable-next-line max-classes-per-file
 import path from "path"
 import _ from "lodash"
 import { promises as fs } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 
-import DBManager from "./DBManager"
+// Test write attack with: wget --header='Content-Type:application/json' --post-data='{"prenom":"Pierre","nom":"SCELLES","email":"test@gmail.com","telephone":"0601010101","dejaBenevole":false,"commentaire":""}' http://localhost:3000/PreVolunteerAdd
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-export type ElementWithId = unknown & { id: number }
+const REMOTE_SAVE_DELAY = 20000
 
-export const sheetNames: { [name: string]: string } = {
-    JavGames: "Jeux JAV",
-    Volunteers: "Membres",
-    PreVolunteers: "PreMembres",
-    Wishes: "Envies d'aider",
+export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
+
+export class SheetNames {
+    JavGames = "Jeux JAV"
+
+    Volunteers = "Membres"
+
+    PreVolunteers = "PreMembres"
+
+    Wishes = "Envies d'aider"
 }
+export const sheetNames = new SheetNames()
 
-export function getAccessors<
+// eslint-disable-next-line @typescript-eslint/ban-types
+type SheetList = { [sheetName in keyof SheetNames]?: Sheet<object, ElementWithId<object>> }
+const sheetList: SheetList = {}
+setInterval(
+    () =>
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        Object.values(sheetList).forEach((sheet: Sheet<object, ElementWithId<object>>) =>
+            sheet.dbUpdate()
+        ),
+    REMOTE_SAVE_DELAY
+)
+
+export function getSheet<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
-    Element extends ElementNoId & ElementWithId
->(sheetName: string, specimen: Element, translation: { [k in keyof Element]: string }): any {
-    const frenchSpecimen = _.mapValues(
-        _.invert(translation),
-        (englishProp: string) => (specimen as any)[englishProp]
-    ) as Element
-
-    const addDBOperation = DBManager(sheetName)
-
-    async function listGet(): Promise<Element[]> {
-        type StringifiedElement = Record<keyof Element, string>
-        return addDBOperation("list", async () => {
-            const sheet = await getGSheet()
-
-            // Load sheet into an array of objects
-            const rows = (await sheet.getRows()) as StringifiedElement[]
-            const elements: Element[] = []
-            if (!rows[0]) {
-                throw new Error(`No column types defined in sheet ${sheetName}`)
-            }
-            const types = _.pick(rows[0], Object.values(translation)) as Record<
-                keyof Element,
-                string
-            >
-            rows.shift()
-            rows.forEach((row) => {
-                const stringifiedElement = _.pick(row, Object.values(translation)) as Record<
-                    keyof Element,
-                    string
-                >
-                const element = parseElement(stringifiedElement, types)
-                if (element !== undefined) {
-                    elements.push(element)
-                }
-            })
-
-            return elements
-        })
+    Element extends ElementNoId & ElementWithId<ElementNoId>
+>(
+    sheetName: keyof SheetNames,
+    specimen: Element,
+    translation: { [k in keyof Element]: string }
+): Sheet<ElementNoId, Element> {
+    if (!sheetList[sheetName]) {
+        sheetList[sheetName] = new Sheet<ElementNoId, Element>(sheetName, specimen, translation)
     }
 
-    async function get(volunteerId: number): Promise<Element | undefined> {
-        // No need to addDBOperation here, since listGet does it already
-        const list = await listGet()
-        return list.find((element) => element.id === volunteerId)
+    return sheetList[sheetName] as Sheet<ElementNoId, Element>
+}
+
+class Sheet<
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    ElementNoId extends object,
+    Element extends ElementWithId<ElementNoId>
+> {
+    sheetName: string
+
+    _state: Element[] | undefined
+
+    toRunAfterLoad: (() => void)[] | undefined = []
+
+    saveTimestamp = 0
+
+    modifiedSinceSave = false
+
+    frenchSpecimen: Element
+
+    // eslint-disable-next-line no-useless-constructor
+    constructor(
+        readonly name: keyof SheetNames,
+        readonly specimen: Element,
+        readonly translation: { [k in keyof Element]: string }
+    ) {
+        this.sheetName = sheetNames[name]
+        this.frenchSpecimen = _.mapValues(
+            _.invert(translation),
+            (englishProp: string) => (specimen as any)[englishProp]
+        ) as Element
+
+        this.dbLoad()
     }
 
-    async function setList(elements: Element[]): Promise<true | undefined> {
-        return addDBOperation("listSet", async () => {
-            const sheet = await getGSheet()
-
-            // Load sheet into an array of objects
-            const rows = await sheet.getRows()
-            if (!rows[0]) {
-                throw new Error(`No column types defined in sheet ${sheetName}`)
-            }
-            const types = _.pick(rows[0], Object.keys(elements[0] || {})) as Record<
-                keyof Element,
-                string
-            >
-
-            // Update received rows
-            let rowid = 1
-            // eslint-disable-next-line no-restricted-syntax
-            for (const element of elements) {
-                const row = rows[rowid]
-                const stringifiedRow = stringifyElement(element, types)
-
-                if (!row) {
-                    // eslint-disable-next-line no-await-in-loop
-                    await sheet.addRow(stringifiedRow)
-                } else {
-                    const keys = Object.keys(stringifiedRow)
-                    const sameCells = _.every(
-                        keys,
-                        (key: keyof Element) => row[key as string] === stringifiedRow[key]
-                    )
-                    if (!sameCells) {
-                        keys.forEach((key) => {
-                            row[key] = stringifiedRow[key as keyof Element]
-                        })
-                        // eslint-disable-next-line no-await-in-loop
-                        await row.save()
-                    }
-                }
-
-                rowid += 1
-            }
-
-            // Delete all following rows
-            for (let rowToDelete = sheet.rowCount - 1; rowToDelete >= rowid; rowToDelete -= 1) {
-                if (rows[rowToDelete]) {
-                    // eslint-disable-next-line no-await-in-loop
-                    await rows[rowToDelete].delete()
-                }
-            }
-
-            return true
-        })
+    async getList(): Promise<Element[] | undefined> {
+        await this.waitForLoad()
+        return JSON.parse(JSON.stringify(this._state))
     }
 
-    async function set(element: Element): Promise<Element | undefined> {
-        if (!element) {
-            return undefined
+    setList(newState: Element[] | undefined) {
+        this._state = JSON.parse(JSON.stringify(newState))
+        this.modifiedSinceSave = true
+    }
+
+    async nextId(): Promise<number> {
+        const list = await this.getList()
+        if (!list) {
+            return 1
         }
-        return addDBOperation("set", async () => {
-            const sheet = await getGSheet()
+        const ids = _.map(list, "id")
+        return (_.max(ids) || 0) + 1
+    }
 
-            // Load sheet into an array of objects
-            const rows = await sheet.getRows()
-            if (!rows[0]) {
-                throw new Error(`No column types defined in sheet ${sheetName}`)
+    async add(elementWithoutId: ElementNoId): Promise<Element> {
+        const elements: Element[] = (await this.getList()) || []
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        const element: Element = { id: await this.nextId(), ...elementWithoutId } as Element
+        elements.push(element)
+        await this.setList(elements)
+        return element
+    }
+
+    async set(element: Element): Promise<void> {
+        const elements: Element[] = (await this.getList()) || []
+        const foundElement: Element | undefined = elements.find((e: Element) => e.id === element.id)
+        if (!foundElement) {
+            throw new Error(`No element found to be set in ${this.name} at id ${element.id}`)
+        }
+        if (!_.isEqual(foundElement, element)) {
+            Object.assign(foundElement, element)
+            await this.setList(elements)
+        }
+    }
+
+    runAfterLoad(func: () => void): void {
+        if (this.toRunAfterLoad) {
+            this.toRunAfterLoad.push(func)
+        } else {
+            func()
+        }
+    }
+
+    private async waitForLoad(): Promise<void> {
+        return new Promise((resolve, _reject) => {
+            this.runAfterLoad(() => resolve(undefined))
+        })
+    }
+
+    dbUpdate(): void {
+        if (this.modifiedSinceSave) {
+            this.dbSave()
+        } else {
+            this.dbLoad()
+        }
+    }
+
+    dbSave(): void {
+        this.modifiedSinceSave = false
+        this.saveTimestamp = +new Date()
+
+        this.dbSaveAsync()
+    }
+
+    dbLoad(): void {
+        this.toRunAfterLoad = []
+        this.dbLoadAsync().then(() => {
+            if (this.toRunAfterLoad) {
+                this.toRunAfterLoad.map((func) => func())
+                this.toRunAfterLoad = undefined
             }
-            const types = _.pick(rows[0], Object.keys(element || {})) as Record<
-                keyof Element,
-                string
-            >
-            rows.shift()
+        })
+    }
 
-            // Replace previous row
-            const stringifiedRow = stringifyElement(element, types)
-            const row = rows.find((rowItem) => +rowItem.id === element.id)
+    private async dbSaveAsync(): Promise<void> {
+        if (!this._state) {
+            return
+        }
+        const sheet = await this.getGSheet()
+
+        // Load sheet into an array of objects
+        const rows = await sheet.getRows()
+        if (!rows[0]) {
+            throw new Error(`No column types defined in sheet ${this.name}`)
+        }
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        const elements = this._state as Element[]
+        const types = _.pick(rows[0], Object.keys(elements[0] || {})) as Record<
+            keyof Element,
+            string
+        >
+
+        // Update received rows
+        let rowid = 1
+        // eslint-disable-next-line no-restricted-syntax
+        for (const element of elements) {
+            const row = rows[rowid]
+            const stringifiedRow = this.stringifyElement(element, types)
+
             if (!row) {
-                return undefined
+                // eslint-disable-next-line no-await-in-loop
+                await sheet.addRow(stringifiedRow)
+            } else {
+                const keys = Object.keys(stringifiedRow)
+                const sameCells = _.every(
+                    keys,
+                    (key: keyof Element) => row[key as string] === stringifiedRow[key]
+                )
+                if (!sameCells) {
+                    keys.forEach((key) => {
+                        row[key] = stringifiedRow[key as keyof Element]
+                    })
+                    // eslint-disable-next-line no-await-in-loop
+                    await row.save()
+                }
             }
-            Object.assign(row, stringifiedRow)
-            await row.save()
-            return element
-        })
-    }
 
-    async function add(partialElement: Partial<ElementNoId>): Promise<Element | undefined> {
-        if (!partialElement) {
-            return undefined
+            rowid += 1
         }
-        return addDBOperation("add", async () => {
-            const sheet = await getGSheet()
 
-            // Load sheet into an array of objects
-            const rows = await sheet.getRows()
-            if (!rows[0]) {
-                throw new Error(`No column types defined in sheet ${sheetName}`)
+        // Delete all following rows
+        for (let rowToDelete = sheet.rowCount - 1; rowToDelete >= rowid; rowToDelete -= 1) {
+            if (rows[rowToDelete]) {
+                // eslint-disable-next-line no-await-in-loop
+                await rows[rowToDelete].delete()
             }
-            const types = {
-                id: "number",
-                ...(_.pick(rows[0], Object.keys(partialElement || {})) as Record<
-                    keyof ElementNoId,
-                    string
-                >),
-            }
-
-            // Create full element
-            rows.shift()
-            const highestId = rows.reduce((id: number, row) => Math.max(id, +row.id || 0), 0)
-            const element = { id: highestId + 1, ...partialElement } as Element
-
-            // Add element
-            const stringifiedRow = stringifyElement(element, types)
-            await sheet.addRow(stringifiedRow)
-
-            return element
-        })
+        }
     }
 
-    async function getGSheet(): Promise<GoogleSpreadsheetWorksheet> {
+    private async dbLoadAsync(): Promise<void> {
+        type StringifiedElement = Record<keyof Element, string>
+
+        const sheet = await this.getGSheet()
+
+        // Load sheet into an array of objects
+        const rows = (await sheet.getRows()) as StringifiedElement[]
+        const elements: Element[] = []
+        if (!rows[0]) {
+            throw new Error(`No column types defined in sheet ${this.name}`)
+        }
+        const types = _.pick(rows[0], Object.values(this.translation)) as Record<
+            keyof Element,
+            string
+        >
+        rows.shift()
+        rows.forEach((row) => {
+            const stringifiedElement = _.pick(row, Object.values(this.translation)) as Record<
+                keyof Element,
+                string
+            >
+            const element = this.parseElement(stringifiedElement, types)
+            if (element !== undefined) {
+                elements.push(element)
+            }
+        })
+
+        this._state = elements
+    }
+
+    private async getGSheet(): Promise<GoogleSpreadsheetWorksheet> {
         const doc = new GoogleSpreadsheet("1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw")
         const creds = await fs.readFile(CRED_PATH)
         // Authentication
         await doc.useServiceAccountAuth(JSON.parse(creds.toString()))
         await doc.loadInfo()
-        return doc.sheetsByTitle[sheetName]
+        return doc.sheetsByTitle[this.sheetName]
     }
 
-    function parseElement(
+    private parseElement(
         rawElement: Record<keyof Element, string>,
         types: Record<keyof Element, string>
     ): Element {
@@ -201,29 +266,47 @@ export function getAccessors<
                 const rawProp: string = rawElement[prop as keyof Element]
                 switch (type) {
                     case "string":
-                        element[prop] = rawProp
+                        if (rawProp === undefined) {
+                            element[prop] = ""
+                        } else {
+                            element[prop] = rawProp
+                        }
                         break
 
                     case "number":
-                        element[prop] = +rawProp
+                        if (rawProp === undefined) {
+                            element[prop] = undefined
+                        } else {
+                            element[prop] = +rawProp
+                        }
                         break
 
                     case "boolean":
-                        element[prop] = rawProp !== "0" && rawProp !== ""
+                        if (rawProp === undefined) {
+                            element[prop] = false
+                        } else {
+                            element[prop] = rawProp !== "0" && rawProp !== ""
+                        }
                         break
 
                     case "date":
-                        // eslint-disable-next-line no-case-declarations
-                        const matchDate = rawProp.match(/^([0-9]+)\/([0-9]+)\/([0-9]+)$/)
-                        if (matchDate) {
+                        if (rawProp === undefined) {
+                            element[prop] = undefined
+                        } else {
+                            // eslint-disable-next-line no-case-declarations
+                            const matchDate = rawProp.match(/^([0-9]+)\/([0-9]+)\/([0-9]+)$/)
+                            if (!matchDate) {
+                                throw new Error(
+                                    `Unable to read date from val ${rawProp} in sheet ${this.name} at prop ${prop}`
+                                )
+                            }
                             element[prop] = new Date(
                                 +matchDate[3],
                                 +matchDate[2] - 1,
                                 +matchDate[1]
                             )
-                            break
                         }
-                        throw new Error(`Unable to read date from ${rawProp}`)
+                        break
 
                     default:
                         // eslint-disable-next-line no-case-declarations
@@ -231,9 +314,11 @@ export function getAccessors<
                             /^(number|string|boolean|date)\[([^\]]+)\]$/
                         )
                         if (!matchArrayType) {
-                            throw new Error(`Unknown array type for ${type}`)
+                            throw new Error(
+                                `Unknown array type for ${type} in sheet ${this.name} at prop ${prop}`
+                            )
                         }
-                        if (!rawProp) {
+                        if (rawProp === undefined || rawProp === "") {
                             element[prop] = []
                         } else {
                             const arrayType = matchArrayType[1]
@@ -278,25 +363,27 @@ export function getAccessors<
                                     })
                                     if (!rightFormat) {
                                         throw new Error(
-                                            `One array item is not a date in ${rawProp}`
+                                            `One array item is not a date for val ${rawProp} in sheet ${this.name} at prop ${prop}`
                                         )
                                     }
                                     break
                                 default:
-                                    throw new Error(`Unknown array type ${arrayType}`)
+                                    throw new Error(
+                                        `Unknown array type ${arrayType} in sheet ${this.name} at prop ${prop}`
+                                    )
                             }
                         }
                 }
                 return element
             },
-            JSON.parse(JSON.stringify(frenchSpecimen))
+            JSON.parse(JSON.stringify(this.frenchSpecimen))
         )
         return fullElement
     }
 
-    function stringifyElement(
+    private stringifyElement(
         element: Element,
-        types: { id: string } & Record<keyof ElementNoId, string>
+        types: Record<keyof Element, string>
     ): Record<keyof Element, string> {
         const rawElement: Record<keyof Element, string> = _.reduce(
             types,
@@ -304,7 +391,7 @@ export function getAccessors<
                 const value = element[prop as keyof Element]
                 switch (type) {
                     case "string":
-                        stringifiedElement[prop as keyof Element] = formulaSafe(`${value}`)
+                        stringifiedElement[prop as keyof Element] = Sheet.formulaSafe(`${value}`)
                         break
 
                     case "number":
@@ -316,7 +403,7 @@ export function getAccessors<
                         break
 
                     case "date":
-                        stringifiedElement[prop as keyof Element] = stringifiedDate(value)
+                        stringifiedElement[prop as keyof Element] = Sheet.stringifiedDate(value)
                         break
 
                     default:
@@ -339,7 +426,7 @@ export function getAccessors<
                                 if (!_.every(value, _.isString)) {
                                     throw new Error(`Each date of ${value} is not a string`)
                                 }
-                                stringifiedElement[prop as keyof Element] = formulaSafe(
+                                stringifiedElement[prop as keyof Element] = Sheet.formulaSafe(
                                     value.join(delimiter)
                                 )
                                 break
@@ -380,17 +467,17 @@ export function getAccessors<
 
                 return stringifiedElement
             },
-            JSON.parse(JSON.stringify(frenchSpecimen))
+            JSON.parse(JSON.stringify(this.frenchSpecimen))
         )
 
         return rawElement
     }
 
-    function formulaSafe(value: string): string {
+    private static formulaSafe(value: string): string {
         return value.replace(/^=+/, "")
     }
 
-    function stringifiedDate(value: unknown): string {
+    private static stringifiedDate(value: unknown): string {
         let date: Date
         if (value instanceof Date) {
             date = value
@@ -405,6 +492,4 @@ export function getAccessors<
         }
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
-
-    return { listGet, get, setList, set, add }
 }

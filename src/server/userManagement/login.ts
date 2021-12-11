@@ -2,12 +2,13 @@ import { Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt"
 import {
     Volunteer,
+    VolunteerWithoutId,
     VolunteerLogin,
     emailRegexp,
     passwordMinLength,
     translationVolunteer,
 } from "../../services/volunteers"
-import { getAccessors, sheetNames } from "../gsheets/accessors"
+import { getSheet } from "../gsheets/accessors"
 import { getJwt } from "../secure"
 
 export default async function loginHandler(
@@ -31,7 +32,11 @@ export default async function loginHandler(
 }
 
 export async function login(rawEmail: string, rawPassword: string): Promise<VolunteerLogin> {
-    const { listGet } = getAccessors(sheetNames.Volunteers, new Volunteer(), translationVolunteer)
+    const sheet = getSheet<VolunteerWithoutId, Volunteer>(
+        "Volunteers",
+        new Volunteer(),
+        translationVolunteer
+    )
 
     const email = rawEmail.replace(/^\s*/, "").replace(/\s*$/, "")
     if (!emailRegexp.test(email)) {
@@ -46,8 +51,8 @@ export async function login(rawEmail: string, rawPassword: string): Promise<Volu
         throw Error("Mot de passe trop court")
     }
 
-    const volunteers: Volunteer[] = await listGet()
-    const volunteer = volunteers.find((m) => m.email === email)
+    const volunteers: Volunteer[] | undefined = await sheet.getList()
+    const volunteer = volunteers && volunteers.find((m) => m.email === email)
     if (!volunteer) {
         throw Error("Cet email ne correspond à aucun utilisateur")
     }
