@@ -13,9 +13,11 @@ const NotFound = ({ staticContext }: Props) => {
     if (staticContext) staticContext.statusCode = 404
 
     return (
-        <div className={styles.NotFound}>
-            <Helmet title="Oops" />
-            <p>Oops, Page was not found!</p>
+        <div className={styles.notFoundPage}>
+            <div className={styles.notFoundContent}>
+                <Helmet title="Oops" />
+                <p>Oops, page was not found!</p>
+            </div>
         </div>
     )
 }
