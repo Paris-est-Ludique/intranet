@@ -1,3 +1,9 @@
-.NotFound {
-    padding: 0 15px;
+@import "../../theme/mixins";
+
+.notFoundPage {
+    @include page-wrapper-center;
+}
+
+.notFoundContent {
+    @include page-content-wrapper;
 }

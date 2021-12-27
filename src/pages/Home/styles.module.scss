@@ -1,3 +1,9 @@
-.home {
-    padding: 0 15px;
+@import "../../theme/mixins";
+
+.homePage {
+    @include page-wrapper-center;
+}
+
+.homeContent {
+    @include page-content-wrapper(600px);
 }

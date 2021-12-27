@@ -2,6 +2,7 @@ import { RouteConfig } from "react-router-config"
 
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
+import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
 import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
 import Register from "../pages/Register"
@@ -26,9 +27,14 @@ export default [
                 component: Login,
             },
             {
-                path: "/register",
+                path: "/home",
                 component: AsyncHome,
                 loadData: loadHomeData,
+            },
+            {
+                path: "/wish",
+                component: AsyncWish,
+                loadData: loadWishData,
             },
             {
                 component: NotFound,

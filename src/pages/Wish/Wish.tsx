@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router-dom"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
-import { AppState, AppThunk, EntitiesRequest } from "../../store"
+import { AppDispatch, AppState, AppThunk, EntitiesRequest } from "../../store"
 import { fetchJavGameListIfNeed } from "../../store/javGameList"
 import { fetchWishListIfNeed } from "../../store/wishList"
 import { JavGameList, WishAdd } from "../../components"
@@ -34,11 +34,11 @@ function useList<Entity>(
     }
 }
 
-const Home: FC<Props> = (): JSX.Element => {
-    const dispatch = useDispatch()
+const Wish: FC<Props> = (): JSX.Element => {
+    const dispatch = useDispatch<AppDispatch>()
     return (
-        <div className={styles.home}>
-            <Helmet title="Home" />
+        <div className={styles.wish}>
+            <Helmet title="Wish" />
             <WishAdd dispatch={dispatch} />
             {/* {useList((state: AppState) => state.wishList, fetchWishListifNeed)()} */}
             {useList((state: AppState) => state.javGameList, fetchJavGameListIfNeed)()}
@@ -52,4 +52,4 @@ const Home: FC<Props> = (): JSX.Element => {
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [fetchWishListIfNeed(), fetchJavGameListIfNeed()]
 
-export default memo(Home)
+export default memo(Wish)
