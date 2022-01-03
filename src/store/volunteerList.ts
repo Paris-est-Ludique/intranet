@@ -36,7 +36,7 @@ export const fetchVolunteerList = elementListFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des volunteers: ${error.message}`)
+    (error: Error) => toastError(`Erreur lors du chargement des bénévoles: ${error.message}`)
 )
 
 const shouldFetchVolunteerList = (state: AppState) => state.volunteerList.readyStatus !== "success"

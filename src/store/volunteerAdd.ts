@@ -33,6 +33,6 @@ export const fetchVolunteerAdd = elementAddFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors de l'ajout d'une volunteer: ${error.message}`),
+    (error: Error) => toastError(`Erreur lors de l'ajout d'un bénévole: ${error.message}`),
     () => toastSuccess("Volunteer ajoutée !")
 )

@@ -34,7 +34,7 @@ export const fetchWishList = elementListFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des wishes: ${error.message}`)
+    (error: Error) => toastError(`Erreur lors du chargement des envies: ${error.message}`)
 )
 
 const shouldFetchWishList = (state: AppState) => state.wishList.readyStatus !== "success"

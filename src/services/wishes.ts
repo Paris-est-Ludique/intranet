@@ -27,10 +27,7 @@ const elementName = "Wish"
 
 export type WishWithoutId = Omit<Wish, "id">
 
-const { listGet, get, set, add } = getServiceAccessors<WishWithoutId, Wish>(
-    elementName,
-    translationWish
-)
+const { listGet, get, set, add } = getServiceAccessors<WishWithoutId, Wish>(elementName)
 
 export const wishListGet = listGet()
 export const wishGet = get()

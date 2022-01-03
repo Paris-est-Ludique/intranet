@@ -23,7 +23,7 @@ export class Volunteer {
 
     comment = ""
 
-    timestamp = ""
+    timestamp = new Date()
 
     password = ""
 }
@@ -50,22 +50,18 @@ export const emailRegexp =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 export const passwordMinLength = 4
 
-export interface VolunteerLogin {
-    volunteer?: {
-        firstname: string
-    }
-    jwt?: string
-    error?: string
-}
-
 export type VolunteerWithoutId = Omit<Volunteer, "id">
 
-const { listGet, get, set, add } = getServiceAccessors<VolunteerWithoutId, Volunteer>(
-    elementName,
-    translationVolunteer
-)
+const accessors = getServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
+const { listGet, get, set, add } = accessors
 
 export const volunteerListGet = listGet()
 export const volunteerGet = get()
 export const volunteerAdd = add()
 export const volunteerSet = set()
+
+export interface VolunteerLogin {
+    firstname: string
+    jwt: string
+}
+export const volunteerLogin = accessors.customPost("Login")

@@ -33,32 +33,32 @@ export function toastSuccess(message: string): void {
 }
 
 export function elementFetch<Element>(
-    elementService: (id: number) => Promise<{
+    elementService: (...idArgs: any[]) => Promise<{
         data?: Element | undefined
         error?: Error | undefined
     }>,
     getRequesting: ActionCreatorWithoutPayload<string>,
     getSuccess: ActionCreatorWithPayload<Element, string>,
     getFailure: ActionCreatorWithPayload<string, string>,
-    errorMessage: (error: Error) => void = (_error) => {
-        /* Meant to be empty */
-    },
-    successMessage: () => void = () => {
-        /* Meant to be empty */
-    }
-): (id: number) => AppThunk {
-    return (id: number): AppThunk =>
+    errorMessage?: (error: Error) => void,
+    successMessage?: (data: Element) => void
+): (...idArgs: any[]) => AppThunk {
+    return (...idArgs: any[]): AppThunk =>
         async (dispatch) => {
             dispatch(getRequesting())
 
-            const { error, data } = await elementService(id)
+            const { error, data } = await elementService(...idArgs)
 
             if (error) {
                 dispatch(getFailure(error.message))
-                errorMessage(error)
+                if (errorMessage) {
+                    errorMessage(error)
+                }
             } else {
                 dispatch(getSuccess(data as Element))
-                successMessage()
+                if (successMessage) {
+                    successMessage(data as Element)
+                }
             }
         }
 }

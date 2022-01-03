@@ -54,10 +54,7 @@ const elementName = "JavGame"
 
 export type JavGameWithoutId = Omit<JavGame, "id">
 
-const { listGet, get, set, add } = getServiceAccessors<JavGameWithoutId, JavGame>(
-    elementName,
-    translationJavGame
-)
+const { listGet, get, set, add } = getServiceAccessors<JavGameWithoutId, JavGame>(elementName)
 
 export const javGameListGet = listGet()
 export const javGameGet = get()

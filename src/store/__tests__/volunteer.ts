@@ -12,23 +12,7 @@ import { Volunteer } from "../../services/volunteers"
 
 jest.mock("axios")
 
-const mockFrenchData: any = {
-    id: 1,
-    nom: "Aupeix",
-    prenom: "Amélie",
-    mail: "pakouille.lakouille@yahoo.fr",
-    telephone: "0675650392",
-    photo: "images/volunteers/$taille/amélie_aupeix.jpg",
-    alimentation: "Végétarien",
-    majeur: 1,
-    privilege: 0,
-    actif: 0,
-    commentaire: "",
-    horodatage: "0000-00-00",
-    passe: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
-}
-
-const mockEnglishData: Volunteer = {
+const mockData: Volunteer = {
     id: 1,
     lastname: "Aupeix",
     firstname: "Amélie",
@@ -40,10 +24,10 @@ const mockEnglishData: Volunteer = {
     privileges: 0,
     active: 0,
     comment: "",
-    timestamp: "0000-00-00",
+    timestamp: new Date(0),
     password: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
 }
-const { id } = mockEnglishData
+const { id } = mockData
 const mockError = "Oops! Something went wrong."
 
 describe("volunteer reducer", () => {
@@ -62,9 +46,9 @@ describe("volunteer reducer", () => {
         expect(
             volunteer(undefined, {
                 type: getSuccess.type,
-                payload: mockEnglishData,
+                payload: mockData,
             })
-        ).toEqual({ readyStatus: "success", entity: mockEnglishData })
+        ).toEqual({ readyStatus: "success", entity: mockData })
     })
 
     it("should handle failure correctly", () => {
@@ -82,11 +66,11 @@ describe("volunteer action", () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
             { type: getRequesting.type, payload: undefined },
-            { type: getSuccess.type, payload: mockEnglishData },
+            { type: getSuccess.type, payload: mockData },
         ]
 
         // @ts-expect-error
-        axios.get.mockResolvedValue({ data: mockFrenchData })
+        axios.get.mockResolvedValue({ data: mockData })
 
         await dispatch(fetchVolunteer(id))
         expect(getActions()).toEqual(expectedActions)

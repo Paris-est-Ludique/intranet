@@ -2,13 +2,13 @@ import { AxiosRequestConfig } from "axios"
 
 const storage: any = localStorage
 
+export const axiosConfig: AxiosRequestConfig = {
+    headers: {},
+}
+
 const jwt: string | null = storage?.getItem("id_token")
 if (jwt) {
     setJWT(jwt)
-}
-
-export const axiosConfig: AxiosRequestConfig = {
-    headers: {},
 }
 
 export function setJWT(token: string): void {

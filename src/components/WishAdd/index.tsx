@@ -43,7 +43,7 @@ const WishAdd = ({ dispatch }: Props) => {
             setTeams([""])
             setAddedDate("")
         } else {
-            toast.warning("Il faut au moins préciser un domain et l'wish", {
+            toast.warning("Il faut au moins préciser un domaine et l'envie", {
                 position: "top-center",
                 autoClose: 6000,
                 hideProgressBar: true,

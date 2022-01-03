@@ -68,12 +68,15 @@ export class Sheet<
 
     frenchSpecimen: Element
 
+    invertedTranslation: { [k: string]: string }
+
     // eslint-disable-next-line no-useless-constructor
     constructor(
         readonly name: keyof SheetNames,
         readonly specimen: Element,
         readonly translation: { [k in keyof Element]: string }
     ) {
+        this.invertedTranslation = _.invert(this.translation)
         this.sheetName = sheetNames[name]
         this.frenchSpecimen = _.mapValues(
             _.invert(translation),
@@ -175,7 +178,7 @@ export class Sheet<
         }
         // eslint-disable-next-line @typescript-eslint/ban-types
         const elements = this._state as Element[]
-        const types = _.pick(rows[0], Object.keys(elements[0] || {})) as Record<
+        const types = _.pick(rows[0], Object.values(this.translation)) as Record<
             keyof Element,
             string
         >
@@ -185,17 +188,22 @@ export class Sheet<
         // eslint-disable-next-line no-restricted-syntax
         for (const element of elements) {
             const row = rows[rowid]
-            const stringifiedRow = this.stringifyElement(element, types)
+            const frenchElement = _.mapValues(
+                this.invertedTranslation,
+                (englishProp: string) => (element as any)[englishProp]
+            ) as Element
+            const stringifiedRow = this.stringifyElement(frenchElement, types)
 
             if (!row) {
                 // eslint-disable-next-line no-await-in-loop
                 await sheet.addRow(stringifiedRow)
             } else {
                 const keys = Object.keys(stringifiedRow)
-                const sameCells = _.every(
-                    keys,
-                    (key: keyof Element) => row[key as string] === stringifiedRow[key]
-                )
+                const sameCells = _.every(keys, (key: keyof Element) => {
+                    const rawVal = row[key as string]
+                    const val: string = rawVal === undefined ? "" : rawVal
+                    return val === stringifiedRow[key]
+                })
                 if (!sameCells) {
                     keys.forEach((key) => {
                         row[key] = stringifiedRow[key as keyof Element]
@@ -238,9 +246,13 @@ export class Sheet<
                 keyof Element,
                 string
             >
-            const element = this.parseElement(stringifiedElement, types)
-            if (element !== undefined) {
-                elements.push(element)
+            const frenchData: any = this.parseElement(stringifiedElement, types)
+            if (frenchData !== undefined) {
+                const englishElement = _.mapValues(
+                    this.translation,
+                    (frenchProp: string) => frenchData[frenchProp]
+                ) as Element
+                elements.push(englishElement)
             }
         })
 
@@ -293,18 +305,13 @@ export class Sheet<
                         if (rawProp === undefined) {
                             element[prop] = undefined
                         } else {
-                            // eslint-disable-next-line no-case-declarations
-                            const matchDate = rawProp.match(/^([0-9]+)\/([0-9]+)\/([0-9]+)$/)
-                            if (!matchDate) {
+                            try {
+                                element[prop] = parseDate(rawProp)
+                            } catch (e: any) {
                                 throw new Error(
-                                    `Unable to read date from val ${rawProp} in sheet ${this.name} at prop ${prop}`
+                                    `${e.message} in sheet ${this.name} at prop ${prop}`
                                 )
                             }
-                            element[prop] = new Date(
-                                +matchDate[3],
-                                +matchDate[2] - 1,
-                                +matchDate[1]
-                            )
                         }
                         break
 
@@ -345,27 +352,15 @@ export class Sheet<
                                     const rawDates = rawProp.split(delimiter)
                                     element[prop] = []
                                     // eslint-disable-next-line no-case-declarations
-                                    const rightFormat = rawDates.every((rawDate) => {
-                                        const matchDateArray = rawDate.match(
-                                            /^([0-9]+)\/([0-9]+)\/([0-9]+)$/
-                                        )
-                                        if (!matchDateArray) {
-                                            return false
-                                        }
-                                        element[prop].push(
-                                            new Date(
-                                                +matchDateArray[3],
-                                                +matchDateArray[2] - 1,
-                                                +matchDateArray[1]
+                                    rawDates.forEach((rawDate) => {
+                                        try {
+                                            element[prop].push(parseDate(rawDate))
+                                        } catch (e: any) {
+                                            throw new Error(
+                                                `${e.message} in sheet ${this.name} at prop ${prop}`
                                             )
-                                        )
-                                        return true
+                                        }
                                     })
-                                    if (!rightFormat) {
-                                        throw new Error(
-                                            `One array item is not a date for val ${rawProp} in sheet ${this.name} at prop ${prop}`
-                                        )
-                                    }
                                     break
                                 default:
                                     throw new Error(
@@ -391,7 +386,7 @@ export class Sheet<
                 const value = element[prop as keyof Element]
                 switch (type) {
                     case "string":
-                        stringifiedElement[prop as keyof Element] = Sheet.formulaSafe(`${value}`)
+                        stringifiedElement[prop as keyof Element] = formulaSafe(`${value}`)
                         break
 
                     case "number":
@@ -403,7 +398,7 @@ export class Sheet<
                         break
 
                     case "date":
-                        stringifiedElement[prop as keyof Element] = Sheet.stringifiedDate(value)
+                        stringifiedElement[prop as keyof Element] = stringifiedDate(value)
                         break
 
                     default:
@@ -426,7 +421,7 @@ export class Sheet<
                                 if (!_.every(value, _.isString)) {
                                     throw new Error(`Each date of ${value} is not a string`)
                                 }
-                                stringifiedElement[prop as keyof Element] = Sheet.formulaSafe(
+                                stringifiedElement[prop as keyof Element] = formulaSafe(
                                     value.join(delimiter)
                                 )
                                 break
@@ -453,10 +448,7 @@ export class Sheet<
                                 }
                                 stringifiedElement[prop as keyof Element] = _.map(
                                     value,
-                                    (val) =>
-                                        `${val.getDate()}/${
-                                            val.getMonth() + 1
-                                        }/${val.getFullYear()}`
+                                    stringifiedDate
                                 ).join(delimiter)
                                 break
 
@@ -472,24 +464,33 @@ export class Sheet<
 
         return rawElement
     }
+}
 
-    private static formulaSafe(value: string): string {
-        return value.replace(/^=+/, "")
-    }
+function formulaSafe(value: string): string {
+    return value === undefined ? "" : value.replace(/^=+/, "")
+}
 
-    private static stringifiedDate(value: unknown): string {
-        let date: Date
-        if (value instanceof Date) {
-            date = value
-        } else if (typeof value === "string") {
-            try {
-                date = new Date(value)
-            } catch (e) {
-                throw new Error("Wrong date string format in stringifyElement")
-            }
-        } else {
-            throw new Error("Wrong date format in stringifyElement")
+function stringifiedDate(value: unknown): string {
+    let date: Date
+    if (value instanceof Date) {
+        date = value
+    } else if (typeof value === "string") {
+        try {
+            date = new Date(value)
+        } catch (e) {
+            throw new Error("Wrong date string format in stringifyElement")
         }
-        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    } else {
+        throw new Error("Wrong date format in stringifyElement")
     }
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+}
+
+function parseDate(value: string): Date {
+    // eslint-disable-next-line no-case-declarations
+    const matchDate = value.match(/^([0-9]+)\/([0-9]+)\/([0-9]+)$/)
+    if (!matchDate) {
+        throw new Error(`Unable to read date from val ${value}`)
+    }
+    return new Date(+matchDate[1], +matchDate[2] - 1, +matchDate[3])
 }

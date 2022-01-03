@@ -28,12 +28,16 @@ export const translationPreVolunteer: { [k in keyof PreVolunteer]: string } = {
 
 const elementName = "PreVolunteer"
 
+export const emailRegexp =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
+export const passwordMinLength = 4
+
 export type PreVolunteerWithoutId = Omit<PreVolunteer, "id">
 
 const { listGet, get, set, add, countGet } = getServiceAccessors<
     PreVolunteerWithoutId,
     PreVolunteer
->(elementName, translationPreVolunteer)
+>(elementName)
 
 export const preVolunteerListGet = listGet()
 export const preVolunteerGet = get()

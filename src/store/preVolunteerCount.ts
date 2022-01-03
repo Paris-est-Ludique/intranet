@@ -32,7 +32,8 @@ export const fetchPreVolunteerCount = elementValueFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des volunteers: ${error.message}`)
+    (error: Error) =>
+        toastError(`Erreur lors du chargement des bénévoles potentiels: ${error.message}`)
 )
 
 const shouldFetchPreVolunteerCount = (state: AppState) =>

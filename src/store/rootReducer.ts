@@ -8,6 +8,7 @@ import volunteer from "./volunteer"
 import volunteerAdd from "./volunteerAdd"
 import volunteerList from "./volunteerList"
 import volunteerSet from "./volunteerSet"
+import volunteerLogin from "./volunteerLogin"
 import preVolunteerAdd from "./preVolunteerAdd"
 import preVolunteerCount from "./preVolunteerCount"
 
@@ -21,6 +22,7 @@ export default (history: History) => ({
     volunteerAdd,
     volunteerList,
     volunteerSet,
+    volunteerLogin,
     preVolunteerAdd,
     preVolunteerCount,
     router: connectRouter(history) as any,

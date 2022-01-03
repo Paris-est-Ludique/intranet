@@ -33,6 +33,6 @@ export const fetchVolunteerSet = elementSet(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors de la modification d'un volunteer: ${error.message}`),
-    () => toastSuccess("Volunteer modifié !")
+    (error: Error) => toastError(`Erreur lors de la modification d'un bénévole: ${error.message}`),
+    () => toastSuccess("Bénévole modifié !")
 )

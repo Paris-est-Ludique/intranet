@@ -13,25 +13,7 @@ import { Volunteer } from "../../services/volunteers"
 
 jest.mock("axios")
 
-const mockFrenchData: any[] = [
-    {
-        id: 1,
-        nom: "Aupeix",
-        prenom: "Amélie",
-        mail: "pakouille.lakouille@yahoo.fr",
-        telephone: "0675650392",
-        photo: "images/volunteers/$taille/amélie_aupeix.jpg",
-        alimentation: "Végétarien",
-        majeur: 1,
-        privilege: 0,
-        actif: 0,
-        commentaire: "",
-        horodatage: "0000-00-00",
-        passe: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
-    },
-]
-
-const mockEnglishData: Volunteer[] = [
+const mockData: Volunteer[] = [
     {
         id: 1,
         lastname: "Aupeix",
@@ -44,7 +26,7 @@ const mockEnglishData: Volunteer[] = [
         privileges: 0,
         active: 0,
         comment: "",
-        timestamp: "0000-00-00",
+        timestamp: new Date(0),
         password: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
     },
 ]
@@ -65,13 +47,11 @@ describe("volunteerList reducer", () => {
     })
 
     it("should handle success correctly", () => {
-        expect(
-            volunteerList(undefined, { type: getSuccess.type, payload: mockEnglishData })
-        ).toEqual({
+        expect(volunteerList(undefined, { type: getSuccess.type, payload: mockData })).toEqual({
             ...initialState,
             readyStatus: "success",
-            ids: _.map(mockEnglishData, "id"),
-            entities: _.keyBy(mockEnglishData, "id"),
+            ids: _.map(mockData, "id"),
+            entities: _.keyBy(mockData, "id"),
         })
     })
 
@@ -89,11 +69,11 @@ describe("volunteerList action", () => {
         const { dispatch, getActions } = mockStore()
         const expectedActions = [
             { type: getRequesting.type, payload: undefined },
-            { type: getSuccess.type, payload: mockEnglishData },
+            { type: getSuccess.type, payload: mockData },
         ]
 
         // @ts-expect-error
-        axios.get.mockResolvedValue({ data: mockFrenchData })
+        axios.get.mockResolvedValue({ data: mockData })
 
         await dispatch(fetchVolunteerList())
         expect(getActions()).toEqual(expectedActions)

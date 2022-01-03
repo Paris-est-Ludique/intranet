@@ -16,3 +16,31 @@ export function validEmail(email: string): boolean {
         email
     )
 }
+
+export function validMobile(mobile: string): boolean {
+    return (
+        /^\(?\+?[-0-9. ()]+$/.test(trim(mobile)) &&
+        trim(mobile).replace(/[^0-9]+/g, "").length >= 10
+    )
+}
+
+export function canonicalMobile(mobile: string): string {
+    if (!validMobile(mobile)) {
+        return ""
+    }
+    let clean = trim(mobile).replace(/[-0-9. ()+]$/g, "")
+    if (clean.length === 11) {
+        clean = clean.replace(/^33/, "0")
+    }
+    if (clean.length < 10) {
+        return ""
+    }
+    if (clean.length === 10) {
+        return clean.replace(/([0-9]{2})/g, "$1 ").replace(/ $/, "")
+    }
+    return clean
+}
+
+export function trim(src: string): string {
+    return typeof src !== "string" ? "" : src.replace(/^\s*/, "").replace(/\s*$/, "")
+}

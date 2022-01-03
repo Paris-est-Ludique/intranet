@@ -19,8 +19,7 @@ import { secure } from "./secure"
 import { javGameListGet } from "./gsheets/javGames"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
-import { volunteerGet, volunteerSet } from "./gsheets/volunteers"
-import loginHandler from "./userManagement/login"
+import { volunteerGet, volunteerSet, volunteerLogin } from "./gsheets/volunteers"
 import config from "../config"
 
 const app = express()
@@ -47,9 +46,6 @@ if (__DEV__) devServer(app)
 
 app.use(express.json())
 
-// Sign in & up API
-app.post("/api/user/login", loginHandler)
-
 /**
  * APIs
  */
@@ -59,6 +55,7 @@ app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
 app.post("/PreVolunteerAdd", preVolunteerAdd)
 app.get("/PreVolunteerCountGet", preVolunteerCountGet)
+app.post("/VolunteerLogin", volunteerLogin)
 
 // Secured APIs
 app.get("/VolunteerGet", secure as RequestHandler, volunteerGet)

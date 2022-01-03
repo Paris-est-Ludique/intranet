@@ -51,11 +51,7 @@ export default class ExpressAccessors<
     add() {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                this.sheet.add(request.body)
-                const elements: Element[] = (await this.sheet.getList()) || []
-                const element: Element = { id: await this.sheet.nextId(), ...request.body }
-                elements.push(element)
-                await this.sheet.setList(elements)
+                const element: Element = await this.sheet.add(request.body)
                 if (element) {
                     response.status(200).json(element)
                 }
@@ -76,17 +72,16 @@ export default class ExpressAccessors<
         }
     }
 
-    customGet(transformer: (list?: Element[]) => any) {
-        return async (
-            _request: Request,
-            response: Response,
-            _next: NextFunction
-        ): Promise<void> => {
+    // transformer can be an async function
+    customGet(
+        transformer: (list: Element[] | undefined, body?: Request["body"]) => Promise<any> | any
+    ) {
+        return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
                 const elements = await this.sheet.getList()
-                response.status(200).json(transformer(elements))
-            } catch (e: unknown) {
-                response.status(400).json(e)
+                response.status(200).json(await transformer(elements, request.body))
+            } catch (e: any) {
+                response.status(200).json({ error: e.message })
             }
         }
     }

@@ -33,6 +33,6 @@ export const fetchWishAdd = elementAddFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors de l'ajout d'une wish: ${error.message}`),
-    () => toastSuccess("Wish ajoutée !")
+    (error: Error) => toastError(`Erreur lors de l'ajout d'une envie: ${error.message}`),
+    () => toastSuccess("Envie ajoutée !")
 )

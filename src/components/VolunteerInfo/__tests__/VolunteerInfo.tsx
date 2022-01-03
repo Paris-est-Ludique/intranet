@@ -23,7 +23,7 @@ describe("<VolunteerInfo />", () => {
                         privileges: 0,
                         active: 0,
                         comment: "",
-                        timestamp: "0000-00-00",
+                        timestamp: new Date(0),
                         password: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
                     }}
                 />

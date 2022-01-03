@@ -1,5 +1,4 @@
 import axios from "axios"
-import _ from "lodash"
 
 import config from "../config"
 import { axiosConfig } from "./auth"
@@ -12,7 +11,7 @@ export default function getServiceAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementNoId & ElementWithId
->(elementName: string, translation: { [k in keyof Element]: string }): any {
+>(elementName: string): any {
     function get(): (id: number) => Promise<{
         data?: Element
         error?: Error
@@ -27,14 +26,7 @@ export default function getServiceAccessors<
                     ...axiosConfig,
                     params: { id },
                 })
-                if (!data) {
-                    return { data }
-                }
-                const englishData = _.mapValues(
-                    translation,
-                    (frenchProp: string) => data[frenchProp]
-                ) as Element
-                return { data: englishData }
+                return { data }
             } catch (error) {
                 return { error: error as Error }
             }
@@ -55,18 +47,7 @@ export default function getServiceAccessors<
                     `${config.API_URL}/${elementName}ListGet`,
                     axiosConfig
                 )
-                if (!data) {
-                    return { data }
-                }
-
-                const englishDataList = data.map(
-                    (frenchData: any) =>
-                        _.mapValues(
-                            translation,
-                            (frenchProp: string) => frenchData[frenchProp]
-                        ) as Element
-                )
-                return { data: englishDataList }
+                return { data }
             } catch (error) {
                 return { error: error as Error }
             }
@@ -84,27 +65,12 @@ export default function getServiceAccessors<
         }
         return async (volunteerWithoutId: ElementNoId): Promise<ElementGetResponse> => {
             try {
-                const invertedTranslationWithoutId = _.invert(_.omit(translation, "id"))
-                const frenchDataWithoutId = _.mapValues(
-                    invertedTranslationWithoutId,
-                    (englishProp: string, _frenchProp: string) =>
-                        (volunteerWithoutId as any)[englishProp]
-                )
-
                 const { data } = await axios.post(
                     `${config.API_URL}/${elementName}Add`,
-                    frenchDataWithoutId,
+                    volunteerWithoutId,
                     axiosConfig
                 )
-                if (!data) {
-                    return { data }
-                }
-
-                const englishData = _.mapValues(
-                    translation,
-                    (frenchProp: string) => data[frenchProp]
-                ) as Element
-                return { data: englishData }
+                return { data }
             } catch (error) {
                 return { error: error as Error }
             }
@@ -121,26 +87,12 @@ export default function getServiceAccessors<
         }
         return async (volunteer: Element): Promise<ElementGetResponse> => {
             try {
-                const invertedTranslation = _.invert(translation)
-                const frenchData = _.mapValues(
-                    invertedTranslation,
-                    (englishProp: string) => (volunteer as any)[englishProp]
-                )
-
                 const { data } = await axios.post(
                     `${config.API_URL}/${elementName}Set`,
-                    frenchData,
+                    volunteer,
                     axiosConfig
                 )
-                if (!data) {
-                    return { data }
-                }
-
-                const englishData = _.mapValues(
-                    translation,
-                    (frenchProp: string) => data[frenchProp]
-                ) as Element
-                return { data: englishData }
+                return { data }
             } catch (error) {
                 return { error: error as Error }
             }
@@ -168,5 +120,30 @@ export default function getServiceAccessors<
         }
     }
 
-    return { listGet, get, set, add, countGet }
+    function customPost(apiName: string): (params: any) => Promise<{
+        data?: Element
+        error?: Error
+    }> {
+        interface ElementGetResponse {
+            data?: Element
+            error?: Error
+        }
+        return async (params: any): Promise<ElementGetResponse> => {
+            try {
+                const { data } = await axios.post(
+                    `${config.API_URL}/${elementName}${apiName}`,
+                    params,
+                    axiosConfig
+                )
+                if (data.error) {
+                    throw Error(data.error)
+                }
+                return { data }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
+    return { listGet, get, set, add, countGet, customPost }
 }
