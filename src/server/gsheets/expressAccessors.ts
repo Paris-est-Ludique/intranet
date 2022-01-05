@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express"
 import { SheetNames, ElementWithId, getSheet, Sheet } from "./accessors"
 
+export type RequestBody = Request["body"]
+export type CustomSetReturn<Element> = { toDatabase: Element; toCaller: any }
+
 export default class ExpressAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
@@ -27,23 +30,27 @@ export default class ExpressAccessors<
                 if (elements) {
                     response.status(200).json(elements)
                 }
-            } catch (e: unknown) {
-                response.status(400).json(e)
+            } catch (e: any) {
+                response.status(200).json({ error: e.message })
             }
         }
     }
 
-    get() {
+    // custom can be async
+    get(custom?: (list: Element[], body: Request["body"]) => Promise<any> | any) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                const id = parseInt(request.query.id as string, 10) || -1
-                const elements = await this.sheet.getList()
-                if (elements) {
-                    const element = elements.find((e: Element) => e.id === id)
-                    response.status(200).json(element)
+                const list = (await this.sheet.getList()) || []
+                let toCaller: any
+                if (!custom) {
+                    const id = parseInt(request.query.id as string, 10) || -1
+                    toCaller = list.find((e: Element) => e.id === id)
+                } else {
+                    toCaller = await custom(list, request.body)
                 }
-            } catch (e: unknown) {
-                response.status(400).json(e)
+                response.status(200).json(toCaller)
+            } catch (e: any) {
+                response.status(200).json({ error: e.message })
             }
         }
     }
@@ -55,31 +62,36 @@ export default class ExpressAccessors<
                 if (element) {
                     response.status(200).json(element)
                 }
-            } catch (e: unknown) {
-                response.status(400).json(e)
+            } catch (e: any) {
+                response.status(200).json({ error: e.message })
             }
         }
     }
 
-    set() {
-        return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
-            try {
-                await this.sheet.set(request.body)
-                response.status(200)
-            } catch (e: unknown) {
-                response.status(400).json(e)
-            }
-        }
-    }
-
-    // transformer can be an async function
-    customGet(
-        transformer: (list: Element[] | undefined, body?: Request["body"]) => Promise<any> | any
+    // custom can be async
+    set(
+        custom?: (
+            list: Element[],
+            body: RequestBody
+        ) => Promise<CustomSetReturn<Element>> | CustomSetReturn<Element>
     ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                const elements = await this.sheet.getList()
-                response.status(200).json(await transformer(elements, request.body))
+                if (!custom) {
+                    await this.sheet.set(request.body)
+                    response.status(200)
+                } else {
+                    const list = (await this.sheet.getList()) || []
+                    const { toDatabase, toCaller } = await custom(list, request.body)
+                    if (toDatabase !== undefined) {
+                        await this.sheet.set(toDatabase)
+                    }
+                    if (toCaller !== undefined) {
+                        response.status(200).json(toCaller)
+                    } else {
+                        response.status(200)
+                    }
+                }
             } catch (e: any) {
                 response.status(200).json({ error: e.message })
             }

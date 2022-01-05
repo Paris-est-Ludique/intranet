@@ -1,7 +1,7 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
 
-.loginIntro {
+.forgotIntro {
     margin-bottom: 10px;
 }
 
@@ -22,6 +22,12 @@
 .formButtons {
     margin-top: 10px;
     padding: 5px 0;
+    text-align: center;
+}
+
+.message {
+    margin-top: 10px;
+    color: rgb(11, 138, 0);
     text-align: center;
 }
 

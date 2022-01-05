@@ -7,12 +7,15 @@ export type ElementWithId = unknown & { id: number }
 
 export type ElementTranslation<Element> = { [k in keyof Element]: string }
 
-export default function getServiceAccessors<
+export default class ServiceAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementNoId & ElementWithId
->(elementName: string): any {
-    function get(): (id: number) => Promise<{
+> {
+    // eslint-disable-next-line no-useless-constructor
+    constructor(readonly elementName: string) {}
+
+    get(): (id: number) => Promise<{
         data?: Element
         error?: Error
     }> {
@@ -22,7 +25,7 @@ export default function getServiceAccessors<
         }
         return async (id: number): Promise<ElementGetResponse> => {
             try {
-                const { data } = await axios.get(`${config.API_URL}/${elementName}Get`, {
+                const { data } = await axios.get(`${config.API_URL}/${this.elementName}Get`, {
                     ...axiosConfig,
                     params: { id },
                 })
@@ -33,7 +36,7 @@ export default function getServiceAccessors<
         }
     }
 
-    function listGet(): () => Promise<{
+    listGet(): () => Promise<{
         data?: Element[]
         error?: Error
     }> {
@@ -44,7 +47,7 @@ export default function getServiceAccessors<
         return async (): Promise<ElementListGetResponse> => {
             try {
                 const { data } = await axios.get(
-                    `${config.API_URL}/${elementName}ListGet`,
+                    `${config.API_URL}/${this.elementName}ListGet`,
                     axiosConfig
                 )
                 return { data }
@@ -55,7 +58,7 @@ export default function getServiceAccessors<
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    function add(): (volunteerWithoutId: ElementNoId) => Promise<{
+    add(): (volunteerWithoutId: ElementNoId) => Promise<{
         data?: Element
         error?: Error
     }> {
@@ -66,7 +69,7 @@ export default function getServiceAccessors<
         return async (volunteerWithoutId: ElementNoId): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
-                    `${config.API_URL}/${elementName}Add`,
+                    `${config.API_URL}/${this.elementName}Add`,
                     volunteerWithoutId,
                     axiosConfig
                 )
@@ -77,7 +80,7 @@ export default function getServiceAccessors<
         }
     }
 
-    function set(): (volunteer: Element) => Promise<{
+    set(): (volunteer: Element) => Promise<{
         data?: Element
         error?: Error
     }> {
@@ -88,7 +91,7 @@ export default function getServiceAccessors<
         return async (volunteer: Element): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
-                    `${config.API_URL}/${elementName}Set`,
+                    `${config.API_URL}/${this.elementName}Set`,
                     volunteer,
                     axiosConfig
                 )
@@ -99,7 +102,7 @@ export default function getServiceAccessors<
         }
     }
 
-    function countGet(): () => Promise<{
+    countGet(): () => Promise<{
         data?: number
         error?: Error
     }> {
@@ -110,7 +113,7 @@ export default function getServiceAccessors<
         return async (): Promise<ElementCountGetResponse> => {
             try {
                 const { data } = await axios.get(
-                    `${config.API_URL}/${elementName}CountGet`,
+                    `${config.API_URL}/${this.elementName}CountGet`,
                     axiosConfig
                 )
                 return { data }
@@ -120,18 +123,18 @@ export default function getServiceAccessors<
         }
     }
 
-    function customPost(apiName: string): (params: any) => Promise<{
-        data?: Element
+    customPost(apiName: string): (params: any) => Promise<{
+        data?: any
         error?: Error
     }> {
         interface ElementGetResponse {
-            data?: Element
+            data?: any
             error?: Error
         }
         return async (params: any): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
-                    `${config.API_URL}/${elementName}${apiName}`,
+                    `${config.API_URL}/${this.elementName}${apiName}`,
                     params,
                     axiosConfig
                 )
@@ -144,6 +147,4 @@ export default function getServiceAccessors<
             }
         }
     }
-
-    return { listGet, get, set, add, countGet, customPost }
 }

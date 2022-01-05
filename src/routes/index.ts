@@ -5,6 +5,7 @@ import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
 import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
+import Forgot from "../pages/Forgot"
 import Register from "../pages/Register"
 import NotFound from "../pages/NotFound"
 
@@ -25,6 +26,10 @@ export default [
             {
                 path: "/login",
                 component: Login,
+            },
+            {
+                path: "/forgot",
+                component: Forgot,
             },
             {
                 path: "/home",

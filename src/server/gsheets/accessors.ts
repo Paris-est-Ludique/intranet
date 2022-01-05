@@ -120,6 +120,7 @@ export class Sheet<
         if (!foundElement) {
             throw new Error(`No element found to be set in ${this.name} at id ${element.id}`)
         }
+
         if (!_.isEqual(foundElement, element)) {
             Object.assign(foundElement, element)
             await this.setList(elements)

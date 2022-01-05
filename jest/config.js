@@ -23,6 +23,7 @@ module.exports = {
         __SERVER__: false,
         __LOCAL__: false,
         __TEST__: true,
+        __SENDGRID_API_KEY__: "",
         localStorage: { getItem: () => null, setItem: () => null, removeItem: () => null },
     },
     maxConcurrency: 50,

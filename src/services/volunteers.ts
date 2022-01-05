@@ -1,4 +1,4 @@
-import getServiceAccessors from "./accessors"
+import ServiceAccessors from "./accessors"
 
 export class Volunteer {
     id = 0
@@ -21,11 +21,11 @@ export class Volunteer {
 
     active = 0
 
-    comment = ""
+    created = new Date()
 
-    timestamp = new Date()
+    password1 = ""
 
-    password = ""
+    password2 = ""
 }
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
@@ -39,9 +39,9 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     adult: "majeur",
     privileges: "privilege",
     active: "actif",
-    comment: "commentaire",
-    timestamp: "horodatage",
-    password: "passe",
+    created: "creation",
+    password1: "passe1",
+    password2: "passe2",
 }
 
 const elementName = "Volunteer"
@@ -52,16 +52,20 @@ export const passwordMinLength = 4
 
 export type VolunteerWithoutId = Omit<Volunteer, "id">
 
-const accessors = getServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
-const { listGet, get, set, add } = accessors
+const serviceAccessors = new ServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
 
-export const volunteerListGet = listGet()
-export const volunteerGet = get()
-export const volunteerAdd = add()
-export const volunteerSet = set()
+export const volunteerListGet = serviceAccessors.listGet()
+export const volunteerGet = serviceAccessors.get()
+export const volunteerAdd = serviceAccessors.add()
+export const volunteerSet = serviceAccessors.set()
 
 export interface VolunteerLogin {
     firstname: string
     jwt: string
 }
-export const volunteerLogin = accessors.customPost("Login")
+export const volunteerLogin = serviceAccessors.customPost("Login")
+
+export interface VolunteerForgot {
+    message: string
+}
+export const volunteerForgot = serviceAccessors.customPost("Forgot")

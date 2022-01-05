@@ -1,4 +1,4 @@
-import getServiceAccessors from "./accessors"
+import ServiceAccessors from "./accessors"
 
 export class PreVolunteer {
     id = 0
@@ -34,13 +34,10 @@ export const passwordMinLength = 4
 
 export type PreVolunteerWithoutId = Omit<PreVolunteer, "id">
 
-const { listGet, get, set, add, countGet } = getServiceAccessors<
-    PreVolunteerWithoutId,
-    PreVolunteer
->(elementName)
+const serviceAccessors = new ServiceAccessors<PreVolunteerWithoutId, PreVolunteer>(elementName)
 
-export const preVolunteerListGet = listGet()
-export const preVolunteerGet = get()
-export const preVolunteerAdd = add()
-export const preVolunteerSet = set()
-export const preVolunteerCountGet = countGet()
+export const preVolunteerListGet = serviceAccessors.listGet()
+export const preVolunteerGet = serviceAccessors.get()
+export const preVolunteerAdd = serviceAccessors.add()
+export const preVolunteerSet = serviceAccessors.set()
+export const preVolunteerCountGet = serviceAccessors.countGet()

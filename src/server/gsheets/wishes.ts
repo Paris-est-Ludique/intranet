@@ -8,9 +8,6 @@ const expressAccessor = new ExpressAccessors<WishWithoutId, Wish>(
 )
 
 export const wishListGet = expressAccessor.listGet()
-
 export const wishGet = expressAccessor.get()
-
 export const wishAdd = expressAccessor.add()
-
 export const wishSet = expressAccessor.set()

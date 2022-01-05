@@ -1,52 +1,48 @@
 import React, { memo, useCallback } from "react"
 import { Link } from "react-router-dom"
 import { AppDispatch } from "../../store"
-import { fetchVolunteerLogin } from "../../store/volunteerLogin"
+import { fetchVolunteerForgot } from "../../store/volunteerForgot"
 import styles from "./styles.module.scss"
 
 interface Props {
     dispatch: AppDispatch
     error: string
+    message: string
 }
 
-const LoginForm = ({ dispatch, error }: Props): JSX.Element => {
+const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
     const onSubmit = useCallback(
         (event: React.SyntheticEvent): void => {
             event.preventDefault()
             const target = event.target as typeof event.target & {
                 email: { value: string }
-                password: { value: string }
             }
             const email = target.email.value
-            const password = target.password.value
 
-            dispatch(fetchVolunteerLogin({ email, password }))
+            dispatch(fetchVolunteerForgot({ email }))
         },
         [dispatch]
     )
 
     return (
         <form onSubmit={onSubmit}>
-            <div className={styles.loginIntro} key="login-intro">
-                Connectez-vous pour accéder à votre espace.
+            <div className={styles.forgotIntro} key="forgot-intro">
+                Nous allons te renvoyer un mot de passe à l&apos;adresse suivante.
             </div>
             <div className={styles.formLine} key="line-email">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="utilisateur" />
             </div>
-            <div className={styles.formLine} key="line-password">
-                <label htmlFor="password">Mot de passe</label>
-                <input type="password" id="password" name="motdepasse" />
-            </div>
             <div className={styles.formButtons}>
                 <button type="submit">Connexion</button>
             </div>
             <div className={styles.error}>{error}</div>
+            <div className={styles.message}>{message}</div>
             <div className={styles.link}>
-                <Link to="/forgot"> Demander un nouveau mot de passe </Link>
+                <Link to="/login"> S&apos;identifier </Link>
             </div>
         </form>
     )
 }
 
-export default memo(LoginForm)
+export default memo(ForgotForm)

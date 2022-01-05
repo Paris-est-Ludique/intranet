@@ -57,5 +57,6 @@ module.exports = {
         __DEV__: true,
         __LOCAL__: false,
         __TEST__: false,
+        __SENDGRID_API_KEY__: false,
     },
 }

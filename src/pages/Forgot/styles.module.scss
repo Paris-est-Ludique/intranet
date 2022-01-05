@@ -1,0 +1,9 @@
+@import "../../theme/mixins";
+
+.forgotPage {
+    @include page-wrapper-center;
+}
+
+.forgotContent {
+    @include page-content-wrapper;
+}

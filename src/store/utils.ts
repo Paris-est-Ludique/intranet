@@ -51,14 +51,10 @@ export function elementFetch<Element>(
 
             if (error) {
                 dispatch(getFailure(error.message))
-                if (errorMessage) {
-                    errorMessage(error)
-                }
+                errorMessage?.(error)
             } else {
                 dispatch(getSuccess(data as Element))
-                if (successMessage) {
-                    successMessage(data as Element)
-                }
+                successMessage?.(data as Element)
             }
         }
 }
@@ -71,12 +67,8 @@ export function elementAddFetch<Element>(
     getRequesting: ActionCreatorWithoutPayload<string>,
     getSuccess: ActionCreatorWithPayload<Element, string>,
     getFailure: ActionCreatorWithPayload<string, string>,
-    errorMessage: (error: Error) => void = (_error) => {
-        /* Meant to be empty */
-    },
-    successMessage: () => void = () => {
-        /* Meant to be empty */
-    }
+    errorMessage?: (error: Error) => void,
+    successMessage?: () => void
 ): (volunteerWithoutId: Omit<Element, "id">) => AppThunk {
     return (volunteerWithoutId: Omit<Element, "id">): AppThunk =>
         async (dispatch) => {
@@ -86,10 +78,10 @@ export function elementAddFetch<Element>(
 
             if (error) {
                 dispatch(getFailure(error.message))
-                errorMessage(error)
+                errorMessage?.(error)
             } else {
                 dispatch(getSuccess(data as Element))
-                successMessage()
+                successMessage?.()
             }
         }
 }
@@ -102,12 +94,8 @@ export function elementListFetch<Element>(
     getRequesting: ActionCreatorWithoutPayload<string>,
     getSuccess: ActionCreatorWithPayload<Element[], string>,
     getFailure: ActionCreatorWithPayload<string, string>,
-    errorMessage: (error: Error) => void = (_error) => {
-        /* Meant to be empty */
-    },
-    successMessage: () => void = () => {
-        /* Meant to be empty */
-    }
+    errorMessage?: (error: Error) => void,
+    successMessage?: () => void
 ): () => AppThunk {
     return (): AppThunk => async (dispatch) => {
         dispatch(getRequesting())
@@ -116,10 +104,10 @@ export function elementListFetch<Element>(
 
         if (error) {
             dispatch(getFailure(error.message))
-            errorMessage(error)
+            errorMessage?.(error)
         } else {
             dispatch(getSuccess(data as Element[]))
-            successMessage()
+            successMessage?.()
         }
     }
 }
@@ -132,12 +120,8 @@ export function elementSet<Element>(
     getRequesting: ActionCreatorWithoutPayload<string>,
     getSuccess: ActionCreatorWithPayload<Element, string>,
     getFailure: ActionCreatorWithPayload<string, string>,
-    errorMessage: (error: Error) => void = (_error) => {
-        /* Meant to be empty */
-    },
-    successMessage: () => void = () => {
-        /* Meant to be empty */
-    }
+    errorMessage?: (error: Error) => void,
+    successMessage?: () => void
 ): (element: Element) => AppThunk {
     return (element: Element): AppThunk =>
         async (dispatch) => {
@@ -147,10 +131,10 @@ export function elementSet<Element>(
 
             if (error) {
                 dispatch(getFailure(error.message))
-                errorMessage(error)
+                errorMessage?.(error)
             } else {
                 dispatch(getSuccess(data as Element))
-                successMessage()
+                successMessage?.()
             }
         }
 }
@@ -163,12 +147,8 @@ export function elementValueFetch<Element>(
     getRequesting: ActionCreatorWithoutPayload<string>,
     getSuccess: ActionCreatorWithPayload<Element, string>,
     getFailure: ActionCreatorWithPayload<string, string>,
-    errorMessage: (error: Error) => void = (_error) => {
-        /* Meant to be empty */
-    },
-    successMessage: () => void = () => {
-        /* Meant to be empty */
-    }
+    errorMessage?: (error: Error) => void,
+    successMessage?: () => void
 ): () => AppThunk {
     return (): AppThunk => async (dispatch) => {
         dispatch(getRequesting())
@@ -177,10 +157,10 @@ export function elementValueFetch<Element>(
 
         if (error) {
             dispatch(getFailure(error.message))
-            errorMessage(error)
+            errorMessage?.(error)
         } else {
             dispatch(getSuccess(data as Element))
-            successMessage()
+            successMessage?.()
         }
     }
 }

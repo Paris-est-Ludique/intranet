@@ -3,6 +3,7 @@ declare const __SERVER__: boolean
 declare const __DEV__: boolean
 declare const __LOCAL__: boolean
 declare const __TEST__: boolean
+declare const __SENDGRID_API_KEY__: string
 
 declare module "*.svg"
 declare module "*.gif"
@@ -20,6 +21,7 @@ declare namespace NodeJS {
         __DEV__: boolean
         __LOCAL__: boolean
         __TEST__: boolean
+        __SENDGRID_API_KEY__: string
         $RefreshReg$: () => void
         $RefreshSig$$: () => void
     }

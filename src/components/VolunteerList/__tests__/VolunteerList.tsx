@@ -23,9 +23,10 @@ describe("<VolunteerList />", () => {
                             adult: 1,
                             privileges: 0,
                             active: 0,
-                            comment: "",
-                            timestamp: new Date(0),
-                            password:
+                            created: new Date(0),
+                            password1:
+                                "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
+                            password2:
                                 "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
                         },
                     ]}

@@ -9,18 +9,18 @@ import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
 
-const RegisterPage: React.FC<Props> = (): JSX.Element => {
+const LoginPage: React.FC<Props> = (): JSX.Element => {
     const dispatch = useDispatch()
     const loginError = useSelector((state: AppState) => state.volunteerLogin.error, shallowEqual)
 
     return (
         <div className={styles.loginPage}>
             <div className={styles.loginContent}>
-                <Helmet title="RegisterPage" />
+                <Helmet title="LoginPage" />
                 <LoginForm dispatch={dispatch} error={loginError || ""} />
             </div>
         </div>
     )
 }
 
-export default memo(RegisterPage)
+export default memo(LoginPage)

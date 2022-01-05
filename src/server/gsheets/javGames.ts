@@ -8,9 +8,6 @@ const expressAccessor = new ExpressAccessors<JavGameWithoutId, JavGame>(
 )
 
 export const javGameListGet = expressAccessor.listGet()
-
 export const javGameGet = expressAccessor.get()
-
 export const javGameAdd = expressAccessor.add()
-
 export const javGameSet = expressAccessor.set()

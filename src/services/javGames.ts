@@ -1,4 +1,4 @@
-import getServiceAccessors from "./accessors"
+import ServiceAccessors from "./accessors"
 
 export class JavGame {
     id = 0
@@ -54,9 +54,9 @@ const elementName = "JavGame"
 
 export type JavGameWithoutId = Omit<JavGame, "id">
 
-const { listGet, get, set, add } = getServiceAccessors<JavGameWithoutId, JavGame>(elementName)
+const serviceAccessors = new ServiceAccessors<JavGameWithoutId, JavGame>(elementName)
 
-export const javGameListGet = listGet()
-export const javGameGet = get()
-export const javGameAdd = add()
-export const javGameSet = set()
+export const javGameListGet = serviceAccessors.listGet()
+export const javGameGet = serviceAccessors.get()
+export const javGameAdd = serviceAccessors.add()
+export const javGameSet = serviceAccessors.set()

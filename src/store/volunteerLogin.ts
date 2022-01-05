@@ -11,7 +11,7 @@ export const initialState: StateVolunteer = {
 }
 
 const volunteerLoginSlice = createSlice({
-    name: "volunteer",
+    name: "volunteerLogin",
     initialState,
     reducers: {
         getRequesting: (_) => ({

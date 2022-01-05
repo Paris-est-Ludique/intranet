@@ -12,13 +12,10 @@ const expressAccessor = new ExpressAccessors<PreVolunteerWithoutId, PreVolunteer
 )
 
 export const preVolunteerListGet = expressAccessor.listGet()
-
 export const preVolunteerGet = expressAccessor.get()
-
 export const preVolunteerAdd = expressAccessor.add()
-
 export const preVolunteerSet = expressAccessor.set()
 
-export const preVolunteerCountGet = expressAccessor.customGet(
+export const preVolunteerCountGet = expressAccessor.get(
     (list?: PreVolunteer[]) => (list && list.length) || 0
 )
