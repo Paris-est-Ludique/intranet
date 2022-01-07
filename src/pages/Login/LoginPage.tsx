@@ -4,7 +4,7 @@ import React, { memo } from "react"
 import { Helmet } from "react-helmet"
 
 import { AppState } from "../../store"
-import LoginForm from "../../components/LoginForm/LoginForm"
+import { LoginForm } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps

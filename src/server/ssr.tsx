@@ -12,9 +12,11 @@ import { Action } from "@reduxjs/toolkit"
 import createStore from "../store"
 import renderHtml from "./renderHtml"
 import routes from "../routes"
+import { getCookieJWT } from "../services/auth"
 
 export default async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { store } = createStore({ url: req.url })
+    const { jwt, id } = getCookieJWT(req.headers.cookie)
+    const { store } = createStore({ url: req.url, jwt, id })
 
     // The method for loading data from server-side
     const loadBranchData = (): Promise<any> => {

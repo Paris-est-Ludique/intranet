@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk, ValueRequest } from "../../store"
 import { fetchPreVolunteerCountIfNeed } from "../../store/preVolunteerCount"
-import { RegisterForm } from "../../components"
+import { PreRegisterForm } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
@@ -29,14 +29,14 @@ function useList(
 
         if (readyStatus === "failure") return <p>Oops, Failed to load!</p>
 
-        return <RegisterForm dispatch={dispatch} preVolunteerCount={value} />
+        return <PreRegisterForm dispatch={dispatch} preVolunteerCount={value} />
     }
 }
 
-const RegisterPage: FC<Props> = (): JSX.Element => (
-    <div className={styles.registerPage}>
-        <div className={styles.registerContent}>
-            <Helmet title="RegisterPage" />
+const PreRegisterPage: FC<Props> = (): JSX.Element => (
+    <div className={styles.preRegisterPage}>
+        <div className={styles.preRegisterContent}>
+            <Helmet title="PreRegisterPage" />
             {useList((state: AppState) => state.preVolunteerCount, fetchPreVolunteerCountIfNeed)()}
         </div>
     </div>
@@ -45,4 +45,4 @@ const RegisterPage: FC<Props> = (): JSX.Element => (
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [fetchPreVolunteerCountIfNeed()]
 
-export default memo(RegisterPage)
+export default memo(PreRegisterPage)

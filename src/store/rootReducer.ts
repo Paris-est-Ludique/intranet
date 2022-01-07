@@ -1,6 +1,7 @@
 import { History } from "history"
 import { connectRouter } from "connected-react-router"
 
+import auth from "./auth"
 import wishAdd from "./wishAdd"
 import wishList from "./wishList"
 import javGameList from "./javGameList"
@@ -10,12 +11,14 @@ import volunteerList from "./volunteerList"
 import volunteerSet from "./volunteerSet"
 import volunteerLogin from "./volunteerLogin"
 import volunteerForgot from "./volunteerForgot"
+import volunteerNotifsSet from "./volunteerNotifsSet"
 import preVolunteerAdd from "./preVolunteerAdd"
 import preVolunteerCount from "./preVolunteerCount"
 
 // Use inferred return type for making correctly Redux types
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default (history: History) => ({
+    auth,
     wishAdd,
     wishList,
     javGameList,
@@ -25,6 +28,7 @@ export default (history: History) => ({
     volunteerSet,
     volunteerLogin,
     volunteerForgot,
+    volunteerNotifsSet,
     preVolunteerAdd,
     preVolunteerCount,
     router: connectRouter(history) as any,

@@ -28,7 +28,7 @@ const LoginForm = ({ dispatch, error }: Props): JSX.Element => {
     return (
         <form onSubmit={onSubmit}>
             <div className={styles.loginIntro} key="login-intro">
-                Connectez-vous pour accéder à votre espace.
+                Si vous êtes bénévole, connectez-vous pour accéder à votre espace.
             </div>
             <div className={styles.formLine} key="line-email">
                 <label htmlFor="email">Email</label>

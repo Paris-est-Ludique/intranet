@@ -1,0 +1,41 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.notificationsPage {
+    @include page-wrapper-center;
+}
+
+.notificationsContent {
+    @include page-content-wrapper;
+}
+
+.notifIntro {
+    margin-bottom: 10px;
+}
+
+.formLine {
+    padding: 5px 0;
+
+    label {
+        display: block;
+        margin-left: 5px;
+    }
+    select,
+    input {
+        width: 10%;
+        border: 1px solid #333;
+        border-radius: 4px;
+    }
+}
+
+.formButtons {
+    margin-top: 10px;
+    padding: 5px 0;
+    text-align: center;
+}
+
+.error {
+    margin-top: 10px;
+    color: rgb(255, 0, 0);
+    text-align: center;
+}

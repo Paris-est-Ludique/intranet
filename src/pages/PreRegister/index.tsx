@@ -1,14 +1,16 @@
 import loadable from "@loadable/component"
 
 import { Loading, ErrorBoundary } from "../../components"
-import { Props } from "./RegisterPage"
+import { Props, loadData } from "./PreRegister"
 
-const RegisterPage = loadable(() => import("./RegisterPage"), {
+const PreRegister = loadable(() => import("./PreRegister"), {
     fallback: <Loading />,
 })
 
 export default (props: Props): JSX.Element => (
     <ErrorBoundary>
-        <RegisterPage {...props} />
+        <PreRegister {...props} />
     </ErrorBoundary>
 )
+
+export { loadData }

@@ -12,7 +12,7 @@ interface Props {
     preVolunteerCount: number | undefined
 }
 
-const RegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element => {
+const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element => {
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
@@ -97,7 +97,7 @@ const RegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element => {
 
     return (
         <form onSubmit={onSubmit}>
-            <dl className={styles.registerIntro} key="register-intro">
+            <dl className={styles.preRegisterIntro} key="preRegister-intro">
                 <dt>Qu&apos;est-ce que Paris est Ludique ?</dt>
                 <dd>
                     <p>
@@ -253,4 +253,4 @@ const RegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element => {
     )
 }
 
-export default memo(RegisterForm)
+export default memo(PreRegisterForm)

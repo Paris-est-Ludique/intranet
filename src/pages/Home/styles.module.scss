@@ -4,6 +4,14 @@
     @include page-wrapper-center;
 }
 
-.homeContent {
-    @include page-content-wrapper(600px);
+.notificationsContent {
+    @include page-content-wrapper;
+}
+
+.loginContent {
+    @include page-content-wrapper;
+}
+
+.preRegisterContent {
+    @include page-content-wrapper;
 }

@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express"
 import path from "path"
 import { promises as fs } from "fs"
 import { verify, sign } from "jsonwebtoken"
-import { canonicalEmail } from "../utils/standardization"
 
 import config from "../config"
 
@@ -20,16 +19,17 @@ export function secure(request: AuthorizedRequest, response: Response, next: Nex
     }
 
     const rawToken = request.headers.authorization
-    const token = rawToken && rawToken.split(/\s/)[1]
+    const token1 = rawToken && rawToken.split(/\s/)[1]
+    const token2 = request.cookies?.jwt
+    const token = token1 || token2
 
     verify(token, cachedSecret, (tokenError: any, decoded: any) => {
         if (tokenError) {
-            response.status(403).json({
-                error: "Invalid token, please Log in first, criterion auth",
+            response.status(200).json({
+                error: "Accès interdit sans identification",
             })
             return
         }
-        decoded.user.replace(/@gmailcom$/, "@gmail.com")
         response.locals.jwt = decoded
         next()
     })
@@ -50,9 +50,9 @@ async function getSecret() {
     return cachedSecret
 }
 
-export async function getJwt(email: string): Promise<string> {
+export async function getJwt(id: number): Promise<string> {
     const jwt = sign(
-        { user: canonicalEmail(email), permissions: [] },
+        { id },
         await getSecret()
         // __TEST__
         //     ? undefined

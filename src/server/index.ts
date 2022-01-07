@@ -1,6 +1,7 @@
 import path from "path"
 import express, { RequestHandler } from "express"
 import logger from "morgan"
+import cookieParser from "cookie-parser"
 import compression from "compression"
 import helmet from "helmet"
 import hpp from "hpp"
@@ -19,7 +20,12 @@ import { secure } from "./secure"
 import { javGameListGet } from "./gsheets/javGames"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
-import { volunteerGet, volunteerSet, volunteerLogin, volunteerForgot } from "./gsheets/volunteers"
+import {
+    volunteerNotifsSet,
+    volunteerSet,
+    volunteerLogin,
+    volunteerForgot,
+} from "./gsheets/volunteers"
 import config from "../config"
 
 const app = express()
@@ -45,6 +51,7 @@ app.use(express.static(path.resolve(process.cwd(), "public")))
 if (__DEV__) devServer(app)
 
 app.use(express.json())
+app.use(cookieParser())
 
 /**
  * APIs
@@ -59,8 +66,9 @@ app.post("/VolunteerLogin", volunteerLogin)
 app.post("/VolunteerForgot", volunteerForgot)
 
 // Secured APIs
-app.get("/VolunteerGet", secure as RequestHandler, volunteerGet)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
+// UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
+app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)

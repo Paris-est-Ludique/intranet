@@ -1,4 +1,7 @@
 import { AxiosRequestConfig } from "axios"
+import Cookies from "js-cookie"
+
+import { VolunteerLogin } from "./volunteers"
 
 const storage: any = localStorage
 
@@ -6,17 +9,30 @@ export const axiosConfig: AxiosRequestConfig = {
     headers: {},
 }
 
-const jwt: string | null = storage?.getItem("id_token")
-if (jwt) {
-    setJWT(jwt)
-}
-
-export function setJWT(token: string): void {
+export function setJWT(token: string, id: number): void {
     axiosConfig.headers.Authorization = `Bearer ${token}`
-    storage?.setItem("id_token", token)
+    storage?.setItem("jwt", token)
+    storage?.setItem("id", id)
+    Cookies.set("jwt", token)
+    Cookies.set("id", `${id}`)
 }
 
 export function unsetJWT(): void {
     delete axiosConfig.headers.Authorization
-    storage?.removeItem("id_token")
+    storage?.removeItem("jwt")
+    storage?.removeItem("id")
+
+    Cookies.remove("jwt")
+    Cookies.remove("id")
+}
+
+export function getCookieJWT(cookie = ""): VolunteerLogin {
+    const cookies = cookie
+        .split(";")
+        .reduce((res: { [cookieName: string]: string }, el: string) => {
+            const [k, v] = el.split("=")
+            res[k.trim()] = v
+            return res
+        }, {})
+    return { jwt: cookies.jwt, id: +cookies.id }
 }

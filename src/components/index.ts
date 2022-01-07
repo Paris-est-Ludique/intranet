@@ -1,3 +1,5 @@
+import LoginForm from "./LoginForm"
+import Notifications from "./Notifications"
 import VolunteerList from "./VolunteerList"
 import JavGameList from "./JavGameList"
 import VolunteerInfo from "./VolunteerInfo"
@@ -5,9 +7,11 @@ import VolunteerSet from "./VolunteerSet"
 import ErrorBoundary from "./ErrorBoundary"
 import Loading from "./Loading"
 import WishAdd from "./WishAdd"
-import RegisterForm from "./RegisterForm"
+import PreRegisterForm from "./PreRegisterForm"
 
 export {
+    LoginForm,
+    Notifications,
     VolunteerList,
     JavGameList,
     VolunteerInfo,
@@ -15,5 +19,5 @@ export {
     ErrorBoundary,
     Loading,
     WishAdd,
-    RegisterForm,
+    PreRegisterForm,
 }

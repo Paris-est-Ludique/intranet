@@ -2,11 +2,11 @@ import { RouteConfig } from "react-router-config"
 
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
+import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
 import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
 import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
 import Forgot from "../pages/Forgot"
-import Register from "../pages/Register"
 import NotFound from "../pages/NotFound"
 
 export default [
@@ -16,7 +16,13 @@ export default [
             {
                 path: "/",
                 exact: true,
-                component: Register,
+                component: AsyncHome,
+                loadData: loadHomeData,
+            },
+            {
+                path: "/preRegister",
+                component: AsyncPreRegisterPage,
+                loadData: loadPreRegisterPage,
             },
             {
                 path: "/VolunteerPage/:id",
@@ -30,11 +36,6 @@ export default [
             {
                 path: "/forgot",
                 component: Forgot,
-            },
-            {
-                path: "/home",
-                component: AsyncHome,
-                loadData: loadHomeData,
             },
             {
                 path: "/wish",

@@ -3,7 +3,13 @@ import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
 import ExpressAccessors, { RequestBody } from "./expressAccessors"
-import { Volunteer, VolunteerWithoutId, translationVolunteer } from "../../services/volunteers"
+import {
+    Volunteer,
+    VolunteerWithoutId,
+    VolunteerLogin,
+    VolunteerNotifs,
+    translationVolunteer,
+} from "../../services/volunteers"
 import { canonicalEmail } from "../../utils/standardization"
 import { getJwt } from "../secure"
 
@@ -14,38 +20,39 @@ const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
 )
 
 export const volunteerListGet = expressAccessor.listGet()
-export const volunteerGet = expressAccessor.get()
 export const volunteerAdd = expressAccessor.add()
 export const volunteerSet = expressAccessor.set()
 
-export const volunteerLogin = expressAccessor.get(async (list: Volunteer[], body: RequestBody) => {
-    const volunteer = getByEmail(list, body.email)
-    if (!volunteer) {
-        throw Error("Il n'y a aucun bénévole avec cet email")
-    }
+export const volunteerLogin = expressAccessor.get(
+    async (list: Volunteer[], body: RequestBody): Promise<VolunteerLogin> => {
+        const volunteer = getByEmail(list, body.email)
+        if (!volunteer) {
+            throw Error("Il n'y a aucun bénévole avec cet email")
+        }
 
-    const password = body.password || ""
-    const password1Match = await bcrypt.compare(
-        password,
-        volunteer.password1.replace(/^\$2y/, "$2a")
-    )
-    if (!password1Match) {
-        const password2Match = await bcrypt.compare(
+        const password = body.password || ""
+        const password1Match = await bcrypt.compare(
             password,
-            volunteer.password2.replace(/^\$2y/, "$2a")
+            volunteer.password1.replace(/^\$2y/, "$2a")
         )
-        if (!password2Match) {
-            throw Error("Mauvais mot de passe pour cet email")
+        if (!password1Match) {
+            const password2Match = await bcrypt.compare(
+                password,
+                volunteer.password2.replace(/^\$2y/, "$2a")
+            )
+            if (!password2Match) {
+                throw Error("Mauvais mot de passe pour cet email")
+            }
+        }
+
+        const jwt = await getJwt(volunteer.id)
+
+        return {
+            id: volunteer.id,
+            jwt,
         }
     }
-
-    const jwt = await getJwt(volunteer.email)
-
-    return {
-        firstname: volunteer.firstname,
-        jwt,
-    }
-})
+)
 
 const lastForgot: { [id: string]: number } = {}
 export const volunteerForgot = expressAccessor.set(async (list: Volunteer[], body: RequestBody) => {
@@ -77,6 +84,29 @@ export const volunteerForgot = expressAccessor.set(async (list: Volunteer[], bod
         },
     }
 })
+
+export const volunteerNotifsSet = expressAccessor.set(
+    async (list: Volunteer[], body: RequestBody, id: number) => {
+        const volunteer = list.find((v) => v.id === id)
+        if (!volunteer) {
+            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${id}`)
+        }
+        const newVolunteer = _.cloneDeep(volunteer)
+
+        _.assign(newVolunteer, _.pick(body[1], _.keys(newVolunteer)))
+
+        return {
+            toDatabase: newVolunteer,
+            toCaller: {
+                id: newVolunteer.id,
+                firstname: newVolunteer.firstname,
+                adult: newVolunteer.adult,
+                active: newVolunteer.active,
+                hiddenNotifs: newVolunteer.hiddenNotifs,
+            } as VolunteerNotifs,
+        }
+    }
+)
 
 function getByEmail(list: Volunteer[], rawEmail: string): Volunteer | undefined {
     const email = canonicalEmail(rawEmail || "")

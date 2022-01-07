@@ -3,6 +3,9 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { StateRequest, elementFetch } from "./utils"
 import { VolunteerLogin, volunteerLogin } from "../services/volunteers"
 import { setJWT } from "../services/auth"
+import { AppDispatch } from "."
+import { setCurrentUser } from "./auth"
+import { fetchVolunteerNotifsSet } from "./volunteerNotifsSet"
 
 type StateVolunteer = { entity?: VolunteerLogin } & StateRequest
 
@@ -31,13 +34,15 @@ const volunteerLoginSlice = createSlice({
 export default volunteerLoginSlice.reducer
 export const { getRequesting, getSuccess, getFailure } = volunteerLoginSlice.actions
 
-export const fetchVolunteerLogin = elementFetch(
+export const fetchVolunteerLogin = elementFetch<VolunteerLogin, Parameters<typeof volunteerLogin>>(
     volunteerLogin,
     getRequesting,
     getSuccess,
     getFailure,
     undefined,
-    (login: VolunteerLogin) => {
-        setJWT(login.jwt)
+    (login: VolunteerLogin, dispatch: AppDispatch) => {
+        setJWT(login.jwt, login.id)
+        dispatch(setCurrentUser(login))
+        dispatch(fetchVolunteerNotifsSet(login.jwt, login.id, {}))
     }
 )

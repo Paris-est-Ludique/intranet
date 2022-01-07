@@ -1,4 +1,5 @@
 import axios from "axios"
+import _ from "lodash"
 
 import config from "../config"
 import { axiosConfig } from "./auth"
@@ -123,7 +124,9 @@ export default class ServiceAccessors<
         }
     }
 
-    customPost(apiName: string): (params: any) => Promise<{
+    customPost<InputElements extends Array<any>>(
+        apiName: string
+    ): (...params: InputElements) => Promise<{
         data?: any
         error?: Error
     }> {
@@ -131,12 +134,44 @@ export default class ServiceAccessors<
             data?: any
             error?: Error
         }
-        return async (params: any): Promise<ElementGetResponse> => {
+        return async (...params: InputElements): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
                     `${config.API_URL}/${this.elementName}${apiName}`,
                     params,
                     axiosConfig
+                )
+                if (data.error) {
+                    throw Error(data.error)
+                }
+                return { data }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
+    securedCustomPost<InputElements extends Array<any>>(
+        apiName: string
+    ): (
+        jwt: string,
+        ...params: InputElements
+    ) => Promise<{
+        data?: any
+        error?: Error
+    }> {
+        interface ElementGetResponse {
+            data?: any
+            error?: Error
+        }
+        return async (jwt: string, ...params: InputElements): Promise<ElementGetResponse> => {
+            try {
+                const auth = { headers: { Authorization: `Bearer ${jwt}` } }
+                const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
+                const { data } = await axios.post(
+                    `${config.API_URL}/${this.elementName}${apiName}`,
+                    params,
+                    fullAxiosConfig
                 )
                 if (data.error) {
                     throw Error(data.error)

@@ -8,25 +8,11 @@ import volunteer, {
     fetchVolunteer,
     initialState,
 } from "../volunteer"
-import { Volunteer } from "../../services/volunteers"
+import { Volunteer, volunteerExample } from "../../services/volunteers"
 
 jest.mock("axios")
 
-const mockData: Volunteer = {
-    id: 1,
-    lastname: "Aupeix",
-    firstname: "Amélie",
-    email: "pakouille.lakouille@yahoo.fr",
-    mobile: "0675650392",
-    photo: "images/volunteers/$taille/amélie_aupeix.jpg",
-    food: "Végétarien",
-    adult: 1,
-    privileges: 0,
-    active: 0,
-    created: new Date(0),
-    password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
-    password2: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPlobkyRrNIal8ASimSjNj4SR.9O",
-}
+const mockData: Volunteer = volunteerExample
 const { id } = mockData
 const mockError = "Oops! Something went wrong."
 

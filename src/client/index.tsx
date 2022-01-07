@@ -3,13 +3,19 @@ import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
 import { RouteConfig, renderRoutes } from "react-router-config"
 import { loadableReady } from "@loadable/component"
+import Cookies from "js-cookie"
 
 import createStore from "../store"
 import routes from "../routes"
 
+const storage: any = localStorage
+
 // Get the initial state from server-side rendering
 const initialState = window.__INITIAL_STATE__
-const { store, history } = createStore({ initialState })
+
+const id = +(Cookies.get("id") || storage?.getItem("id"))
+const jwt = Cookies.get("jwt") || storage?.getItem("jwt")
+const { store, history } = createStore({ initialState, id, jwt })
 
 const render = (Routes: RouteConfig[]) =>
     ReactDOM.hydrate(
