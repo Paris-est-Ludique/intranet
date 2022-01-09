@@ -115,8 +115,18 @@ const Notifications = ({ dispatch, jwt, volunteerNotifs }: Props): JSX.Element =
                                 <br />
                                 {participation === "peut-etre" ? (
                                     <div>
-                                        On te redemandera dans quelques temps. Si tu as des
-                                        questions
+                                        On te le reproposera dans quelques temps.
+                                        <br />
+                                        Si tu as besoin d&apos;infos, viens nous en parler sur le
+                                        serveur Discord ! Pour le rejoindre,{" "}
+                                        <a
+                                            href="https://discord.com/invite/eXhjKxSBB4"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            clique ici{" "}
+                                        </a>
+                                        .
                                     </div>
                                 ) : null}
                                 <div className={styles.formButtons}>

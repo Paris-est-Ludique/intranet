@@ -92,7 +92,7 @@ export const volunteerForgot = expressAccessor.set(
 export const volunteerNotifsSet = expressAccessor.set(
     async (list: Volunteer[], body: RequestBody, id: number) => {
         const requestedId = +body[0]
-        if (requestedId !== id) {
+        if (requestedId !== id && requestedId !== 0) {
             throw Error(`On ne peut acceder qu'à ses propres notifs`)
         }
         const notifChanges = body[1]
