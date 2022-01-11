@@ -28,6 +28,10 @@ export class Volunteer {
     password1 = ""
 
     password2 = ""
+
+    pushNotifSubscription = ""
+
+    acceptsNotifs = ""
 }
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
@@ -45,6 +49,8 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     created: "creation",
     password1: "passe1",
     password2: "passe2",
+    pushNotifSubscription: "pushNotifSubscription",
+    acceptsNotifs: "accepteLesNotifs",
 }
 
 const elementName = "Volunteer"
@@ -64,6 +70,8 @@ export const volunteerExample: Volunteer = {
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
     password2: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
+    pushNotifSubscription: "",
+    acceptsNotifs: "",
 }
 
 export const emailRegexp =
@@ -97,6 +105,8 @@ export interface VolunteerNotifs {
     adult: number
     active: string
     hiddenNotifs: number[]
+    pushNotifSubscription: string
+    acceptsNotifs: string
 }
 export const volunteerNotifsSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerNotifs>]>("NotifsSet")

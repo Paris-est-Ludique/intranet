@@ -8,7 +8,8 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-const REMOTE_UPDATE_DELAY = 20000
+const REMOTE_UPDATE_DELAY = 40000
+const DELAY_AFTER_QUERY = 1000
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
@@ -26,14 +27,6 @@ export const sheetNames = new SheetNames()
 // eslint-disable-next-line @typescript-eslint/ban-types
 type SheetList = { [sheetName in keyof SheetNames]?: Sheet<object, ElementWithId<object>> }
 const sheetList: SheetList = {}
-setInterval(
-    () =>
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        Object.values(sheetList).forEach((sheet: Sheet<object, ElementWithId<object>>) =>
-            sheet.dbUpdate()
-        ),
-    REMOTE_UPDATE_DELAY
-)
 
 export function getSheet<
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -48,7 +41,14 @@ export function getSheet<
         sheetList[sheetName] = new Sheet<ElementNoId, Element>(sheetName, specimen, translation)
     }
 
-    return sheetList[sheetName] as Sheet<ElementNoId, Element>
+    const sheet = sheetList[sheetName] as Sheet<ElementNoId, Element>
+
+    setTimeout(
+        () => setInterval(() => sheet.dbUpdate(), REMOTE_UPDATE_DELAY),
+        1000 * Object.values(sheetList).length
+    )
+
+    return sheet
 }
 
 export class Sheet<
@@ -83,7 +83,7 @@ export class Sheet<
             (englishProp: string) => (specimen as any)[englishProp]
         ) as Element
 
-        this.dbLoad()
+        setTimeout(() => this.dbLoad(), 100 * Object.values(sheetList).length)
     }
 
     async getList(): Promise<Element[] | undefined> {
@@ -198,6 +198,8 @@ export class Sheet<
             if (!row) {
                 // eslint-disable-next-line no-await-in-loop
                 await sheet.addRow(stringifiedRow)
+                // eslint-disable-next-line no-await-in-loop
+                await delayDBAccess()
             } else {
                 const keys = Object.keys(stringifiedRow)
                 const sameCells = _.every(keys, (key: keyof Element) => {
@@ -211,6 +213,8 @@ export class Sheet<
                     })
                     // eslint-disable-next-line no-await-in-loop
                     await row.save()
+                    // eslint-disable-next-line no-await-in-loop
+                    await delayDBAccess()
                 }
             }
 
@@ -222,6 +226,8 @@ export class Sheet<
             if (rows[rowToDelete]) {
                 // eslint-disable-next-line no-await-in-loop
                 await rows[rowToDelete].delete()
+                // eslint-disable-next-line no-await-in-loop
+                await delayDBAccess()
             }
         }
     }
@@ -233,6 +239,7 @@ export class Sheet<
 
         // Load sheet into an array of objects
         const rows = (await sheet.getRows()) as StringifiedElement[]
+        await delayDBAccess()
         const elements: Element[] = []
         if (!rows[0]) {
             throw new Error(`No column types defined in sheet ${this.name}`)
@@ -494,4 +501,8 @@ function parseDate(value: string): Date {
         throw new Error(`Unable to read date from val ${value}`)
     }
     return new Date(+matchDate[1], +matchDate[2] - 1, +matchDate[3])
+}
+
+async function delayDBAccess(): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, DELAY_AFTER_QUERY))
 }

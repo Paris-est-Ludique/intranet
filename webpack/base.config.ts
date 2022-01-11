@@ -125,4 +125,28 @@ const config = (isWeb = false): Configuration => ({
     },
 })
 
+export function getClientEnvironment(allowedKeys: string[]): any {
+    const raw = Object.keys(process.env)
+        // Custom regex to allow only a certain category of variables available to the application
+        .filter((key) => allowedKeys.indexOf(key) >= 0)
+        .reduce(
+            (env: any, key: string) => {
+                env[key] = process.env[key]
+                return env
+            },
+            {
+                NODE_ENV: process.env.NODE_ENV || "development",
+            }
+        )
+    // Stringify all values so we can feed into Webpack DefinePlugin
+    const stringified = {
+        "process.env": Object.keys(raw).reduce((env: any, key: string) => {
+            env[key] = JSON.stringify(raw[key])
+            return env
+        }, {}),
+    }
+
+    return stringified
+}
+
 export default config

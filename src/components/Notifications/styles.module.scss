@@ -7,6 +7,8 @@
 
 .notificationsContent {
     @include page-content-wrapper;
+
+    background-color: #ece3df;
 }
 
 .notifIntro {
@@ -19,6 +21,7 @@
     label {
         display: block;
         margin-left: 5px;
+        margin-top: 7px;
     }
     select,
     input {
@@ -31,6 +34,12 @@
 .formButtons {
     margin-top: 10px;
     padding: 5px 0;
+    text-align: center;
+}
+
+.message {
+    margin-top: 10px;
+    color: rgb(11, 138, 0);
     text-align: center;
 }
 

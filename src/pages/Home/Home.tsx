@@ -12,20 +12,14 @@ export type Props = RouteComponentProps
 
 const HomePage: FC<Props> = (): JSX.Element => {
     const dispatch = useDispatch()
-    const readyStatus = useSelector((state: AppState) => state.volunteerNotifsSet.readyStatus)
-    const volunteerNotifs = useSelector(
-        (state: AppState) => state.volunteerNotifsSet.entity,
-        shallowEqual
-    )
 
     const loginError = useSelector((state: AppState) => state.volunteerLogin.error, shallowEqual)
     const jwt = useSelector((state: AppState) => state.auth.jwt, shallowEqual)
 
-    if (!readyStatus || readyStatus === "idle" || readyStatus === "request")
-        return <p>Loading...</p>
+    if (jwt === undefined) return <p>Loading...</p>
 
     if (jwt) {
-        return <Notifications dispatch={dispatch} jwt={jwt} volunteerNotifs={volunteerNotifs} />
+        return <Notifications dispatch={dispatch} jwt={jwt} />
     }
     return (
         <div>

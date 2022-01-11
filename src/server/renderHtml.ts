@@ -31,6 +31,37 @@ export default (
         ${extractor.getStyleTags()}
       </head>
       <body>
+        <script>
+        window.isSubscribed = false;
+        window.swRegistration = null;
+      
+        //REGISTER AND UNREGISTER SERVICE WORKER
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+          window.addEventListener('load', function() {
+            var swPath = '/service-worker.js';
+            navigator.serviceWorker.register(swPath)
+            .then(function(registration) {
+              console.log('Service Worker registered');
+              window.swRegistration = registration;
+              registration.pushManager.getSubscription()
+              .then(function(subscription) {
+                console.log("subscription", JSON.stringify(subscription));
+                window.isSubscribed = !(subscription === null);
+      
+                if (window.isSubscribed) {
+                  console.log('User IS subscribed.');
+                } else {
+                  console.log('User is NOT subscribed.');
+                }
+              });
+            })
+            .catch(function(err) {
+              console.log('Service Worker registration failed: ', err);
+            });
+          });
+        }
+        </script>
+
         <!-- Insert the router, which passed from server-side -->
         <div id="react-view">${htmlContent}</div>
 

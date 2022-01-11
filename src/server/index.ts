@@ -27,6 +27,7 @@ import {
     volunteerForgot,
 } from "./gsheets/volunteers"
 import config from "../config"
+import notificationsSubscribe from "./notificationsSubscribe"
 
 const app = express()
 
@@ -69,6 +70,9 @@ app.post("/VolunteerForgot", volunteerForgot)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
 app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
+
+// Push notification subscription
+app.post("/notifications/subscribe", notificationsSubscribe)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)

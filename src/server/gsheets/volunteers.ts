@@ -112,6 +112,8 @@ export const volunteerNotifsSet = expressAccessor.set(
                 adult: newVolunteer.adult,
                 active: newVolunteer.active,
                 hiddenNotifs: newVolunteer.hiddenNotifs,
+                pushNotifSubscription: newVolunteer.pushNotifSubscription,
+                acceptsNotifs: newVolunteer.acceptsNotifs,
             } as VolunteerNotifs,
         }
     }

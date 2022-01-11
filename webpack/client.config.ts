@@ -7,7 +7,7 @@ import CompressionPlugin from "compression-webpack-plugin"
 import ImageMinimizerPlugin from "image-minimizer-webpack-plugin"
 import merge from "webpack-merge"
 
-import baseConfig, { isDev } from "./base.config"
+import baseConfig, { isDev, getClientEnvironment } from "./base.config"
 
 const getPlugins = () => {
     let plugins = [
@@ -16,6 +16,7 @@ const getPlugins = () => {
             filename: isDev ? "[name].css" : "[name].[contenthash].css",
             chunkFilename: isDev ? "[id].css" : "[id].[contenthash].css",
         }),
+        new webpack.DefinePlugin(getClientEnvironment(["FORCE_ORANGE_PUBLIC_VAPID_KEY"])),
     ]
 
     if (isDev)

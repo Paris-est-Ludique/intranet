@@ -75,8 +75,11 @@
         "@reduxjs/toolkit": "^1.6.0",
         "@sendgrid/mail": "^7.6.0",
         "@types/cookie-parser": "^1.4.2",
+        "@types/detect-node": "^2.0.0",
         "@types/js-cookie": "^3.0.1",
         "@types/lodash": "^4.14.177",
+        "@types/serviceworker": "^0.0.32",
+        "@types/web-push": "^3.3.2",
         "autoprefixer": "^10.2.6",
         "axios": "^0.21.1",
         "bcrypt": "^5.0.1",
@@ -86,6 +89,7 @@
         "cookie-parser": "^1.4.6",
         "core-js": "^3.15.2",
         "cross-env": "^7.0.3",
+        "detect-node": "^2.1.0",
         "express": "^4.17.1",
         "fs": "^0.0.1-security",
         "google-auth-library": "^7.10.1",
@@ -114,7 +118,8 @@
         "redux-devtools-extension": "^2.13.9",
         "redux-thunk": "^2.3.0",
         "serialize-javascript": "^6.0.0",
-        "serve-favicon": "^2.5.0"
+        "serve-favicon": "^2.5.0",
+        "web-push": "^3.4.5"
     },
     "devDependencies": {
         "@babel/core": "^7.14.6",
