@@ -22,7 +22,7 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
     const loadBranchData = (): Promise<any> => {
         const branch = matchRoutes(routes, req.path)
         const promises = branch.map(({ route, match }) => {
-            if (route.loadData)
+            if (route.loadData) {
                 return Promise.all(
                     route
                         .loadData({
@@ -33,6 +33,7 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
                         })
                         .map((item: Action) => store.dispatch(item))
                 )
+            }
 
             return Promise.resolve(null)
         })

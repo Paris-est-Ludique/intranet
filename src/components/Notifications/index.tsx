@@ -1,8 +1,7 @@
 import _ from "lodash"
 import React, { memo, useCallback, useEffect, useRef, useState } from "react"
 import isNode from "detect-node"
-import { shallowEqual, useSelector } from "react-redux"
-import { AppDispatch, AppState } from "../../store"
+import { AppDispatch } from "../../store"
 import { fetchVolunteerNotifsSet } from "../../store/volunteerNotifsSet"
 import styles from "./styles.module.scss"
 import { logoutUser } from "../../store/auth"
@@ -12,19 +11,11 @@ import { VolunteerNotifs } from "../../services/volunteers"
 interface Props {
     dispatch: AppDispatch
     jwt: string
+    // eslint-disable-next-line react/require-default-props
+    volunteerNotifs?: VolunteerNotifs
 }
-let prevNotifs: VolunteerNotifs | undefined
 
-const Notifications = ({ dispatch, jwt }: Props): JSX.Element | null => {
-    const volunteerNotifs = useSelector((state: AppState) => {
-        const notifs = state.volunteerNotifsSet.entity
-        if (notifs) {
-            prevNotifs = notifs
-            return notifs
-        }
-        return prevNotifs
-    }, shallowEqual)
-
+const Notifications = ({ dispatch, jwt, volunteerNotifs }: Props): JSX.Element | null => {
     const hidden = volunteerNotifs?.hiddenNotifs || []
     const notifs: JSX.Element[] = []
 
@@ -62,12 +53,17 @@ const Notifications = ({ dispatch, jwt }: Props): JSX.Element | null => {
     }
 
     const [participation, setParticipation] = useState(volunteerNotifs?.active || "inconnu")
+    const [participationMessage, setParticipationMessage] = useState("")
     const onChangeValue2 = (e: React.ChangeEvent<HTMLInputElement>) =>
         setParticipation(e.target.value)
 
     const onSubmit2 = useCallback(
         (event: React.SyntheticEvent): void => {
             event.preventDefault()
+            if (participation === "inconnu") {
+                setParticipationMessage("Il nous faudrait une réponse ^^")
+                return
+            }
 
             dispatch(
                 fetchVolunteerNotifsSet(jwt, 0, {
@@ -88,16 +84,6 @@ const Notifications = ({ dispatch, jwt }: Props): JSX.Element | null => {
                             <form onSubmit={onSubmit2}>
                                 Si les conditions sanitaires te le permettent, souhaites-tu être
                                 bénévole à PeL 2022 ?<br />
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="inconnu"
-                                        name="gender"
-                                        checked={participation === "inconnu"}
-                                        onChange={onChangeValue2}
-                                    />{" "}
-                                    -
-                                </label>
                                 <label>
                                     <input
                                         type="radio"
@@ -147,6 +133,7 @@ const Notifications = ({ dispatch, jwt }: Props): JSX.Element | null => {
                                 <div className={styles.formButtons}>
                                     <button type="submit">Confirmer</button>
                                 </div>
+                                <div className={styles.message}>{participationMessage}</div>
                             </form>
                         </div>
                     </div>
@@ -271,7 +258,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                                 "Un autre navigateur était notifié, mais c'est maintenant celui-ci qui le sera."
                             )
                         } else {
-                            setNotifMessage("C'est enregistré !")
+                            setNotifMessage("C'est mémorisé !")
                         }
 
                         setAcceptsNotifs("oui")
@@ -284,7 +271,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                     } catch (_e) {
                         if (Notification.permission !== "granted") {
                             setNotifMessage(
-                                "Mince tu as bloqué toutes notifications pour le site des bénévoles, l'exact opposé de ce qu'il fallait :) Pour annuler ça, les instructions sont ici : https://support.pushcrew.com/support/solutions/articles/9000098467-how-to-unblock-notifications-from-a-website-that-you-once-blocked-"
+                                "Mince tu as bloqué les notifications pour le site des bénévoles ! En haut juste à gauche de la barre d'adresse, il y a une icone de cadenas ou de message barré sur lequel cliquer pour annuler ce blocage."
                             )
                         } else {
                             setNotifMessage(
@@ -305,7 +292,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                             "Un autre navigateur était notifié, mais c'est maintenant celui-ci qui le sera."
                         )
                     } else {
-                        setNotifMessage("C'est enregistré !")
+                        setNotifMessage("C'est mémorisé !")
                     }
 
                     setAcceptsNotifs("oui")
@@ -335,12 +322,15 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
     if (notifs.length === 0) {
         notifs.push(
             <div key="pushNotifs">
-                <div className={styles.notificationsPage}>
-                    <div className={styles.notificationsContent}>
+                <div className={styles.pushNotificationsPage}>
+                    <div className={styles.pushNotificationsContent}>
                         <div className={styles.formLine} key="line-participation">
                             <label>
-                                Acceptes-tu d&apos;être notifié(e) ici quand on aura des questions
-                                ou informations importantes pour toi ?
+                                Acceptes-tu de recevoir une alerte dans ton navigateur quand on aura
+                                une info ou question importante à te poser ici sur le site ?<br />
+                                <span className={styles.sousMessage}>
+                                    (Ça simplifierait grandement notre organisation !!)
+                                </span>
                                 <label>
                                     <input
                                         type="radio"

@@ -15,3 +15,9 @@
 .preRegisterContent {
     @include page-content-wrapper;
 }
+
+.navigationLink {
+    @include page-content-wrapper;
+
+    text-align: center;
+}

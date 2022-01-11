@@ -34,12 +34,12 @@ const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
                 <input type="email" id="email" name="utilisateur" />
             </div>
             <div className={styles.formButtons}>
-                <button type="submit">Connexion</button>
+                <button type="submit">Envoyer</button>
             </div>
             <div className={styles.error}>{error}</div>
             <div className={styles.message}>{message}</div>
             <div className={styles.link}>
-                <Link to="/login"> S&apos;identifier </Link>
+                <Link to="/"> S&apos;identifier </Link>
             </div>
         </form>
     )

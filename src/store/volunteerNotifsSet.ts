@@ -40,13 +40,14 @@ export const fetchVolunteerNotifsSet = elementFetch(
 )
 
 const shouldFetchVolunteerNotifsSet = (state: AppState, id: number) =>
-    state.volunteerNotifsSet.readyStatus !== "success" ||
-    (state.volunteerNotifsSet.entity && state.volunteerNotifsSet.entity.id !== id)
+    state.volunteerNotifsSet?.readyStatus !== "success" ||
+    (state.volunteerNotifsSet?.entity && state.volunteerNotifsSet?.entity?.id !== id)
 
 export const fetchVolunteerNotifsSetIfNeed =
     (id = 0, notif: Partial<VolunteerNotifs> = {}): AppThunk =>
     (dispatch, getState) => {
         let jwt = ""
+
         if (!id) {
             ;({ id, jwt } = getState().auth)
         }

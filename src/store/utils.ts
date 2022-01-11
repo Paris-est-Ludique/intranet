@@ -1,7 +1,12 @@
-import { ActionCreatorWithoutPayload, ActionCreatorWithPayload } from "@reduxjs/toolkit"
+import {
+    Action,
+    ActionCreatorWithoutPayload,
+    ActionCreatorWithPayload,
+    ThunkDispatch,
+} from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 
-import { AppThunk, AppDispatch } from "."
+import { AppState, AppThunk } from "."
 
 export interface StateRequest {
     readyStatus: "idle" | "request" | "success" | "failure"
@@ -41,10 +46,10 @@ export function elementFetch<Element, ServiceInput extends Array<any>>(
     getSuccess: ActionCreatorWithPayload<Element, string>,
     getFailure: ActionCreatorWithPayload<string, string>,
     errorMessage?: (error: Error) => void,
-    successMessage?: (data: Element, dispatch: AppDispatch) => void
+    successMessage?: (data: Element, dispatch: ThunkDispatch<AppState, any, Action>) => void
 ): (...idArgs: ServiceInput) => AppThunk {
     return (...idArgs: ServiceInput): AppThunk =>
-        async (dispatch) => {
+        async (dispatch: ThunkDispatch<AppState, any, Action>) => {
             dispatch(getRequesting())
 
             const { error, data } = await elementService(...idArgs)

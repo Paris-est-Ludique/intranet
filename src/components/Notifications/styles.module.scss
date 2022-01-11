@@ -7,6 +7,14 @@
 
 .notificationsContent {
     @include page-content-wrapper;
+}
+
+.pushNotificationsPage {
+    @include page-wrapper-center;
+}
+
+.pushNotificationsContent {
+    @include page-content-wrapper;
 
     background-color: #ece3df;
 }
@@ -23,6 +31,10 @@
         margin-left: 5px;
         margin-top: 7px;
     }
+    .sousMessage {
+        font-size: 95%;
+    }
+
     select,
     input {
         width: 10%;

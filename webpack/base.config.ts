@@ -83,7 +83,7 @@ const config = (isWeb = false): Configuration => ({
         minimizer: [
             new TerserPlugin({
                 // See more options: https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-                terserOptions: { compress: { drop_console: true } },
+                terserOptions: { compress: { drop_console: false } },
             }),
         ],
     },

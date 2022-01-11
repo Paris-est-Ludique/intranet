@@ -7,11 +7,23 @@ import { AppState, AppThunk } from "../../store"
 import { LoginForm, Notifications } from "../../components"
 import styles from "./styles.module.scss"
 import { fetchVolunteerNotifsSetIfNeed } from "../../store/volunteerNotifsSet"
+import { VolunteerNotifs } from "../../services/volunteers"
 
 export type Props = RouteComponentProps
 
+let prevNotifs: VolunteerNotifs | undefined
+
 const HomePage: FC<Props> = (): JSX.Element => {
     const dispatch = useDispatch()
+
+    const volunteerNotifs = useSelector((state: AppState) => {
+        const notifs = state.volunteerNotifsSet?.entity
+        if (notifs) {
+            prevNotifs = notifs
+            return notifs
+        }
+        return prevNotifs
+    }, shallowEqual)
 
     const loginError = useSelector((state: AppState) => state.volunteerLogin.error, shallowEqual)
     const jwt = useSelector((state: AppState) => state.auth.jwt, shallowEqual)
@@ -19,7 +31,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
     if (jwt === undefined) return <p>Loading...</p>
 
     if (jwt) {
-        return <Notifications dispatch={dispatch} jwt={jwt} />
+        return <Notifications dispatch={dispatch} jwt={jwt} volunteerNotifs={volunteerNotifs} />
     }
     return (
         <div>
@@ -30,7 +42,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
                 </div>
             </div>
             <div className={styles.homePage}>
-                <div className={styles.preRegisterContent}>
+                <div className={styles.navigationLink}>
                     <Link to="/preRegister"> S&apos;informer sur le bénévolat </Link>
                 </div>
             </div>
