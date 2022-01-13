@@ -1,5 +1,5 @@
 export function canonicalEmail(email: string): string {
-    email = email.replace(/^\s+|\s+$/g, "")
+    email = email.replace(/^\s+|\s+$/g, "").replace(/\+[^@]+/, "") // Remove +pel in pierre+pel@gmail.com
     if (/@gmail.com$/.test(email)) {
         let domain = email.replace(/^.*@/, "")
         domain = domain.replace(/^googlemail%.com$/, "gmail.com")
@@ -28,7 +28,7 @@ export function canonicalMobile(mobile: string): string {
     if (!validMobile(mobile)) {
         return ""
     }
-    let clean = trim(mobile).replace(/[-0-9. ()+]$/g, "")
+    let clean = trim(mobile).replace(/[-. ()+]/g, "")
     if (clean.length === 11) {
         clean = clean.replace(/^33/, "0")
     }
@@ -43,4 +43,31 @@ export function canonicalMobile(mobile: string): string {
 
 export function trim(src: string): string {
     return typeof src !== "string" ? "" : src.replace(/^\s*/, "").replace(/\s*$/, "")
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function doCleanVolunteer<
+    Element extends { firstname: string; lastname: string; email: string; mobile: string }
+>(vol: Element): void {
+    if (!validMobile(vol.mobile)) {
+        vol.mobile = ""
+    } else {
+        vol.mobile = canonicalMobile(vol.mobile)
+    }
+
+    vol.firstname = trim(vol.firstname)
+    vol.firstname = vol.firstname
+        .toLowerCase()
+        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
+        .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
+        .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
+
+    vol.lastname = trim(vol.lastname)
+    vol.lastname = vol.lastname
+        .toLowerCase()
+        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
+        .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
+        .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
+
+    vol.email = canonicalEmail(vol.email)
 }

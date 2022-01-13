@@ -9,7 +9,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
 const REMOTE_UPDATE_DELAY = 40000
-const DELAY_AFTER_QUERY = 1000
+const DELAY_AFTER_QUERY = 2000
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
@@ -77,7 +77,7 @@ export class Sheet<
         readonly translation: { [k in keyof Element]: string }
     ) {
         this.invertedTranslation = _.invert(this.translation)
-        this.sheetName = sheetNames[name]
+        this.sheetName = sheetNames[name] || name
         this.frenchSpecimen = _.mapValues(
             _.invert(translation),
             (englishProp: string) => (specimen as any)[englishProp]
@@ -150,20 +150,28 @@ export class Sheet<
     }
 
     dbSave(): void {
-        this.modifiedSinceSave = false
         this.saveTimestamp = +new Date()
 
-        this.dbSaveAsync()
+        try {
+            this.dbSaveAsync()
+            this.modifiedSinceSave = false
+        } catch (e) {
+            console.error("Error in dbSave: ", e)
+        }
     }
 
     dbLoad(): void {
-        this.toRunAfterLoad = []
-        this.dbLoadAsync().then(() => {
-            if (this.toRunAfterLoad) {
-                this.toRunAfterLoad.map((func) => func())
-                this.toRunAfterLoad = undefined
-            }
-        })
+        try {
+            this.toRunAfterLoad = []
+            this.dbLoadAsync().then(() => {
+                if (this.toRunAfterLoad) {
+                    this.toRunAfterLoad.map((func) => func())
+                    this.toRunAfterLoad = undefined
+                }
+            })
+        } catch (e) {
+            console.error("Error in dbLoad: ", e)
+        }
     }
 
     private async dbSaveAsync(): Promise<void> {
@@ -174,6 +182,7 @@ export class Sheet<
 
         // Load sheet into an array of objects
         const rows = await sheet.getRows()
+        await delayDBAccess()
         if (!rows[0]) {
             throw new Error(`No column types defined in sheet ${this.name}`)
         }
@@ -234,7 +243,6 @@ export class Sheet<
 
     private async dbLoadAsync(): Promise<void> {
         type StringifiedElement = Record<keyof Element, string>
-
         const sheet = await this.getGSheet()
 
         // Load sheet into an array of objects
