@@ -25,7 +25,6 @@ const HomePage: FC<Props> = (): JSX.Element => {
         return prevNotifs
     }, shallowEqual)
 
-    const loginError = useSelector((state: AppState) => state.volunteerLogin.error, shallowEqual)
     const jwt = useSelector((state: AppState) => state.auth.jwt, shallowEqual)
 
     if (jwt === undefined) return <p>Loading...</p>
@@ -38,7 +37,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
             <div className={styles.homePage}>
                 <div className={styles.loginContent}>
                     <Helmet title="LoginPage" />
-                    <LoginForm dispatch={dispatch} error={loginError || ""} />
+                    <LoginForm />
                 </div>
             </div>
             <div className={styles.homePage}>

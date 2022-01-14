@@ -1,15 +1,14 @@
 import React, { memo, useCallback } from "react"
 import { Link } from "react-router-dom"
-import { AppDispatch } from "../../store"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { AppState } from "../../store"
 import { fetchVolunteerLogin } from "../../store/volunteerLogin"
 import styles from "./styles.module.scss"
 
-interface Props {
-    dispatch: AppDispatch
-    error: string
-}
+const LoginForm = (): JSX.Element => {
+    const dispatch = useDispatch()
+    const loginError = useSelector((state: AppState) => state.volunteerLogin.error, shallowEqual)
 
-const LoginForm = ({ dispatch, error }: Props): JSX.Element => {
     const onSubmit = useCallback(
         (event: React.SyntheticEvent): void => {
             event.preventDefault()
@@ -41,7 +40,7 @@ const LoginForm = ({ dispatch, error }: Props): JSX.Element => {
             <div className={styles.formButtons}>
                 <button type="submit">Connexion</button>
             </div>
-            <div className={styles.error}>{error}</div>
+            {loginError && <div className={styles.error}>{loginError}</div>}
             <div className={styles.link}>
                 <Link to="/forgot"> Demander un nouveau mot de passe </Link>
             </div>
