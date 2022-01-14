@@ -15,5 +15,11 @@ module.exports = {
                     "Selector should be written with alphanumeric characters only (selector-class-pattern)",
             },
         ],
+        "selector-no-qualifying-type": [
+            true,
+            {
+                ignore: ["attribute"],
+            },
+        ],
     },
 }
