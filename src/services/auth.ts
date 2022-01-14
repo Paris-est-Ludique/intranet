@@ -13,8 +13,8 @@ export function setJWT(token: string, id: number): void {
     axiosConfig.headers.Authorization = `Bearer ${token}`
     storage?.setItem("jwt", token)
     storage?.setItem("id", id)
-    Cookies.set("jwt", token)
-    Cookies.set("id", `${id}`)
+    Cookies.set("jwt", token, { expires: 3650 })
+    Cookies.set("id", `${id}`, { expires: 3650 })
 }
 
 export function unsetJWT(): void {
