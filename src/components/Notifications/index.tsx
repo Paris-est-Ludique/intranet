@@ -1,21 +1,21 @@
 import _ from "lodash"
 import React, { memo, useCallback, useEffect, useRef, useState } from "react"
 import isNode from "detect-node"
-import { AppDispatch } from "../../store"
+import { useDispatch, useSelector } from "react-redux"
 import { fetchVolunteerNotifsSet } from "../../store/volunteerNotifsSet"
 import styles from "./styles.module.scss"
-import { logoutUser } from "../../store/auth"
+import { logoutUser, selectUserJwtToken } from "../../store/auth"
 import { unsetJWT } from "../../services/auth"
 import { VolunteerNotifs } from "../../services/volunteers"
 
 interface Props {
-    dispatch: AppDispatch
-    jwt: string
     // eslint-disable-next-line react/require-default-props
     volunteerNotifs?: VolunteerNotifs
 }
 
-const Notifications = ({ dispatch, jwt, volunteerNotifs }: Props): JSX.Element | null => {
+const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
+    const dispatch = useDispatch()
+    const jwtToken = useSelector(selectUserJwtToken)
     const hidden = volunteerNotifs?.hiddenNotifs || []
     const notifs: JSX.Element[] = []
 
@@ -23,12 +23,12 @@ const Notifications = ({ dispatch, jwt, volunteerNotifs }: Props): JSX.Element |
         (event: React.SyntheticEvent): void => {
             event.preventDefault()
             dispatch(
-                fetchVolunteerNotifsSet(jwt, 0, {
+                fetchVolunteerNotifsSet(jwtToken, 0, {
                     hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 1],
                 })
             )
         },
-        [dispatch, jwt, volunteerNotifs]
+        [dispatch, jwtToken, volunteerNotifs]
     )
 
     if (!_.includes(hidden, 1)) {
@@ -66,13 +66,13 @@ const Notifications = ({ dispatch, jwt, volunteerNotifs }: Props): JSX.Element |
             }
 
             dispatch(
-                fetchVolunteerNotifsSet(jwt, 0, {
+                fetchVolunteerNotifsSet(jwtToken, 0, {
                     hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 2],
                     active: participation,
                 })
             )
         },
-        [dispatch, jwt, volunteerNotifs, participation]
+        [dispatch, jwtToken, volunteerNotifs, participation]
     )
 
     if (!_.includes(hidden, 2)) {
@@ -195,7 +195,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                 setNotifMessage("")
                 setAcceptsNotifs("non")
                 dispatch(
-                    fetchVolunteerNotifsSet(jwt, 0, {
+                    fetchVolunteerNotifsSet(jwtToken, 0, {
                         acceptsNotifs: "non",
                     })
                 )
@@ -263,7 +263,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
 
                         setAcceptsNotifs("oui")
                         dispatch(
-                            fetchVolunteerNotifsSet(jwt, 0, {
+                            fetchVolunteerNotifsSet(jwtToken, 0, {
                                 pushNotifSubscription: JSON.stringify(newSubscription),
                                 acceptsNotifs: "oui",
                             })
@@ -297,7 +297,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
 
                     setAcceptsNotifs("oui")
                     dispatch(
-                        fetchVolunteerNotifsSet(jwt, 0, {
+                        fetchVolunteerNotifsSet(jwtToken, 0, {
                             pushNotifSubscription: JSON.stringify(existedSubscription),
                             acceptsNotifs: "oui",
                         })
@@ -309,7 +309,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                 )
             }
         },
-        [dispatch, jwt, volunteerNotifs]
+        [dispatch, jwtToken, volunteerNotifs]
     )
 
     function subscriptionEqualsSave(toCheck: PushSubscription, save: string | undefined): boolean {

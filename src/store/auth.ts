@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppState } from "."
 
 // Define a type for the slice state
@@ -30,6 +30,10 @@ export const auth = createSlice({
 
 export const { setCurrentUser, logoutUser } = auth.actions
 
-export const selectCount = (state: AppState): AuthState => state.auth
+export const selectAuthData = (state: AppState): AuthState => state.auth
+
+export const selectUserJwtToken = createSelector(selectAuthData, (authData) => authData.jwt)
+
+export const isUserConnected = createSelector(selectUserJwtToken, (token) => !!token)
 
 export default auth.reducer
