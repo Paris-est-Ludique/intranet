@@ -4,9 +4,9 @@ import isNode from "detect-node"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchVolunteerNotifsSet } from "../../store/volunteerNotifsSet"
 import styles from "./styles.module.scss"
-import { logoutUser, selectUserJwtToken } from "../../store/auth"
-import { unsetJWT } from "../../services/auth"
+import { selectUserJwtToken } from "../../store/auth"
 import { VolunteerNotifs } from "../../services/volunteers"
+import LogoutButton from "../LogoutButton/LogoutButton"
 
 interface Props {
     // eslint-disable-next-line react/require-default-props
@@ -360,28 +360,16 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
         )
     }
 
-    const onClick = useCallback(
-        (event: React.SyntheticEvent): void => {
-            event.preventDefault()
-            unsetJWT()
-            dispatch(logoutUser())
-        },
-        [dispatch]
-    )
-
-    notifs.push(
-        <div key="logout" className={styles.formButtons}>
-            <button type="button" onClick={onClick}>
-                Se déconnecter
-            </button>
-        </div>
-    )
-
     if (volunteerNotifs === undefined) {
         return null
     }
 
-    return <div>{notifs.map<React.ReactNode>((t) => t).reduce((prev, curr) => [prev, curr])}</div>
+    return (
+        <div>
+            {notifs.map<React.ReactNode>((t) => t).reduce((prev, curr) => [prev, curr])}
+            <LogoutButton />
+        </div>
+    )
 }
 
 export default memo(Notifications)
