@@ -28,6 +28,9 @@ import {
 } from "./gsheets/volunteers"
 import config from "../config"
 import notificationsSubscribe from "./notificationsSubscribe"
+import checkAccess from "./checkAccess"
+
+checkAccess()
 
 const app = express()
 

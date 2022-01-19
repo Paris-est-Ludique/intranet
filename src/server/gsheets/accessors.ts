@@ -1,15 +1,20 @@
 // eslint-disable-next-line max-classes-per-file
 import path from "path"
 import _ from "lodash"
-import { promises as fs } from "fs"
+import { promises as fs, constants } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 
 // Test write attack with: wget --header='Content-Type:application/json' --post-data='{"prenom":"Pierre","nom":"SCELLES","email":"test@gmail.com","telephone":"0601010101","dejaBenevole":false,"commentaire":""}' http://localhost:3000/PreVolunteerAdd
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
+const DB_PATH = path.resolve(process.cwd(), "access/db.json")
 
 const REMOTE_UPDATE_DELAY = 40000
 const DELAY_AFTER_QUERY = 2000
+
+let creds: string | undefined | null
+// eslint-disable-next-line @typescript-eslint/ban-types
+let localDb: { [sheetName in keyof SheetNames]?: object[] | undefined } = {}
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
@@ -28,6 +33,26 @@ export const sheetNames = new SheetNames()
 type SheetList = { [sheetName in keyof SheetNames]?: Sheet<object, ElementWithId<object>> }
 const sheetList: SheetList = {}
 
+let hasGSheetsAccessReturn: boolean | undefined
+export async function hasGSheetsAccess(): Promise<boolean> {
+    if (hasGSheetsAccessReturn !== undefined) {
+        return hasGSheetsAccessReturn
+    }
+    try {
+        // eslint-disable-next-line no-bitwise
+        await fs.access(CRED_PATH, constants.R_OK | constants.W_OK)
+        hasGSheetsAccessReturn = true
+    } catch {
+        hasGSheetsAccessReturn = false
+    }
+    return hasGSheetsAccessReturn
+}
+
+export async function checkGSheetsAccess(): Promise<void> {
+    if (!(await hasGSheetsAccess())) {
+        console.error(`Google Sheets: no creds found, loading local database ${DB_PATH} instead`)
+    }
+}
 export function getSheet<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
@@ -83,7 +108,7 @@ export class Sheet<
             (englishProp: string) => (specimen as any)[englishProp]
         ) as Element
 
-        setTimeout(() => this.dbLoad(), 100 * Object.values(sheetList).length)
+        setTimeout(() => this.dbFirstLoad(), 100 * Object.values(sheetList).length)
     }
 
     async getList(): Promise<Element[] | undefined> {
@@ -91,9 +116,10 @@ export class Sheet<
         return JSON.parse(JSON.stringify(this._state))
     }
 
-    setList(newState: Element[] | undefined): void {
+    async setList(newState: Element[] | undefined): Promise<void> {
         this._state = JSON.parse(JSON.stringify(newState))
         this.modifiedSinceSave = true
+        this.localDbSave()
     }
 
     async nextId(): Promise<number> {
@@ -147,6 +173,15 @@ export class Sheet<
         } else {
             this.dbLoad()
         }
+        if (__DEV__) {
+            this.localDbSave()
+        }
+    }
+
+    async localDbSave(): Promise<void> {
+        localDb[this.name] = this._state
+        const jsonDB = __DEV__ ? JSON.stringify(localDb, null, 2) : JSON.stringify(localDb)
+        await fs.writeFile(DB_PATH, jsonDB)
     }
 
     dbSave(): void {
@@ -174,11 +209,35 @@ export class Sheet<
         }
     }
 
+    async dbFirstLoad(): Promise<void> {
+        if (await hasGSheetsAccess()) {
+            this.dbLoad()
+        } else if (_.isEmpty(localDb)) {
+            let stringifiedDb
+            try {
+                stringifiedDb = await fs.readFile(DB_PATH)
+            } catch {
+                console.error(`Error: Found no DB file at ${DB_PATH}`)
+            }
+            if (stringifiedDb) {
+                localDb = JSON.parse(stringifiedDb.toString())
+                if (localDb[this.name]) {
+                    this._state = localDb[this.name] as Element[]
+                }
+            }
+            this.dbLoad()
+        }
+    }
+
     private async dbSaveAsync(): Promise<void> {
         if (!this._state) {
             return
         }
         const sheet = await this.getGSheet()
+
+        if (!sheet) {
+            return
+        }
 
         // Load sheet into an array of objects
         const rows = await sheet.getRows()
@@ -245,6 +304,10 @@ export class Sheet<
         type StringifiedElement = Record<keyof Element, string>
         const sheet = await this.getGSheet()
 
+        if (!sheet) {
+            return
+        }
+
         // Load sheet into an array of objects
         const rows = (await sheet.getRows()) as StringifiedElement[]
         await delayDBAccess()
@@ -275,11 +338,21 @@ export class Sheet<
         this._state = elements
     }
 
-    private async getGSheet(): Promise<GoogleSpreadsheetWorksheet> {
-        const doc = new GoogleSpreadsheet("1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw")
-        const creds = await fs.readFile(CRED_PATH)
+    private async getGSheet(): Promise<GoogleSpreadsheetWorksheet | null> {
+        if (creds === undefined) {
+            if (await hasGSheetsAccess()) {
+                const credsBuffer = await fs.readFile(CRED_PATH)
+                creds = credsBuffer?.toString() || null
+            } else {
+                creds = null
+            }
+        }
+        if (creds === null) {
+            return null
+        }
         // Authentication
-        await doc.useServiceAccountAuth(JSON.parse(creds.toString()))
+        const doc = new GoogleSpreadsheet("1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw")
+        await doc.useServiceAccountAuth(JSON.parse(creds))
         await doc.loadInfo()
         return doc.sheetsByTitle[this.sheetName]
     }
