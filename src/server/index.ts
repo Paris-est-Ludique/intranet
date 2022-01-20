@@ -18,14 +18,15 @@ import ssr from "./ssr"
 import certbotRouter from "../routes/certbot"
 import { secure } from "./secure"
 import { javGameListGet } from "./gsheets/javGames"
-import { wishListGet, wishAdd } from "./gsheets/wishes"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
+import { teamListGet } from "./gsheets/teams"
 import {
     volunteerNotifsSet,
     volunteerSet,
     volunteerLogin,
     volunteerForgot,
 } from "./gsheets/volunteers"
+import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
 import notificationsSubscribe from "./notificationsSubscribe"
 import checkAccess from "./checkAccess"
@@ -71,6 +72,7 @@ app.post("/VolunteerForgot", volunteerForgot)
 
 // Secured APIs
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
+app.get("/TeamListGet", teamListGet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
 app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
 

@@ -21,9 +21,11 @@ export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 export class SheetNames {
     JavGames = "Jeux JAV"
 
-    Volunteers = "Membres"
-
     PreVolunteers = "PreMembres"
+
+    Teams = "Equipes"
+
+    Volunteers = "Membres"
 
     Wishes = "Envies d'aider"
 }
