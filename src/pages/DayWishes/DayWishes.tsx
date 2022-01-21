@@ -4,22 +4,22 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux"
 
 import { AppState, AppThunk } from "../../store"
 import {
-    fetchVolunteerTeamWishesSet,
-    fetchVolunteerTeamWishesSetIfNeed,
-} from "../../store/volunteerTeamWishesSet"
-import { VolunteerTeamWishes } from "../../services/volunteers"
+    fetchVolunteerDayWishesSet,
+    fetchVolunteerDayWishesSetIfNeed,
+} from "../../store/volunteerDayWishesSet"
+import { VolunteerDayWishes } from "../../services/volunteers"
 import { selectUserJwtToken } from "../../store/auth"
 
 export type Props = RouteComponentProps
 
-let prevWishes: VolunteerTeamWishes | undefined
+let prevWishes: VolunteerDayWishes | undefined
 
 const HomePage: FC<Props> = (): JSX.Element => {
     const dispatch = useDispatch()
     const jwtToken = useSelector(selectUserJwtToken)
 
     const wishesForm = useSelector((state: AppState) => {
-        const wishes = state.volunteerTeamWishesSet?.entity
+        const wishes = state.volunteerDayWishesSet?.entity
         if (wishes) {
             prevWishes = wishes
             return wishes
@@ -27,18 +27,18 @@ const HomePage: FC<Props> = (): JSX.Element => {
         return prevWishes
     }, shallowEqual)
 
-    const [teamWishes, setTeamWishes] = useState(wishesForm?.teamWishes.join(",") || "")
-    const [teamWishesComment, setTeamWishesComment] = useState(wishesForm?.teamWishesComment || "")
+    const [dayWishes, setDayWishes] = useState(wishesForm?.dayWishes.join(",") || "")
+    const [dayWishesComment, setDayWishesComment] = useState(wishesForm?.dayWishesComment || "")
 
     useEffect(() => {
-        setTeamWishes(wishesForm?.teamWishes.join(",") || "")
-        setTeamWishesComment(wishesForm?.teamWishesComment || "")
+        setDayWishes(wishesForm?.dayWishes.join(",") || "")
+        setDayWishesComment(wishesForm?.dayWishesComment || "")
     }, [wishesForm])
 
-    const onTeamWishesChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setTeamWishes(e.target.value)
-    const onTeamWishesCommentChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setTeamWishesComment(e.target.value)
+    const onDayWishesChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setDayWishes(e.target.value)
+    const onDayWishesCommentChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setDayWishesComment(e.target.value)
 
     const onSubmit = useCallback(
         (event: React.SyntheticEvent): void => {
@@ -48,14 +48,14 @@ const HomePage: FC<Props> = (): JSX.Element => {
                 return // Form should not even appear if this happens
             }
             dispatch(
-                fetchVolunteerTeamWishesSet(jwtToken, 0, {
+                fetchVolunteerDayWishesSet(jwtToken, 0, {
                     id: wishesForm.id,
-                    teamWishes: (teamWishes || "").split(","),
-                    teamWishesComment,
+                    dayWishes: (dayWishes || "").split(","),
+                    dayWishesComment,
                 })
             )
         },
-        [dispatch, jwtToken, wishesForm, teamWishes, teamWishesComment]
+        [dispatch, jwtToken, wishesForm, dayWishes, dayWishesComment]
     )
 
     if (jwtToken === undefined) return <p>Loading...</p>
@@ -65,18 +65,18 @@ const HomePage: FC<Props> = (): JSX.Element => {
             <form>
                 <input
                     type="text"
-                    id="teamWishes"
+                    id="dayWishes"
                     required
-                    value={teamWishes}
-                    onChange={onTeamWishesChanged}
+                    value={dayWishes}
+                    onChange={onDayWishesChanged}
                 />
                 <br />
                 <input
                     type="text"
-                    id="teamWishesComment"
+                    id="dayWishesComment"
                     required
-                    value={teamWishesComment}
-                    onChange={onTeamWishesCommentChanged}
+                    value={dayWishesComment}
+                    onChange={onDayWishesCommentChanged}
                 />
                 <button type="button" onClick={onSubmit}>
                     Envoyer
@@ -88,6 +88,6 @@ const HomePage: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => [fetchVolunteerTeamWishesSetIfNeed()]
+export const loadData = (): AppThunk[] => [fetchVolunteerDayWishesSetIfNeed()]
 
 export default memo(HomePage)

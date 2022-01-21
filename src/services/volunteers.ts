@@ -21,11 +21,13 @@ export class Volunteer {
 
     active = ""
 
-    participingDays = []
+    dayWishes: string[] = []
+
+    dayWishesComment = ""
 
     teamWishes: string[] = []
 
-    teamWishComment = ""
+    teamWishesComment = ""
 
     hiddenNotifs: number[] = []
 
@@ -51,9 +53,10 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     adult: "majeur",
     privileges: "privilege",
     active: "actif",
-    participingDays: "joursPrésent",
+    dayWishes: "enviesJours",
+    dayWishesComment: "commentaireEnviesJours",
     teamWishes: "enviesEquipe",
-    teamWishComment: "commentaireEnviesEquipe",
+    teamWishesComment: "commentaireEnviesEquipe",
     hiddenNotifs: "notifsCachees",
     created: "creation",
     password1: "passe1",
@@ -75,9 +78,10 @@ export const volunteerExample: Volunteer = {
     adult: 1,
     privileges: 0,
     active: "inconnu",
-    participingDays: [],
+    dayWishes: [],
+    dayWishesComment: "",
     teamWishes: [],
-    teamWishComment: "",
+    teamWishesComment: "",
     hiddenNotifs: [],
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
@@ -112,21 +116,29 @@ export interface VolunteerForgot {
 export const volunteerForgot = serviceAccessors.customPost<[{ email: string }]>("Forgot")
 
 export interface VolunteerNotifs {
-    id: number
-    firstname: string
-    adult: number
-    active: string
-    hiddenNotifs: number[]
-    pushNotifSubscription: string
-    acceptsNotifs: string
+    id: Volunteer["id"]
+    firstname: Volunteer["firstname"]
+    adult: Volunteer["adult"]
+    active: Volunteer["active"]
+    hiddenNotifs: Volunteer["hiddenNotifs"]
+    pushNotifSubscription: Volunteer["pushNotifSubscription"]
+    acceptsNotifs: Volunteer["acceptsNotifs"]
 }
 export const volunteerNotifsSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerNotifs>]>("NotifsSet")
 
 export interface VolunteerTeamWishes {
-    id: number
-    teamWishes: string[]
-    teamWishComment: string
+    id: Volunteer["id"]
+    teamWishes: Volunteer["teamWishes"]
+    teamWishesComment: Volunteer["teamWishesComment"]
 }
 export const volunteerTeamWishesSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerTeamWishes>]>("TeamWishesSet")
+
+export interface VolunteerDayWishes {
+    id: Volunteer["id"]
+    dayWishes: Volunteer["dayWishes"]
+    dayWishesComment: Volunteer["dayWishesComment"]
+}
+export const volunteerDayWishesSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerDayWishes>]>("DayWishesSet")

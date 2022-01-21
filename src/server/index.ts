@@ -26,6 +26,7 @@ import {
     volunteerForgot,
     volunteerNotifsSet,
     volunteerTeamWishesSet,
+    volunteerDayWishesSet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -76,6 +77,7 @@ app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
 app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
+app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 
 // Push notification subscription

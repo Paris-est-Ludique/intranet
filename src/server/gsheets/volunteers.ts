@@ -10,6 +10,7 @@ import {
     VolunteerNotifs,
     VolunteerTeamWishes,
     translationVolunteer,
+    VolunteerDayWishes,
 } from "../../services/volunteers"
 import { canonicalEmail } from "../../utils/standardization"
 import { getJwt } from "../secure"
@@ -92,14 +93,14 @@ export const volunteerForgot = expressAccessor.set(
 
 export const volunteerNotifsSet = expressAccessor.set(
     async (list: Volunteer[], body: RequestBody, id: number) => {
-        const requestedId = +body[0]
+        const requestedId = +body[0] || id
         if (requestedId !== id && requestedId !== 0) {
             throw Error(`On ne peut acceder qu'à ses propres notifs`)
         }
         const notifChanges = body[1]
-        const volunteer = list.find((v) => v.id === id)
+        const volunteer = list.find((v) => v.id === requestedId)
         if (!volunteer) {
-            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${id}`)
+            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
         }
         const newVolunteer = _.cloneDeep(volunteer)
 
@@ -122,23 +123,22 @@ export const volunteerNotifsSet = expressAccessor.set(
 
 export const volunteerTeamWishesSet = expressAccessor.set(
     async (list: Volunteer[], body: RequestBody, id: number) => {
-        console.log("volunteerTeamWishesSet", body)
-        const requestedId = +body[0]
+        const requestedId = +body[0] || id
         if (requestedId !== id && requestedId !== 0) {
-            throw Error(`On ne peut acceder qu'à ses propres notifs`)
+            throw Error(`On ne peut acceder qu'à ses propres envies d'équipes`)
         }
         const wishes = body[1] as VolunteerTeamWishes
-        const volunteer = list.find((v) => v.id === id)
+        const volunteer = list.find((v) => v.id === requestedId)
         if (!volunteer) {
-            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${id}`)
+            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
         }
         const newVolunteer = _.cloneDeep(volunteer)
 
         if (wishes.teamWishes !== undefined) {
             newVolunteer.teamWishes = wishes.teamWishes
         }
-        if (wishes.teamWishComment !== undefined) {
-            newVolunteer.teamWishComment = wishes.teamWishComment
+        if (wishes.teamWishesComment !== undefined) {
+            newVolunteer.teamWishesComment = wishes.teamWishesComment
         }
 
         return {
@@ -146,12 +146,42 @@ export const volunteerTeamWishesSet = expressAccessor.set(
             toCaller: {
                 id: newVolunteer.id,
                 teamWishes: newVolunteer.teamWishes,
-                teamWishComment: newVolunteer.teamWishComment,
+                teamWishesComment: newVolunteer.teamWishesComment,
             } as VolunteerTeamWishes,
         }
     }
 )
 
+export const volunteerDayWishesSet = expressAccessor.set(
+    async (list: Volunteer[], body: RequestBody, id: number) => {
+        const requestedId = +body[0] || id
+        if (requestedId !== id && requestedId !== 0) {
+            throw Error(`On ne peut acceder qu'à ses propres envies de jours`)
+        }
+        const wishes = body[1] as VolunteerDayWishes
+        const volunteer = list.find((v) => v.id === requestedId)
+        if (!volunteer) {
+            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+        }
+        const newVolunteer = _.cloneDeep(volunteer)
+
+        if (wishes.dayWishes !== undefined) {
+            newVolunteer.dayWishes = wishes.dayWishes
+        }
+        if (wishes.dayWishesComment !== undefined) {
+            newVolunteer.dayWishesComment = wishes.dayWishesComment
+        }
+
+        return {
+            toDatabase: newVolunteer,
+            toCaller: {
+                id: newVolunteer.id,
+                dayWishes: newVolunteer.dayWishes,
+                dayWishesComment: newVolunteer.dayWishesComment,
+            } as VolunteerDayWishes,
+        }
+    }
+)
 function getByEmail(list: Volunteer[], rawEmail: string): Volunteer | undefined {
     const email = canonicalEmail(rawEmail || "")
     const volunteer = list.find((v) => canonicalEmail(v.email) === email)

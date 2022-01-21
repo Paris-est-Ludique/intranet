@@ -14,8 +14,6 @@ export default function notificationsSubscribe(
 ): void {
     const subscription = request.body
 
-    console.log(subscription)
-
     const payload = JSON.stringify({
         title: "Hello!",
         body: "It works.",
