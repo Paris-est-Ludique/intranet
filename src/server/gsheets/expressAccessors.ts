@@ -37,7 +37,9 @@ export default class ExpressAccessors<
     }
 
     // custom can be async
-    get(custom?: (list: Element[], body: Request["body"], id: number) => Promise<any> | any) {
+    get<Ret = Element>(
+        custom?: (list: Element[], body: Request["body"], id: number) => Promise<Ret> | Ret
+    ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
                 const list = (await this.sheet.getList()) || []
