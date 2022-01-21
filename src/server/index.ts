@@ -21,10 +21,11 @@ import { javGameListGet } from "./gsheets/javGames"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
 import { teamListGet } from "./gsheets/teams"
 import {
-    volunteerNotifsSet,
     volunteerSet,
     volunteerLogin,
     volunteerForgot,
+    volunteerNotifsSet,
+    volunteerTeamWishesSet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -75,6 +76,7 @@ app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
 app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
+app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 
 // Push notification subscription
 app.post("/notifications/subscribe", notificationsSubscribe)

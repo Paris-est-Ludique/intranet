@@ -21,6 +21,12 @@ export class Volunteer {
 
     active = ""
 
+    participingDays = []
+
+    teamWishes: string[] = []
+
+    teamWishComment = ""
+
     hiddenNotifs: number[] = []
 
     created = new Date()
@@ -45,6 +51,9 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     adult: "majeur",
     privileges: "privilege",
     active: "actif",
+    participingDays: "joursPrésent",
+    teamWishes: "enviesEquipe",
+    teamWishComment: "commentaireEnviesEquipe",
     hiddenNotifs: "notifsCachees",
     created: "creation",
     password1: "passe1",
@@ -66,6 +75,9 @@ export const volunteerExample: Volunteer = {
     adult: 1,
     privileges: 0,
     active: "inconnu",
+    participingDays: [],
+    teamWishes: [],
+    teamWishComment: "",
     hiddenNotifs: [],
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
@@ -110,3 +122,11 @@ export interface VolunteerNotifs {
 }
 export const volunteerNotifsSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerNotifs>]>("NotifsSet")
+
+export interface VolunteerTeamWishes {
+    id: number
+    teamWishes: string[]
+    teamWishComment: string
+}
+export const volunteerTeamWishesSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerTeamWishes>]>("TeamWishesSet")

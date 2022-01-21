@@ -8,6 +8,7 @@ import {
     VolunteerWithoutId,
     VolunteerLogin,
     VolunteerNotifs,
+    VolunteerTeamWishes,
     translationVolunteer,
 } from "../../services/volunteers"
 import { canonicalEmail } from "../../utils/standardization"
@@ -115,6 +116,38 @@ export const volunteerNotifsSet = expressAccessor.set(
                 pushNotifSubscription: newVolunteer.pushNotifSubscription,
                 acceptsNotifs: newVolunteer.acceptsNotifs,
             } as VolunteerNotifs,
+        }
+    }
+)
+
+export const volunteerTeamWishesSet = expressAccessor.set(
+    async (list: Volunteer[], body: RequestBody, id: number) => {
+        console.log("volunteerTeamWishesSet", body)
+        const requestedId = +body[0]
+        if (requestedId !== id && requestedId !== 0) {
+            throw Error(`On ne peut acceder qu'à ses propres notifs`)
+        }
+        const wishes = body[1] as VolunteerTeamWishes
+        const volunteer = list.find((v) => v.id === id)
+        if (!volunteer) {
+            throw Error(`Il n'y a aucun bénévole avec cet identifiant ${id}`)
+        }
+        const newVolunteer = _.cloneDeep(volunteer)
+
+        if (wishes.teamWishes !== undefined) {
+            newVolunteer.teamWishes = wishes.teamWishes
+        }
+        if (wishes.teamWishComment !== undefined) {
+            newVolunteer.teamWishComment = wishes.teamWishComment
+        }
+
+        return {
+            toDatabase: newVolunteer,
+            toCaller: {
+                id: newVolunteer.id,
+                teamWishes: newVolunteer.teamWishes,
+                teamWishComment: newVolunteer.teamWishComment,
+            } as VolunteerTeamWishes,
         }
     }
 )

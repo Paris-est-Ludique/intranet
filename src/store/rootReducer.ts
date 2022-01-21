@@ -13,6 +13,7 @@ import volunteerSet from "./volunteerSet"
 import volunteerLogin from "./volunteerLogin"
 import volunteerForgot from "./volunteerForgot"
 import volunteerNotifsSet from "./volunteerNotifsSet"
+import volunteerTeamWishesSet from "./volunteerTeamWishesSet"
 import wishAdd from "./wishAdd"
 import wishList from "./wishList"
 
@@ -31,6 +32,7 @@ export default (history: History) => ({
     volunteerLogin,
     volunteerForgot,
     volunteerNotifsSet,
+    volunteerTeamWishesSet,
     wishAdd,
     wishList,
     router: connectRouter(history) as any,
