@@ -1,8 +1,8 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, elementListFetch } from "./utils"
 import { Team, teamListGet } from "../services/teams"
-import { AppThunk, AppState } from "."
+import { AppThunk, AppState, EntitiesRequest } from "."
 
 const teamAdapter = createEntityAdapter<Team>()
 
@@ -46,3 +46,13 @@ export const fetchTeamListIfNeed = (): AppThunk => (dispatch, getState) => {
 
     return null
 }
+
+export const selectTeamListState = (state: AppState): EntitiesRequest<Team> => state.teamList
+
+export const selectTeamList = createSelector(
+    selectTeamListState,
+    ({ ids, entities, readyStatus }) => {
+        if (readyStatus !== "success") return []
+        return ids.map((id) => entities[id])
+    }
+)

@@ -1,9 +1,9 @@
 import loadable from "@loadable/component"
 
 import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./Teams"
+import { Props, loadData } from "./TeamsPage"
 
-const Teams = loadable(() => import("./Teams"), {
+const Teams = loadable(() => import("./TeamsPage"), {
     fallback: <Loading />,
 })
 

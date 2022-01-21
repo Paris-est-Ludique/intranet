@@ -7,6 +7,8 @@ import { AppState, AppThunk, EntitiesRequest } from "../../store"
 import { Team } from "../../services/teams"
 import { fetchTeamListIfNeed } from "../../store/teamList"
 import styles from "./styles.module.scss"
+import TeamList from "../../components/Teams/TeamList"
+import TeamIntro from "../../components/Teams/TeamIntro"
 
 export type Props = RouteComponentProps
 
@@ -52,6 +54,9 @@ const TeamsPage: FC<Props> = (): JSX.Element => (
     <div className={styles.teamsPage}>
         <div className={styles.teamsContent}>
             <Helmet title="TeamsPage" />
+            <TeamIntro />
+            <TeamList />
+            <hr />
             {useList((state: AppState) => state.teamList, fetchTeamListIfNeed)()}
         </div>
     </div>

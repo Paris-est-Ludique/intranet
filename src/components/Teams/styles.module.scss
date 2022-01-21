@@ -1,0 +1,18 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.teamList {
+    padding: 0;
+    list-style: none;
+}
+
+.teamItem {
+    padding: 10px 0;
+}
+
+.teamName {
+    font-weight: bold;
+}
+
+.teamDescription {
+}
