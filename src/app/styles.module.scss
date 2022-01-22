@@ -32,6 +32,9 @@
     }
 }
 
+.siteNameWrapper {
+}
+
 .siteName {
     margin: 0;
     padding: 0;
@@ -53,4 +56,12 @@
 .siteDescription {
     font-size: 14px;
     color: #555;
+}
+
+.menuWrapper {
+    position: absolute;
+    bottom: 5px;
+    left: 420px;
+    right: 10px;
+    text-align: center;
 }

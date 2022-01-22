@@ -8,6 +8,7 @@ import config from "../config"
 import "normalize.css/normalize.css"
 import "react-toastify/dist/ReactToastify.css"
 import styles from "./styles.module.scss"
+import MainMenu from "../components/Navigation/MainMenu"
 
 interface Route {
     route: { routes: RouteConfig[] }
@@ -23,10 +24,15 @@ const App = ({ route }: Route): JSX.Element => (
         </Helmet>
         <header className={styles.header}>
             <div className={styles.logo} />
-            <h1 className={styles.siteName}>
-                <Link to="/">{config.APP.title}</Link>
-            </h1>
-            <div className={styles.siteDescription}>{config.APP.description}</div>
+            <div className={styles.siteNameWrapper}>
+                <h1 className={styles.siteName}>
+                    <Link to="/">{config.APP.title}</Link>
+                </h1>
+                <div className={styles.siteDescription}>{config.APP.description}</div>
+            </div>
+            <div className={styles.menuWrapper}>
+                <MainMenu />
+            </div>
         </header>
         {/* Child routes won't render without this */}
         {renderRoutes(route.routes)}
