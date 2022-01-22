@@ -9,6 +9,7 @@ import {
 } from "../../store/volunteerDayWishesSet"
 import { VolunteerDayWishes } from "../../services/volunteers"
 import { selectUserJwtToken } from "../../store/auth"
+import DayWishes from "../../components/VolunteerBoard/DayWishes/DayWishes"
 
 export type Props = RouteComponentProps
 
@@ -62,26 +63,29 @@ const HomePage: FC<Props> = (): JSX.Element => {
 
     if (jwtToken) {
         return (
-            <form>
-                <input
-                    type="text"
-                    id="dayWishes"
-                    required
-                    value={dayWishes}
-                    onChange={onDayWishesChanged}
-                />
-                <br />
-                <input
-                    type="text"
-                    id="dayWishesComment"
-                    required
-                    value={dayWishesComment}
-                    onChange={onDayWishesCommentChanged}
-                />
-                <button type="button" onClick={onSubmit}>
-                    Envoyer
-                </button>
-            </form>
+            <div>
+                <DayWishes />
+                <form>
+                    <input
+                        type="text"
+                        id="dayWishes"
+                        required
+                        value={dayWishes}
+                        onChange={onDayWishesChanged}
+                    />
+                    <br />
+                    <input
+                        type="text"
+                        id="dayWishesComment"
+                        required
+                        value={dayWishesComment}
+                        onChange={onDayWishesCommentChanged}
+                    />
+                    <button type="button" onClick={onSubmit}>
+                        Envoyer
+                    </button>
+                </form>
+            </div>
         )
     }
     return <div>Besoin d&apos;être identifié</div>

@@ -1,0 +1,28 @@
+@import "../../../theme/variables";
+@import "../../../theme/mixins";
+
+.dayWishes {
+    @include clear-ul-style;
+}
+
+.dayWishesItem {
+    display: inline-block;
+    margin: 2px;
+}
+
+.dayWishesButton {
+    margin: 0;
+    padding: 4px;
+    border: 0;
+    border-radius: 0;
+    width: 90px;
+    text-align: center;
+    color: $color-grey-dark;
+    background-color: $color-grey-light;
+    cursor: pointer;
+
+    &.active {
+        color: $color-yellow;
+        background-color: $color-black;
+    }
+}
