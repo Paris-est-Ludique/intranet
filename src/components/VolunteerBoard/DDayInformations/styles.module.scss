@@ -1,0 +1,78 @@
+@import "../../../theme/variables";
+@import "../../../theme/mixins";
+
+.ddayInfo {
+    width: 470px;
+}
+
+.ddayTitle {
+    padding: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ddayInfoInputWrapper {
+    margin: 10px 0;
+
+    label {
+        display: inline-block;
+        width: 150px;
+    }
+    input {
+        width: 320px;
+        border: 1px solid $color-grey-medium;
+        outline: 0;
+    }
+}
+
+.ddayInfoShirtWrapper {
+    margin: 10px 0;
+    height: 22px;
+
+    label {
+        display: inline-block;
+        width: 60px;
+    }
+}
+
+.ddayShirtLabel {
+    display: inline-block;
+    margin-top: 2px;
+    width: 150px;
+}
+
+.ddayShirtSizes {
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+
+    select {
+        margin-left: 10px;
+        width: 60px;
+        border: 1px solid $color-grey-medium;
+        background-color: $color-white;
+        outline: 0;
+    }
+}
+
+.ddayInfoCommentWrapper {
+    margin: 6px 0;
+
+    label {
+        display: block;
+        padding-left: 4px;
+    }
+    textarea {
+        width: 100%;
+        height: 50px;
+        padding: 5px;
+        border: 1px solid $color-grey-light;
+        background-color: $color-grey-lighter;
+        outline: 0;
+    }
+}
+
+.ddayButtonWrapper {
+    margin-bottom: 10px;
+    text-align: center;
+}
