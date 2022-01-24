@@ -1,6 +1,7 @@
 import { FC, memo, useCallback, useEffect, useRef, useState } from "react"
 import classnames from "classnames"
 import get from "lodash/get"
+import set from "lodash/set"
 import styles from "./styles.module.scss"
 import {
     daysChoice,
@@ -16,6 +17,7 @@ const DayWishes: FC = (): JSX.Element | null => {
 
     useEffect(() => {
         if (!userWishes) return
+        console.log("userWishes", userWishes)
         const newSelection = get(userWishes, "dayWishes", []).reduce(
             (acc: selectionChoices, day: string) => ({
                 ...acc,
@@ -24,7 +26,8 @@ const DayWishes: FC = (): JSX.Element | null => {
             daysChoice
         )
         setSelection(newSelection)
-    }, [setSelection, userWishes])
+        set(commentRef, "current.value", get(userWishes, "dayWishesComment", ""))
+    }, [setSelection, commentRef, userWishes])
 
     const onChoiceClick = useCallback(
         (id) => {
