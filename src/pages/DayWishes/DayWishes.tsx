@@ -1,90 +1,25 @@
-import { FC, memo, useCallback, useEffect, useState } from "react"
+import { FC, memo } from "react"
 import { RouteComponentProps } from "react-router-dom"
-import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 
-import { AppState, AppThunk } from "../../store"
-import {
-    fetchVolunteerDayWishesSet,
-    fetchVolunteerDayWishesSetIfNeed,
-} from "../../store/volunteerDayWishesSet"
-import { VolunteerDayWishes } from "../../services/volunteers"
+import { AppThunk } from "../../store"
+import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
 import { selectUserJwtToken } from "../../store/auth"
 import DayWishes from "../../components/VolunteerBoard/DayWishes/DayWishes"
+import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
 
-let prevWishes: VolunteerDayWishes | undefined
-
 const HomePage: FC<Props> = (): JSX.Element => {
-    const dispatch = useDispatch()
     const jwtToken = useSelector(selectUserJwtToken)
 
-    const wishesForm = useSelector((state: AppState) => {
-        const wishes = state.volunteerDayWishesSet?.entity
-        if (wishes) {
-            prevWishes = wishes
-            return wishes
-        }
-        return prevWishes
-    }, shallowEqual)
-
-    const [dayWishes, setDayWishes] = useState(wishesForm?.dayWishes.join(",") || "")
-    const [dayWishesComment, setDayWishesComment] = useState(wishesForm?.dayWishesComment || "")
-
-    useEffect(() => {
-        setDayWishes(wishesForm?.dayWishes.join(",") || "")
-        setDayWishesComment(wishesForm?.dayWishesComment || "")
-    }, [wishesForm])
-
-    const onDayWishesChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setDayWishes(e.target.value)
-    const onDayWishesCommentChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setDayWishesComment(e.target.value)
-
-    const onSubmit = useCallback(
-        (event: React.SyntheticEvent): void => {
-            event.preventDefault()
-            if (!wishesForm) {
-                console.error("NO FORM WISHES RECEIVED")
-                return // Form should not even appear if this happens
-            }
-            dispatch(
-                fetchVolunteerDayWishesSet(jwtToken, 0, {
-                    id: wishesForm.id,
-                    dayWishes: (dayWishes || "").split(","),
-                    dayWishesComment,
-                })
-            )
-        },
-        [dispatch, jwtToken, wishesForm, dayWishes, dayWishesComment]
-    )
-
     if (jwtToken === undefined) return <p>Loading...</p>
-
     if (jwtToken) {
         return (
-            <div>
-                <DayWishes />
-                <form>
-                    <input
-                        type="text"
-                        id="dayWishes"
-                        required
-                        value={dayWishes}
-                        onChange={onDayWishesChanged}
-                    />
-                    <br />
-                    <input
-                        type="text"
-                        id="dayWishesComment"
-                        required
-                        value={dayWishesComment}
-                        onChange={onDayWishesCommentChanged}
-                    />
-                    <button type="button" onClick={onSubmit}>
-                        Envoyer
-                    </button>
-                </form>
+            <div className={styles.dayWishPage}>
+                <div className={styles.dayWisContent}>
+                    <DayWishes />
+                </div>
             </div>
         )
     }
