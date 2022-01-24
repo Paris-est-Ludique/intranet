@@ -11,7 +11,7 @@ const TeamItem: React.FC<Props> = ({ team }): JSX.Element => {
     return (
         <li className={styles.teamItem}>
             <div className={styles.teamName}>{name}</div>
-            <div className={styles.teamDescription}>{description}</div>
+            <div>{description}</div>
         </li>
     )
 }

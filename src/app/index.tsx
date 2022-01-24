@@ -24,7 +24,7 @@ const App = ({ route }: Route): JSX.Element => (
         </Helmet>
         <header className={styles.header}>
             <div className={styles.logo} />
-            <div className={styles.siteNameWrapper}>
+            <div>
                 <h1 className={styles.siteName}>
                     <Link to="/">{config.APP.title}</Link>
                 </h1>

@@ -15,9 +15,9 @@
         font-weight: bold;
         color: $color-black;
         text-decoration: none;
+    }
 
-        &:hover {
-            color: $color-grey-dark;
-        }
+    a:hover {
+        color: $color-grey-dark;
     }
 }
