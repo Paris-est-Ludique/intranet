@@ -13,8 +13,6 @@ export class Volunteer {
 
     photo = ""
 
-    food = ""
-
     adult = 1
 
     privileges = 0
@@ -24,6 +22,12 @@ export class Volunteer {
     dayWishes: string[] = []
 
     dayWishesComment = ""
+
+    age = 0
+
+    teeshirtSize = ""
+
+    food = ""
 
     teamWishes: string[] = []
 
@@ -49,12 +53,14 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     email: "mail",
     mobile: "telephone",
     photo: "photo",
-    food: "alimentation",
     adult: "majeur",
     privileges: "privilege",
     active: "actif",
     dayWishes: "enviesJours",
     dayWishesComment: "commentaireEnviesJours",
+    age: "age",
+    teeshirtSize: "teeshirt",
+    food: "alimentation",
     teamWishes: "enviesEquipe",
     teamWishesComment: "commentaireEnviesEquipe",
     hiddenNotifs: "notifsCachees",
@@ -74,12 +80,14 @@ export const volunteerExample: Volunteer = {
     email: "pakouille.lakouille@yahoo.fr",
     mobile: "0675650392",
     photo: "images/volunteers/$taille/amélie_aupeix.jpg",
-    food: "Végétarien",
     adult: 1,
     privileges: 0,
     active: "inconnu",
     dayWishes: [],
     dayWishesComment: "",
+    age: 33,
+    teeshirtSize: "FM",
+    food: "Végétarien",
     teamWishes: [],
     teamWishesComment: "",
     hiddenNotifs: [],
@@ -142,3 +150,14 @@ export interface VolunteerDayWishes {
 }
 export const volunteerDayWishesSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerDayWishes>]>("DayWishesSet")
+
+export interface VolunteerParticipationDetails {
+    id: Volunteer["id"]
+    age: Volunteer["age"]
+    teeshirtSize: Volunteer["teeshirtSize"]
+    food: Volunteer["food"]
+}
+export const volunteerParticipationDetailsSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerParticipationDetails>]>(
+        "ParticipationDetailsSet"
+    )

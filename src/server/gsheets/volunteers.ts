@@ -11,6 +11,7 @@ import {
     VolunteerTeamWishes,
     translationVolunteer,
     VolunteerDayWishes,
+    VolunteerParticipationDetails,
 } from "../../services/volunteers"
 import { canonicalEmail } from "../../utils/standardization"
 import { getJwt } from "../secure"
@@ -86,6 +87,32 @@ export const volunteerForgot = expressAccessor.set(async (list, bodyArray) => {
         },
     }
 })
+
+function generatePassword(): string {
+    const s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return Array(16)
+        .join()
+        .split(",")
+        .map(() => s.charAt(Math.floor(Math.random() * s.length)))
+        .join("")
+}
+
+async function sendForgetEmail(email: string, password: string): Promise<void> {
+    const apiKey = process.env.SENDGRID_API_KEY || ""
+    if (__DEV__ || apiKey === "") {
+        console.error(`Fake sending forget email to ${email} with password ${password}`)
+    } else {
+        sgMail.setApiKey(apiKey)
+        const msg = {
+            to: email,
+            from: "contact@parisestludique.fr",
+            subject: "Nouveau mot de passe pour le site de Paris est Ludique",
+            text: `Voici le nouveau mot de passe : ${password}\nL'ancien fonctionne encore, si tu t'en rappelles.`,
+            html: `Voici le nouveau mot de passe : <strong>${password}</strong><br />L'ancien fonctionne encore, si tu t'en rappelles.`,
+        }
+        await sgMail.send(msg)
+    }
+}
 
 export const volunteerNotifsSet = expressAccessor.set(async (list, body, id) => {
     const requestedId = +body[0] || id
@@ -172,34 +199,42 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
         } as VolunteerDayWishes,
     }
 })
-function getByEmail(list: Volunteer[], rawEmail: string): Volunteer | undefined {
+
+export const volunteerParticipationDetailsSet = expressAccessor.set(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    if (requestedId !== id && requestedId !== 0) {
+        throw Error(`On ne peut acceder qu'à ses propres infos d'age, taille et alimentation`)
+    }
+    const wishes = body[1] as VolunteerParticipationDetails
+    const volunteer = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    const newVolunteer = _.cloneDeep(volunteer)
+
+    if (wishes.age !== undefined) {
+        newVolunteer.age = wishes.age
+    }
+    if (wishes.teeshirtSize !== undefined) {
+        newVolunteer.teeshirtSize = wishes.teeshirtSize
+    }
+    if (wishes.food !== undefined) {
+        newVolunteer.food = wishes.food
+    }
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            id: newVolunteer.id,
+            age: newVolunteer.age,
+            teeshirtSize: newVolunteer.teeshirtSize,
+            food: newVolunteer.food,
+        } as VolunteerParticipationDetails,
+    }
+})
+
+function getByEmail<T extends { email: string }>(list: T[], rawEmail: string): T | undefined {
     const email = canonicalEmail(rawEmail || "")
     const volunteer = list.find((v) => canonicalEmail(v.email) === email)
     return volunteer
-}
-
-function generatePassword(): string {
-    const s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    return Array(16)
-        .join()
-        .split(",")
-        .map(() => s.charAt(Math.floor(Math.random() * s.length)))
-        .join("")
-}
-
-async function sendForgetEmail(email: string, password: string): Promise<void> {
-    const apiKey = process.env.SENDGRID_API_KEY || ""
-    if (__DEV__ || apiKey === "") {
-        console.error(`Fake sending forget email to ${email} with password ${password}`)
-    } else {
-        sgMail.setApiKey(apiKey)
-        const msg = {
-            to: email,
-            from: "contact@parisestludique.fr",
-            subject: "Nouveau mot de passe pour le site de Paris est Ludique",
-            text: `Voici le nouveau mot de passe : ${password}\nL'ancien fonctionne encore, si tu t'en rappelles.`,
-            html: `Voici le nouveau mot de passe : <strong>${password}</strong><br />L'ancien fonctionne encore, si tu t'en rappelles.`,
-        }
-        await sgMail.send(msg)
-    }
 }

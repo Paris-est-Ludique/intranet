@@ -25,6 +25,7 @@ import {
     volunteerLogin,
     volunteerForgot,
     volunteerNotifsSet,
+    volunteerParticipationDetailsSet,
     volunteerTeamWishesSet,
     volunteerDayWishesSet,
 } from "./gsheets/volunteers"
@@ -77,6 +78,11 @@ app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
 app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
+app.post(
+    "/VolunteerParticipationDetailsSet",
+    secure as RequestHandler,
+    volunteerParticipationDetailsSet
+)
 app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 
