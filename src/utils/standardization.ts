@@ -45,6 +45,22 @@ export function trim(src: string): string {
     return typeof src !== "string" ? "" : src.replace(/^\s*/, "").replace(/\s*$/, "")
 }
 
+export function canonicalFirstname(firstname: string): string {
+    return trim(firstname)
+        .toLowerCase()
+        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
+        .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
+        .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
+}
+
+export function canonicalLastname(lastname: string): string {
+    return trim(lastname)
+        .toLowerCase()
+        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
+        .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
+        .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function doCleanVolunteer<
     Element extends { firstname: string; lastname: string; email: string; mobile: string }
@@ -55,19 +71,9 @@ export function doCleanVolunteer<
         vol.mobile = canonicalMobile(vol.mobile)
     }
 
-    vol.firstname = trim(vol.firstname)
-    vol.firstname = vol.firstname
-        .toLowerCase()
-        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
-        .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
-        .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
+    vol.firstname = canonicalFirstname(vol.firstname)
 
-    vol.lastname = trim(vol.lastname)
-    vol.lastname = vol.lastname
-        .toLowerCase()
-        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
-        .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
-        .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
+    vol.lastname = canonicalLastname(vol.lastname)
 
     vol.email = canonicalEmail(vol.email)
 }

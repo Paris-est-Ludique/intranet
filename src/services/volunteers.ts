@@ -1,5 +1,3 @@
-import ServiceAccessors from "./accessors"
-
 export class Volunteer {
     id = 0
 
@@ -18,6 +16,8 @@ export class Volunteer {
     privileges = 0
 
     active = ""
+
+    discordId = ""
 
     dayWishes: string[] = []
 
@@ -56,6 +56,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     adult: "majeur",
     privileges: "privilege",
     active: "actif",
+    discordId: "discordId",
     dayWishes: "enviesJours",
     dayWishesComment: "commentaireEnviesJours",
     age: "age",
@@ -71,7 +72,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     acceptsNotifs: "accepteLesNotifs",
 }
 
-const elementName = "Volunteer"
+export const elementName = "Volunteer"
 
 export const volunteerExample: Volunteer = {
     id: 1,
@@ -83,6 +84,7 @@ export const volunteerExample: Volunteer = {
     adult: 1,
     privileges: 0,
     active: "inconnu",
+    discordId: "",
     dayWishes: [],
     dayWishesComment: "",
     age: 33,
@@ -104,24 +106,14 @@ export const passwordMinLength = 4
 
 export type VolunteerWithoutId = Omit<Volunteer, "id">
 
-const serviceAccessors = new ServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
-
-export const volunteerListGet = serviceAccessors.listGet()
-export const volunteerGet = serviceAccessors.get()
-export const volunteerAdd = serviceAccessors.add()
-export const volunteerSet = serviceAccessors.set()
-
 export interface VolunteerLogin {
     id: number
     jwt: string
 }
-export const volunteerLogin =
-    serviceAccessors.customPost<[{ email: string; password: string }]>("Login")
 
 export interface VolunteerForgot {
     message: string
 }
-export const volunteerForgot = serviceAccessors.customPost<[{ email: string }]>("Forgot")
 
 export interface VolunteerNotifs {
     id: Volunteer["id"]
@@ -132,24 +124,18 @@ export interface VolunteerNotifs {
     pushNotifSubscription: Volunteer["pushNotifSubscription"]
     acceptsNotifs: Volunteer["acceptsNotifs"]
 }
-export const volunteerNotifsSet =
-    serviceAccessors.securedCustomPost<[number, Partial<VolunteerNotifs>]>("NotifsSet")
 
 export interface VolunteerTeamWishes {
     id: Volunteer["id"]
     teamWishes: Volunteer["teamWishes"]
     teamWishesComment: Volunteer["teamWishesComment"]
 }
-export const volunteerTeamWishesSet =
-    serviceAccessors.securedCustomPost<[number, Partial<VolunteerTeamWishes>]>("TeamWishesSet")
 
 export interface VolunteerDayWishes {
     id: Volunteer["id"]
     dayWishes: Volunteer["dayWishes"]
     dayWishesComment: Volunteer["dayWishesComment"]
 }
-export const volunteerDayWishesSet =
-    serviceAccessors.securedCustomPost<[number, Partial<VolunteerDayWishes>]>("DayWishesSet")
 
 export interface VolunteerParticipationDetails {
     id: Volunteer["id"]
@@ -157,7 +143,3 @@ export interface VolunteerParticipationDetails {
     teeshirtSize: Volunteer["teeshirtSize"]
     food: Volunteer["food"]
 }
-export const volunteerParticipationDetailsSet =
-    serviceAccessors.securedCustomPost<[number, Partial<VolunteerParticipationDetails>]>(
-        "ParticipationDetailsSet"
-    )

@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
 import { StateRequest, elementAddFetch } from "./utils"
-import { PreVolunteer, preVolunteerAdd } from "../services/preVolunteers"
+import { PreVolunteer } from "../services/preVolunteers"
+import { preVolunteerAdd } from "../services/preVolunteersAccessors"
 
 const preVolunteerAdapter = createEntityAdapter<PreVolunteer>()
 

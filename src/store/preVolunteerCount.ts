@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, elementValueFetch } from "./utils"
-import { preVolunteerCountGet } from "../services/preVolunteers"
+import { preVolunteerCountGet } from "../services/preVolunteersAccessors"
 import { AppThunk, AppState } from "."
 
 export const initialState: StateRequest & { value?: number } = { readyStatus: "idle" }

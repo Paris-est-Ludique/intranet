@@ -1,5 +1,3 @@
-import ServiceAccessors from "./accessors"
-
 export class Wish {
     id = 0
 
@@ -23,13 +21,6 @@ export const translationWish: { [k in keyof Wish]: string } = {
     addedDate: "dateAjout",
 }
 
-const elementName = "Wish"
+export const elementName = "Wish"
 
 export type WishWithoutId = Omit<Wish, "id">
-
-const serviceAccessors = new ServiceAccessors<WishWithoutId, Wish>(elementName)
-
-export const wishListGet = serviceAccessors.listGet()
-export const wishGet = serviceAccessors.get()
-export const wishAdd = serviceAccessors.add()
-export const wishSet = serviceAccessors.set()

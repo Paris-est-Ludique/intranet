@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, elementListFetch } from "./utils"
-import { JavGame, javGameListGet } from "../services/javGames"
+import { JavGame } from "../services/javGames"
 import { AppThunk, AppState } from "."
+import { javGameListGet } from "../services/javGamesAccessors"
 
 const javGameAdapter = createEntityAdapter<JavGame>()
 

@@ -1,5 +1,3 @@
-import ServiceAccessors from "./accessors"
-
 export class JavGame {
     id = 0
 
@@ -50,13 +48,6 @@ export const translationJavGame: { [k in keyof JavGame]: string } = {
     bggPhoto: "bggPhoto",
 }
 
-const elementName = "JavGame"
+export const elementName = "JavGame"
 
 export type JavGameWithoutId = Omit<JavGame, "id">
-
-const serviceAccessors = new ServiceAccessors<JavGameWithoutId, JavGame>(elementName)
-
-export const javGameListGet = serviceAccessors.listGet()
-export const javGameGet = serviceAccessors.get()
-export const javGameAdd = serviceAccessors.add()
-export const javGameSet = serviceAccessors.set()

@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, elementFetch } from "./utils"
-import { VolunteerTeamWishes, volunteerTeamWishesSet } from "../services/volunteers"
+import { VolunteerTeamWishes } from "../services/volunteers"
 import { AppThunk, AppState } from "."
+import { volunteerTeamWishesSet } from "../services/volunteersAccessors"
 
 type StateVolunteerTeamWishesSet = { entity?: VolunteerTeamWishes } & StateRequest
 

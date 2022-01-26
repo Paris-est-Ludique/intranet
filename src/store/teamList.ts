@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, elementListFetch } from "./utils"
-import { Team, teamListGet } from "../services/teams"
+import { Team } from "../services/teams"
 import { AppThunk, AppState, EntitiesRequest } from "."
+import { teamListGet } from "../services/teamsAccessors"
 
 const teamAdapter = createEntityAdapter<Team>()
 

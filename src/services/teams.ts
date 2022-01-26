@@ -1,5 +1,3 @@
-import ServiceAccessors from "./accessors"
-
 export class Team {
     id = 0
 
@@ -29,11 +27,6 @@ export const translationTeam: { [k in keyof Team]: string } = {
     after: "après",
 }
 
-const elementName = "Team"
+export const elementName = "Team"
 
 export type TeamWithoutId = Omit<Team, "id">
-
-const serviceAccessors = new ServiceAccessors<TeamWithoutId, Team>(elementName)
-
-export const teamListGet = serviceAccessors.listGet()
-export const teamGet = serviceAccessors.get()

@@ -1,5 +1,3 @@
-import ServiceAccessors from "./accessors"
-
 export class PreVolunteer {
     id = 0
 
@@ -26,18 +24,10 @@ export const translationPreVolunteer: { [k in keyof PreVolunteer]: string } = {
     comment: "commentaire",
 }
 
-const elementName = "PreVolunteer"
+export const elementName = "PreVolunteer"
 
 export const emailRegexp =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 export const passwordMinLength = 4
 
 export type PreVolunteerWithoutId = Omit<PreVolunteer, "id">
-
-const serviceAccessors = new ServiceAccessors<PreVolunteerWithoutId, PreVolunteer>(elementName)
-
-export const preVolunteerListGet = serviceAccessors.listGet()
-export const preVolunteerGet = serviceAccessors.get()
-export const preVolunteerAdd = serviceAccessors.add()
-export const preVolunteerSet = serviceAccessors.set()
-export const preVolunteerCountGet = serviceAccessors.countGet()

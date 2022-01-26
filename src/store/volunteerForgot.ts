@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 import { StateRequest, elementFetch } from "./utils"
-import { VolunteerForgot, volunteerForgot } from "../services/volunteers"
+import { VolunteerForgot } from "../services/volunteers"
+import { volunteerForgot } from "../services/volunteersAccessors"
 
 type StateVolunteer = { entity?: VolunteerForgot } & StateRequest
 

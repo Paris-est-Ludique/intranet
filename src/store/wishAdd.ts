@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, toastSuccess, elementAddFetch } from "./utils"
-import { Wish, wishAdd } from "../services/wishes"
+import { Wish } from "../services/wishes"
+import { wishAdd } from "../services/wishesAccessors"
 
 const wishAdapter = createEntityAdapter<Wish>()
 

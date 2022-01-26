@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, toastSuccess, elementAddFetch } from "./utils"
-import { Volunteer, volunteerAdd } from "../services/volunteers"
+import { Volunteer } from "../services/volunteers"
+import { volunteerAdd } from "../services/volunteersAccessors"
 
 const volunteerAdapter = createEntityAdapter<Volunteer>()
 

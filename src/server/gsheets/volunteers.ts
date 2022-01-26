@@ -106,7 +106,7 @@ async function sendForgetEmail(email: string, password: string): Promise<void> {
         const msg = {
             to: email,
             from: "contact@parisestludique.fr",
-            subject: "Nouveau mot de passe pour le site de Paris est Ludique",
+            subject: "Nouveau mot de passe pour le site bénévole de Paris est Ludique",
             text: `Voici le nouveau mot de passe : ${password}\nL'ancien fonctionne encore, si tu t'en rappelles.`,
             html: `Voici le nouveau mot de passe : <strong>${password}</strong><br />L'ancien fonctionne encore, si tu t'en rappelles.`,
         }
