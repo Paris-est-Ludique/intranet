@@ -14,6 +14,8 @@ interface Route {
     route: { routes: RouteConfig[] }
 }
 
+export const reactAppId = "react-view"
+
 const App = ({ route }: Route): JSX.Element => (
     <div>
         <Helmet {...config.APP}>

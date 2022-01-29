@@ -5,7 +5,7 @@ import { useSelector } from "react-redux"
 import { AppThunk } from "../../store"
 import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
 import { selectUserJwtToken } from "../../store/auth"
-import DayWishes from "../../components/VolunteerBoard/DayWishesForm/DayWishesForm"
+import DayWishesForm from "../../components/VolunteerBoard/DayWishesForm/DayWishesForm"
 import DDayInformations from "../../components/VolunteerBoard/DDayInformations/DDaysInformations"
 import styles from "./styles.module.scss"
 
@@ -18,8 +18,8 @@ const HomePage: FC<Props> = (): JSX.Element => {
     if (jwtToken) {
         return (
             <div className={styles.dayWishPage}>
-                <div className={styles.dayWisContent}>
-                    <DayWishes />
+                <div className={styles.dayWishContent}>
+                    <DayWishesForm />
                     <DDayInformations />
                 </div>
             </div>

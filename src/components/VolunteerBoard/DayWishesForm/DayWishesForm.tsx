@@ -10,7 +10,11 @@ import {
     useUserDayWishes,
 } from "../days.utils"
 
-const DayWishesForm: FC = (): JSX.Element | null => {
+type Props = {
+    afterSubmit?: () => void | undefined
+}
+
+const DayWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element => {
     const [selection, setSelection] = useState(daysChoiceSelectionDefaultState)
     const commentRef = useRef<HTMLTextAreaElement | null>(null)
     const [userWishes, saveWishes] = useUserDayWishes()
@@ -41,7 +45,8 @@ const DayWishesForm: FC = (): JSX.Element | null => {
         const comment = get(commentRef, "current.value", "")
         const days = daysChoice.map(({ id }) => id).filter((id) => selection[id])
         saveWishes(days, comment)
-    }, [selection, commentRef, saveWishes])
+        if (afterSubmit) afterSubmit()
+    }, [selection, commentRef, saveWishes, afterSubmit])
 
     return (
         <div className={styles.dayWishesForm}>
@@ -73,6 +78,10 @@ const DayWishesForm: FC = (): JSX.Element | null => {
             </div>
         </div>
     )
+}
+
+DayWishesForm.defaultProps = {
+    afterSubmit: undefined,
 }
 
 export default memo(DayWishesForm)

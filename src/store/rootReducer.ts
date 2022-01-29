@@ -6,6 +6,7 @@ import javGameList from "./javGameList"
 import preVolunteerAdd from "./preVolunteerAdd"
 import preVolunteerCount from "./preVolunteerCount"
 import teamList from "./teamList"
+import ui from "./ui"
 import volunteer from "./volunteer"
 import volunteerAdd from "./volunteerAdd"
 import volunteerList from "./volunteerList"
@@ -27,6 +28,7 @@ export default (history: History) => ({
     preVolunteerAdd,
     preVolunteerCount,
     teamList,
+    ui,
     volunteer,
     volunteerAdd,
     volunteerList,

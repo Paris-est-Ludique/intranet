@@ -1,0 +1,38 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.modalOverlay {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modalContent {
+    @include horizontal-vertical-center();
+
+    position: absolute;
+    bottom: auto;
+    right: auto;
+    padding: 15px;
+    outline: 0;
+    background-color: $color-white;
+    border-radius: 15px;
+    border: $border-large;
+}
+
+.closeButton {
+    position: absolute;
+    padding: 0;
+    z-index: 10;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+    line-height: 20px;
+    color: $color-grey-dark;
+    text-align: center;
+    background: none;
+    cursor: pointer;
+}

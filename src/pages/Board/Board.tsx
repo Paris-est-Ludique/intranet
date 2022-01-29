@@ -5,10 +5,10 @@ import { useSelector } from "react-redux"
 import { AppThunk } from "../../store"
 import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
 import { selectUserJwtToken } from "../../store/auth"
-import DayWishesForm from "../../components/VolunteerBoard/DayWishesForm/DayWishesForm"
 import DDayInformations from "../../components/VolunteerBoard/DDayInformations/DDaysInformations"
 import styles from "./styles.module.scss"
 import DayWishes from "../../components/VolunteerBoard/DayWishes/DayWishes"
+import DayWishesFormModal from "../../components/VolunteerBoard/DayWishesForm/DayWishesFormModal"
 
 export type Props = RouteComponentProps
 
@@ -18,10 +18,10 @@ const BoardPage: FC<Props> = (): JSX.Element => {
     if (jwtToken === undefined) return <p>Loading...</p>
     if (jwtToken) {
         return (
-            <div className={styles.dayWishPage}>
-                <div className={styles.dayWisContent}>
+            <div className={styles.boardPage}>
+                <div className={styles.boardContent}>
                     <DayWishes />
-                    <DayWishesForm />
+                    <DayWishesFormModal />
                     <DDayInformations />
                 </div>
             </div>
