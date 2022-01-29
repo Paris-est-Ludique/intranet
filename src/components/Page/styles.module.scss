@@ -1,9 +1,9 @@
 @import "../../theme/mixins";
 
-.boardPage {
+.pageWrapper {
     @include page-wrapper-center;
 }
 
-.boardContent {
+.pageContent {
     @include page-content-wrapper(800px);
 }
