@@ -1,9 +1,9 @@
 import { shallowEqual, useSelector } from "react-redux"
 import { useCallback } from "react"
-import { selectUserJwtToken } from "../../../store/auth"
-import { AppState } from "../../../store"
-import { fetchVolunteerDayWishesSet } from "../../../store/volunteerDayWishesSet"
-import useAction from "../../../utils/useAction"
+import { selectUserJwtToken } from "../../store/auth"
+import { AppState } from "../../store"
+import { fetchVolunteerDayWishesSet } from "../../store/volunteerDayWishesSet"
+import useAction from "../../utils/useAction"
 
 const daysUtils = ["Jeudi", "Vendredi", "Samedi", "Dimanche", "Lundi"]
 
@@ -42,4 +42,9 @@ export const useUserDayWishes = (): [any, any] => {
     )
 
     return [userWishes, saveWishes]
+}
+
+export const getDayLabel = (id: string): string => {
+    const matchingDay = daysChoice.find((day) => day.id === id)
+    return matchingDay ? matchingDay.label : ""
 }

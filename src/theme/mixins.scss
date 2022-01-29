@@ -29,8 +29,19 @@
     }
 }
 
+@mixin inner-content-wrapper() {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: $color-grey-lighter;
+}
+
 @mixin clear-ul-style {
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+@mixin vertical-center {
+    top: 50%;
+    transform: translateY(-50%);
 }

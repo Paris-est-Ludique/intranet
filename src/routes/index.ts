@@ -4,6 +4,7 @@ import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
+import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
 import AsyncDayWishes, { loadData as loadDayWishesData } from "../pages/DayWishes"
 import AsyncTeamWishes, { loadData as loadTeamWishesData } from "../pages/TeamWishes"
 import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
@@ -59,6 +60,11 @@ export default [
                 path: "/wish",
                 component: AsyncWish,
                 loadData: loadWishData,
+            },
+            {
+                path: "/board",
+                component: AsyncBoard,
+                loadData: loadBoardData,
             },
             {
                 component: NotFound,
