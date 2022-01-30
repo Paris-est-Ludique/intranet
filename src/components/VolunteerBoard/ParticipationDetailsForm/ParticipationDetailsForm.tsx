@@ -2,7 +2,11 @@ import { FC, memo, useCallback, useEffect, useRef, useState } from "react"
 import get from "lodash/get"
 import set from "lodash/set"
 import styles from "./styles.module.scss"
-import { tShirtSizes, useUserParticipationDetails } from "../participationDetails.utils"
+import {
+    foodDefaultValue,
+    tShirtSizes,
+    useUserParticipationDetails,
+} from "../participationDetails.utils"
 
 const ParticipationDetailsForm: FC = (): JSX.Element | null => {
     const sizeRef = useRef<HTMLSelectElement | null>(null)
@@ -15,7 +19,7 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
     const onSubmit = useCallback(() => {
         const age = get(ageRef, "current.value", "")
         const teeshirtSize = has2Shirts ? "" : get(sizeRef, "current.value", "")
-        const food = get(dietRef, "current.value", "")
+        const food = get(dietRef, "current.value", foodDefaultValue)
         saveParticipationDetails({ age, teeshirtSize, food })
     }, [has2Shirts, saveParticipationDetails])
 
@@ -27,7 +31,6 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
     )
 
     useEffect(() => {
-        console.log("participationDetails", participationDetails)
         const age = get(participationDetails, "age", "")
         const teeshirtSize = get(participationDetails, "teeshirtSize", "")
         const food = get(participationDetails, "food", "")
@@ -47,7 +50,7 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
                     <input
                         type="radio"
                         name="hasShirt"
-                        onClick={() => onHas2ShirtsClick(true)}
+                        onChange={() => onHas2ShirtsClick(true)}
                         checked={has2Shirts}
                     />{" "}
                     Oui
@@ -56,7 +59,7 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
                     <input
                         type="radio"
                         name="hasShirt"
-                        onClick={() => onHas2ShirtsClick(false)}
+                        onChange={() => onHas2ShirtsClick(false)}
                         checked={!has2Shirts}
                     />{" "}
                     Non

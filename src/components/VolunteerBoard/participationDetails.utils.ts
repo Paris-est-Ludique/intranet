@@ -18,6 +18,8 @@ export const tShirtSizes = [
     "Femme XL",
 ]
 
+export const foodDefaultValue = "Aucune"
+
 export const useUserParticipationDetails = (): [any, any] => {
     const save = useAction(fetchVolunteerParticipationDetailsSet)
     const jwtToken = useSelector(selectUserJwtToken)
