@@ -16,7 +16,7 @@ import devServer from "./devServer"
 import ssr from "./ssr"
 
 import certbotRouter from "../routes/certbot"
-import { secure } from "./secure"
+import { hasSecret, secure } from "./secure"
 import { javGameListGet } from "./gsheets/javGames"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
 import { teamListGet } from "./gsheets/teams"
@@ -34,6 +34,7 @@ import config from "../config"
 import notificationsSubscribe from "./notificationsSubscribe"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
+import { addStatus, showStatusAt } from "./status"
 
 checkAccess()
 
@@ -122,6 +123,10 @@ if (validCertPath) {
     const httpsOptions = _.mapValues(validCertPath, (pemPath: string) => fs.readFileSync(pemPath))
 
     servers.push({ protocol: "https", server: https.createServer(httpsOptions, app) })
+
+    showStatusAt(6)
+} else {
+    showStatusAt(5)
 }
 
 /**
@@ -139,7 +144,7 @@ servers.forEach(({ protocol, server }) => {
 
 function onError(error: any) {
     if (error) {
-        console.error(chalk.red(`==> 😭  OMG!!! ${error}`))
+        addStatus("Server listening:", chalk.red(`==> 😭  OMG!!! ${error}`))
     }
 }
 
@@ -150,13 +155,35 @@ function onError(error: any) {
 function onListening(server: any) {
     const addr = server.address()
     const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`
-    console.error(chalk.green(`\nServer listening on ${bind}`))
+    addStatus("Server listening:", chalk.green(`✅ ${bind}`))
 }
 
 hasGSheetsAccess().then((hasApiAccess: boolean) => {
     if (hasApiAccess) {
-        console.error(chalk.green(`Database: remote Google Sheet`))
+        addStatus("Database:", chalk.green(`✅ online from Google Sheet`))
     } else {
-        console.error(chalk.green(`Database: local db`))
+        addStatus("Database:", chalk.blue(`🚧 offline, simulated from local db file`))
+    }
+})
+
+const hasSendGridApiAccess = !!process.env.SENDGRID_API_KEY
+if (hasSendGridApiAccess) {
+    addStatus("Emailing:", chalk.green(`✅ online through SendGrid`))
+} else {
+    addStatus("Emailing:", chalk.blue(`🚧 offline, simulated`))
+}
+
+const hasPushNotifAccess = !!process.env.FORCE_ORANGE_PUBLIC_VAPID_KEY
+if (hasPushNotifAccess) {
+    addStatus("Push notif:", chalk.green(`✅ online with a Vapid key`))
+} else {
+    addStatus("Push notif:", chalk.blue(`🚧 offline, simulated`))
+}
+
+hasSecret().then((has: boolean) => {
+    if (has) {
+        addStatus("JWT secret:", chalk.green(`✅ prod private one from file`))
+    } else {
+        addStatus("JWT secret:", chalk.blue(`🚧 dev public fake one from config`))
     }
 })

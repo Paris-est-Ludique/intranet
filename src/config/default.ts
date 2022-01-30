@@ -15,5 +15,5 @@ export default {
             },
         ],
     },
-    JWT_SECRET: "RblQqA6uF#msq2312bebf2FLFn4XzWQ6dttXSJwBX#?gL2JWf!",
+    DEV_JWT_SECRET: "fakeqA6uF#msq2312bebf2FLFn4XzWQ6dttXSJwBX#?gL2JWf!",
 }

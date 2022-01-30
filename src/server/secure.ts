@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import path from "path"
-import { promises as fs } from "fs"
+import { constants, promises as fs } from "fs"
 import { verify, sign } from "jsonwebtoken"
 
 import config from "../config"
@@ -8,6 +8,7 @@ import config from "../config"
 type AuthorizedRequest = Request & { headers: { authorization: string } }
 
 let cachedSecret: string
+const SECRET_PATH = path.resolve(process.cwd(), "access/jwt_secret.json")
 getSecret() // Necessary until we can make async express middleware
 
 export function secure(request: AuthorizedRequest, response: Response, next: NextFunction): void {
@@ -35,15 +36,28 @@ export function secure(request: AuthorizedRequest, response: Response, next: Nex
     })
 }
 
+let hasSecretReturn: boolean | undefined
+export async function hasSecret(): Promise<boolean> {
+    if (hasSecretReturn !== undefined) {
+        return hasSecretReturn
+    }
+    try {
+        // eslint-disable-next-line no-bitwise
+        await fs.access(SECRET_PATH, constants.R_OK | constants.W_OK)
+        hasSecretReturn = true
+    } catch {
+        hasSecretReturn = false
+    }
+    return hasSecretReturn
+}
+
 async function getSecret() {
     if (!cachedSecret) {
-        const SECRET_PATH = path.resolve(process.cwd(), "access/jwt_secret.json")
-
         try {
             const secretContent = await fs.readFile(SECRET_PATH)
             cachedSecret = secretContent && JSON.parse(secretContent.toString()).secret
         } catch (e: any) {
-            cachedSecret = config.JWT_SECRET
+            cachedSecret = config.DEV_JWT_SECRET
         }
     }
 
