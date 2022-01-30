@@ -8,13 +8,16 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 const DB_PATH = path.resolve(process.cwd(), "access/db.json")
+const DB_TO_LOAD_PATH = path.resolve(process.cwd(), "access/dbToLoad.json")
 
 const REMOTE_UPDATE_DELAY = 40000
 const DELAY_AFTER_QUERY = 2000
 
 let creds: string | undefined | null
 // eslint-disable-next-line @typescript-eslint/ban-types
-let localDb: { [sheetName in keyof SheetNames]?: object[] | undefined } = {}
+let states: { [sheetName in keyof SheetNames]?: object[] | undefined } = {}
+// eslint-disable-next-line @typescript-eslint/ban-types
+let types: { [sheetName in keyof SheetNames]?: object | undefined } = {}
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
@@ -87,6 +90,8 @@ export class Sheet<
 
     _state: Element[] | undefined
 
+    _type: Record<keyof Element, string> | undefined
+
     toRunAfterLoad: (() => void)[] | undefined = []
 
     saveTimestamp = 0
@@ -155,7 +160,7 @@ export class Sheet<
         }
     }
 
-    runAfterLoad(func: () => void): void {
+    addToRunAfterLoad(func: () => void): void {
         if (this.toRunAfterLoad) {
             this.toRunAfterLoad.push(func)
         } else {
@@ -165,15 +170,17 @@ export class Sheet<
 
     private async waitForLoad(): Promise<void> {
         return new Promise((resolve, _reject) => {
-            this.runAfterLoad(() => resolve(undefined))
+            this.addToRunAfterLoad(() => resolve(undefined))
         })
     }
 
-    dbUpdate(): void {
-        if (this.modifiedSinceSave) {
-            this.dbSave()
-        } else {
-            this.dbLoad()
+    async dbUpdate(): Promise<void> {
+        if (await hasGSheetsAccess()) {
+            if (this.modifiedSinceSave) {
+                this.dbSave()
+            } else {
+                this.dbLoad()
+            }
         }
         if (__DEV__) {
             this.localDbSave()
@@ -181,9 +188,35 @@ export class Sheet<
     }
 
     async localDbSave(): Promise<void> {
-        localDb[this.name] = this._state
-        const jsonDB = __DEV__ ? JSON.stringify(localDb, null, 2) : JSON.stringify(localDb)
+        states[this.name] = this._state
+        types[this.name] = this._type
+        const toSave = { states, types }
+        const jsonDB = __DEV__ ? JSON.stringify(toSave, null, 2) : JSON.stringify(toSave)
         await fs.writeFile(DB_PATH, jsonDB)
+    }
+
+    async localDbLoad(): Promise<void> {
+        if (_.isEmpty(states)) {
+            let stringifiedDb
+            try {
+                stringifiedDb = await fs.readFile(DB_TO_LOAD_PATH)
+            } catch {
+                console.error(`No local database save found in ${DB_TO_LOAD_PATH}`)
+                process.exit()
+            }
+            if (stringifiedDb) {
+                const db = JSON.parse(stringifiedDb.toString())
+                states = db.states
+                types = db.types
+            }
+        }
+
+        if (!states[this.name]) {
+            console.error(`Sheet ${this.name} couldn't be found in localDb`)
+            process.exit()
+        }
+        this._state = states[this.name] as Element[]
+        this._type = types[this.name] as Record<keyof Element, string>
     }
 
     dbSave(): void {
@@ -197,38 +230,30 @@ export class Sheet<
         }
     }
 
-    dbLoad(): void {
+    async dbLoad(): Promise<void> {
         try {
-            this.toRunAfterLoad = []
-            this.dbLoadAsync().then(() => {
-                if (this.toRunAfterLoad) {
-                    this.toRunAfterLoad.map((func) => func())
-                    this.toRunAfterLoad = undefined
-                }
-            })
+            if (await hasGSheetsAccess()) {
+                this.dbLoadAsync().then(() => this.doRunAfterLoad())
+            } else {
+                this.doRunAfterLoad()
+            }
         } catch (e) {
             console.error("Error in dbLoad: ", e)
         }
     }
 
-    async dbFirstLoad(): Promise<void> {
-        if (await hasGSheetsAccess()) {
-            this.dbLoad()
-        } else if (_.isEmpty(localDb)) {
-            let stringifiedDb
-            try {
-                stringifiedDb = await fs.readFile(DB_PATH)
-            } catch {
-                console.error(`Error: Found no DB file at ${DB_PATH}`)
-            }
-            if (stringifiedDb) {
-                localDb = JSON.parse(stringifiedDb.toString())
-                if (localDb[this.name]) {
-                    this._state = localDb[this.name] as Element[]
-                }
-            }
-            this.dbLoad()
+    doRunAfterLoad(): void {
+        if (this.toRunAfterLoad) {
+            this.toRunAfterLoad.map((func) => func())
+            this.toRunAfterLoad = undefined
         }
+    }
+
+    async dbFirstLoad(): Promise<void> {
+        if (!(await hasGSheetsAccess()) && _.isEmpty(states)) {
+            this.localDbLoad()
+        }
+        this.dbLoad()
     }
 
     private async dbSaveAsync(): Promise<void> {
@@ -249,7 +274,7 @@ export class Sheet<
         }
         // eslint-disable-next-line @typescript-eslint/ban-types
         const elements = this._state as Element[]
-        const types = _.pick(rows[0], Object.values(this.translation)) as Record<
+        this._type = _.pick(rows[0], Object.values(this.translation)) as Record<
             keyof Element,
             string
         >
@@ -263,7 +288,7 @@ export class Sheet<
                 this.invertedTranslation,
                 (englishProp: string) => (element as any)[englishProp]
             ) as Element
-            const stringifiedRow = this.stringifyElement(frenchElement, types)
+            const stringifiedRow = this.stringifyElement(frenchElement, this._type)
 
             if (!row) {
                 // eslint-disable-next-line no-await-in-loop
@@ -317,17 +342,18 @@ export class Sheet<
         if (!rows[0]) {
             throw new Error(`No column types defined in sheet ${this.name}`)
         }
-        const types = _.pick(rows[0], Object.values(this.translation)) as Record<
+        const typeList = _.pick(rows[0], Object.values(this.translation)) as Record<
             keyof Element,
             string
         >
+        this._type = typeList
         rows.shift()
         rows.forEach((row) => {
             const stringifiedElement = _.pick(row, Object.values(this.translation)) as Record<
                 keyof Element,
                 string
             >
-            const frenchData: any = this.parseElement(stringifiedElement, types)
+            const frenchData: any = this.parseElement(stringifiedElement, typeList)
             if (frenchData !== undefined) {
                 const englishElement = _.mapValues(
                     this.translation,
@@ -361,10 +387,10 @@ export class Sheet<
 
     private parseElement(
         rawElement: Record<keyof Element, string>,
-        types: Record<keyof Element, string>
+        typeList: Record<keyof Element, string>
     ): Element {
         const fullElement = _.reduce(
-            types,
+            typeList,
             (element: any, type: string, prop: string) => {
                 const rawProp: string = rawElement[prop as keyof Element]
                 switch (type) {
@@ -469,10 +495,10 @@ export class Sheet<
 
     private stringifyElement(
         element: Element,
-        types: Record<keyof Element, string>
+        typeList: Record<keyof Element, string>
     ): Record<keyof Element, string> {
         const rawElement: Record<keyof Element, string> = _.reduce(
-            types,
+            typeList,
             (stringifiedElement: Record<keyof Element, string>, type: string, prop: string) => {
                 const value = element[prop as keyof Element]
                 switch (type) {

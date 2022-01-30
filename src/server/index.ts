@@ -33,6 +33,7 @@ import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
 import notificationsSubscribe from "./notificationsSubscribe"
 import checkAccess from "./checkAccess"
+import { hasGSheetsAccess } from "./gsheets/accessors"
 
 checkAccess()
 
@@ -151,3 +152,11 @@ function onListening(server: any) {
     const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`
     console.error(chalk.green(`\nServer listening on ${bind}`))
 }
+
+hasGSheetsAccess().then((hasApiAccess: boolean) => {
+    if (hasApiAccess) {
+        console.error(chalk.green(`Database: remote Google Sheet`))
+    } else {
+        console.error(chalk.green(`Database: local db`))
+    }
+})

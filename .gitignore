@@ -15,6 +15,7 @@ public/*
 access/gsheets.json
 access/jwt_secret.json
 access/db.json
+access/dbToLoad.json
 
 # Misc
 .DS_Store
