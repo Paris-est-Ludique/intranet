@@ -1,7 +1,7 @@
 import { FC, memo, useCallback } from "react"
 import get from "lodash/get"
 import styles from "./styles.module.scss"
-import { getDayLabel, useUserDayWishes } from "../days.utils"
+import { getDayLabel, useUserDayWishes } from "../daysWishes.utils"
 import useAction from "../../../utils/useAction"
 import { displayModal, MODAL_IDS } from "../../../store/ui"
 

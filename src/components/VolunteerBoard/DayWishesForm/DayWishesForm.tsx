@@ -8,7 +8,7 @@ import {
     daysChoiceSelectionDefaultState,
     selectionChoices,
     useUserDayWishes,
-} from "../days.utils"
+} from "../daysWishes.utils"
 
 type Props = {
     afterSubmit?: () => void | undefined

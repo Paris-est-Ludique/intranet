@@ -6,7 +6,7 @@ import { AppThunk } from "../../store"
 import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
 import { selectUserJwtToken } from "../../store/auth"
 import DayWishesForm from "../../components/VolunteerBoard/DayWishesForm/DayWishesForm"
-import DDayInformations from "../../components/VolunteerBoard/DDayInformations/DDaysInformations"
+import DDayInformations from "../../components/VolunteerBoard/ParticipationDetailsForm/ParticipationDetailsForm"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps

@@ -5,9 +5,9 @@ import { AppState } from "../../store"
 import { fetchVolunteerDayWishesSet } from "../../store/volunteerDayWishesSet"
 import useAction from "../../utils/useAction"
 
-const daysUtils = ["Jeudi", "Vendredi", "Samedi", "Dimanche", "Lundi"]
+const daysWishesUtils = ["Jeudi", "Vendredi", "Samedi", "Dimanche", "Lundi"]
 
-export const daysChoice = daysUtils.map((label) => ({
+export const daysChoice = daysWishesUtils.map((label) => ({
     id: label[0],
     label,
 }))

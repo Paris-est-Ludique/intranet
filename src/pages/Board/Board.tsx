@@ -7,6 +7,7 @@ import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishes
 import { selectUserJwtToken } from "../../store/auth"
 import Page from "../../components/Page/Page"
 import Board from "../../components/VolunteerBoard/Board"
+import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunteerParticipationDetailsSet"
 
 export type Props = RouteComponentProps
 
@@ -25,6 +26,9 @@ const BoardPage: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => [fetchVolunteerDayWishesSetIfNeed()]
+export const loadData = (): AppThunk[] => [
+    fetchVolunteerDayWishesSetIfNeed(),
+    fetchVolunteerParticipationDetailsSetIfNeed(),
+]
 
 export default memo(BoardPage)
