@@ -1,14 +1,16 @@
 import { FC, memo } from "react"
 import DayWishes from "./DayWishes/DayWishes"
 import DayWishesFormModal from "./DayWishesForm/DayWishesFormModal"
-import ParticipationDetailsForm from "./ParticipationDetailsForm/ParticipationDetailsForm"
+import ParticipationDetails from "./ParticipationDetails/ParticipationDetails"
+import ParticipationDetailsFormModal from "./ParticipationDetailsForm/ParticipationDetailsFormModal"
 import withUserConnected from "../../utils/withUserConnected"
 
 const Board: FC = (): JSX.Element => (
     <div>
         <DayWishes />
         <DayWishesFormModal />
-        <ParticipationDetailsForm />
+        <ParticipationDetails />
+        <ParticipationDetailsFormModal />
     </div>
 )
 

@@ -28,4 +28,5 @@ export const selectActiveModalId = createSelector(selectUiData, (ui) => ui.modal
 
 export const MODAL_IDS = {
     DAYWISHES: "DAYWISHES",
+    PARTICIPATIONDETAILS: "PARTICIPATIONDETAILS",
 }

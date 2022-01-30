@@ -8,7 +8,11 @@ import {
     useUserParticipationDetails,
 } from "../participationDetails.utils"
 
-const ParticipationDetailsForm: FC = (): JSX.Element | null => {
+type Props = {
+    afterSubmit?: () => void | undefined
+}
+
+const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
     const sizeRef = useRef<HTMLSelectElement | null>(null)
     const dietRef = useRef<HTMLInputElement | null>(null)
     const ageRef = useRef<HTMLInputElement | null>(null)
@@ -19,9 +23,10 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
     const onSubmit = useCallback(() => {
         const age = get(ageRef, "current.value", "")
         const teeshirtSize = has2Shirts ? "" : get(sizeRef, "current.value", "")
-        const food = get(dietRef, "current.value", foodDefaultValue)
+        const food = get(dietRef, "current.value", "") || foodDefaultValue
         saveParticipationDetails({ age, teeshirtSize, food })
-    }, [has2Shirts, saveParticipationDetails])
+        if (afterSubmit) afterSubmit()
+    }, [has2Shirts, saveParticipationDetails, afterSubmit])
 
     const onHas2ShirtsClick = useCallback(
         (value) => {
@@ -43,7 +48,7 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.title}>Informations pour le festival</div>
+            <div className={styles.title}>Mes informations pour le festival</div>
             <div className={styles.tShirtWrapper}>
                 <div className={styles.tShirtLabel}>J&apos;ai déjà 2 t-shirts</div>
                 <label>
@@ -97,6 +102,10 @@ const ParticipationDetailsForm: FC = (): JSX.Element | null => {
             </div>
         </div>
     )
+}
+
+ParticipationDetailsForm.defaultProps = {
+    afterSubmit: undefined,
 }
 
 export default memo(ParticipationDetailsForm)
