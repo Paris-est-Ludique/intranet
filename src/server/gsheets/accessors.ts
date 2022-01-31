@@ -3,35 +3,21 @@ import path from "path"
 import _ from "lodash"
 import { promises as fs, constants } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
+import { SheetNames, saveLocalDb, loadLocalDb } from "./localDb"
+
+export { SheetNames } from "./localDb"
 
 // Test write attack with: wget --header='Content-Type:application/json' --post-data='{"prenom":"Pierre","nom":"SCELLES","email":"test@gmail.com","telephone":"0601010101","dejaBenevole":false,"commentaire":""}' http://localhost:3000/PreVolunteerAdd
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
-const DB_PATH = path.resolve(process.cwd(), "access/db.json")
-const DB_TO_LOAD_PATH = path.resolve(process.cwd(), "access/dbToLoad.json")
 
 const REMOTE_UPDATE_DELAY = 40000
 const DELAY_AFTER_QUERY = 2000
 
 let creds: string | undefined | null
-// eslint-disable-next-line @typescript-eslint/ban-types
-let states: { [sheetName in keyof SheetNames]?: object[] | undefined } = {}
-// eslint-disable-next-line @typescript-eslint/ban-types
-let types: { [sheetName in keyof SheetNames]?: object | undefined } = {}
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
-export class SheetNames {
-    JavGames = "Jeux JAV"
-
-    PreVolunteers = "PreMembres"
-
-    Teams = "Equipes"
-
-    Volunteers = "Membres"
-
-    Wishes = "Envies d'aider"
-}
 export const sheetNames = new SheetNames()
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -55,7 +41,7 @@ export async function hasGSheetsAccess(): Promise<boolean> {
 
 export async function checkGSheetsAccess(): Promise<void> {
     if (!(await hasGSheetsAccess())) {
-        console.error(`Google Sheets: no creds found, loading local database ${DB_PATH} instead`)
+        console.error(`Google Sheets: no creds found, loading local database instead`)
     }
 }
 export function getSheet<
@@ -126,7 +112,7 @@ export class Sheet<
     async setList(newState: Element[] | undefined): Promise<void> {
         this._state = JSON.parse(JSON.stringify(newState))
         this.modifiedSinceSave = true
-        this.localDbSave()
+        this.saveLocalDb()
     }
 
     async nextId(): Promise<number> {
@@ -182,41 +168,16 @@ export class Sheet<
                 this.dbLoad()
             }
         }
-        if (__DEV__) {
-            this.localDbSave()
-        }
     }
 
-    async localDbSave(): Promise<void> {
-        states[this.name] = this._state
-        types[this.name] = this._type
-        const toSave = { states, types }
-        const jsonDB = __DEV__ ? JSON.stringify(toSave, null, 2) : JSON.stringify(toSave)
-        await fs.writeFile(DB_PATH, jsonDB)
+    async saveLocalDb(): Promise<void> {
+        await saveLocalDb(this.name, this._state, this._type)
     }
 
-    async localDbLoad(): Promise<void> {
-        if (_.isEmpty(states)) {
-            let stringifiedDb
-            try {
-                stringifiedDb = await fs.readFile(DB_TO_LOAD_PATH)
-            } catch {
-                console.error(`No local database save found in ${DB_TO_LOAD_PATH}`)
-                process.exit()
-            }
-            if (stringifiedDb) {
-                const db = JSON.parse(stringifiedDb.toString())
-                states = db.states
-                types = db.types
-            }
-        }
-
-        if (!states[this.name]) {
-            console.error(`Sheet ${this.name} couldn't be found in localDb`)
-            process.exit()
-        }
-        this._state = states[this.name] as Element[]
-        this._type = types[this.name] as Record<keyof Element, string>
+    async loadLocalDb(): Promise<void> {
+        const db = await loadLocalDb(this.name)
+        this._state = db.state as Element[]
+        this._type = db.type as Record<keyof Element, string>
     }
 
     dbSave(): void {
@@ -250,10 +211,13 @@ export class Sheet<
     }
 
     async dbFirstLoad(): Promise<void> {
-        if (!(await hasGSheetsAccess()) && _.isEmpty(states)) {
-            this.localDbLoad()
+        if (!(await hasGSheetsAccess())) {
+            await this.loadLocalDb()
         }
         this.dbLoad()
+        if (__DEV__ && (await hasGSheetsAccess())) {
+            this.saveLocalDb()
+        }
     }
 
     private async dbSaveAsync(): Promise<void> {

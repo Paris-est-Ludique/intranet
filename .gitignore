@@ -12,10 +12,7 @@ public/*
 !public/manifest.json
 
 # Access
-access/gsheets.json
-access/jwt_secret.json
-access/db.json
-access/dbToLoad.json
+access/*
 
 # Misc
 .DS_Store
