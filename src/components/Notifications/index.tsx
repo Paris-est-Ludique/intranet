@@ -192,7 +192,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
 
             const isChecked = event.target.value === "oui"
             if (!isChecked) {
-                setNotifMessage("")
+                setNotifMessage("Réponse mémorisée.")
                 setAcceptsNotifs("non")
                 dispatch(
                     fetchVolunteerNotifsSet(jwtToken, 0, {
@@ -326,10 +326,15 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                     <div className={styles.pushNotificationsContent}>
                         <div className={styles.formLine} key="line-participation">
                             <label>
-                                Acceptes-tu de recevoir une alerte dans ton navigateur quand on aura
-                                une info ou question importante à te poser ici sur le site ?<br />
+                                Tu as fait le tour des dernières infos ou questions importantes,
+                                merci ! :)
+                                <br />
+                                <br />
+                                Acceptes-tu de recevoir une alerte dans ton navigateur quand on en
+                                aura d&apos;autres spécifiquement pour toi ?<br />
                                 <span className={styles.sousMessage}>
-                                    (Ça simplifierait grandement notre organisation !!)
+                                    (Ça nous simplifierait la vie, on a des soucis à contacter les
+                                    bénévoles par email.)
                                 </span>
                                 <label>
                                     <input
@@ -353,6 +358,10 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                                 </label>
                             </label>
                             <div className={styles.message}>{notifMessage}</div>
+                            <span className={styles.sousMessage}>
+                                Pas besoin de valider, le site mémorise automatiquement si tu
+                                changes ta réponse.
+                            </span>
                         </div>
                     </div>
                 </div>

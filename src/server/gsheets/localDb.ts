@@ -38,11 +38,11 @@ export async function saveLocalDb(
     states[name] = state
     types[name] = type
     const toSave = { states, types }
-    const jsonDB = __DEV__ ? JSON.stringify(toSave, null, 2) : JSON.stringify(toSave)
+    const jsonDB = __DEV__ ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
     await fs.writeFile(DB_PATH, jsonDB)
 
     toSave.states = anonimizedDb(toSave.states)
-    const jsonAnonimizedDB = __DEV__ ? JSON.stringify(toSave, null, 2) : JSON.stringify(toSave)
+    const jsonAnonimizedDB = __DEV__ ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
     await fs.writeFile(ANONYMIZED_DB_PATH, jsonAnonimizedDB)
 }
 
@@ -253,45 +253,71 @@ function anonimizedDb(_s: States): States {
     const s = _.cloneDeep(_s)
     if (s.Volunteers) {
         ;(s.Volunteers as Volunteer[]).forEach((v) => {
-            v.firstname = fakeFirstnames[numberToRand(v.id) % fakeFirstnames.length]
-            v.lastname = fakeLastnames[numberToRand(v.id) % fakeLastnames.length]
-            const fakeEmailDomain = fakeEmailDomains[numberToRand(v.id) % fakeEmailDomains.length]
-            v.email = `${v.firstname}.${v.lastname}.${v.id}@${fakeEmailDomain}`.toLowerCase()
-            const mobileStart = v.mobile.match(/^\+?[0-9][0-9]/)
-            const mobileEnd = [1, 2, 3, 4]
-                .map((n) => `${numberToRand(v.id + n) % 10}${numberToRand(v.id + n + 10) % 10}`)
-                .join(" ")
-            v.mobile = v.mobile ? `${(mobileStart || ["06"])[0]} ${mobileEnd}` : ""
-            v.photo = `${v.firstname}_${v.lastname}.jpg`.toLowerCase()
-            v.password1 = "$2y$1a$Kt/FAKEFAKEFAKEFAKEc6.FAKEFAKEFAKEFAKE//FAKEFAKEFAKEy"
-            v.password2 = "$2y$1a$Kt/FAKEFAKEFAKEFAKEc6.FAKEFAKEFAKEFAKE//FAKEFAKEFAKEy"
-            v.acceptsNotifs = ""
-            if (v.id % 13 === 0) {
-                v.acceptsNotifs = "oui"
-            } else if (v.id % 251 === 0) {
-                v.acceptsNotifs = "non"
+            anonimizedNameEmailMobile(v)
+            if (!idADev(v)) {
+                v.photo = `${v.firstname}_${v.lastname}.jpg`.toLowerCase()
             }
-            v.pushNotifSubscription =
-                v.id % 13 === 0
-                    ? '{"endpoint":"https://fcm.googleapis.com/fcm/send/f-EAfakedfakedU:APA91fakedfakedzIk-DEglfakedfaked9ugI--ljtfakedfakedfakedfakedfakedfakedP3t-ggU7Afakedfakedfakedkai","expirationTime":null,"keys":{"p256dh":"BEZOJSfakedfakedfakedfakedfakedfakedfakedfakedfakedfakedgYs-cafakedw","auth":"GlMfakedfakedFRg"}}'
-                    : ""
+            anonimizedPasswords(v)
+            anonimizedNotifs(v)
         })
     }
     if (s.PreVolunteers) {
         ;(s.PreVolunteers as PreVolunteer[]).forEach((v) => {
-            v.firstname = fakeFirstnames[numberToRand(v.id) % fakeFirstnames.length]
-            v.lastname = fakeLastnames[numberToRand(v.id) % fakeLastnames.length]
-            const fakeEmailDomain = fakeEmailDomains[numberToRand(v.id) % fakeEmailDomains.length]
-            v.email = `${v.firstname}.${v.lastname}.${v.id}@${fakeEmailDomain}`.toLowerCase()
-            const mobileStart = v.mobile.match(/^\+?[0-9][0-9]/)
-            const mobileEnd = [1, 2, 3, 4]
-                .map((n) => `${numberToRand(v.id + n) % 10}${numberToRand(v.id + n + 10) % 10}`)
-                .join(" ")
-            v.mobile = v.mobile ? `${(mobileStart || ["06"])[0]} ${mobileEnd}` : ""
+            anonimizedNameEmailMobile(v)
             v.comment = v.id % 3 === 0 ? "Bonjour, j'adore l'initiative!" : ""
         })
     }
     return s
+}
+
+function idADev(v: Volunteer | PreVolunteer): boolean {
+    const devList = ["Pierre Scelles", "Manuel Emeriau", "Timothé Caillaud"]
+    return devList.includes(`${v.firstname} ${v.lastname}`)
+}
+
+function anonimizedNameEmailMobile(v: Volunteer | PreVolunteer): void {
+    if (idADev(v)) {
+        return
+    }
+
+    v.firstname = fakeFirstnames[numberToRand(v.id) % fakeFirstnames.length]
+    v.lastname = fakeLastnames[numberToRand(v.id) % fakeLastnames.length]
+
+    const fakeEmailDomain = fakeEmailDomains[numberToRand(v.id) % fakeEmailDomains.length]
+    v.email = `${v.firstname}.${v.lastname}.${v.id}@${fakeEmailDomain}`.toLowerCase()
+
+    const mobileStart = v.mobile.match(/^\+?[0-9][0-9]/)
+    const mobileEnd = [1, 2, 3, 4]
+        .map((n) => `${numberToRand(v.id + n) % 10}${numberToRand(v.id + n + 10) % 10}`)
+        .join(" ")
+    v.mobile = v.mobile ? `${(mobileStart || ["06"])[0]} ${mobileEnd}` : ""
+}
+
+function anonimizedPasswords(v: Volunteer): void {
+    if (idADev(v)) {
+        v.password1 = "$2b$10$CMv7lEQKWM7XEJtumt0qsOw4dPANs6lT6dI2N27XmJP0Jm4rscmq."
+        return
+    }
+
+    v.password1 = "$2y$1a$Kt/FAKEFAKEFAKEFAKEc6.FAKEFAKEFAKEFAKE//FAKEFAKEFAKEy"
+    v.password2 = "$2y$1a$Kt/FAKEFAKEFAKEFAKEc6.FAKEFAKEFAKEFAKE//FAKEFAKEFAKEy"
+}
+
+function anonimizedNotifs(v: Volunteer): void {
+    if (idADev(v)) {
+        return
+    }
+
+    v.acceptsNotifs = ""
+    if (v.id % 13 === 0) {
+        v.acceptsNotifs = "oui"
+    } else if (v.id % 251 === 0) {
+        v.acceptsNotifs = "non"
+    }
+    v.pushNotifSubscription =
+        v.id % 13 === 0
+            ? '{"endpoint":"https://fcm.googleapis.com/fcm/send/f-EAfakedfakedU:APA91fakedfakedzIk-DEglfakedfaked9ugI--ljtfakedfakedfakedfakedfakedfakedP3t-ggU7Afakedfakedfakedkai","expirationTime":null,"keys":{"p256dh":"BEZOJSfakedfakedfakedfakedfakedfakedfakedfakedfakedfakedgYs-cafakedw","auth":"GlMfakedfakedFRg"}}'
+            : ""
 }
 
 function numberToRand(n: number) {
