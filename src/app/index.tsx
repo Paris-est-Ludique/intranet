@@ -9,6 +9,7 @@ import "normalize.css/normalize.css"
 import "react-toastify/dist/ReactToastify.css"
 import styles from "./styles.module.scss"
 import MainMenu from "../components/Navigation/MainMenu"
+import LogoutButton from "../components/LogoutButton/LogoutButton"
 
 interface Route {
     route: { routes: RouteConfig[] }
@@ -34,6 +35,9 @@ const App = ({ route }: Route): JSX.Element => (
             </div>
             <div className={styles.menuWrapper}>
                 <MainMenu />
+            </div>
+            <div className={styles.logoutWrapper}>
+                <LogoutButton />
             </div>
         </header>
         {/* Child routes won't render without this */}
