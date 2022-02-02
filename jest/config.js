@@ -23,7 +23,6 @@ module.exports = {
         __SERVER__: false,
         __LOCAL__: false,
         __TEST__: true,
-        localStorage: { getItem: () => null, setItem: () => null, removeItem: () => null },
     },
     maxConcurrency: 50,
     maxWorkers: 1,

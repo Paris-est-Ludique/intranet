@@ -41,10 +41,12 @@ const createStore = ({ initialState, url, jwt, id }: Arg = {}) => {
     return { store, history }
 }
 
-const storage: any = localStorage
-const id = +(Cookies.get("id") || storage?.getItem("id"))
-const jwt = Cookies.get("jwt") || storage?.getItem("jwt")
-
+const id = +(Cookies.get("id") || 0)
+const jwt = Cookies.get("jwt")
+if (id && jwt) {
+    Cookies.set("id", `${id}`, { expires: 3650 })
+    Cookies.set("jwt", jwt, { expires: 3650 })
+}
 const { store } = createStore({ id, jwt })
 
 export type AppState = ReturnType<typeof store.getState>

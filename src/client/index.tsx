@@ -8,13 +8,15 @@ import Cookies from "js-cookie"
 import createStore from "../store"
 import routes from "../routes"
 
-const storage: any = localStorage
-
 // Get the initial state from server-side rendering
 const initialState = window.__INITIAL_STATE__
 
-const id = +(Cookies.get("id") || storage?.getItem("id"))
-const jwt = Cookies.get("jwt") || storage?.getItem("jwt")
+const id = +(Cookies.get("id") || 0)
+const jwt = Cookies.get("jwt")
+if (id && jwt) {
+    Cookies.set("id", `${id}`, { expires: 3650 })
+    Cookies.set("jwt", jwt, { expires: 3650 })
+}
 const { store, history } = createStore({ initialState, id, jwt })
 
 const render = (Routes: RouteConfig[]) =>
