@@ -1,7 +1,7 @@
 import { FC, memo, useCallback } from "react"
 import get from "lodash/get"
 import styles from "./styles.module.scss"
-import { useUserParticipationDetails } from "../participationDetails.utils"
+import { foodDefaultValue, useUserParticipationDetails } from "../participationDetails.utils"
 import { displayModal, MODAL_IDS } from "../../../store/ui"
 import useAction from "../../../utils/useAction"
 
@@ -30,10 +30,10 @@ const ParticipationDetailsForm: FC<Props> = (): JSX.Element | null => {
                 </div>
             )}
             <div className={styles.line}>
-                Age : <b>{age} ans</b>.
+                Age : <b>{age || "?"} ans</b>.
             </div>
             <div className={styles.line}>
-                Préférence alimentaire : <b>{food}</b>
+                Préférence alimentaire : <b>{food || foodDefaultValue}</b>
             </div>
             <div className={styles.editButton}>
                 <button type="button" onClick={onEdit}>
