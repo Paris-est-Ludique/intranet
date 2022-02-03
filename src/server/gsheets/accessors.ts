@@ -230,65 +230,67 @@ export class Sheet<
             return
         }
 
-        // Load sheet into an array of objects
-        const rows = await sheet.getRows()
-        await delayDBAccess()
-        if (!rows[0]) {
-            throw new Error(`No column types defined in sheet ${this.name}`)
-        }
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const elements = this._state as Element[]
-        this._type = _.pick(rows[0], Object.values(this.translation)) as Record<
-            keyof Element,
-            string
-        >
+        await tryNTimesVoidReturn(async () => {
+            // Load sheet into an array of objects
+            const rows = await sheet.getRows()
+            await delayDBAccess()
+            if (!rows[0]) {
+                throw new Error(`No column types defined in sheet ${this.name}`)
+            }
+            // eslint-disable-next-line @typescript-eslint/ban-types
+            const elements = this._state as Element[]
+            this._type = _.pick(rows[0], Object.values(this.translation)) as Record<
+                keyof Element,
+                string
+            >
 
-        // Update received rows
-        let rowid = 1
-        // eslint-disable-next-line no-restricted-syntax
-        for (const element of elements) {
-            const row = rows[rowid]
-            const frenchElement = _.mapValues(
-                this.invertedTranslation,
-                (englishProp: string) => (element as any)[englishProp]
-            ) as Element
-            const stringifiedRow = this.stringifyElement(frenchElement, this._type)
+            // Update received rows
+            let rowid = 1
+            // eslint-disable-next-line no-restricted-syntax
+            for (const element of elements) {
+                const row = rows[rowid]
+                const frenchElement = _.mapValues(
+                    this.invertedTranslation,
+                    (englishProp: string) => (element as any)[englishProp]
+                ) as Element
+                const stringifiedRow = this.stringifyElement(frenchElement, this._type)
 
-            if (!row) {
-                // eslint-disable-next-line no-await-in-loop
-                await sheet.addRow(stringifiedRow)
-                // eslint-disable-next-line no-await-in-loop
-                await delayDBAccess()
-            } else {
-                const keys = Object.keys(stringifiedRow)
-                const sameCells = _.every(keys, (key: keyof Element) => {
-                    const rawVal = row[key as string]
-                    const val: string = rawVal === undefined ? "" : rawVal
-                    return val === stringifiedRow[key]
-                })
-                if (!sameCells) {
-                    keys.forEach((key) => {
-                        row[key] = stringifiedRow[key as keyof Element]
-                    })
+                if (!row) {
                     // eslint-disable-next-line no-await-in-loop
-                    await row.save()
+                    await sheet.addRow(stringifiedRow)
+                    // eslint-disable-next-line no-await-in-loop
+                    await delayDBAccess()
+                } else {
+                    const keys = Object.keys(stringifiedRow)
+                    const sameCells = _.every(keys, (key: keyof Element) => {
+                        const rawVal = row[key as string]
+                        const val: string = rawVal === undefined ? "" : rawVal
+                        return val === stringifiedRow[key]
+                    })
+                    if (!sameCells) {
+                        keys.forEach((key) => {
+                            row[key] = stringifiedRow[key as keyof Element]
+                        })
+                        // eslint-disable-next-line no-await-in-loop
+                        await row.save()
+                        // eslint-disable-next-line no-await-in-loop
+                        await delayDBAccess()
+                    }
+                }
+
+                rowid += 1
+            }
+
+            // Delete all following rows
+            for (let rowToDelete = sheet.rowCount - 1; rowToDelete >= rowid; rowToDelete -= 1) {
+                if (rows[rowToDelete]) {
+                    // eslint-disable-next-line no-await-in-loop
+                    await rows[rowToDelete].delete()
                     // eslint-disable-next-line no-await-in-loop
                     await delayDBAccess()
                 }
             }
-
-            rowid += 1
-        }
-
-        // Delete all following rows
-        for (let rowToDelete = sheet.rowCount - 1; rowToDelete >= rowid; rowToDelete -= 1) {
-            if (rows[rowToDelete]) {
-                // eslint-disable-next-line no-await-in-loop
-                await rows[rowToDelete].delete()
-                // eslint-disable-next-line no-await-in-loop
-                await delayDBAccess()
-            }
-        }
+        })
     }
 
     private async dbLoadAsync(): Promise<void> {
@@ -299,54 +301,61 @@ export class Sheet<
             return
         }
 
-        // Load sheet into an array of objects
-        const rows = (await sheet.getRows()) as StringifiedElement[]
-        await delayDBAccess()
-        const elements: Element[] = []
-        if (!rows[0]) {
-            throw new Error(`No column types defined in sheet ${this.name}`)
-        }
-        const typeList = _.pick(rows[0], Object.values(this.translation)) as Record<
-            keyof Element,
-            string
-        >
-        this._type = typeList
-        rows.shift()
-        rows.forEach((row) => {
-            const stringifiedElement = _.pick(row, Object.values(this.translation)) as Record<
+        await tryNTimesVoidReturn(async () => {
+            // Load sheet into an array of objects
+            const rows = (await sheet.getRows()) as StringifiedElement[]
+            await delayDBAccess()
+            const elements: Element[] = []
+            if (!rows[0]) {
+                throw new Error(`No column types defined in sheet ${this.name}`)
+            }
+            const typeList = _.pick(rows[0], Object.values(this.translation)) as Record<
                 keyof Element,
                 string
             >
-            const frenchData: any = this.parseElement(stringifiedElement, typeList)
-            if (frenchData !== undefined) {
-                const englishElement = _.mapValues(
-                    this.translation,
-                    (frenchProp: string) => frenchData[frenchProp]
-                ) as Element
-                elements.push(englishElement)
-            }
-        })
+            this._type = typeList
+            rows.shift()
+            rows.forEach((row) => {
+                const stringifiedElement = _.pick(row, Object.values(this.translation)) as Record<
+                    keyof Element,
+                    string
+                >
+                const frenchData: any = this.parseElement(stringifiedElement, typeList)
+                if (frenchData !== undefined) {
+                    const englishElement = _.mapValues(
+                        this.translation,
+                        (frenchProp: string) => frenchData[frenchProp]
+                    ) as Element
+                    elements.push(englishElement)
+                }
+            })
 
-        this._state = elements
+            this._state = elements
+        })
     }
 
     private async getGSheet(): Promise<GoogleSpreadsheetWorksheet | null> {
-        if (creds === undefined) {
-            if (await hasGSheetsAccess()) {
-                const credsBuffer = await fs.readFile(CRED_PATH)
-                creds = credsBuffer?.toString() || null
-            } else {
-                creds = null
-            }
-        }
-        if (creds === null) {
-            return null
-        }
-        // Authentication
-        const doc = new GoogleSpreadsheet("1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw")
-        await doc.useServiceAccountAuth(JSON.parse(creds))
-        await doc.loadInfo()
-        return doc.sheetsByTitle[this.sheetName]
+        return tryNTimes(
+            async () => {
+                if (creds === undefined) {
+                    if (await hasGSheetsAccess()) {
+                        const credsBuffer = await fs.readFile(CRED_PATH)
+                        creds = credsBuffer?.toString() || null
+                    } else {
+                        creds = null
+                    }
+                }
+                if (creds === null) {
+                    return null
+                }
+                // Authentication
+                const doc = new GoogleSpreadsheet("1pMMKcYx6NXLOqNn6pLHJTPMTOLRYZmSNg2QQcAu7-Pw")
+                await doc.useServiceAccountAuth(JSON.parse(creds))
+                await doc.loadInfo()
+                return doc.sheetsByTitle[this.sheetName]
+            },
+            () => null
+        )
     }
 
     private parseElement(
@@ -578,4 +587,37 @@ function parseDate(value: string): Date {
 
 async function delayDBAccess(): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, DELAY_AFTER_QUERY))
+}
+
+async function tryNTimes<T>(
+    func: () => Promise<T> | T,
+    failFunc?: () => Promise<T> | T,
+    repeatCount = 5,
+    delayBetweenAttempts = 2000
+): Promise<T> {
+    try {
+        return await func()
+    } catch (e: any) {
+        console.error(e?.error || e?.message || e)
+        console.error(`${repeatCount} attemps left every ${delayBetweenAttempts}`)
+        await new Promise<void>((resolve) => {
+            setTimeout(() => resolve(), delayBetweenAttempts)
+        })
+        if (repeatCount === 1) {
+            console.error(`No more attempts left every ${delayBetweenAttempts}`)
+            if (failFunc) {
+                return failFunc()
+            }
+            throw Error(e)
+        }
+        return tryNTimes(func, failFunc, repeatCount - 1, delayBetweenAttempts)
+    }
+}
+
+async function tryNTimesVoidReturn(
+    func: () => Promise<void> | void,
+    repeatCount = 5,
+    delayBetweenAttempts = 2000
+): Promise<void> {
+    return tryNTimes(func, () => undefined, repeatCount, delayBetweenAttempts)
 }

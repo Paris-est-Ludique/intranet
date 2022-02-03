@@ -7,4 +7,6 @@ public/*
 
 # Misc
 *.log
-
+node_modules/*
+access/*
+gazettes/*
