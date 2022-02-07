@@ -58,6 +58,32 @@ export default class ServiceAccessors<
         }
     }
 
+    secureListGet(): (jwt: string) => Promise<{
+        data?: Element[]
+        error?: Error
+    }> {
+        interface ElementListGetResponse {
+            data?: Element[]
+            error?: Error
+        }
+        return async (jwt: string): Promise<ElementListGetResponse> => {
+            try {
+                const auth = { headers: { Authorization: `Bearer ${jwt}` } }
+                const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
+                const { data } = await axios.get(
+                    `${config.API_URL}/${this.elementName}ListGet`,
+                    fullAxiosConfig
+                )
+                if (data.error) {
+                    throw Error(data.error)
+                }
+                return { data }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
     // eslint-disable-next-line @typescript-eslint/ban-types
     add(): (volunteerWithoutId: ElementNoId) => Promise<{
         data?: Element

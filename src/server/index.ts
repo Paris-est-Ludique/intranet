@@ -17,6 +17,7 @@ import ssr from "./ssr"
 
 import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
+import { announcementListGet } from "./gsheets/announcements"
 import { javGameListGet } from "./gsheets/javGames"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
 import { teamListGet } from "./gsheets/teams"
@@ -76,6 +77,7 @@ app.post("/VolunteerLogin", volunteerLogin)
 app.post("/VolunteerForgot", volunteerForgot)
 
 // Secured APIs
+app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)

@@ -14,10 +14,8 @@ public/*
 # Access
 access/*
 
-# Gazettes
-gazettes/*
-
 # Misc
 .DS_Store
 *.log
 .idea
+announces/*

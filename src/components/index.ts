@@ -1,3 +1,4 @@
+import AnnouncementLink from "./AnnouncementLink"
 import LoginForm from "./LoginForm"
 import Notifications from "./Notifications"
 import VolunteerList from "./VolunteerList"
@@ -10,6 +11,7 @@ import WishAdd from "./WishAdd"
 import PreRegisterForm from "./PreRegisterForm"
 
 export {
+    AnnouncementLink,
     LoginForm,
     Notifications,
     VolunteerList,

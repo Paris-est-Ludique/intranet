@@ -1,0 +1,21 @@
+@import "../../theme/mixins";
+
+.announcements {
+    @include page-wrapper-center;
+}
+
+.announcementsContent {
+    @include page-content-wrapper;
+
+    text-align: left;
+}
+
+.loginContent {
+    @include page-content-wrapper;
+}
+
+.navigationLink {
+    @include page-content-wrapper;
+
+    text-align: center;
+}

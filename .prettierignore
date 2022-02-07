@@ -9,4 +9,4 @@ public/*
 *.log
 node_modules/*
 access/*
-gazettes/*
+announces/*

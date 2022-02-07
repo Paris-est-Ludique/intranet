@@ -2,6 +2,7 @@ import { RouteConfig } from "react-router-config"
 
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
+import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/Announcements"
 import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
@@ -65,6 +66,11 @@ export default [
                 path: "/board",
                 component: AsyncBoard,
                 loadData: loadBoardData,
+            },
+            {
+                path: "/annonces",
+                component: AsyncAnnouncements,
+                loadData: loadAnnouncementsData,
             },
             {
                 component: NotFound,

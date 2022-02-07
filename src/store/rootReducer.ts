@@ -3,6 +3,7 @@ import { connectRouter } from "connected-react-router"
 
 import auth from "./auth"
 import javGameList from "./javGameList"
+import announcementList from "./announcementList"
 import preVolunteerAdd from "./preVolunteerAdd"
 import preVolunteerCount from "./preVolunteerCount"
 import teamList from "./teamList"
@@ -25,6 +26,7 @@ import wishList from "./wishList"
 export default (history: History) => ({
     auth,
     javGameList,
+    announcementList,
     preVolunteerAdd,
     preVolunteerCount,
     teamList,

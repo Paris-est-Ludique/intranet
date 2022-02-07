@@ -91,8 +91,8 @@ export function elementAddFetch<Element>(
         }
 }
 
-export function elementListFetch<Element>(
-    elementListService: () => Promise<{
+export function elementListFetch<Element, ServiceInput extends Array<any>>(
+    elementListService: (...idArgs: ServiceInput) => Promise<{
         data?: Element[] | undefined
         error?: Error | undefined
     }>,
@@ -101,20 +101,21 @@ export function elementListFetch<Element>(
     getFailure: ActionCreatorWithPayload<string, string>,
     errorMessage?: (error: Error) => void,
     successMessage?: () => void
-): () => AppThunk {
-    return (): AppThunk => async (dispatch) => {
-        dispatch(getRequesting())
+): (...idArgs: ServiceInput) => AppThunk {
+    return (...idArgs: ServiceInput): AppThunk =>
+        async (dispatch) => {
+            dispatch(getRequesting())
 
-        const { error, data } = await elementListService()
+            const { error, data } = await elementListService(...idArgs)
 
-        if (error) {
-            dispatch(getFailure(error.message))
-            errorMessage?.(error)
-        } else {
-            dispatch(getSuccess(data as Element[]))
-            successMessage?.()
+            if (error) {
+                dispatch(getFailure(error.message))
+                errorMessage?.(error)
+            } else {
+                dispatch(getSuccess(data as Element[]))
+                successMessage?.()
+            }
         }
-    }
 }
 
 export function elementSet<Element>(

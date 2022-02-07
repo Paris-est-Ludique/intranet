@@ -10,6 +10,8 @@ const DB_TO_LOAD_PATH = path.resolve(process.cwd(), "access/dbToLoad.json")
 const ANONYMIZED_DB_PATH = path.resolve(process.cwd(), "access/dbAnonymized.json")
 
 export class SheetNames {
+    Announcements = "Annonces"
+
     JavGames = "Jeux JAV"
 
     PreVolunteers = "PreMembres"
