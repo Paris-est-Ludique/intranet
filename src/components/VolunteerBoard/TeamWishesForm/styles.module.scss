@@ -1,0 +1,100 @@
+@import "../../../theme/variables";
+@import "../../../theme/mixins";
+
+.root {
+    width: 470px;
+}
+
+.title {
+    padding: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.inputWrapper {
+    margin: 10px 0;
+
+    label {
+        display: inline-block;
+        width: 170px;
+    }
+    input {
+        width: 300px;
+        border: 1px solid $color-grey-medium;
+        outline: 0;
+    }
+}
+
+.teamList {
+    @include clear-ul-style;
+}
+
+.teamLine {
+    position: relative;
+    margin: 4px 0;
+    background-color: $color-grey-lighter;
+}
+
+.teamButton {
+    display: block;
+    padding: 4px 6px;
+    background: none;
+    color: $color-grey-medium;
+    border-radius: 0;
+    width: 100%;
+    text-align: left;
+
+    .active & {
+        background-color: $color-black;
+        color: $color-yellow;
+    }
+}
+
+.extendButton {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    padding: 2px;
+    background: none;
+    color: $color-grey-dark;
+    border-radius: 0;
+    font-size: 0.9em;
+    font-weight: normal;
+
+    .active & {
+        color: $color-grey-light;
+    }
+}
+
+.teamDescription {
+    display: none;
+    padding: 2px 4px 6px 8px;
+    color: $color-grey-dark;
+    font-size: 0.95em;
+
+    .extended & {
+        display: block;
+    }
+}
+
+.commentWrapper {
+    margin: 6px 0;
+
+    label {
+        display: block;
+        padding: 6px 0 2px 4px;
+    }
+    textarea {
+        width: 100%;
+        height: 50px;
+        padding: 5px;
+        border: 1px solid $color-grey-light;
+        background-color: $color-grey-lighter;
+        outline: 0;
+    }
+}
+
+.buttonWrapper {
+    margin-bottom: 10px;
+    text-align: center;
+}

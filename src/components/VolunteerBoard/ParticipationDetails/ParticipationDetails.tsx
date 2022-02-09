@@ -9,7 +9,7 @@ type Props = {
     afterSubmit?: () => void | undefined
 }
 
-const ParticipationDetailsForm: FC<Props> = (): JSX.Element | null => {
+const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     const [participationDetails] = useUserParticipationDetails()
     const age = get(participationDetails, "age", "")
     const tShirtSize = get(participationDetails, "teeshirtSize", "")
@@ -44,4 +44,4 @@ const ParticipationDetailsForm: FC<Props> = (): JSX.Element | null => {
     )
 }
 
-export default memo(ParticipationDetailsForm)
+export default memo(ParticipationDetails)

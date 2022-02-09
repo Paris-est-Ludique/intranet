@@ -22,9 +22,7 @@ const DayWishes: FC = (): JSX.Element | null => {
             {comment && (
                 <div className={styles.commentLine}>
                     <span className={styles.commentLineTitle}>Mon commentaire :</span>
-                    <span className={styles.commentLineText}>
-                        {get(userWishes, "dayWishesComment", "")}
-                    </span>
+                    <span className={styles.commentLineText}>{comment}</span>
                 </div>
             )}
             <div className={styles.editButton}>

@@ -1,0 +1,44 @@
+@import "../../../theme/variables";
+@import "../../../theme/mixins";
+
+.root {
+    @include inner-content-wrapper();
+
+    position: relative;
+    padding-right: 130px;
+}
+
+.title {
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.line {
+    margin: 2px 0;
+}
+
+.lineEmpty {
+    color: $color-red;
+    font-style: italic;
+}
+
+.commentLine {
+    span {
+        display: inline-block;
+    }
+}
+
+.commentLineTitle {
+    padding-right: 5px;
+}
+
+.commentLineText {
+    font-style: italic;
+}
+
+.editButton {
+    @include vertical-center();
+
+    position: absolute;
+    right: 20px;
+}
