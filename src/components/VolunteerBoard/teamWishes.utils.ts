@@ -4,8 +4,9 @@ import useAction from "../../utils/useAction"
 import { selectUserJwtToken } from "../../store/auth"
 import { AppState } from "../../store"
 import { fetchVolunteerTeamWishesSet } from "../../store/volunteerTeamWishesSet"
+import { VolunteerTeamWishes } from "../../services/volunteers"
 
-export const useUserTeamWishes = (): [any, any] => {
+export const useUserTeamWishes = (): [VolunteerTeamWishes | undefined, any] => {
     const save = useAction(fetchVolunteerTeamWishesSet)
     const jwtToken = useSelector(selectUserJwtToken)
     const userTeamWishes = useSelector(

@@ -509,7 +509,9 @@ export class Sheet<
                         switch (arrayType) {
                             case "string":
                                 if (!_.every(value, _.isString)) {
-                                    throw new Error(`Each date of ${value} is not a string`)
+                                    throw new Error(
+                                        `In ${prop}, each item of ${value} is not a string`
+                                    )
                                 }
                                 stringifiedElement[prop as keyof Element] = formulaSafe(
                                     value.join(delimiter)
@@ -518,14 +520,18 @@ export class Sheet<
 
                             case "number":
                                 if (!_.every(value, _.isNumber)) {
-                                    throw new Error(`Each date of ${value} is not a number`)
+                                    throw new Error(
+                                        `In ${prop}, each item of ${value} is not a number`
+                                    )
                                 }
                                 stringifiedElement[prop as keyof Element] = value.join(delimiter)
                                 break
 
                             case "boolean":
                                 if (!_.every(value, _.isBoolean)) {
-                                    throw new Error(`Each date of ${value} is not a boolean`)
+                                    throw new Error(
+                                        `In ${prop}, each item of ${value} is not a boolean`
+                                    )
                                 }
                                 stringifiedElement[prop as keyof Element] = _.map(value, (val) =>
                                     val ? "X" : ""
@@ -534,7 +540,9 @@ export class Sheet<
 
                             case "date":
                                 if (!_.every(value, _.isDate)) {
-                                    throw new Error(`Each date of ${value} is not a date`)
+                                    throw new Error(
+                                        `In ${prop}, each item of ${value} is not a date`
+                                    )
                                 }
                                 stringifiedElement[prop as keyof Element] = _.map(
                                     value,

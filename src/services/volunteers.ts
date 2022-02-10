@@ -29,7 +29,7 @@ export class Volunteer {
 
     food = ""
 
-    teamWishes: string[] = []
+    teamWishes: number[] = []
 
     teamWishesComment = ""
 
