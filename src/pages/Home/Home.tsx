@@ -4,7 +4,7 @@ import { useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppState, AppThunk } from "../../store"
-import { LoginForm, Notifications } from "../../components"
+import { LoginForm, Notifications, fetchForTeamWishesForm } from "../../components"
 import styles from "./styles.module.scss"
 import { fetchVolunteerNotifsSetIfNeed } from "../../store/volunteerNotifsSet"
 import { VolunteerNotifs } from "../../services/volunteers"
@@ -49,6 +49,9 @@ const HomePage: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => [fetchVolunteerNotifsSetIfNeed()]
+export const loadData = (): AppThunk[] => [
+    fetchVolunteerNotifsSetIfNeed(),
+    ...fetchForTeamWishesForm.map((f) => f()),
+]
 
 export default memo(HomePage)

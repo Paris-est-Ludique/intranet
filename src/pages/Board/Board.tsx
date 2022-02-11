@@ -8,8 +8,7 @@ import Page from "../../components/Page/Page"
 import Board from "../../components/VolunteerBoard/Board"
 import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
 import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunteerParticipationDetailsSet"
-import { fetchVolunteerTeamWishesSetIfNeed } from "../../store/volunteerTeamWishesSet"
-import { fetchTeamListIfNeed } from "../../store/teamList"
+import { fetchForTeamWishesForm } from "../../components"
 
 export type Props = RouteComponentProps
 
@@ -31,8 +30,7 @@ const BoardPage: FC<Props> = (): JSX.Element => {
 export const loadData = (): AppThunk[] => [
     fetchVolunteerDayWishesSetIfNeed(),
     fetchVolunteerParticipationDetailsSetIfNeed(),
-    fetchVolunteerTeamWishesSetIfNeed(),
-    fetchTeamListIfNeed(),
+    ...fetchForTeamWishesForm.map((f) => f()),
 ]
 
 export default memo(BoardPage)

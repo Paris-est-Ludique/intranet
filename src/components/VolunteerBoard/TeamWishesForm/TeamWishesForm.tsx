@@ -5,8 +5,9 @@ import set from "lodash/set"
 import classnames from "classnames"
 import styles from "./styles.module.scss"
 import { useUserTeamWishes } from "../teamWishes.utils"
-import { selectTeamList } from "../../../store/teamList"
+import { fetchTeamListIfNeed, selectTeamList } from "../../../store/teamList"
 import useSelection from "../useSelection"
+import { fetchVolunteerTeamWishesSetIfNeed } from "../../../store/volunteerTeamWishesSet"
 
 type Props = {
     afterSubmit?: () => void | undefined
@@ -39,13 +40,16 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
         const teamWishes = teams
             .map((team) => team && team.id)
             .filter((id) => id && isInSelection(id))
+        console.log("saveWishes")
         saveWishes({ teamWishes, teamWishesComment })
         if (afterSubmit) afterSubmit()
     }, [teams, isInSelection, saveWishes, afterSubmit])
 
     return (
         <div className={styles.root}>
-            <div className={styles.title}>Mes choix d&apos;équipes</div>
+            <div className={styles.title}>
+                Sélectionne la ou les équipes que tu aimerais rejoindre :
+            </div>
             <ul className={styles.teamList}>
                 {teams.map((team: any) => (
                     <li
@@ -92,3 +96,6 @@ TeamWishesForm.defaultProps = {
 }
 
 export default memo(TeamWishesForm)
+
+// Fetch server-side data here
+export const fetchFor = [fetchTeamListIfNeed, fetchVolunteerTeamWishesSetIfNeed]

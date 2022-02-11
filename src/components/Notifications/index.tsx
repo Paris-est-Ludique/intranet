@@ -7,6 +7,8 @@ import styles from "./styles.module.scss"
 import { selectUserJwtToken } from "../../store/auth"
 import { VolunteerNotifs } from "../../services/volunteers"
 import LogoutButton from "../LogoutButton/LogoutButton"
+import { TeamWishesForm } from ".."
+import { fetchFor as fetchForTeamWishesForm } from "../VolunteerBoard/TeamWishesForm/TeamWishesForm"
 
 interface Props {
     // eslint-disable-next-line react/require-default-props
@@ -136,6 +138,26 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
                                 <div className={styles.message}>{participationMessage}</div>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const onSubmit3 = useCallback((): void => {
+        dispatch(
+            fetchVolunteerNotifsSet(jwtToken, 0, {
+                hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 3],
+            })
+        )
+    }, [dispatch, jwtToken, volunteerNotifs])
+
+    if (!_.includes(hidden, 3)) {
+        notifs.push(
+            <div key="1">
+                <div className={styles.notificationsPage}>
+                    <div className={styles.notificationsContent}>
+                        <TeamWishesForm afterSubmit={onSubmit3} />
                     </div>
                 </div>
             </div>
@@ -382,3 +404,6 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
 }
 
 export default memo(Notifications)
+
+// Fetch server-side data here
+export const fetchFor = [...fetchForTeamWishesForm]
