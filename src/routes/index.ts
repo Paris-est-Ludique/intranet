@@ -29,6 +29,11 @@ export default [
                 loadData: loadPreRegisterPage,
             },
             {
+                path: "/sinscrire",
+                component: AsyncPreRegisterPage,
+                loadData: loadPreRegisterPage,
+            },
+            {
                 path: "/VolunteerPage/:id",
                 component: AsyncVolunteerPage,
                 loadData: loadVolunteerPageData,

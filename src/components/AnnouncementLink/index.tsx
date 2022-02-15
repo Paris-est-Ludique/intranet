@@ -51,7 +51,7 @@ const AnnouncementLink = ({ announcement }: Props): JSX.Element | null => {
     }[type]
 
     const typeName = {
-        gazette: "Gazzette - ",
+        gazette: "Gazette - ",
         "compte rendu": "Compte rendu - ",
     }[type]
 

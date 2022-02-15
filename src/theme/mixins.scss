@@ -16,7 +16,7 @@
     @include flex-center;
 }
 
-@mixin page-content-wrapper($desktopWidth: 400px) {
+@mixin page-content-wrapper($desktopWidth: 520px) {
     margin: 10px;
     padding: 10px;
     background-color: $color-white;

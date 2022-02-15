@@ -11,11 +11,14 @@ const MainMenu: FC = (): JSX.Element | null => {
     return (
         <nav>
             <ul className={styles.mainMenu}>
-                <li className={styles.mainMenuItem}>
+                {/* <li className={styles.mainMenuItem}>
                     <a href="/">Mon espace</a>
-                </li>
-                <li className={styles.mainMenuItem}>
+                </li> */}
+                {/* <li className={styles.mainMenuItem}>
                     <a href="/teams">Equipes</a>
+                </li> */}
+                <li className={styles.mainMenuItem}>
+                    <a href="/annonces">Annonces</a>
                 </li>
             </ul>
         </nav>

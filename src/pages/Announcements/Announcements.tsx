@@ -56,7 +56,7 @@ const AnnouncementsPage: FC<Props> = (): JSX.Element => {
             </div>
             <div className={styles.announcement}>
                 <div className={styles.navigationLink}>
-                    <Link to="/preRegister"> S&apos;informer sur le bénévolat </Link>
+                    <Link to="/sinscrire"> S&apos;informer sur le bénévolat </Link>
                 </div>
             </div>
         </div>

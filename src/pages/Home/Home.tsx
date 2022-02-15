@@ -41,7 +41,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
             </div>
             <div className={styles.homePage}>
                 <div className={styles.navigationLink}>
-                    <Link to="/preRegister"> S&apos;informer sur le bénévolat </Link>
+                    <Link to="/sinscrire"> S&apos;informer sur le bénévolat </Link>
                 </div>
             </div>
         </div>
