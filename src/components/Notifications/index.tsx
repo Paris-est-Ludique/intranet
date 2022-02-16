@@ -7,7 +7,7 @@ import styles from "./styles.module.scss"
 import { selectUserJwtToken } from "../../store/auth"
 import { VolunteerNotifs } from "../../services/volunteers"
 import LogoutButton from "../LogoutButton/LogoutButton"
-import { TeamWishesForm } from ".."
+// import { TeamWishesForm } from ".."
 import { fetchFor as fetchForTeamWishesForm } from "../VolunteerBoard/TeamWishesForm/TeamWishesForm"
 
 interface Props {
@@ -144,25 +144,25 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
         )
     }
 
-    const onSubmit3 = useCallback((): void => {
-        dispatch(
-            fetchVolunteerNotifsSet(jwtToken, 0, {
-                hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 3],
-            })
-        )
-    }, [dispatch, jwtToken, volunteerNotifs])
+    // const onSubmit3 = useCallback((): void => {
+    //     dispatch(
+    //         fetchVolunteerNotifsSet(jwtToken, 0, {
+    //             hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 3],
+    //         })
+    //     )
+    // }, [dispatch, jwtToken, volunteerNotifs])
 
-    if (!_.includes(hidden, 3)) {
-        notifs.push(
-            <div key="1">
-                <div className={styles.notificationsPage}>
-                    <div className={styles.notificationsContent}>
-                        <TeamWishesForm afterSubmit={onSubmit3} />
-                    </div>
-                </div>
-            </div>
-        )
-    }
+    // if (!_.includes(hidden, 3)) {
+    //     notifs.push(
+    //         <div key="1">
+    //             <div className={styles.notificationsPage}>
+    //                 <div className={styles.notificationsContent}>
+    //                     <TeamWishesForm afterSubmit={onSubmit3} />
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // }
 
     /* DISCORD
     Discord nous donne à tous la parole via nos téléphone ou navigateurs, pour organiser le meilleur des festivals !

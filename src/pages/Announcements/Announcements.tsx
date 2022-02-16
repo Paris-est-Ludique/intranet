@@ -48,13 +48,13 @@ const AnnouncementsPage: FC<Props> = (): JSX.Element => {
     }
     return (
         <div>
-            <div className={styles.announcement}>
+            <div className={styles.announcements}>
                 <div className={styles.loginContent}>
                     <Helmet title="LoginPage" />
                     <LoginForm />
                 </div>
             </div>
-            <div className={styles.announcement}>
+            <div className={styles.announcements}>
                 <div className={styles.navigationLink}>
                     <Link to="/sinscrire"> S&apos;informer sur le bénévolat </Link>
                 </div>

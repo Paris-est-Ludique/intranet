@@ -22,6 +22,7 @@ export const auth = createSlice({
             state.jwt = action.payload.jwt
         },
         logoutUser: (state) => {
+            // Unused, just reload page :/
             state.id = 0
             state.jwt = ""
         },

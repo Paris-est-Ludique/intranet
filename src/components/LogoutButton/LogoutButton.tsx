@@ -1,21 +1,18 @@
 import React, { FC, memo, useCallback } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { unsetJWT } from "../../services/auth"
-import { isUserConnected, logoutUser } from "../../store/auth"
+import { isUserConnected } from "../../store/auth"
 import styles from "./styles.module.scss"
 
 const LogoutButton: FC = (): JSX.Element | null => {
-    const dispatch = useDispatch()
     const connected = useSelector(isUserConnected)
 
-    const onClick = useCallback(
-        (event: React.SyntheticEvent): void => {
-            event.preventDefault()
-            unsetJWT()
-            dispatch(logoutUser())
-        },
-        [dispatch]
-    )
+    const onClick = useCallback((event: React.SyntheticEvent): void => {
+        event.preventDefault()
+        unsetJWT()
+        // eslint-disable-next-line no-restricted-globals
+        location?.reload()
+    }, [])
 
     if (!connected) return null
 
