@@ -32,12 +32,14 @@ import {
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
-import notificationsSubscribe from "./notificationsSubscribe"
+import { notificationsSubscribe, notificationMain } from "./notifications"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
 import { addStatus, showStatusAt } from "./status"
 
 checkAccess()
+
+notificationMain()
 
 const app = express()
 

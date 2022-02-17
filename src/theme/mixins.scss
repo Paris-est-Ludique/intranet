@@ -36,6 +36,36 @@
     background-color: $color-grey-lighter;
 }
 
+@mixin nav-menu($desktopWidth: 520px) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include desktop {
+        padding: 5px;
+    }
+}
+
+@mixin nav-menu-item($desktopWidth: 520px) {
+    display: inline-block;
+    margin: 0 4px;
+
+    @include desktop {
+        padding: 2px;
+    }
+
+    a {
+        font-size: 0.9em;
+        font-weight: bold;
+        color: $color-black;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: $color-grey-dark;
+    }
+}
+
 @mixin clear-ul-style {
     margin: 0;
     padding: 0;

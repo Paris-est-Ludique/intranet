@@ -2,11 +2,11 @@ import _ from "lodash"
 import React, { memo, useCallback, useEffect, useRef, useState } from "react"
 import isNode from "detect-node"
 import { useDispatch, useSelector } from "react-redux"
+import classnames from "classnames"
 import { fetchVolunteerNotifsSet } from "../../store/volunteerNotifsSet"
 import styles from "./styles.module.scss"
 import { selectUserJwtToken } from "../../store/auth"
 import { VolunteerNotifs } from "../../services/volunteers"
-import LogoutButton from "../LogoutButton/LogoutButton"
 // import { TeamWishesForm } from ".."
 import { fetchFor as fetchForTeamWishesForm } from "../VolunteerBoard/TeamWishesForm/TeamWishesForm"
 
@@ -144,6 +144,43 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
         )
     }
 
+    const onSubmit3 = useCallback((): void => {
+        dispatch(
+            fetchVolunteerNotifsSet(jwtToken, 0, {
+                hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 3],
+            })
+        )
+    }, [dispatch, jwtToken, volunteerNotifs])
+
+    if (!_.includes(hidden, 3)) {
+        notifs.push(
+            <div key="3">
+                <div className={styles.notificationsPage}>
+                    <div className={styles.notificationsContent}>
+                        <form onSubmit={onSubmit3}>
+                            <div
+                                className={classnames(styles.notifIntro, styles.notifCentered)}
+                                key="login-intro"
+                            >
+                                La{" "}
+                                <a
+                                    href="https://mailchi.mp/3c75c3b3a20f/gazette_2020_02-8978118"
+                                    onClick={onSubmit3}
+                                >
+                                    gazette de février
+                                </a>{" "}
+                                est disponible !<br />
+                                <div className={styles.formButtons}>
+                                    <button type="submit">Ok, masquer</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     // const onSubmit3 = useCallback((): void => {
     //     dispatch(
     //         fetchVolunteerNotifsSet(jwtToken, 0, {
@@ -154,7 +191,7 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
 
     // if (!_.includes(hidden, 3)) {
     //     notifs.push(
-    //         <div key="1">
+    //         <div key="4">
     //             <div className={styles.notificationsPage}>
     //                 <div className={styles.notificationsContent}>
     //                     <TeamWishesForm afterSubmit={onSubmit3} />
@@ -395,12 +432,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
         return null
     }
 
-    return (
-        <div>
-            {notifs.map<React.ReactNode>((t) => t).reduce((prev, curr) => [prev, curr])}
-            <LogoutButton />
-        </div>
-    )
+    return <div>{notifs.map<React.ReactNode>((t) => t).reduce((prev, curr) => [prev, curr])}</div>
 }
 
 export default memo(Notifications)

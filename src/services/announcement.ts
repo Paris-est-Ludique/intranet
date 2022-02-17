@@ -8,6 +8,8 @@ export class Announcement {
     title = ""
 
     url = ""
+
+    informedWithNotif = false
 }
 
 export const translationAnnouncement: { [k in keyof Announcement]: string } = {
@@ -16,6 +18,7 @@ export const translationAnnouncement: { [k in keyof Announcement]: string } = {
     type: "type",
     title: "titre",
     url: "url",
+    informedWithNotif: "informéAvecUneNotif",
 }
 
 export const elementName = "Announcement"
