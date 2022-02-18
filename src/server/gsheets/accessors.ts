@@ -11,8 +11,8 @@ export { SheetNames } from "./localDb"
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-const REMOTE_UPDATE_DELAY = 40000
-const DELAY_AFTER_QUERY = 2000
+const REMOTE_UPDATE_DELAY = 80000
+const DELAY_BETWEEN_ATTEMPTS = 10000
 
 let creds: string | undefined | null
 
@@ -233,7 +233,6 @@ export class Sheet<
         await tryNTimesVoidReturn(async () => {
             // Load sheet into an array of objects
             const rows = await sheet.getRows()
-            await delayDBAccess()
             if (!rows[0]) {
                 throw new Error(`No column types defined in sheet ${this.name}`)
             }
@@ -258,8 +257,6 @@ export class Sheet<
                 if (!row) {
                     // eslint-disable-next-line no-await-in-loop
                     await sheet.addRow(stringifiedRow)
-                    // eslint-disable-next-line no-await-in-loop
-                    await delayDBAccess()
                 } else {
                     const keys = Object.keys(stringifiedRow)
                     const sameCells = _.every(keys, (key: keyof Element) => {
@@ -273,8 +270,6 @@ export class Sheet<
                         })
                         // eslint-disable-next-line no-await-in-loop
                         await row.save()
-                        // eslint-disable-next-line no-await-in-loop
-                        await delayDBAccess()
                     }
                 }
 
@@ -286,8 +281,6 @@ export class Sheet<
                 if (rows[rowToDelete]) {
                     // eslint-disable-next-line no-await-in-loop
                     await rows[rowToDelete].delete()
-                    // eslint-disable-next-line no-await-in-loop
-                    await delayDBAccess()
                 }
             }
         })
@@ -304,7 +297,6 @@ export class Sheet<
         await tryNTimesVoidReturn(async () => {
             // Load sheet into an array of objects
             const rows = (await sheet.getRows()) as StringifiedElement[]
-            await delayDBAccess()
             const elements: Element[] = []
             if (!rows[0]) {
                 throw new Error(`No column types defined in sheet ${this.name}`)
@@ -354,7 +346,9 @@ export class Sheet<
                 await doc.loadInfo()
                 return doc.sheetsByTitle[this.sheetName]
             },
-            () => null
+            () => null,
+            20,
+            DELAY_BETWEEN_ATTEMPTS / 5
         )
     }
 
@@ -593,15 +587,11 @@ function parseDate(value: string): Date {
     return new Date(+matchDate[1], +matchDate[2] - 1, +matchDate[3])
 }
 
-async function delayDBAccess(): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, DELAY_AFTER_QUERY))
-}
-
 async function tryNTimes<T>(
     func: () => Promise<T> | T,
     failFunc?: () => Promise<T> | T,
     repeatCount = 5,
-    delayBetweenAttempts = 2000
+    delayBetweenAttempts = DELAY_BETWEEN_ATTEMPTS
 ): Promise<T> {
     try {
         return await func()
@@ -625,7 +615,7 @@ async function tryNTimes<T>(
 async function tryNTimesVoidReturn(
     func: () => Promise<void> | void,
     repeatCount = 5,
-    delayBetweenAttempts = 2000
+    delayBetweenAttempts = DELAY_BETWEEN_ATTEMPTS
 ): Promise<void> {
     return tryNTimes(func, () => undefined, repeatCount, delayBetweenAttempts)
 }
