@@ -8,3 +8,13 @@ body {
     font-family: "Helvetica-Light", Helvetica, Arial, sans-serif;
     background-color: $color-orange;
 }
+
+a {
+    color: $color-green;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useRef, useState } from "react"
+import { FC, memo, useCallback, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import get from "lodash/get"
 import set from "lodash/set"
@@ -18,7 +18,6 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
     const { addToSelection, toggleToSelection, isInSelection } = useSelection()
     const commentRef = useRef<HTMLTextAreaElement | null>(null)
     const [userWishes, saveWishes] = useUserTeamWishes()
-    const [extendedTeam, setExtendedTeam] = useState<number | null>(null)
 
     useEffect(() => {
         if (!userWishes) return
@@ -27,13 +26,6 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
     }, [userWishes, addToSelection])
 
     const onTeamClick = useCallback((id) => toggleToSelection(id), [toggleToSelection])
-
-    const onExtendClick = useCallback(
-        (id) => setExtendedTeam(extendedTeam === id ? null : id),
-        [extendedTeam, setExtendedTeam]
-    )
-
-    console.log("extendedTeam", extendedTeam)
 
     const onSubmit = useCallback(() => {
         const teamWishesComment = get(commentRef, "current.value", "")
@@ -47,8 +39,16 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.title}>
-                Sélectionne la ou les équipes que tu aimerais rejoindre :
+            <div className={styles.title}>Mon choix d&apos;équipe</div>
+            <div className={styles.intro}>
+                <p>Sélectionne la ou les équipes que tu aimerais rejoindre.</p>
+                <p>
+                    Pour plus d&apos;informations sur les équipes,{" "}
+                    <a href="/teams" target="_blank">
+                        clique ici
+                    </a>
+                    .
+                </p>
             </div>
             <ul className={styles.teamList}>
                 {teams.map((team: any) => (
@@ -56,8 +56,7 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                         key={team.id}
                         className={classnames(
                             styles.teamLine,
-                            isInSelection(team.id) && styles.active,
-                            extendedTeam === team.id && styles.extended
+                            isInSelection(team.id) && styles.active
                         )}
                     >
                         <button
@@ -67,14 +66,6 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                         >
                             {team.name}
                         </button>
-                        <button
-                            type="button"
-                            onClick={() => onExtendClick(team.id)}
-                            className={styles.extendButton}
-                        >
-                            Détails
-                        </button>
-                        <div className={styles.teamDescription}>{team.description}</div>
                     </li>
                 ))}
             </ul>

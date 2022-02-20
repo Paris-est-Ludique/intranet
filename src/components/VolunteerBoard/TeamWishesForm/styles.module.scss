@@ -11,6 +11,15 @@
     text-align: center;
 }
 
+.intro {
+    padding: 15px 0;
+
+    p {
+        margin: 0;
+        padding: 4px 0;
+    }
+}
+
 .inputWrapper {
     margin: 10px 0;
 
@@ -63,17 +72,6 @@
 
     .active & {
         color: $color-grey-light;
-    }
-}
-
-.teamDescription {
-    display: none;
-    padding: 2px 4px 6px 8px;
-    color: $color-grey-dark;
-    font-size: 0.95em;
-
-    .extended & {
-        display: block;
     }
 }
 
