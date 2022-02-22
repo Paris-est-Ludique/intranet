@@ -11,8 +11,9 @@ export { SheetNames } from "./localDb"
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-const REMOTE_UPDATE_DELAY = 80000
+const REMOTE_UPDATE_DELAY = 40000
 const DELAY_BETWEEN_ATTEMPTS = 10000
+const DELAY_BETWEEN_FIRST_LOAD = 1500
 
 let creds: string | undefined | null
 
@@ -44,7 +45,7 @@ export async function checkGSheetsAccess(): Promise<void> {
         console.error(`Google Sheets: no creds found, loading local database instead`)
     }
 }
-export function getSheet<
+export async function getSheet<
     // eslint-disable-next-line @typescript-eslint/ban-types
     ElementNoId extends object,
     Element extends ElementNoId & ElementWithId<ElementNoId>
@@ -52,17 +53,16 @@ export function getSheet<
     sheetName: keyof SheetNames,
     specimen: Element,
     translation: { [k in keyof Element]: string }
-): Sheet<ElementNoId, Element> {
+): Promise<Sheet<ElementNoId, Element>> {
+    let sheet: Sheet<ElementNoId, Element>
     if (!sheetList[sheetName]) {
-        sheetList[sheetName] = new Sheet<ElementNoId, Element>(sheetName, specimen, translation)
+        sheet = new Sheet<ElementNoId, Element>(sheetName, specimen, translation)
+        await sheet.waitForFirstLoad()
+        sheetList[sheetName] = sheet
+        setInterval(() => sheet.dbUpdate(), REMOTE_UPDATE_DELAY)
+    } else {
+        sheet = sheetList[sheetName] as Sheet<ElementNoId, Element>
     }
-
-    const sheet = sheetList[sheetName] as Sheet<ElementNoId, Element>
-
-    setTimeout(
-        () => setInterval(() => sheet.dbUpdate(), REMOTE_UPDATE_DELAY),
-        1000 * Object.values(sheetList).length
-    )
 
     return sheet
 }
@@ -100,8 +100,6 @@ export class Sheet<
             _.invert(translation),
             (englishProp: string) => (specimen as any)[englishProp]
         ) as Element
-
-        setTimeout(() => this.dbFirstLoad(), 100 * Object.values(sheetList).length)
     }
 
     async getList(): Promise<Element[] | undefined> {
@@ -154,6 +152,15 @@ export class Sheet<
         }
     }
 
+    async waitForFirstLoad(): Promise<void> {
+        setTimeout(
+            () => this.dbFirstLoad(),
+            DELAY_BETWEEN_FIRST_LOAD * Object.values(sheetList).length
+        )
+
+        await this.waitForLoad()
+    }
+
     private async waitForLoad(): Promise<void> {
         return new Promise((resolve, _reject) => {
             this.addToRunAfterLoad(() => resolve(undefined))
@@ -194,10 +201,9 @@ export class Sheet<
     async dbLoad(): Promise<void> {
         try {
             if (await hasGSheetsAccess()) {
-                this.dbLoadAsync().then(() => this.doRunAfterLoad())
-            } else {
-                this.doRunAfterLoad()
+                await this.dbLoadAsync()
             }
+            this.doRunAfterLoad()
         } catch (e) {
             console.error("Error in dbLoad: ", e)
         }
@@ -214,6 +220,7 @@ export class Sheet<
         if (!(await hasGSheetsAccess())) {
             await this.loadLocalDb()
         } else if (this.toRunAfterLoad && __DEV__) {
+            // Save once
             this.toRunAfterLoad.push(() => this.saveLocalDb())
         }
 
@@ -288,7 +295,7 @@ export class Sheet<
 
     private async dbLoadAsync(): Promise<void> {
         type StringifiedElement = Record<keyof Element, string>
-        const sheet = await this.getGSheet()
+        const sheet = await this.getGSheet(20)
 
         if (!sheet) {
             return
@@ -326,7 +333,7 @@ export class Sheet<
         })
     }
 
-    private async getGSheet(): Promise<GoogleSpreadsheetWorksheet | null> {
+    private async getGSheet(attempts = 3): Promise<GoogleSpreadsheetWorksheet | null> {
         return tryNTimes(
             async () => {
                 if (creds === undefined) {
@@ -347,7 +354,7 @@ export class Sheet<
                 return doc.sheetsByTitle[this.sheetName]
             },
             () => null,
-            20,
+            attempts,
             DELAY_BETWEEN_ATTEMPTS / 5
         )
     }
@@ -590,7 +597,7 @@ function parseDate(value: string): Date {
 async function tryNTimes<T>(
     func: () => Promise<T> | T,
     failFunc?: () => Promise<T> | T,
-    repeatCount = 5,
+    repeatCount = 2,
     delayBetweenAttempts = DELAY_BETWEEN_ATTEMPTS
 ): Promise<T> {
     try {
@@ -601,7 +608,7 @@ async function tryNTimes<T>(
         await new Promise<void>((resolve) => {
             setTimeout(() => resolve(), delayBetweenAttempts)
         })
-        if (repeatCount === 1) {
+        if (repeatCount <= 1) {
             console.error(`No more attempts left every ${delayBetweenAttempts}`)
             if (failFunc) {
                 return failFunc()
@@ -614,7 +621,7 @@ async function tryNTimes<T>(
 
 async function tryNTimesVoidReturn(
     func: () => Promise<void> | void,
-    repeatCount = 5,
+    repeatCount = 2,
     delayBetweenAttempts = DELAY_BETWEEN_ATTEMPTS
 ): Promise<void> {
     return tryNTimes(func, () => undefined, repeatCount, delayBetweenAttempts)

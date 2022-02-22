@@ -80,7 +80,7 @@ export function notificationMain(): void {
 }
 
 async function notifyAboutAnnouncement(): Promise<void> {
-    const announcementSheet = getSheet<AnnouncementWithoutId, Announcement>(
+    const announcementSheet = await getSheet<AnnouncementWithoutId, Announcement>(
         "Announcements",
         new Announcement(),
         translationAnnouncement
@@ -96,7 +96,7 @@ async function notifyAboutAnnouncement(): Promise<void> {
         return
     }
 
-    const volunteerSheet = getSheet<VolunteerWithoutId, Volunteer>(
+    const volunteerSheet = await getSheet<VolunteerWithoutId, Volunteer>(
         "Volunteers",
         new Volunteer(),
         translationVolunteer

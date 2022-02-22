@@ -9,14 +9,33 @@ export default class ExpressAccessors<
     ElementNoId extends object,
     Element extends ElementWithId<ElementNoId>
 > {
-    sheet: Sheet<ElementNoId, Element>
+    sheet?: Sheet<ElementNoId, Element>
+
+    runAfterLoad: ((value: Sheet<ElementNoId, Element>) => void)[] = []
+
+    isLoaded = false
 
     constructor(
         readonly sheetName: keyof SheetNames,
         readonly specimen: Element,
         readonly translation: { [k in keyof Element]: string }
     ) {
-        this.sheet = getSheet<ElementNoId, Element>(sheetName, specimen, translation)
+        getSheet<ElementNoId, Element>(this.sheetName, this.specimen, this.translation).then(
+            (sheet) => {
+                this.sheet = sheet
+                this.isLoaded = true
+                this.runAfterLoad.map((f) => f(sheet))
+            }
+        )
+    }
+
+    async getSheet(): Promise<Sheet<ElementNoId, Element>> {
+        if (!this.isLoaded) {
+            await new Promise((resolve) => {
+                this.runAfterLoad.push(resolve)
+            })
+        }
+        return this.sheet as Sheet<ElementNoId, Element>
     }
 
     listGet() {
@@ -26,7 +45,7 @@ export default class ExpressAccessors<
             _next: NextFunction
         ): Promise<void> => {
             try {
-                const elements = await this.sheet.getList()
+                const elements = await (await this.getSheet()).getList()
                 if (elements) {
                     response.status(200).json(elements)
                 }
@@ -42,7 +61,8 @@ export default class ExpressAccessors<
     ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                const list = (await this.sheet.getList()) || []
+                const sheet = await this.getSheet()
+                const list = (await sheet.getList()) || []
                 let toCaller: any
                 if (!custom) {
                     const id = parseInt(request.query.id as string, 10) || -1
@@ -65,7 +85,8 @@ export default class ExpressAccessors<
     add() {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
-                const element: Element = await this.sheet.add(request.body)
+                const sheet = await this.getSheet()
+                const element: Element = await sheet.add(request.body)
                 if (element) {
                     response.status(200).json(element)
                 }
@@ -85,15 +106,16 @@ export default class ExpressAccessors<
     ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
+                const sheet = await this.getSheet()
                 if (!custom) {
-                    await this.sheet.set(request.body)
+                    await sheet.set(request.body)
                     response.status(200)
                 } else {
                     const memberId = response?.locals?.jwt?.id || -1
-                    const list = (await this.sheet.getList()) || []
+                    const list = (await sheet.getList()) || []
                     const { toDatabase, toCaller } = await custom(list, request.body, memberId)
                     if (toDatabase !== undefined) {
-                        await this.sheet.set(toDatabase)
+                        await sheet.set(toDatabase)
                     }
                     if (toCaller !== undefined) {
                         response.status(200).json(toCaller)
