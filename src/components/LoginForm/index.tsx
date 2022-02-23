@@ -4,6 +4,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { AppState } from "../../store"
 import { fetchVolunteerLogin } from "../../store/volunteerLogin"
 import styles from "./styles.module.scss"
+import FormSubmit from "../Form/FormSubmit/FormSubmit"
 
 const LoginForm = (): JSX.Element => {
     const dispatch = useDispatch()
@@ -38,7 +39,7 @@ const LoginForm = (): JSX.Element => {
                 <input type="password" id="password" name="motdepasse" />
             </div>
             <div className={styles.formButtons}>
-                <button type="submit">Connexion</button>
+                <FormSubmit>Connexion</FormSubmit>
             </div>
             {loginError && <div className={styles.error}>{loginError}</div>}
             <div className={styles.link}>

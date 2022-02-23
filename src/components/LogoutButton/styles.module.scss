@@ -1,3 +1,5 @@
+@import "../../theme/variables";
+
 .logoutButton {
     text-align: center;
 
@@ -6,5 +8,6 @@
         background: none;
         font-weight: normal;
         font-size: 0.9em;
+        color: $color-white;
     }
 }

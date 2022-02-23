@@ -1,0 +1,5 @@
+@import "../../../theme/mixins";
+
+.button {
+    @include form-button;
+}

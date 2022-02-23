@@ -27,7 +27,7 @@ const Modal: FC<Props> = ({ modalId, children }): JSX.Element => {
             overlayClassName={styles.modalOverlay}
             onRequestClose={onClose}
         >
-            <button type="submit" className={styles.closeButton} onClick={onClose}>
+            <button type="button" className={styles.closeButton} onClick={onClose}>
                 &#10005;
             </button>
             {children}

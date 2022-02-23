@@ -47,7 +47,7 @@ export default [
                 component: Forgot,
             },
             {
-                path: "/teams",
+                path: "/equipes",
                 component: AsyncTeams,
                 loadData: loadTeamsData,
             },

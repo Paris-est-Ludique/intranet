@@ -1,20 +1,88 @@
 @import "../../theme/variables";
+@import "../../theme/mixins";
 
 .mainMenu {
     margin: 0;
     padding: 0;
     list-style: none;
+
+    @include mobile {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: -260px;
+        width: 250px;
+        padding-top: 40px;
+        background-color: $color-white;
+        box-shadow: 0 0 8px $color-grey-dark;
+        transition: right 0.6s ease;
+        z-index: 10;
+    }
+
+    &.opened {
+        @include mobile {
+            right: 0;
+        }
+    }
+}
+
+.close {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 26px;
+    color: $color-grey-medium;
+
+    @include mobile {
+        display: block;
+    }
+}
+
+.burger {
+    display: none;
+
+    @include mobile {
+        display: block;
+        position: absolute;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        font-size: 22px;
+        color: $color-black;
+
+        @include vertical-center();
+    }
 }
 
 .mainMenuItem {
     display: inline-block;
     margin: 0 6px;
 
+    @include mobile {
+        display: block;
+        border-bottom: 1px solid $color-grey-light;
+
+        &:first-child {
+            border-top: 1px solid $color-grey-light;
+        }
+    }
+
     a {
         font-size: 0.9em;
         font-weight: bold;
         color: $color-black;
         text-decoration: none;
+
+        @include mobile {
+            display: block;
+            padding: 10px 15px;
+        }
     }
 
     a:hover {

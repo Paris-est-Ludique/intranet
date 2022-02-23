@@ -7,6 +7,7 @@ import {
     tShirtSizes,
     useUserParticipationDetails,
 } from "../participationDetails.utils"
+import FormButton from "../../Form/FormButton/FormButton"
 
 type Props = {
     afterSubmit?: () => void | undefined
@@ -96,9 +97,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                 />
             </div>
             <div className={styles.buttonWrapper}>
-                <button type="submit" onClick={onSubmit}>
-                    Enregistrer
-                </button>
+                <FormButton onClick={onSubmit}>Enregistrer</FormButton>
             </div>
         </div>
     )

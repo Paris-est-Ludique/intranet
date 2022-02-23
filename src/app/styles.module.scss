@@ -57,10 +57,17 @@
 
 .menuWrapper {
     position: absolute;
-    bottom: 5px;
-    left: 420px;
-    right: 10px;
-    text-align: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    @include desktop {
+        top: auto;
+        bottom: 5px;
+        left: 420px;
+        right: 10px;
+        text-align: center;
+    }
 }
 
 .logoutWrapper {

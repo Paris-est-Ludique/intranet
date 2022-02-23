@@ -1,12 +1,8 @@
 @import "./variables";
 
 button {
-    padding: 7px 20px;
-    background-color: $color-orange;
+    background: none;
     border: 0;
-    color: $color-white;
-    border-radius: 16px;
-    font-weight: bold;
     cursor: pointer;
 }
 

@@ -8,6 +8,7 @@ import { useUserTeamWishes } from "../teamWishes.utils"
 import { fetchTeamListIfNeed, selectTeamList } from "../../../store/teamList"
 import useSelection from "../useSelection"
 import { fetchVolunteerTeamWishesSetIfNeed } from "../../../store/volunteerTeamWishesSet"
+import FormButton from "../../Form/FormButton/FormButton"
 
 type Props = {
     afterSubmit?: () => void | undefined
@@ -74,9 +75,7 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                 <textarea id="day-choice-comment" ref={commentRef} />
             </div>
             <div className={styles.buttonWrapper}>
-                <button type="submit" onClick={onSubmit}>
-                    Enregistrer
-                </button>
+                <FormButton onClick={onSubmit}>Enregistrer</FormButton>
             </div>
         </div>
     )

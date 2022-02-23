@@ -6,6 +6,12 @@
     }
 }
 
+@mixin mobile {
+    @media (max-width: 799px) {
+        @content;
+    }
+}
+
 @mixin flex-center {
     display: flex;
     justify-content: center;
@@ -81,4 +87,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+@mixin form-button {
+    padding: 7px 20px;
+    background-color: $color-orange;
+    border: 0;
+    color: $color-white;
+    border-radius: 16px;
+    font-weight: bold;
 }

@@ -11,10 +11,5 @@ body {
 
 a {
     color: $color-green;
-    text-decoration: none;
-    font-weight: bold;
-
-    &:hover {
-        text-decoration: underline;
-    }
+    text-decoration: underline;
 }

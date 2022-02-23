@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { AppDispatch } from "../../store"
 import { fetchVolunteerForgot } from "../../store/volunteerForgot"
 import styles from "./styles.module.scss"
+import FormSubmit from "../Form/FormSubmit/FormSubmit"
 
 interface Props {
     dispatch: AppDispatch
@@ -34,7 +35,7 @@ const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
                 <input type="email" id="email" name="utilisateur" />
             </div>
             <div className={styles.formButtons}>
-                <button type="submit">Envoyer</button>
+                <FormSubmit>Envoyer</FormSubmit>
             </div>
             <div className={styles.error}>{error}</div>
             <div className={styles.message}>{message}</div>

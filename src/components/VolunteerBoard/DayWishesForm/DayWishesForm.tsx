@@ -9,6 +9,7 @@ import {
     selectionChoices,
     useUserDayWishes,
 } from "../daysWishes.utils"
+import FormButton from "../../Form/FormButton/FormButton"
 
 type Props = {
     afterSubmit?: () => void | undefined
@@ -72,9 +73,7 @@ const DayWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element => {
                 <textarea id="day-choice-comment" ref={commentRef} />
             </div>
             <div className={styles.dayWishesButtonWrapper}>
-                <button type="submit" onClick={onChoiceSubmit}>
-                    Enregistrer
-                </button>
+                <FormButton onClick={onChoiceSubmit}>Enregistrer</FormButton>
             </div>
         </div>
     )
