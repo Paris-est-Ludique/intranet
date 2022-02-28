@@ -9,17 +9,27 @@
 }
 
 .modalContent {
-    @include horizontal-vertical-center();
-
     position: absolute;
-    bottom: auto;
-    right: auto;
     padding: 15px;
-    max-height: 80vh;
     outline: 0;
     background-color: $color-white;
-    border-radius: 15px;
-    border: $border-large;
+
+    @include mobile {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow-y: auto;
+    }
+
+    @include desktop {
+        @include horizontal-vertical-center();
+        bottom: auto;
+        right: auto;
+        max-height: 80vh;
+        border-radius: 15px;
+        border: $border-large;
+    }
 }
 
 .closeButton {

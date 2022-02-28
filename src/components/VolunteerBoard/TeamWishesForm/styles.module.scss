@@ -2,7 +2,9 @@
 @import "../../../theme/mixins";
 
 .root {
-    width: 680px;
+    @include desktop {
+        width: 680px;
+    }
 }
 
 .title {
@@ -21,8 +23,11 @@
 }
 
 .formArea {
-    display: flex;
     margin-bottom: 10px;
+
+    @include desktop {
+        display: flex;
+    }
 }
 
 .leftCol {
