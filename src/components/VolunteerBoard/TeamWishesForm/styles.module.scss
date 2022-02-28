@@ -2,7 +2,7 @@
 @import "../../../theme/mixins";
 
 .root {
-    width: 470px;
+    width: 680px;
 }
 
 .title {
@@ -20,38 +20,43 @@
     }
 }
 
-.inputWrapper {
-    margin: 10px 0;
+.formArea {
+    display: flex;
+    margin-bottom: 10px;
+}
 
-    label {
-        display: inline-block;
-        width: 170px;
-    }
-    input {
-        width: 300px;
-        border: 1px solid $color-grey-medium;
-        outline: 0;
-    }
+.leftCol {
+    flex: 0 0 280px;
+    margin-right: 20px;
+}
+
+.choiceList {
+    margin: 5px 0 15px;
+    padding: 0 0 0 30px;
 }
 
 .teamList {
     @include clear-ul-style;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
-.teamLine {
+.teamItem {
+    flex: 0 0 50%;
     position: relative;
-    margin: 4px 0;
-    background-color: $color-grey-lighter;
+    box-sizing: border-box;
+    padding: 2px;
 }
 
 .teamButton {
     display: block;
     padding: 4px 6px;
-    background: none;
     color: $color-grey-medium;
     border-radius: 0;
     width: 100%;
     text-align: left;
+    background-color: $color-grey-lighter;
 
     .active & {
         background-color: $color-black;

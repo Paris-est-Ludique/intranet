@@ -2,50 +2,39 @@ import { useCallback, useMemo, useReducer } from "react"
 
 type valueType = string | number
 
-type selectionType = {
-    [key: string]: boolean
-}
-
 type State = {
-    selection: selectionType
+    selection: valueType[]
 }
 
-type Action = { type: "add"; payload: valueType[] } | { type: "toggle"; payload: valueType }
+type Action = { type: "set"; payload: valueType[] } | { type: "toggle"; payload: valueType }
 
 interface selectionHook {
-    addToSelection: (...values: valueType[]) => void
+    selection: valueType[]
+    setSelection: (...values: valueType[]) => void
     toggleToSelection: (value: valueType) => void
     isInSelection: (value: valueType) => boolean
 }
 
 const initialState: State = {
-    selection: {},
+    selection: [],
 }
-
-const buildIndex = (value: valueType) => `item_${value}`
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
-        case "add": {
+        case "set": {
             const values = action.payload
-            return {
-                selection: values.reduce(
-                    (acc: selectionType, value: valueType) => ({
-                        ...acc,
-                        [buildIndex(value)]: true,
-                    }),
-                    state.selection
-                ),
-            }
+            return { selection: values }
         }
         case "toggle": {
             const value = action.payload
-            const index = buildIndex(value)
+            const index = state.selection.findIndex((item) => item === value)
+            if (index !== -1) {
+                state.selection.splice(index, 1)
+            } else {
+                state.selection.push(value)
+            }
             return {
-                selection: {
-                    ...state.selection,
-                    [index]: !state.selection[index],
-                },
+                selection: [...state.selection],
             }
         }
         default:
@@ -56,9 +45,9 @@ const reducer = (state: State, action: Action): State => {
 const useSelection = (): selectionHook => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const addToSelection = useCallback(
+    const setSelection = useCallback(
         (...values: valueType[]) => {
-            dispatch({ type: "add", payload: values })
+            dispatch({ type: "set", payload: values })
         },
         [dispatch]
     )
@@ -71,16 +60,13 @@ const useSelection = (): selectionHook => {
     )
 
     const isInSelection = useCallback(
-        (value: valueType) => {
-            const index = buildIndex(value)
-            return state.selection[index]
-        },
+        (value: valueType) => !!state.selection.find((item) => item === value),
         [state.selection]
     )
 
     return useMemo(
-        () => ({ addToSelection, toggleToSelection, isInSelection }),
-        [addToSelection, toggleToSelection, isInSelection]
+        () => ({ selection: state.selection, setSelection, toggleToSelection, isInSelection }),
+        [state.selection, setSelection, toggleToSelection, isInSelection]
     )
 }
 

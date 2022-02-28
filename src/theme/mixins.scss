@@ -28,6 +28,7 @@
     background-color: $color-white;
     border-radius: 15px;
     border: $border-large;
+    width: 100%;
 
     @include desktop {
         padding: 20px;
