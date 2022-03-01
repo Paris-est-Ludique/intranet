@@ -51,7 +51,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
         <div className={styles.root}>
             <div className={styles.title}>Mes informations pour le festival</div>
             <div className={styles.tShirtWrapper}>
-                <div className={styles.tShirtLabel}>J&apos;ai déjà 2 t-shirts</div>
+                <div className={styles.tShirtLabel}>J'ai déjà 2 t-shirts</div>
                 <label>
                     <input
                         type="radio"

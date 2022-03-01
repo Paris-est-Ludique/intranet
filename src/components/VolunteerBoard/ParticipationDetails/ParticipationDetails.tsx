@@ -23,10 +23,10 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     return (
         <div className={styles.root}>
             <div className={styles.title}>Mes informations pour le festival</div>
-            {!tShirtSize && <div className={styles.line}>J&apos;ai déjà 2 t-shirts.</div>}
+            {!tShirtSize && <div className={styles.line}>J'ai déjà 2 t-shirts.</div>}
             {tShirtSize && (
                 <div className={styles.line}>
-                    J&apos;ai besoin d&apos;un t-shirt ! (Taille <b>{tShirtSize}</b>)
+                    J'ai besoin d'un t-shirt ! (Taille <b>{tShirtSize}</b>)
                 </div>
             )}
             <div className={styles.line}>

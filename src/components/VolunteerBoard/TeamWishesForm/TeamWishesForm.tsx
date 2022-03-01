@@ -36,11 +36,22 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.title}>Mon choix d&apos;équipe</div>
+            <div className={styles.title}>Mon choix d'équipe</div>
             <div className={styles.intro}>
-                <p>Sélectionne la ou les équipes que tu aimerais rejoindre.</p>
                 <p>
-                    Pour plus d&apos;informations sur les équipes,{" "}
+                    Sélectionne la ou les équipes que tu aimerais rejoindre dans l'ordre de tes
+                    préférences.
+                </p>
+                <p>
+                    Tu seras affecté à une équipe pour les jours de festival prochainement et nous
+                    tiendrons compte de tes préférences dans la mesure du possible.
+                </p>
+                <p>
+                    Si tu es disponible pour aider en amont, même une autre équipe, n'hésite pas à
+                    le mettre en commentaire.
+                </p>
+                <p>
+                    Pour plus d'informations sur les équipes,{" "}
                     <a href="/equipes" target="_blank">
                         clique ici
                     </a>
@@ -49,7 +60,7 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
             </div>
             <div className={styles.formArea}>
                 <div className={styles.leftCol}>
-                    <div>Mes choix dans l&apos;ordre :</div>
+                    <div>Mon choix :</div>
                     <ol className={styles.choiceList}>
                         {selection.map((item) => {
                             const team = teams.find((t: any) => t.id === item)

@@ -23,7 +23,7 @@ const BoardPage: FC<Props> = (): JSX.Element => {
             </Page>
         )
     }
-    return <div>Besoin d&apos;être identifié</div>
+    return <div>Besoin d'être identifié</div>
 }
 
 // Fetch server-side data here
