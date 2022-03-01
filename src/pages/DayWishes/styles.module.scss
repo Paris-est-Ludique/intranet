@@ -1,9 +1,0 @@
-@import "../../theme/mixins";
-
-.dayWishPage {
-    @include page-wrapper-center;
-}
-
-.dayWishContent {
-    @include page-content-wrapper(800px);
-}
