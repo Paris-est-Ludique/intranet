@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
+import get from "lodash/get"
 
 import { StateRequest, toastError, elementListFetch } from "./utils"
 import { Team } from "../services/teams"
@@ -56,4 +57,10 @@ export const selectTeamList = createSelector(
         if (readyStatus !== "success") return []
         return ids.map((id) => entities[id])
     }
+)
+
+export const selectSortedActiveTeams = createSelector(selectTeamList, (teams) =>
+    [...teams.filter((team) => get(team, "status") === "active")].sort(
+        (a, b) => get(a, "order", 0) - get(b, "order", 0)
+    )
 )

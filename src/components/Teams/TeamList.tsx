@@ -2,10 +2,10 @@ import React, { memo } from "react"
 import { useSelector } from "react-redux"
 import styles from "./styles.module.scss"
 import TeamItem from "./TeamItem"
-import { selectTeamList } from "../../store/teamList"
+import { selectSortedActiveTeams } from "../../store/teamList"
 
 const TeamList: React.FC = (): JSX.Element | null => {
-    const teams = useSelector(selectTeamList)
+    const teams = useSelector(selectSortedActiveTeams)
     if (!teams || teams.length === 0) return null
 
     return (

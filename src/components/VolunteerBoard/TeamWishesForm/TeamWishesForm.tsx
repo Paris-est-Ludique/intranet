@@ -5,7 +5,7 @@ import set from "lodash/set"
 import classnames from "classnames"
 import styles from "./styles.module.scss"
 import { useUserTeamWishes } from "../teamWishes.utils"
-import { fetchTeamListIfNeed, selectTeamList } from "../../../store/teamList"
+import { fetchTeamListIfNeed, selectSortedActiveTeams } from "../../../store/teamList"
 import useSelection from "../useSelection"
 import { fetchVolunteerTeamWishesSetIfNeed } from "../../../store/volunteerTeamWishesSet"
 import FormButton from "../../Form/FormButton/FormButton"
@@ -15,7 +15,7 @@ type Props = {
 }
 
 const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
-    const teams = useSelector(selectTeamList)
+    const teams = useSelector(selectSortedActiveTeams)
     const { selection, setSelection, toggleToSelection, isInSelection } = useSelection()
     const commentRef = useRef<HTMLTextAreaElement | null>(null)
     const [userWishes, saveWishes] = useUserTeamWishes()

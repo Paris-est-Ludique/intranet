@@ -6,6 +6,7 @@ import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/
 import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
+import AsyncVolunteers, { loadData as loadVolunteersData } from "../pages/Volunteers"
 import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
 import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
@@ -59,6 +60,11 @@ export default [
                 path: "/board",
                 component: AsyncBoard,
                 loadData: loadBoardData,
+            },
+            {
+                path: "/benevoles",
+                component: AsyncVolunteers,
+                loadData: loadVolunteersData,
             },
             {
                 path: "/annonces",

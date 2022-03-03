@@ -14,6 +14,10 @@ export class Team {
     during = ""
 
     after = ""
+
+    status = ""
+
+    order = 0
 }
 
 export const translationTeam: { [k in keyof Team]: string } = {
@@ -25,6 +29,8 @@ export const translationTeam: { [k in keyof Team]: string } = {
     before: "avant",
     during: "pendant",
     after: "après",
+    status: "statut",
+    order: "ordre",
 }
 
 export const elementName = "Team"
