@@ -13,7 +13,7 @@ export class Volunteer {
 
     adult = 1
 
-    privileges = 0
+    roles: string[] = []
 
     active = ""
 
@@ -54,7 +54,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     mobile: "telephone",
     photo: "photo",
     adult: "majeur",
-    privileges: "privilege",
+    roles: "roles",
     active: "actif",
     discordId: "discordId",
     dayWishes: "enviesJours",
@@ -82,7 +82,7 @@ export const volunteerExample: Volunteer = {
     mobile: "0675650392",
     photo: "images/volunteers/$taille/amélie_aupeix.jpg",
     adult: 1,
-    privileges: 0,
+    roles: [],
     active: "inconnu",
     discordId: "",
     dayWishes: [],

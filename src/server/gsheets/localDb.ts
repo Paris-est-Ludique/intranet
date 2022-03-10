@@ -273,8 +273,10 @@ function anonimizedDb(_s: States): States {
 }
 
 function idADev(v: Volunteer | PreVolunteer): boolean {
-    const devList = ["Pierre Scelles", "Manuel Emeriau", "Timothé Caillaud"]
-    return devList.includes(`${v.firstname} ${v.lastname}`)
+    if (((v as Volunteer)?.roles || []).includes("dev")) {
+        console.log(v.lastname)
+    }
+    return ((v as Volunteer)?.roles || []).includes("dev")
 }
 
 function anonimizedNameEmailMobile(v: Volunteer | PreVolunteer): void {
