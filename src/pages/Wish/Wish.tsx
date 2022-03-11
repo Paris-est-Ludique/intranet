@@ -4,9 +4,9 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppDispatch, AppState, AppThunk, EntitiesRequest } from "../../store"
-import { fetchJavGameListIfNeed } from "../../store/javGameList"
+import { fetchGameListIfNeed } from "../../store/gameList"
 import { fetchWishListIfNeed } from "../../store/wishList"
-import { JavGameList, WishAdd } from "../../components"
+import { GameList, WishAdd } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
@@ -30,7 +30,7 @@ function useList<Entity>(
 
         if (readyStatus === "failure") return <p>Oops, Failed to load list!</p>
 
-        return <JavGameList ids={ids} />
+        return <GameList ids={ids} />
     }
 }
 
@@ -41,7 +41,7 @@ const Wish: FC<Props> = (): JSX.Element => {
             <Helmet title="Wish" />
             <WishAdd dispatch={dispatch} />
             {/* {useList((state: AppState) => state.wishList, fetchWishListifNeed)()} */}
-            {useList((state: AppState) => state.javGameList, fetchJavGameListIfNeed)()}
+            {useList((state: AppState) => state.gameList, fetchGameListIfNeed)()}
             {/* <button type="button" onClick={() => setList([{id: 3, joueurs: 4, duree: 5, description: "abcd"}])}>
             Set list!
         </button> */}
@@ -50,6 +50,6 @@ const Wish: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => [fetchWishListIfNeed(), fetchJavGameListIfNeed()]
+export const loadData = (): AppThunk[] => [fetchWishListIfNeed(), fetchGameListIfNeed()]
 
 export default memo(Wish)

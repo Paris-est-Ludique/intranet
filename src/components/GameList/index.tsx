@@ -10,14 +10,14 @@ interface Props {
     ids: EntityId[]
 }
 
-const JavGameList = ({ ids }: Props) => {
-    const { entities: jeuxJav } = useSelector((state: AppState) => state.javGameList, shallowEqual)
+const GameList = ({ ids }: Props) => {
+    const { entities: jeux } = useSelector((state: AppState) => state.gameList, shallowEqual)
     return (
-        <div className={styles.JavGameList}>
+        <div className={styles.GameList}>
             <h4>Jeux JAV</h4>
             <ul>
                 {ids.map((id) => {
-                    const jeu = jeuxJav[id]
+                    const jeu = jeux[id]
                     if (!jeu) {
                         return <li key={id}>Le jeu #{id} n&apos;existe pas</li>
                     }
@@ -33,4 +33,4 @@ const JavGameList = ({ ids }: Props) => {
     )
 }
 
-export default memo(JavGameList)
+export default memo(GameList)

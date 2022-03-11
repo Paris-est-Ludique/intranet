@@ -2,7 +2,7 @@ import { History } from "history"
 import { connectRouter } from "connected-react-router"
 
 import auth from "./auth"
-import javGameList from "./javGameList"
+import gameList from "./gameList"
 import announcementList from "./announcementList"
 import preVolunteerAdd from "./preVolunteerAdd"
 import preVolunteerCount from "./preVolunteerCount"
@@ -25,7 +25,7 @@ import wishList from "./wishList"
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default (history: History) => ({
     auth,
-    javGameList,
+    gameList,
     announcementList,
     preVolunteerAdd,
     preVolunteerCount,

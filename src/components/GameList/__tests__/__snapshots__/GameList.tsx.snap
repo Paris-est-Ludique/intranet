@@ -2,7 +2,7 @@
 
 exports[`<List /> renders 1`] = `
 <div
-  class="JavGameList"
+  class="GameList"
 >
   <h4>
     Jeux JAV

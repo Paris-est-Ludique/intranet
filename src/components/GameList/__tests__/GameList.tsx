@@ -5,15 +5,15 @@ import { render } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 
 import mockStore from "../../../utils/mockStore"
-import JavGameList from "../index"
+import GameList from "../index"
 
 describe("<List />", () => {
     const renderHelper = (reducer = { readyStatus: "idle" }) => {
-        const { dispatch, ProviderWithStore } = mockStore({ javGameList: reducer })
+        const { dispatch, ProviderWithStore } = mockStore({ gameList: reducer })
         const { container } = render(
             <ProviderWithStore>
                 <MemoryRouter>
-                    <JavGameList ids={[5]} />
+                    <GameList ids={[5]} />
                 </MemoryRouter>
             </ProviderWithStore>
         )
@@ -39,9 +39,6 @@ describe("<List />", () => {
                     bggPhoto:
                         "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
                     bggId: 432,
-                    copies: 1,
-                    lendAvailability: 1,
-                    notStored: 0,
                     ean: "3421272101313",
                 },
             },

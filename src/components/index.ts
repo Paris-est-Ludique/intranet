@@ -1,6 +1,6 @@
 import AnnouncementLink from "./AnnouncementLink"
 import ErrorBoundary from "./ErrorBoundary"
-import JavGameList from "./JavGameList"
+import GameList from "./GameList"
 import Loading from "./Loading"
 import LoginForm from "./LoginForm"
 import Notifications, { fetchFor as fetchForNotifications } from "./Notifications"
@@ -16,7 +16,7 @@ import WishAdd from "./WishAdd"
 export {
     AnnouncementLink,
     ErrorBoundary,
-    JavGameList,
+    GameList,
     Loading,
     LoginForm,
     Notifications,

@@ -18,7 +18,7 @@ import ssr from "./ssr"
 import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
-import { javGameListGet } from "./gsheets/javGames"
+import { gameListGet } from "./gsheets/games"
 import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
 import { teamListGet } from "./gsheets/teams"
 import {
@@ -79,7 +79,7 @@ app.get(
  * APIs
  */
 // Google Sheets API
-app.get("/JavGameListGet", javGameListGet)
+app.get("/GameListGet", gameListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
 app.post("/PreVolunteerAdd", preVolunteerAdd)

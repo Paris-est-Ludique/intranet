@@ -1,4 +1,4 @@
-export class JavGame {
+export class Game {
     id = 0
 
     title = ""
@@ -19,18 +19,12 @@ export class JavGame {
 
     bggId = 0
 
-    copies = 1
-
-    lendAvailability = 0
-
-    notStored = 0
-
     ean = ""
 
     bggPhoto = ""
 }
 
-export const translationJavGame: { [k in keyof JavGame]: string } = {
+export const translationGame: { [k in keyof Game]: string } = {
     id: "id",
     title: "titre",
     author: "auteur",
@@ -41,13 +35,10 @@ export const translationJavGame: { [k in keyof JavGame]: string } = {
     type: "type",
     poufpaf: "poufpaf",
     bggId: "bggId",
-    copies: "exemplaires",
-    lendAvailability: "dispoPret",
-    notStored: "nonRangee",
     ean: "ean",
     bggPhoto: "bggPhoto",
 }
 
-export const elementName = "JavGame"
+export const elementName = "Game"
 
-export type JavGameWithoutId = Omit<JavGame, "id">
+export type GameWithoutId = Omit<Game, "id">
