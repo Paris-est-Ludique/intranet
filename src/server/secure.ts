@@ -64,9 +64,9 @@ async function getSecret() {
     return cachedSecret
 }
 
-export async function getJwt(id: number): Promise<string> {
+export async function getJwt(id: number, roles: string[]): Promise<string> {
     const jwt = sign(
-        { id },
+        { id, roles },
         await getSecret()
         // __TEST__
         //     ? undefined

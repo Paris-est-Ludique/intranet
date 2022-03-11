@@ -273,9 +273,6 @@ function anonimizedDb(_s: States): States {
 }
 
 function idADev(v: Volunteer | PreVolunteer): boolean {
-    if (((v as Volunteer)?.roles || []).includes("dev")) {
-        console.log(v.lastname)
-    }
     return ((v as Volunteer)?.roles || []).includes("dev")
 }
 

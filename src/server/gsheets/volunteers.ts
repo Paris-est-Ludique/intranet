@@ -48,7 +48,7 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
         }
     }
 
-    const jwt = await getJwt(volunteer.id)
+    const jwt = await getJwt(volunteer.id, volunteer.roles)
 
     return {
         id: volunteer.id,

@@ -1,5 +1,5 @@
 import path from "path"
-import express, { RequestHandler } from "express"
+import express, { RequestHandler, Request, Response, NextFunction } from "express"
 import logger from "morgan"
 import cookieParser from "cookie-parser"
 import compression from "compression"
@@ -65,6 +65,15 @@ if (__DEV__) devServer(app)
 
 app.use(express.json())
 app.use(cookieParser())
+
+// Anonymized DB download
+app.get(
+    "/OUpere3yzML8da8abw5Tyeef2P0LJOetmdDHfKZC0T2CU/dbAnonymized.json",
+    async (_request: Request, response: Response, _next: NextFunction): Promise<void> => {
+        const file = path.resolve(`access/dbAnonymized.json`)
+        response.download(file)
+    }
+)
 
 /**
  * APIs
