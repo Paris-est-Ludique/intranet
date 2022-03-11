@@ -57,7 +57,12 @@ export default class ExpressAccessors<
 
     // custom can be async
     get<Ret = Element>(
-        custom?: (list: Element[], body: Request["body"], id: number) => Promise<Ret> | Ret
+        custom?: (
+            list: Element[],
+            body: Request["body"],
+            id: number,
+            roles: string[]
+        ) => Promise<Ret> | Ret
     ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
@@ -69,7 +74,8 @@ export default class ExpressAccessors<
                     toCaller = list.find((e: Element) => e.id === id)
                 } else {
                     const memberId = response?.locals?.jwt?.id || -1
-                    toCaller = await custom(list, request.body, memberId)
+                    const roles: string[] = response?.locals?.jwt?.roles || []
+                    toCaller = await custom(list, request.body, memberId, roles)
                     if (toCaller?.jwt && toCaller?.id) {
                         response.cookie("jwt", toCaller.jwt, { maxAge: 365 * 24 * 60 * 60 })
                         response.cookie("id", toCaller.id, { maxAge: 365 * 24 * 60 * 60 })
@@ -101,7 +107,8 @@ export default class ExpressAccessors<
         custom?: (
             list: Element[],
             body: RequestBody,
-            id: number
+            id: number,
+            roles: string[]
         ) => Promise<CustomSetReturn<Element>> | CustomSetReturn<Element>
     ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
@@ -112,8 +119,14 @@ export default class ExpressAccessors<
                     response.status(200)
                 } else {
                     const memberId = response?.locals?.jwt?.id || -1
+                    const roles: string[] = response?.locals?.jwt?.roles || []
                     const list = (await sheet.getList()) || []
-                    const { toDatabase, toCaller } = await custom(list, request.body, memberId)
+                    const { toDatabase, toCaller } = await custom(
+                        list,
+                        request.body,
+                        memberId,
+                        roles
+                    )
                     if (toDatabase !== undefined) {
                         await sheet.set(toDatabase)
                     }

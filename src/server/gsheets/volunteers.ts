@@ -51,8 +51,9 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
     const jwt = await getJwt(volunteer.id, volunteer.roles)
 
     return {
-        id: volunteer.id,
         jwt,
+        id: volunteer.id,
+        roles: volunteer.roles,
     }
 })
 
@@ -142,10 +143,12 @@ export const volunteerNotifsSet = expressAccessor.set(async (list, body, id) => 
     }
 })
 
-export const volunteerTeamWishesSet = expressAccessor.set(async (list, body, id) => {
+export const volunteerTeamWishesSet = expressAccessor.set(async (list, body, id, roles) => {
     const requestedId = +body[0] || id
-    if (requestedId !== id && requestedId !== 0) {
-        throw Error(`On ne peut acceder qu'à ses propres envies d'équipes`)
+    if (requestedId !== id && requestedId !== 0 && !roles.includes("repartiteur")) {
+        throw Error(
+            `À moins d'être répartiteur de bénévole dans les équipes, on ne peut acceder qu'à ses propres envies d'équipes`
+        )
     }
     const wishes = body[1] as VolunteerTeamWishes
     const volunteer = list.find((v) => v.id === requestedId)

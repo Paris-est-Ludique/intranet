@@ -15,8 +15,8 @@ import routes from "../routes"
 import { getCookieJWT } from "../services/auth"
 
 export default async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { jwt, id } = getCookieJWT(req.headers.cookie)
-    const { store } = createStore({ url: req.url, jwt, id })
+    const { jwt, id, roles } = getCookieJWT(req.headers.cookie)
+    const { store } = createStore({ url: req.url, jwt, id, roles })
 
     // The method for loading data from server-side
     const loadBranchData = (): Promise<any> => {

@@ -7,10 +7,11 @@ export const axiosConfig: AxiosRequestConfig = {
     headers: {},
 }
 
-export function setJWT(token: string, id: number): void {
+export function setJWT(token: string, id: number, roles: string[]): void {
     axiosConfig.headers.Authorization = `Bearer ${token}`
     Cookies.set("jwt", token, { expires: 3650 })
     Cookies.set("id", `${id}`, { expires: 3650 })
+    Cookies.set("roles", roles.join(","), { expires: 3650 })
 }
 
 export function unsetJWT(): void {
@@ -18,6 +19,7 @@ export function unsetJWT(): void {
 
     Cookies.remove("jwt")
     Cookies.remove("id")
+    Cookies.remove("roles")
 }
 
 export function getCookieJWT(cookie = ""): VolunteerLogin {
@@ -28,5 +30,5 @@ export function getCookieJWT(cookie = ""): VolunteerLogin {
             res[k.trim()] = v
             return res
         }, {})
-    return { jwt: cookies.jwt, id: +cookies.id }
+    return { jwt: cookies.jwt, id: +cookies.id, roles: cookies.roles?.split(",") || [] }
 }

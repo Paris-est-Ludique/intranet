@@ -107,8 +107,9 @@ export const passwordMinLength = 4
 export type VolunteerWithoutId = Omit<Volunteer, "id">
 
 export interface VolunteerLogin {
-    id: number
     jwt: string
+    id: number
+    roles: string[]
 }
 
 export interface VolunteerForgot {

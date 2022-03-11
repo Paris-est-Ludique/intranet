@@ -13,11 +13,12 @@ interface Arg {
     url?: string
     jwt?: string
     id?: number
+    roles?: string[]
 }
 
 // Use inferred return type for making correctly Redux types
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const createStore = ({ initialState, url, jwt, id }: Arg = {}) => {
+const createStore = ({ initialState, url, jwt, id, roles }: Arg = {}) => {
     const history = __SERVER__
         ? createMemoryHistory({ initialEntries: [url || "/"] })
         : createBrowserHistory()
@@ -32,8 +33,8 @@ const createStore = ({ initialState, url, jwt, id }: Arg = {}) => {
         devTools: __DEV__,
     })
 
-    if (jwt && id) {
-        store.dispatch(setCurrentUser({ jwt, id }))
+    if (jwt && id && roles) {
+        store.dispatch(setCurrentUser({ jwt, id, roles }))
     } else {
         store.dispatch(logoutUser())
     }
@@ -42,12 +43,14 @@ const createStore = ({ initialState, url, jwt, id }: Arg = {}) => {
 }
 
 const id = +(Cookies.get("id") || 0)
+const roles = Cookies.get("roles")?.split(",") || []
 const jwt = Cookies.get("jwt")
-if (id && jwt) {
+if (id && jwt && roles) {
     Cookies.set("id", `${id}`, { expires: 3650 })
+    Cookies.set("roles", roles.join(","), { expires: 3650 })
     Cookies.set("jwt", jwt, { expires: 3650 })
 }
-const { store } = createStore({ id, jwt })
+const { store } = createStore({ jwt, id, roles })
 
 export type AppState = ReturnType<typeof store.getState>
 

@@ -39,7 +39,7 @@ export const fetchVolunteerLogin = elementFetch<VolunteerLogin, Parameters<typeo
     getFailure,
     undefined,
     (login: VolunteerLogin) => {
-        setJWT(login.jwt, login.id)
+        setJWT(login.jwt, login.id, login.roles)
         // eslint-disable-next-line no-restricted-globals
         location?.reload()
     }
