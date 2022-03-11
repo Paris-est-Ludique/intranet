@@ -219,7 +219,7 @@ export class Sheet<
     async dbFirstLoad(): Promise<void> {
         if (!(await hasGSheetsAccess())) {
             await this.loadLocalDb()
-        } else if (this.toRunAfterLoad && __DEV__) {
+        } else if (this.toRunAfterLoad) {
             // Save once
             this.toRunAfterLoad.push(() => this.saveLocalDb())
         }

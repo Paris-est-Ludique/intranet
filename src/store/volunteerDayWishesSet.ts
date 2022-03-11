@@ -50,7 +50,7 @@ export const fetchVolunteerDayWishesSetIfNeed =
         let jwt = ""
 
         if (!id) {
-            ;({ id, jwt } = getState().auth)
+            ;({ jwt, id } = getState().auth)
         }
         if (shouldFetchVolunteerDayWishesSet(getState(), id))
             return dispatch(fetchVolunteerDayWishesSet(jwt, id, wishes))

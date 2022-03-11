@@ -3,16 +3,16 @@ import { AppState } from "."
 
 // Define a type for the slice state
 interface AuthState {
+    jwt: string
     id: number
     roles: string[]
-    jwt: string
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
+    jwt: "",
     id: 0,
     roles: [],
-    jwt: "",
 }
 
 export const auth = createSlice({
@@ -20,15 +20,15 @@ export const auth = createSlice({
     initialState,
     reducers: {
         setCurrentUser: (state, action: PayloadAction<AuthState>) => {
+            state.jwt = action.payload.jwt
             state.id = action.payload.id
             state.roles = action.payload.roles
-            state.jwt = action.payload.jwt
         },
         logoutUser: (state) => {
             // Unused, just reload page :/
+            state.jwt = ""
             state.id = 0
             state.roles = []
-            state.jwt = ""
         },
     },
 })

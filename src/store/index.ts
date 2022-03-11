@@ -42,13 +42,13 @@ const createStore = ({ initialState, url, jwt, id, roles }: Arg = {}) => {
     return { store, history }
 }
 
+const jwt = Cookies.get("jwt")
 const id = +(Cookies.get("id") || 0)
 const roles = Cookies.get("roles")?.split(",") || []
-const jwt = Cookies.get("jwt")
-if (id && jwt && roles) {
+if (jwt && id && roles) {
+    Cookies.set("jwt", jwt, { expires: 3650 })
     Cookies.set("id", `${id}`, { expires: 3650 })
     Cookies.set("roles", roles.join(","), { expires: 3650 })
-    Cookies.set("jwt", jwt, { expires: 3650 })
 }
 const { store } = createStore({ jwt, id, roles })
 

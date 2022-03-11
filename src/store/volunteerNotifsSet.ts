@@ -50,7 +50,7 @@ export const fetchVolunteerNotifsSetIfNeed =
         let jwt = ""
 
         if (!id) {
-            ;({ id, jwt } = getState().auth)
+            ;({ jwt, id } = getState().auth)
         }
         if (shouldFetchVolunteerNotifsSet(getState(), id))
             return dispatch(fetchVolunteerNotifsSet(jwt, id, notif))

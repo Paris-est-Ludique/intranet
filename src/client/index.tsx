@@ -11,13 +11,15 @@ import routes from "../routes"
 // Get the initial state from server-side rendering
 const initialState = window.__INITIAL_STATE__
 
-const id = +(Cookies.get("id") || 0)
 const jwt = Cookies.get("jwt")
-if (id && jwt) {
-    Cookies.set("id", `${id}`, { expires: 3650 })
+const id = +(Cookies.get("id") || 0)
+const roles = Cookies.get("roles")?.split(",") || []
+if (jwt && id && roles) {
     Cookies.set("jwt", jwt, { expires: 3650 })
+    Cookies.set("id", `${id}`, { expires: 3650 })
+    Cookies.set("roles", roles.join(","), { expires: 3650 })
 }
-const { store, history } = createStore({ initialState, id, jwt })
+const { store, history } = createStore({ initialState, jwt, id, roles })
 
 const render = (Routes: RouteConfig[]) =>
     ReactDOM.hydrate(

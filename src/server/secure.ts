@@ -65,14 +65,6 @@ async function getSecret() {
 }
 
 export async function getJwt(id: number, roles: string[]): Promise<string> {
-    const jwt = sign(
-        { id, roles },
-        await getSecret()
-        // __TEST__
-        //     ? undefined
-        //     : {
-        //           expiresIn: "365d",
-        //       }
-    )
+    const jwt = sign({ id, roles }, await getSecret())
     return jwt
 }

@@ -54,7 +54,7 @@ export const fetchVolunteerParticipationDetailsSetIfNeed =
         let jwt = ""
 
         if (!id) {
-            ;({ id, jwt } = getState().auth)
+            ;({ jwt, id } = getState().auth)
         }
         if (shouldFetchVolunteerParticipationDetailsSet(getState(), id))
             return dispatch(fetchVolunteerParticipationDetailsSet(jwt, id, wishes))
