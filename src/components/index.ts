@@ -12,6 +12,7 @@ import VolunteerList from "./VolunteerList"
 import VolunteerInfo from "./VolunteerInfo"
 import VolunteerSet from "./VolunteerSet"
 import WishAdd from "./WishAdd"
+import { fetchFor as fetchForBoardForms } from "./VolunteerBoard/Board"
 
 export {
     AnnouncementLink,
@@ -28,4 +29,5 @@ export {
     VolunteerList,
     VolunteerSet,
     WishAdd,
+    fetchForBoardForms,
 }

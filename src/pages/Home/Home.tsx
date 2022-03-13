@@ -1,35 +1,33 @@
 import { FC, memo } from "react"
 import { RouteComponentProps, Link } from "react-router-dom"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector } from "react-redux"
 import { Helmet } from "react-helmet"
 
-import { AppState, AppThunk } from "../../store"
-import { LoginForm, Notifications, fetchForTeamWishesForm } from "../../components"
+import { AppThunk } from "../../store"
+import { LoginForm, Notifications, fetchForBoardForms } from "../../components"
 import styles from "./styles.module.scss"
-import { fetchVolunteerNotifsSetIfNeed } from "../../store/volunteerNotifsSet"
-import { VolunteerNotifs } from "../../services/volunteers"
+import { fetchVolunteerNotifsSetIfNeed, hasWaitingNotifs } from "../../store/volunteerNotifsSet"
 import { selectUserJwtToken } from "../../store/auth"
+import Board from "../../components/VolunteerBoard/Board"
+import Page from "../../components/ui/Page/Page"
+import VolunteerConfirmation from "../../components/VolunteerConfirmation/VolunteerConfirmation"
 
 export type Props = RouteComponentProps
 
-let prevNotifs: VolunteerNotifs | undefined
-
 const HomePage: FC<Props> = (): JSX.Element => {
     const jwtToken = useSelector(selectUserJwtToken)
-
-    const volunteerNotifs = useSelector((state: AppState) => {
-        const notifs = state.volunteerNotifsSet?.entity
-        if (notifs) {
-            prevNotifs = notifs
-            return notifs
-        }
-        return prevNotifs
-    }, shallowEqual)
+    const waitingNotifs = useSelector(hasWaitingNotifs)
 
     if (jwtToken === undefined) return <p>Loading...</p>
 
     if (jwtToken) {
-        return <Notifications volunteerNotifs={volunteerNotifs} />
+        return (
+            <Page>
+                {!waitingNotifs && <VolunteerConfirmation />}
+                <Notifications />
+                {!waitingNotifs && <Board />}
+            </Page>
+        )
     }
     return (
         <div>
@@ -51,7 +49,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [
     fetchVolunteerNotifsSetIfNeed(),
-    ...fetchForTeamWishesForm.map((f) => f()),
+    ...fetchForBoardForms.map((f) => f()),
 ]
 
 export default memo(HomePage)

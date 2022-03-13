@@ -65,7 +65,7 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                         {selection.map((item) => {
                             const team = teams.find((t: any) => t.id === item)
                             if (!team) return null
-                            return <li>{team.name}</li>
+                            return <li key={team.id}>{team.name}</li>
                         })}
                     </ol>
                     <div className={styles.commentWrapper}>

@@ -6,16 +6,29 @@ import ParticipationDetailsFormModal from "./ParticipationDetailsForm/Participat
 import TeamWishes from "./TeamWishes/TeamWishes"
 import TeamWishesFormModal from "./TeamWishesForm/TeamWishesFormModal"
 import withUserConnected from "../../utils/withUserConnected"
+import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
+import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunteerParticipationDetailsSet"
+import { fetchTeamListIfNeed } from "../../store/teamList"
+import { fetchVolunteerTeamWishesSetIfNeed } from "../../store/volunteerTeamWishesSet"
+import ContentTitle from "../ui/Content/ContentTitle"
 
 const Board: FC = (): JSX.Element => (
-    <div>
+    <>
+        <ContentTitle title="Pour le jour J" />
         <DayWishes />
         <DayWishesFormModal />
         <ParticipationDetails />
         <ParticipationDetailsFormModal />
         <TeamWishes />
         <TeamWishesFormModal />
-    </div>
+    </>
 )
 
 export default memo(withUserConnected(Board))
+
+export const fetchFor = [
+    fetchVolunteerDayWishesSetIfNeed,
+    fetchVolunteerParticipationDetailsSetIfNeed,
+    fetchTeamListIfNeed,
+    fetchVolunteerTeamWishesSetIfNeed,
+]

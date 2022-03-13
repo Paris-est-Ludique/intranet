@@ -6,7 +6,7 @@
 }
 
 .notificationsContent {
-    @include page-content-wrapper;
+    @include inner-content-wrapper;
 }
 
 .pushNotificationsPage {
@@ -14,7 +14,7 @@
 }
 
 .pushNotificationsContent {
-    @include page-content-wrapper;
+    @include inner-content-wrapper;
 }
 
 .notifIntro {

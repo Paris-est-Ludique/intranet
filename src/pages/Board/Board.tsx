@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 
 import { AppThunk } from "../../store"
 import { selectUserJwtToken } from "../../store/auth"
-import Page from "../../components/Page/Page"
+import Page from "../../components/ui/Page/Page"
 import Board from "../../components/VolunteerBoard/Board"
 import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
 import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunteerParticipationDetailsSet"

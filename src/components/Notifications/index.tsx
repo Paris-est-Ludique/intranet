@@ -1,7 +1,7 @@
 import _ from "lodash"
 import React, { memo, useCallback, useEffect, useRef, useState } from "react"
 import isNode from "detect-node"
-import { useDispatch, useSelector } from "react-redux"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import classnames from "classnames"
 import { fetchVolunteerNotifsSet } from "../../store/volunteerNotifsSet"
 import styles from "./styles.module.scss"
@@ -9,15 +9,22 @@ import { selectUserJwtToken } from "../../store/auth"
 import { VolunteerNotifs } from "../../services/volunteers"
 // import { TeamWishesForm } from ".."
 import { fetchFor as fetchForTeamWishesForm } from "../VolunteerBoard/TeamWishesForm/TeamWishesForm"
+import { AppState } from "../../store"
+import Block from "../ui/Content/ContentBlock"
 
-interface Props {
-    // eslint-disable-next-line react/require-default-props
-    volunteerNotifs?: VolunteerNotifs
-}
+let prevNotifs: VolunteerNotifs | undefined
 
-const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
+const Notifications = (): JSX.Element | null => {
     const dispatch = useDispatch()
     const jwtToken = useSelector(selectUserJwtToken)
+    const volunteerNotifs = useSelector((state: AppState) => {
+        const notifs = state.volunteerNotifsSet?.entity
+        if (notifs) {
+            prevNotifs = notifs
+            return notifs
+        }
+        return prevNotifs
+    }, shallowEqual)
     const hidden = volunteerNotifs?.hiddenNotifs || []
     const notifs: JSX.Element[] = []
 
@@ -36,19 +43,17 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
     if (!_.includes(hidden, 1)) {
         notifs.push(
             <div key="1">
-                <div className={styles.notificationsPage}>
-                    <div className={styles.notificationsContent}>
-                        <form onSubmit={onSubmit1}>
-                            Salut {volunteerNotifs?.firstname} !
-                            <div className={styles.notifIntro} key="login-intro">
-                                Ici tu seras notifié(e) des nouvelles importantes et des questions
-                                pour lesquelles il nous faudrait absolument ta réponse.
-                                <div className={styles.formButtons}>
-                                    <button type="submit">Ok, continuer</button>
-                                </div>
+                <div className={styles.notificationsContent}>
+                    <form onSubmit={onSubmit1}>
+                        Salut {volunteerNotifs?.firstname} !
+                        <div className={styles.notifIntro} key="login-intro">
+                            Ici tu seras notifié(e) des nouvelles importantes et des questions pour
+                            lesquelles il nous faudrait absolument ta réponse.
+                            <div className={styles.formButtons}>
+                                <button type="submit">Ok, continuer</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         )
@@ -80,64 +85,62 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
     if (!_.includes(hidden, 2)) {
         notifs.push(
             <div key="2">
-                <div className={styles.notificationsPage}>
-                    <div className={styles.notificationsContent}>
-                        <div className={styles.formLine} key="line-participation">
-                            <form onSubmit={onSubmit2}>
-                                Si les conditions sanitaires te le permettent, souhaites-tu être
-                                bénévole à PeL 2022 ?<br />
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="oui"
-                                        name="gender"
-                                        checked={participation === "oui"}
-                                        onChange={onChangeValue2}
-                                    />{" "}
-                                    Oui
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="non"
-                                        name="gender"
-                                        checked={participation === "non"}
-                                        onChange={onChangeValue2}
-                                    />{" "}
-                                    Non
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="peut-etre"
-                                        name="gender"
-                                        checked={participation === "peut-etre"}
-                                        onChange={onChangeValue2}
-                                    />{" "}
-                                    Je ne sais pas encore
-                                </label>
-                                {participation === "peut-etre" ? (
-                                    <div>
-                                        On te le reproposera dans quelques temps.
-                                        <br />
-                                        Si tu as besoin d&apos;infos, viens nous en parler sur le
-                                        serveur Discord ! Pour le rejoindre,{" "}
-                                        <a
-                                            href="https://discord.com/invite/eXhjKxSBB4"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            clique ici{" "}
-                                        </a>
-                                        .
-                                    </div>
-                                ) : null}
-                                <div className={styles.formButtons}>
-                                    <button type="submit">Confirmer</button>
+                <div className={styles.notificationsContent}>
+                    <div className={styles.formLine} key="line-participation">
+                        <form onSubmit={onSubmit2}>
+                            Si les conditions sanitaires te le permettent, souhaites-tu être
+                            bénévole à PeL 2022 ?<br />
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="oui"
+                                    name="gender"
+                                    checked={participation === "oui"}
+                                    onChange={onChangeValue2}
+                                />{" "}
+                                Oui
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="non"
+                                    name="gender"
+                                    checked={participation === "non"}
+                                    onChange={onChangeValue2}
+                                />{" "}
+                                Non
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="peut-etre"
+                                    name="gender"
+                                    checked={participation === "peut-etre"}
+                                    onChange={onChangeValue2}
+                                />{" "}
+                                Je ne sais pas encore
+                            </label>
+                            {participation === "peut-etre" ? (
+                                <div>
+                                    On te le reproposera dans quelques temps.
+                                    <br />
+                                    Si tu as besoin d&apos;infos, viens nous en parler sur le
+                                    serveur Discord ! Pour le rejoindre,{" "}
+                                    <a
+                                        href="https://discord.com/invite/eXhjKxSBB4"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        clique ici{" "}
+                                    </a>
+                                    .
                                 </div>
-                                <div className={styles.message}>{participationMessage}</div>
-                            </form>
-                        </div>
+                            ) : null}
+                            <div className={styles.formButtons}>
+                                <button type="submit">Confirmer</button>
+                            </div>
+                            <div className={styles.message}>{participationMessage}</div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -155,27 +158,25 @@ const Notifications = ({ volunteerNotifs }: Props): JSX.Element | null => {
     if (!_.includes(hidden, 3)) {
         notifs.push(
             <div key="3">
-                <div className={styles.notificationsPage}>
-                    <div className={styles.notificationsContent}>
-                        <form onSubmit={onSubmit3}>
-                            <div
-                                className={classnames(styles.notifIntro, styles.notifCentered)}
-                                key="login-intro"
+                <div className={styles.notificationsContent}>
+                    <form onSubmit={onSubmit3}>
+                        <div
+                            className={classnames(styles.notifIntro, styles.notifCentered)}
+                            key="login-intro"
+                        >
+                            La{" "}
+                            <a
+                                href="https://mailchi.mp/3c75c3b3a20f/gazette_2020_02-8978118"
+                                onClick={onSubmit3}
                             >
-                                La{" "}
-                                <a
-                                    href="https://mailchi.mp/3c75c3b3a20f/gazette_2020_02-8978118"
-                                    onClick={onSubmit3}
-                                >
-                                    gazette de février
-                                </a>{" "}
-                                est disponible !<br />
-                                <div className={styles.formButtons}>
-                                    <button type="submit">Ok, masquer</button>
-                                </div>
+                                gazette de février
+                            </a>{" "}
+                            est disponible !<br />
+                            <div className={styles.formButtons}>
+                                <button type="submit">Ok, masquer</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         )
@@ -381,49 +382,47 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
     if (notifs.length === 0) {
         notifs.push(
             <div key="pushNotifs">
-                <div className={styles.pushNotificationsPage}>
-                    <div className={styles.pushNotificationsContent}>
-                        <div className={styles.formLine} key="line-participation">
-                            <label>
-                                Tu as fait le tour des dernières infos ou questions importantes,
-                                merci ! :)
-                                <br />
-                                <br />
-                                Acceptes-tu de recevoir une alerte dans ton navigateur quand on en
-                                aura d&apos;autres spécifiquement pour toi ?<br />
-                                <span className={styles.sousMessage}>
-                                    (Ça nous simplifierait la vie, on a des soucis à contacter les
-                                    bénévoles par email.)
-                                </span>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="oui"
-                                        name="gender"
-                                        checked={acceptsNotifs === "oui"}
-                                        onChange={onChangePushNotifs}
-                                    />{" "}
-                                    Oui
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="non"
-                                        name="gender"
-                                        checked={acceptsNotifs === "non"}
-                                        onChange={onChangePushNotifs}
-                                    />{" "}
-                                    Non
-                                </label>
-                            </label>
-                            <div className={styles.message}>{notifMessage}</div>
+                <Block title="Notifications">
+                    <div className={styles.formLine} key="line-participation">
+                        <label>
+                            Tu as fait le tour des dernières infos ou questions importantes, merci !
+                            :)
+                            <br />
+                            <br />
+                            Acceptes-tu de recevoir une alerte dans ton navigateur quand on en aura
+                            d&apos;autres spécifiquement pour toi ?<br />
                             <span className={styles.sousMessage}>
-                                Pas besoin de valider, le site mémorise automatiquement si tu
-                                changes ta réponse.
+                                (Ça nous simplifierait la vie, on a des soucis à contacter les
+                                bénévoles par email.)
                             </span>
-                        </div>
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="oui"
+                                    name="gender"
+                                    checked={acceptsNotifs === "oui"}
+                                    onChange={onChangePushNotifs}
+                                />{" "}
+                                Oui
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="non"
+                                    name="gender"
+                                    checked={acceptsNotifs === "non"}
+                                    onChange={onChangePushNotifs}
+                                />{" "}
+                                Non
+                            </label>
+                        </label>
+                        <div className={styles.message}>{notifMessage}</div>
+                        <span className={styles.sousMessage}>
+                            Pas besoin de valider, le site mémorise automatiquement si tu changes ta
+                            réponse.
+                        </span>
                     </div>
-                </div>
+                </Block>
             </div>
         )
     }

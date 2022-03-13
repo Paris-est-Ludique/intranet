@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 
 import { AppThunk } from "../../store"
 import { selectUserJwtToken } from "../../store/auth"
-import Page from "../../components/Page/Page"
+import Page from "../../components/ui/Page/Page"
 import { fetchVolunteerListIfNeed } from "../../store/volunteerList"
 
 export type Props = RouteComponentProps

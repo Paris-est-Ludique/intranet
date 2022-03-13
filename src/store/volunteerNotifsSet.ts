@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice, createSelector } from "@reduxjs/toolkit"
+import get from "lodash/get"
 
 import { StateRequest, toastError, elementFetch } from "./utils"
 import { VolunteerNotifs } from "../services/volunteers"
@@ -57,3 +58,21 @@ export const fetchVolunteerNotifsSetIfNeed =
 
         return null
     }
+
+export const openedNotifsIds = [1, 2, 3]
+
+export const selectVolunteerNotifsSetState = (state: AppState): StateVolunteerNotifsSet =>
+    state.volunteerNotifsSet
+
+export const selectHiddenNotifs = createSelector(selectVolunteerNotifsSetState, (notifState) =>
+    get(notifState, "entity.hiddenNotifs", [])
+)
+
+export const selectWaitingsNotifs = createSelector(selectHiddenNotifs, (hidden) =>
+    openedNotifsIds.filter((id) => !hidden.find((hiddenId: number) => hiddenId === id))
+)
+
+export const hasWaitingNotifs = createSelector(
+    selectWaitingsNotifs,
+    (waiting) => waiting.length > 0
+)
