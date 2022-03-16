@@ -11,7 +11,7 @@ import Asks, { fetchFor as fetchForAsks } from "./Asks"
 import ParticipationDetailsForm, {
     fetchFor as fetchForParticipationDetailsForm,
 } from "./VolunteerBoard/ParticipationDetailsForm/ParticipationDetailsForm"
-import PreRegisterForm from "./PreRegisterForm"
+import RegisterForm from "./RegisterForm"
 import TeamWishesForm, {
     fetchFor as fetchForTeamWishesForm,
 } from "./VolunteerBoard/TeamWishesForm/TeamWishesForm"
@@ -34,7 +34,7 @@ export {
     fetchForAsks,
     ParticipationDetailsForm,
     fetchForParticipationDetailsForm,
-    PreRegisterForm,
+    RegisterForm,
     TeamWishesForm,
     fetchForTeamWishesForm,
     VolunteerInfo,

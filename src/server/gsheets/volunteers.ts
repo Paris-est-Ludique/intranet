@@ -12,8 +12,9 @@ import {
     translationVolunteer,
     VolunteerDayWishes,
     VolunteerParticipationDetails,
+    VolunteerPartialAddReturn,
 } from "../../services/volunteers"
-import { canonicalEmail } from "../../utils/standardization"
+import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
 
 const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
@@ -23,8 +24,40 @@ const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
 )
 
 export const volunteerListGet = expressAccessor.listGet()
-export const volunteerAdd = expressAccessor.add()
+// export const volunteerAdd = expressAccessor.add()
 export const volunteerSet = expressAccessor.set()
+
+export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
+    const params = body[0]
+    const volunteer = getByEmail(list, params.email)
+    if (volunteer) {
+        throw Error("Il y a déjà un bénévole avec cet email")
+    }
+    if (!validMobile(params.mobile)) {
+        throw Error("Numéro de téléphone invalide, contacter pierre.scelles@gmail.com")
+    }
+
+    const password = generatePassword()
+    const passwordHash = await bcrypt.hash(password, 10)
+
+    const newVolunteer = _.omit(new Volunteer(), "id")
+
+    _.assign(newVolunteer, {
+        lastname: trim(params.lastname),
+        firstname: trim(params.firstname),
+        email: trim(params.email),
+        mobile: canonicalMobile(params.mobile),
+        password1: passwordHash,
+        password2: passwordHash,
+    })
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            password,
+        } as VolunteerPartialAddReturn,
+    }
+})
 
 export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, bodyArray) => {
     const [body] = bodyArray

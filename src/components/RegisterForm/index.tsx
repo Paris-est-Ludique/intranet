@@ -4,15 +4,16 @@ import { toast } from "react-toastify"
 import _ from "lodash"
 import styles from "./styles.module.scss"
 
-import { fetchPreVolunteerAdd } from "../../store/preVolunteerAdd"
+import { fetchPostulantAdd } from "../../store/postulantAdd"
 import { AppDispatch, AppState } from "../../store"
+import { fetchVolunteerPartialAdd } from "../../store/volunteerPartialAdd"
 
 interface Props {
     dispatch: AppDispatch
-    preVolunteerCount: number | undefined
 }
 
-const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element => {
+const RegisterForm = ({ dispatch }: Props): JSX.Element => {
+    const [potentialVolunteer, setPotentialVolunteer] = useState(true)
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
@@ -21,31 +22,60 @@ const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element =>
     const [comment, setComment] = useState("")
     const [sending, setSending] = useState(false)
 
+    const onNewVolunteer = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setPotentialVolunteer(!e.target.value)
+    const onPotentialVolunteer = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setPotentialVolunteer(!!e.target.value)
+
     const onFirstnameChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
         setFirstname(e.target.value)
     const onLastnameChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
         setLastname(e.target.value)
+
     const onEmailChanged = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
     const onMobileChanged = (e: React.ChangeEvent<HTMLInputElement>) => setMobile(e.target.value)
+
     const onAlreadyVolunteer = (e: React.ChangeEvent<HTMLInputElement>) =>
         setAlreadyVolunteer(!!e.target.value)
     const onNotYesVolunteer = (e: React.ChangeEvent<HTMLInputElement>) =>
         setAlreadyVolunteer(!e.target.value)
+
     const onCommentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
         setComment(e.target.value)
 
     const onSubmit = () => {
         if (firstname && lastname && email && mobile && !sending) {
-            dispatch(
-                fetchPreVolunteerAdd({
-                    firstname,
-                    lastname,
-                    email,
-                    mobile,
-                    alreadyVolunteer,
-                    comment,
-                })
-            )
+            if (potentialVolunteer) {
+                dispatch(
+                    fetchPostulantAdd({
+                        firstname,
+                        lastname,
+                        email,
+                        mobile,
+                        potential: true,
+                        comment,
+                    })
+                )
+            } else {
+                dispatch(
+                    fetchPostulantAdd({
+                        firstname,
+                        lastname,
+                        email,
+                        mobile,
+                        potential: false,
+                        comment,
+                    })
+                )
+                dispatch(
+                    fetchVolunteerPartialAdd({
+                        firstname,
+                        lastname,
+                        email,
+                        mobile,
+                    })
+                )
+            }
 
             setSending(true)
         } else {
@@ -61,13 +91,13 @@ const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element =>
         }
     }
 
-    const { error, entities: preVolunteer } = useSelector(
-        (state: AppState) => state.preVolunteerAdd,
+    const { error, entities: postulant } = useSelector(
+        (state: AppState) => state.postulantAdd,
         shallowEqual
     )
 
     let sendSuccess
-    if (!_.isEmpty(preVolunteer)) {
+    if (!_.isEmpty(postulant)) {
         if (sending) {
             setSending(false)
         }
@@ -75,7 +105,7 @@ const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element =>
     }
 
     let sendError
-    if (error && _.isEmpty(preVolunteer)) {
+    if (error && _.isEmpty(postulant)) {
         if (sending) {
             setSending(false)
         }
@@ -140,31 +170,53 @@ const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element =>
                         confort avant tout !
                     </p>
                     <p>
-                        Certains bénévoles sont visiteurs le samedi ou le dimanche pour vivre le
-                        festival de l&apos;intérieur. Les deux jours avant et le jour après le
-                        festival, ceux qui le peuvent viennent préparer et ranger. Bref, chacun
-                        participe à la hauteur de ses wishes et disponibilités !
+                        La majorité d&apos;entre nous sommes bénévoles les <b>samedi et dimanche</b>
+                        , mais certains bénévoles ne sont pas disponibles les deux jours. On leur
+                        demande alors d&apos;aider à la mise en place jeudi ou vendredi, ou au
+                        rangement le lundi. Bref, chacun participe comme il peut mais deux jours
+                        minimum !
                     </p>
                     <p>
                         Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en
-                        dînant avec les auteurs, illustrateurs et éditeurs présents sur le festival.
+                        dînant avec les exposants présents sur le festival.
                     </p>
                 </dd>
                 <dt>
-                    Si l&apos;expérience pourrait vous tenter, remplissez le formulaire suivant pour
-                    en discuter lors d&apos;un des gros apéros mensuels !<br />
-                    Cette inscription ne vous oblige en rien il s&apos;agit juste d&apos;une prise
-                    de contact.
+                    Si l&apos;expérience vous tente, remplissez le formulaire suivant pour devenir
+                    bénévoles !<br />
+                    Vous pouvez aussi juste nous rencontrer avant de vous décider à devenir
+                    bénévole, on comprend qu&apos;un saut dans l&apos;inconnu soit difficile.
                     <br />
-                    Les prochains sont les 21 décembre et 27 janvier, mais nous vous appelerons
-                    d&apos;ici là pour les détails :)
+                    Dans les deux cas, venez nous rencontrer mardi 22 mars près de Châtelet, détails
+                    après l&apos;inscription :)
                     <br />
-                    {/*  */}
-                    <span className={styles.lightTitle} hidden={(preVolunteerCount || 0) < 3}>
-                        (Déjà {preVolunteerCount} inscrits !)
-                    </span>
                 </dt>
                 <dd>
+                    <div className={styles.formLine} key="line-potential-volunteer">
+                        <div>
+                            Je veux devenir bénévole
+                            <input
+                                type="radio"
+                                name="potentialVolunteer"
+                                id="potentialVolunteer-yes"
+                                className={styles.inputRadio}
+                                checked={!potentialVolunteer}
+                                onChange={onNewVolunteer}
+                            />
+                            <label htmlFor="potentialVolunteer-yes">Tout de suite !</label>
+                            <input
+                                type="radio"
+                                name="potentialVolunteer"
+                                id="potentialVolunteer-no"
+                                className={styles.inputRadio}
+                                checked={potentialVolunteer}
+                                onChange={onPotentialVolunteer}
+                            />
+                            <label htmlFor="potentialVolunteer-no">
+                                Peut-être après une rencontre avec des bénévoles
+                            </label>
+                        </div>
+                    </div>
                     <div className={styles.formLine} key="line-firstname">
                         <label htmlFor="firstname">Prénom</label>
                         <input
@@ -232,7 +284,7 @@ const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element =>
                         <textarea
                             name="message"
                             id="message"
-                            placeholder="Des petits mots sympas, questions, wishes, des infos sur toi, des compétences dont tu aimerais te servir... ou rien de tout ça et nous en discuterons au téléphone :)"
+                            placeholder="Dis-nous ici comment tu as connu le festival, ce qui te motive à nous rejoindre, quelles compétences tu aimerais développer ou utiliser... ou tu n'y as pas trop réfléchi et tu trouveras en discutant avec nous :)"
                             value={comment}
                             onChange={onCommentChanged}
                         />
@@ -253,4 +305,4 @@ const PreRegisterForm = ({ dispatch, preVolunteerCount }: Props): JSX.Element =>
     )
 }
 
-export default memo(PreRegisterForm)
+export default memo(RegisterForm)

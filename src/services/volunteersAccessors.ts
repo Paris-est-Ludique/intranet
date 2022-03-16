@@ -13,7 +13,7 @@ const serviceAccessors = new ServiceAccessors<VolunteerWithoutId, Volunteer>(ele
 
 export const volunteerListGet = serviceAccessors.listGet()
 export const volunteerGet = serviceAccessors.get()
-export const volunteerAdd = serviceAccessors.add()
+export const volunteerPartialAdd = serviceAccessors.customPost<[Partial<Volunteer>]>("PartialAdd")
 export const volunteerSet = serviceAccessors.set()
 
 export const volunteerLogin =

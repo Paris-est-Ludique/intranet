@@ -1,4 +1,5 @@
-export class Volunteer {
+/* eslint-disable max-classes-per-file */
+export class Volunteer implements VolunteerPartial {
     id = 0
 
     lastname = ""
@@ -9,7 +10,7 @@ export class Volunteer {
 
     mobile = ""
 
-    photo = ""
+    photo = "anonyme.png"
 
     adult = 1
 
@@ -27,7 +28,7 @@ export class Volunteer {
 
     tshirtSize = ""
 
-    food = ""
+    food = "Aucune"
 
     teamWishes: number[] = []
 
@@ -70,6 +71,22 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     password2: "passe2",
     pushNotifSubscription: "pushNotifSubscription",
     acceptsNotifs: "accepteLesNotifs",
+}
+
+export class VolunteerPartial {
+    lastname = ""
+
+    firstname = ""
+
+    email = ""
+
+    mobile = ""
+}
+
+export class VolunteerPartialAddReturn {
+    id = 0
+
+    password = ""
 }
 
 export const elementName = "Volunteer"

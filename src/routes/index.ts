@@ -3,7 +3,7 @@ import { RouteConfig } from "react-router-config"
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/Announcements"
-import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
+import AsyncRegisterPage, { loadData as loadRegisterPage } from "../pages/Register"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
 import AsyncVolunteers, { loadData as loadVolunteersData } from "../pages/Volunteers"
@@ -25,13 +25,13 @@ export default [
             },
             {
                 path: "/preRegister",
-                component: AsyncPreRegisterPage,
-                loadData: loadPreRegisterPage,
+                component: AsyncRegisterPage,
+                loadData: loadRegisterPage,
             },
             {
                 path: "/sinscrire",
-                component: AsyncPreRegisterPage,
-                loadData: loadPreRegisterPage,
+                component: AsyncRegisterPage,
+                loadData: loadRegisterPage,
             },
             {
                 path: "/VolunteerPage/:id",

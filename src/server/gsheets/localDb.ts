@@ -3,7 +3,7 @@ import path from "path"
 import _ from "lodash"
 import { promises as fs } from "fs"
 import { Volunteer } from "../../services/volunteers"
-import { PreVolunteer } from "../../services/preVolunteers"
+import { Postulant } from "../../services/postulants"
 
 const DB_PATH = path.resolve(process.cwd(), "access/db.json")
 const DB_TO_LOAD_PATH = path.resolve(process.cwd(), "access/dbToLoad.json")
@@ -14,7 +14,7 @@ export class SheetNames {
 
     Games = "Jeux"
 
-    PreVolunteers = "PreMembres"
+    Postulants = "Postulants"
 
     Teams = "Equipes"
 
@@ -263,8 +263,8 @@ function anonimizedDb(_s: States): States {
             anonimizedNotifs(v)
         })
     }
-    if (s.PreVolunteers) {
-        ;(s.PreVolunteers as PreVolunteer[]).forEach((v) => {
+    if (s.Postulants) {
+        ;(s.Postulants as Postulant[]).forEach((v) => {
             anonimizedNameEmailMobile(v)
             v.comment = v.id % 3 === 0 ? "Bonjour, j'adore l'initiative!" : ""
         })
@@ -272,11 +272,11 @@ function anonimizedDb(_s: States): States {
     return s
 }
 
-function idADev(v: Volunteer | PreVolunteer): boolean {
+function idADev(v: Volunteer | Postulant): boolean {
     return ((v as Volunteer)?.roles || []).includes("dev")
 }
 
-function anonimizedNameEmailMobile(v: Volunteer | PreVolunteer): void {
+function anonimizedNameEmailMobile(v: Volunteer | Postulant): void {
     if (idADev(v)) {
         return
     }

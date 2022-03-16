@@ -3,6 +3,7 @@ import { SheetNames, ElementWithId, getSheet, Sheet } from "./accessors"
 
 export type RequestBody = Request["body"]
 export type CustomSetReturn<Element> = { toDatabase: Element; toCaller: any }
+export type CustomAddReturn<Element> = { toDatabase: Omit<Element, "id">; toCaller: any }
 
 export default class ExpressAccessors<
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -88,13 +89,44 @@ export default class ExpressAccessors<
         }
     }
 
-    add() {
+    add(
+        custom?: (
+            list: Element[],
+            body: RequestBody,
+            id: number,
+            roles: string[]
+        ) => Promise<CustomAddReturn<Element>> | CustomAddReturn<Element>
+    ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
             try {
                 const sheet = await this.getSheet()
-                const element: Element = await sheet.add(request.body)
-                if (element) {
-                    response.status(200).json(element)
+                if (!custom) {
+                    await sheet.add(request.body)
+                    response.status(200)
+                } else {
+                    const memberId = response?.locals?.jwt?.id || -1
+                    const roles: string[] = response?.locals?.jwt?.roles || []
+                    const list = (await sheet.getList()) || []
+                    const { toDatabase, toCaller } = await custom(
+                        list,
+                        request.body,
+                        memberId,
+                        roles
+                    )
+                    let toReturn = toCaller
+
+                    if (toDatabase !== undefined) {
+                        const element: Element = await sheet.add(toDatabase)
+                        toCaller.id = element.id
+                        if (!toCaller) {
+                            toReturn = element
+                        }
+                    }
+                    if (toReturn !== undefined) {
+                        response.status(200).json(toReturn)
+                    } else {
+                        response.status(200)
+                    }
                 }
             } catch (e: any) {
                 response.status(200).json({ error: e.message })

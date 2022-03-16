@@ -19,16 +19,17 @@ import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
 import { gameListGet } from "./gsheets/games"
-import { preVolunteerAdd, preVolunteerCountGet } from "./gsheets/preVolunteers"
+import { postulantAdd } from "./gsheets/postulants"
 import { teamListGet } from "./gsheets/teams"
 import {
-    volunteerSet,
-    volunteerLogin,
-    volunteerForgot,
-    volunteerAsksSet,
-    volunteerParticipationDetailsSet,
-    volunteerTeamWishesSet,
     volunteerDayWishesSet,
+    volunteerForgot,
+    volunteerLogin,
+    volunteerAsksSet,
+    volunteerPartialAdd,
+    volunteerParticipationDetailsSet,
+    volunteerSet,
+    volunteerTeamWishesSet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -82,8 +83,8 @@ app.get(
 app.get("/GameListGet", gameListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
-app.post("/PreVolunteerAdd", preVolunteerAdd)
-app.get("/PreVolunteerCountGet", preVolunteerCountGet)
+app.post("/PostulantAdd", postulantAdd)
+app.post("/VolunteerPartialAdd", volunteerPartialAdd)
 app.post("/VolunteerLogin", volunteerLogin)
 app.post("/VolunteerForgot", volunteerForgot)
 

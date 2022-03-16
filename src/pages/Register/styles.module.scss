@@ -1,9 +1,9 @@
 @import "../../theme/mixins";
 
-.preRegisterPage {
+.registerPage {
     @include page-wrapper-center;
 }
 
-.preRegisterContent {
+.registerContent {
     @include page-content-wrapper(600px);
 }

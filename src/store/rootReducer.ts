@@ -4,12 +4,11 @@ import { connectRouter } from "connected-react-router"
 import auth from "./auth"
 import gameList from "./gameList"
 import announcementList from "./announcementList"
-import preVolunteerAdd from "./preVolunteerAdd"
-import preVolunteerCount from "./preVolunteerCount"
+import postulantAdd from "./postulantAdd"
 import teamList from "./teamList"
 import ui from "./ui"
 import volunteer from "./volunteer"
-import volunteerAdd from "./volunteerAdd"
+import volunteerAdd from "./volunteerPartialAdd"
 import volunteerList from "./volunteerList"
 import volunteerSet from "./volunteerSet"
 import volunteerLogin from "./volunteerLogin"
@@ -27,8 +26,7 @@ export default (history: History) => ({
     auth,
     gameList,
     announcementList,
-    preVolunteerAdd,
-    preVolunteerCount,
+    postulantAdd,
     teamList,
     ui,
     volunteer,
