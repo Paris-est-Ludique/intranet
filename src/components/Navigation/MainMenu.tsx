@@ -24,14 +24,14 @@ const MainMenu: FC = (): JSX.Element | null => {
                 ☰
             </button>
             <ul className={classnames(styles.mainMenu, opened && styles.opened)}>
-                {/* <li className={styles.mainMenuItem}>
-                    <a href="/">Mon espace</a>
-                </li> */}
-                <li className={styles.mainMenuItem}>
-                    <a href="/equipes">Equipes</a>
-                </li>
                 <li className={styles.mainMenuItem}>
                     <a href="/annonces">Annonces</a>
+                </li>
+                <li className={styles.mainMenuItem}>
+                    <a href="/profil">Mon profil</a>
+                </li>
+                <li className={styles.mainMenuItem}>
+                    <a href="/equipes">Equipes</a>
                 </li>
                 <button type="button" className={styles.close} onClick={onClose}>
                     ×

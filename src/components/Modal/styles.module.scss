@@ -24,6 +24,7 @@
 
     @include desktop {
         @include horizontal-vertical-center();
+
         bottom: auto;
         right: auto;
         max-height: 80vh;

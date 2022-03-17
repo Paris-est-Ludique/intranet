@@ -206,7 +206,9 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
 export const volunteerParticipationDetailsSet = expressAccessor.set(async (list, body, id) => {
     const requestedId = +body[0] || id
     if (requestedId !== id && requestedId !== 0) {
-        throw Error(`On ne peut acceder qu'à ses propres infos d'age, taille et alimentation`)
+        throw Error(
+            `On ne peut acceder qu'à ses propres infos de t-shirt, de majorité et d'alimentation`
+        )
     }
     const wishes = body[1] as VolunteerParticipationDetails
     const volunteer = list.find((v) => v.id === requestedId)
@@ -215,11 +217,14 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
     }
     const newVolunteer = _.cloneDeep(volunteer)
 
-    if (wishes.age !== undefined) {
-        newVolunteer.age = wishes.age
+    if (wishes.tshirtSize !== undefined) {
+        newVolunteer.tshirtSize = wishes.tshirtSize
     }
-    if (wishes.teeshirtSize !== undefined) {
-        newVolunteer.teeshirtSize = wishes.teeshirtSize
+    if (wishes.tshirtCount !== undefined) {
+        newVolunteer.tshirtCount = wishes.tshirtCount
+    }
+    if (wishes.adult !== undefined) {
+        newVolunteer.adult = wishes.adult
     }
     if (wishes.food !== undefined) {
         newVolunteer.food = wishes.food
@@ -229,8 +234,9 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
         toDatabase: newVolunteer,
         toCaller: {
             id: newVolunteer.id,
-            age: newVolunteer.age,
-            teeshirtSize: newVolunteer.teeshirtSize,
+            tshirtSize: newVolunteer.tshirtSize,
+            tshirtCount: newVolunteer.tshirtCount,
+            adult: newVolunteer.adult,
             food: newVolunteer.food,
         } as VolunteerParticipationDetails,
     }

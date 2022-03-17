@@ -5,7 +5,7 @@ import { selectUserJwtToken } from "../../store/auth"
 import { AppState } from "../../store"
 import { fetchVolunteerParticipationDetailsSet } from "../../store/volunteerParticipationDetailsSet"
 
-export const tShirtSizes = [
+export const tshirtSizes = [
     "XS",
     "S",
     "M",
@@ -29,12 +29,13 @@ export const useUserParticipationDetails = (): [any, any] => {
     )
 
     const saveParticipationDetails = useCallback(
-        ({ age, teeshirtSize, food }) => {
+        ({ tshirtSize, tshirtCount, adult, food }) => {
             if (!userParticipationDetails) return
             save(jwtToken, 0, {
                 id: userParticipationDetails.id,
-                age,
-                teeshirtSize,
+                tshirtSize,
+                tshirtCount,
+                adult,
                 food,
             })
         },

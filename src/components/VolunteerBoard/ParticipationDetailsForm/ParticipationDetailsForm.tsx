@@ -4,7 +4,7 @@ import set from "lodash/set"
 import styles from "./styles.module.scss"
 import {
     foodDefaultValue,
-    tShirtSizes,
+    tshirtSizes,
     useUserParticipationDetails,
 } from "../participationDetails.utils"
 import FormButton from "../../Form/FormButton/FormButton"
@@ -16,85 +16,138 @@ type Props = {
 const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
     const sizeRef = useRef<HTMLSelectElement | null>(null)
     const dietRef = useRef<HTMLInputElement | null>(null)
-    const ageRef = useRef<HTMLInputElement | null>(null)
-    const [has2Shirts, setHas2Shirts] = useState<boolean>(true)
+    const [tshirtCountState, setTshirtCount] = useState<number>(0)
+    const [adultState, setAdult] = useState<number>(0)
 
     const [participationDetails, saveParticipationDetails] = useUserParticipationDetails()
 
     const onSubmit = useCallback(() => {
-        const age = get(ageRef, "current.value", "")
-        const teeshirtSize = has2Shirts ? "" : get(sizeRef, "current.value", "")
+        const tshirtSize = get(sizeRef, "current.value", "")
         const food = get(dietRef, "current.value", "") || foodDefaultValue
-        saveParticipationDetails({ age, teeshirtSize, food })
+        saveParticipationDetails({
+            tshirtSize,
+            tshirtCount: tshirtCountState,
+            adult: adultState,
+            food,
+        })
         if (afterSubmit) afterSubmit()
-    }, [has2Shirts, saveParticipationDetails, afterSubmit])
+    }, [tshirtCountState, adultState, saveParticipationDetails, afterSubmit])
 
-    const onHas2ShirtsClick = useCallback(
+    const onTshirtCountChange = useCallback(
         (value) => {
-            setHas2Shirts(value)
+            setTshirtCount(value)
         },
-        [setHas2Shirts]
+        [setTshirtCount]
+    )
+
+    const onAdultChange = useCallback(
+        (value) => {
+            setAdult(value)
+        },
+        [setAdult]
     )
 
     useEffect(() => {
-        const age = get(participationDetails, "age", "")
-        const teeshirtSize = get(participationDetails, "teeshirtSize", "")
+        const tshirtSize = get(participationDetails, "tshirtSize", "")
+        const tshirtCount = get(participationDetails, "tshirtCount", "")
+        const adult = get(participationDetails, "adult", "")
         const food = get(participationDetails, "food", "")
 
-        if (age) set(ageRef, "current.value", age)
-        if (teeshirtSize) set(sizeRef, "current.value", teeshirtSize)
-        setHas2Shirts(!teeshirtSize)
+        if (tshirtSize) set(sizeRef, "current.value", tshirtSize)
+        if (tshirtCount) setTshirtCount(tshirtCount)
+        if (adult) setAdult(adult)
         if (food) set(dietRef, "current.value", food)
-    }, [setHas2Shirts, participationDetails])
+    }, [setTshirtCount, setAdult, participationDetails])
 
     return (
-        <div className={styles.root}>
+        <div>
             <div className={styles.title}>Mes informations pour le festival</div>
-            <div className={styles.tShirtWrapper}>
-                <div className={styles.tShirtLabel}>J'ai déjà 2 t-shirts</div>
-                <label>
-                    <input
-                        type="radio"
-                        name="hasShirt"
-                        onChange={() => onHas2ShirtsClick(true)}
-                        checked={has2Shirts}
-                    />{" "}
-                    Oui
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="hasShirt"
-                        onChange={() => onHas2ShirtsClick(false)}
-                        checked={!has2Shirts}
-                    />{" "}
-                    Non
-                </label>
-                {has2Shirts === false && (
-                    <div className={styles.tShirtSizes}>
-                        <label>Taille</label>
-                        <select ref={sizeRef}>
-                            {tShirtSizes.map((size) => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                )}
+            <div className={styles.inputWrapper}>
+                <div className={styles.leftCol}>
+                    <div className={styles.tshirtCountTitle}>Combien as-tu de t-shirts PeL ?</div>
+                </div>
+                <div>
+                    <label className={styles.tshirtCountLabel}>
+                        <input
+                            type="radio"
+                            name="tshirtCount"
+                            onChange={() => onTshirtCountChange(0)}
+                            checked={tshirtCountState === 0}
+                        />{" "}
+                        0
+                    </label>
+                    <label className={styles.tshirtCountLabel}>
+                        <input
+                            type="radio"
+                            name="tshirtCount"
+                            onChange={() => onTshirtCountChange(1)}
+                            checked={tshirtCountState === 1}
+                        />{" "}
+                        1
+                    </label>
+                    <label className={styles.tshirtCountLabel}>
+                        <input
+                            type="radio"
+                            name="tshirtCount"
+                            onChange={() => onTshirtCountChange(2)}
+                            checked={tshirtCountState === 2}
+                        />{" "}
+                        2 ou plus
+                    </label>
+                </div>
             </div>
             <div className={styles.inputWrapper}>
-                <label htmlFor="ddday-age">Age</label>
-                <input type="number" id="ddday-age" ref={ageRef} />
+                <div className={styles.leftCol}>
+                    <div className={styles.tshirtSizesTitle}>Taille</div>
+                </div>
+                <div>
+                    <select ref={sizeRef} className={styles.tshirtCountSelect}>
+                        {tshirtSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            <div className={styles.inputWrapper}>
+                <div className={styles.leftCol}>
+                    <div className={styles.adultTitle}>Le 2 juillet 2022 tu auras :</div>
+                </div>
+                <div>
+                    <label className={styles.adultLabel}>
+                        <input
+                            type="radio"
+                            name="majority"
+                            onChange={() => onAdultChange(0)}
+                            checked={adultState === 0}
+                        />{" "}
+                        17 ou moins
+                    </label>
+                    <label className={styles.adultLabel}>
+                        <input
+                            type="radio"
+                            name="majority"
+                            onChange={() => onAdultChange(1)}
+                            checked={adultState === 1}
+                        />{" "}
+                        18 ans ou plus
+                    </label>
+                </div>
             </div>
             <div className={styles.inputWrapper}>
-                <label htmlFor="dday-diet">Préférence alimentaire</label>
-                <input
-                    id="dday-diet"
-                    type="text"
-                    ref={dietRef}
-                    placeholder="végétarien ? halal ? ..."
-                />
+                <div className={styles.leftCol}>
+                    <label htmlFor="dday-diet">Préférence alimentaire</label>
+                </div>
+                <div>
+                    <input
+                        id="dday-diet"
+                        type="text"
+                        ref={dietRef}
+                        placeholder="végétarien ? halal ? ..."
+                    />
+                </div>
             </div>
             <div className={styles.buttonWrapper}>
                 <FormButton onClick={onSubmit}>Enregistrer</FormButton>

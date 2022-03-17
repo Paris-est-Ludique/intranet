@@ -11,9 +11,11 @@ import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunte
 import { fetchTeamListIfNeed } from "../../store/teamList"
 import { fetchVolunteerTeamWishesSetIfNeed } from "../../store/volunteerTeamWishesSet"
 import ContentTitle from "../ui/Content/ContentTitle"
+import VolunteerConfirmation from "../VolunteerConfirmation/VolunteerConfirmation"
 
 const Board: FC = (): JSX.Element => (
     <>
+        <VolunteerConfirmation />
         <ContentTitle title="Pour le jour J" />
         <DayWishes />
         <DayWishesFormModal />

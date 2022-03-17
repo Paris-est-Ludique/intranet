@@ -23,9 +23,9 @@ export class Volunteer {
 
     dayWishesComment = ""
 
-    age = 0
+    tshirtCount = ""
 
-    teeshirtSize = ""
+    tshirtSize = ""
 
     food = ""
 
@@ -59,8 +59,8 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     discordId: "discordId",
     dayWishes: "enviesJours",
     dayWishesComment: "commentaireEnviesJours",
-    age: "age",
-    teeshirtSize: "teeshirt",
+    tshirtCount: "nbDeTshirts",
+    tshirtSize: "tailleDeTshirts",
     food: "alimentation",
     teamWishes: "enviesEquipe",
     teamWishesComment: "commentaireEnviesEquipe",
@@ -87,8 +87,8 @@ export const volunteerExample: Volunteer = {
     discordId: "",
     dayWishes: [],
     dayWishesComment: "",
-    age: 33,
-    teeshirtSize: "FM",
+    tshirtCount: "1",
+    tshirtSize: "Femme M",
     food: "Végétarien",
     teamWishes: [],
     teamWishesComment: "",
@@ -140,7 +140,8 @@ export interface VolunteerDayWishes {
 
 export interface VolunteerParticipationDetails {
     id: Volunteer["id"]
-    age: Volunteer["age"]
-    teeshirtSize: Volunteer["teeshirtSize"]
+    tshirtSize: Volunteer["tshirtSize"]
+    tshirtCount: Volunteer["tshirtCount"]
+    adult: Volunteer["adult"]
     food: Volunteer["food"]
 }

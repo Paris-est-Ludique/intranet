@@ -6,26 +6,21 @@ import { Helmet } from "react-helmet"
 import { AppThunk } from "../../store"
 import { LoginForm, Notifications, fetchForBoardForms } from "../../components"
 import styles from "./styles.module.scss"
-import { fetchVolunteerNotifsSetIfNeed, hasWaitingNotifs } from "../../store/volunteerNotifsSet"
+import { fetchVolunteerNotifsSetIfNeed } from "../../store/volunteerNotifsSet"
 import { selectUserJwtToken } from "../../store/auth"
-import Board from "../../components/VolunteerBoard/Board"
 import Page from "../../components/ui/Page/Page"
-import VolunteerConfirmation from "../../components/VolunteerConfirmation/VolunteerConfirmation"
 
 export type Props = RouteComponentProps
 
 const HomePage: FC<Props> = (): JSX.Element => {
     const jwtToken = useSelector(selectUserJwtToken)
-    const waitingNotifs = useSelector(hasWaitingNotifs)
 
     if (jwtToken === undefined) return <p>Loading...</p>
 
     if (jwtToken) {
         return (
             <Page>
-                {!waitingNotifs && <VolunteerConfirmation />}
                 <Notifications />
-                {!waitingNotifs && <Board />}
             </Page>
         )
     }

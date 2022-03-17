@@ -11,8 +11,9 @@ type Props = {
 
 const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     const [participationDetails] = useUserParticipationDetails()
-    const age = get(participationDetails, "age", "")
-    const tShirtSize = get(participationDetails, "teeshirtSize", "")
+    const adult = get(participationDetails, "adult", "")
+    const tshirtSize = get(participationDetails, "tshirtSize", "")
+    const tshirtCount = get(participationDetails, "tshirtCount", "")
     const food = get(participationDetails, "food", "")
     const execDisplayModal = useAction(displayModal)
     const onEdit = useCallback(
@@ -23,15 +24,31 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     return (
         <div className={styles.root}>
             <div className={styles.title}>Mes informations pour le festival</div>
-            {!tShirtSize && <div className={styles.line}>J'ai déjà 2 t-shirts.</div>}
-            {tShirtSize && (
+            {tshirtCount === 0 && (
                 <div className={styles.line}>
-                    J'ai besoin d'un t-shirt ! (Taille <b>{tShirtSize}</b>)
+                    Je n'ai <b>aucun t-shirt</b>. (Taille <b>{tshirtSize}</b>)
                 </div>
             )}
-            <div className={styles.line}>
-                Age : <b>{age || "?"} ans</b>.
-            </div>
+            {tshirtCount === 1 && (
+                <div className={styles.line}>
+                    J'ai déjà <b>1 t-shirt</b>. (Taille <b>{tshirtSize}</b>)
+                </div>
+            )}
+            {tshirtCount === 2 && (
+                <div className={styles.line}>
+                    J'ai déjà <b>2 t-shirts</b>.
+                </div>
+            )}
+            {adult === 0 && (
+                <div className={styles.line}>
+                    Je suis <b>mineur</b>
+                </div>
+            )}
+            {adult === 1 && (
+                <div className={styles.line}>
+                    Je suis <b>majeur</b>
+                </div>
+            )}
             <div className={styles.line}>
                 Préférence alimentaire : <b>{food || foodDefaultValue}</b>
             </div>

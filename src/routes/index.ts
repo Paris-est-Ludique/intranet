@@ -57,7 +57,7 @@ export default [
                 loadData: loadWishData,
             },
             {
-                path: "/board",
+                path: "/profil",
                 component: AsyncBoard,
                 loadData: loadBoardData,
             },

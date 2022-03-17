@@ -1,10 +1,6 @@
 @import "../../../theme/variables";
 @import "../../../theme/mixins";
 
-.root {
-    width: 470px;
-}
-
 .title {
     padding: 4px;
     font-weight: bold;
@@ -14,46 +10,61 @@
 .inputWrapper {
     margin: 10px 0;
 
+    @include desktop {
+        display: flex;
+    }
+
     label {
-        display: inline-block;
+        display: block;
         width: 170px;
     }
-    input {
-        width: 300px;
+    input[type="text"] {
+        min-width: 175px;
         border: 1px solid $color-grey-medium;
         outline: 0;
     }
 }
 
-.tShirtWrapper {
+.leftCol {
+    flex: 0 0 240px;
+}
+
+.tshirtWrapper {
     margin: 10px 0;
     height: 28px;
-
-    label {
-        display: inline-block;
-        width: 55px;
-    }
 }
 
-.tShirtLabel {
+.tshirtCountTitle {
     display: inline-block;
     margin-top: 6px;
-    width: 170px;
+    width: 240px;
 }
 
-.tShirtSizes {
-    display: inline-block;
-    width: 190px;
-    text-align: right;
+.tshirtCountLabel {
+    width: 55px;
+}
 
-    select {
-        margin-left: 10px;
-        width: 120px;
-        border: 1px solid $color-grey-medium;
-        border-radius: 4px;
-        background-color: $color-white;
-        outline: 0;
-    }
+.tshirtSizesTitle {
+    display: inline-block;
+    width: 240px;
+}
+
+.tshirtCountSelect {
+    width: 120px;
+    border: 1px solid $color-grey-medium;
+    border-radius: 4px;
+    background-color: $color-white;
+    outline: 0;
+}
+
+.adultTitle {
+    display: inline-block;
+    margin-top: 6px;
+    width: 240px;
+}
+
+.adultLabel {
+    width: 55px;
 }
 
 .buttonWrapper {
