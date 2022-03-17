@@ -1,10 +1,6 @@
 @import "../../../theme/variables";
 @import "../../../theme/mixins";
 
-.dayWishesForm {
-    width: 470px;
-}
-
 .dayWishesTitle {
     padding: 15px 0;
     font-weight: bold;
@@ -13,6 +9,8 @@
 
 .dayWishesList {
     @include clear-ul-style;
+
+    text-align: center;
 }
 
 .dayWishesItem {

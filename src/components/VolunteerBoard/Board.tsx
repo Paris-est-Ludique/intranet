@@ -16,7 +16,7 @@ import VolunteerConfirmation from "../VolunteerConfirmation/VolunteerConfirmatio
 const Board: FC = (): JSX.Element => (
     <>
         <VolunteerConfirmation />
-        <ContentTitle title="Pour le jour J" />
+        <ContentTitle title="Profil spécifique au festival" />
         <DayWishes />
         <DayWishesFormModal />
         <ParticipationDetails />

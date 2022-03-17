@@ -3,12 +3,13 @@
 
 .title {
     padding: 4px;
+    margin: 15px 0;
     font-weight: bold;
     text-align: center;
 }
 
 .inputWrapper {
-    margin: 10px 0;
+    margin: 25px 0;
 
     @include desktop {
         display: flex;
@@ -29,28 +30,26 @@
     flex: 0 0 240px;
 }
 
-.tshirtWrapper {
-    margin: 10px 0;
-    height: 28px;
-}
-
 .tshirtCountTitle {
     display: inline-block;
-    margin-top: 6px;
     width: 240px;
+    margin-bottom: 10px;
 }
 
 .tshirtCountLabel {
+    margin-bottom: 10px;
     width: 55px;
 }
 
 .tshirtSizesTitle {
     display: inline-block;
     width: 240px;
+    margin-bottom: 10px;
 }
 
 .tshirtCountSelect {
     width: 120px;
+    margin-bottom: 10px;
     border: 1px solid $color-grey-medium;
     border-radius: 4px;
     background-color: $color-white;
@@ -59,15 +58,20 @@
 
 .adultTitle {
     display: inline-block;
-    margin-top: 6px;
     width: 240px;
+    margin-bottom: 10px;
 }
 
 .adultLabel {
+    margin-bottom: 10px;
     width: 55px;
 }
 
 .buttonWrapper {
     margin-bottom: 10px;
     text-align: center;
+}
+
+.foodTitle {
+    margin-bottom: 10px;
 }

@@ -1,6 +1,11 @@
 @import "../../../theme/variables";
 @import "../../../theme/mixins";
 
+.title {
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
 .dayWishes {
     @include inner-content-wrapper();
 
@@ -17,7 +22,6 @@
 
 .dayLineTitle {
     padding-right: 5px;
-    font-weight: bold;
 }
 
 .dayLineEmpty {

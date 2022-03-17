@@ -50,7 +50,7 @@ const DayWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element => {
     }, [selection, commentRef, saveWishes, afterSubmit])
 
     return (
-        <div className={styles.dayWishesForm}>
+        <div>
             <div className={styles.dayWishesTitle}>Mes jours de présence</div>
             <ul className={styles.dayWishesList}>
                 {daysChoice.map(({ id, label }) => (

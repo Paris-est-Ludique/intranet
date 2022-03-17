@@ -30,9 +30,6 @@ const MainMenu: FC = (): JSX.Element | null => {
                 <li className={styles.mainMenuItem}>
                     <a href="/profil">Mon profil</a>
                 </li>
-                <li className={styles.mainMenuItem}>
-                    <a href="/equipes">Equipes</a>
-                </li>
                 <button type="button" className={styles.close} onClick={onClose}>
                     ×
                 </button>

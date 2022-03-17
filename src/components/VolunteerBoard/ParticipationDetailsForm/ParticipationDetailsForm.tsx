@@ -61,7 +61,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
 
     return (
         <div>
-            <div className={styles.title}>Mes informations pour le festival</div>
+            <div className={styles.title}>Mes infos logistiques</div>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
                     <div className={styles.tshirtCountTitle}>Combien as-tu de t-shirts PeL ?</div>
@@ -98,10 +98,12 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
             </div>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
-                    <div className={styles.tshirtSizesTitle}>Taille</div>
+                    <label htmlFor="tshirtSize" className={styles.tshirtSizesTitle}>
+                        Taille
+                    </label>
                 </div>
                 <div>
-                    <select ref={sizeRef} className={styles.tshirtCountSelect}>
+                    <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
                         {tshirtSizes.map((size) => (
                             <option key={size} value={size}>
                                 {size}
@@ -138,7 +140,9 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
             </div>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
-                    <label htmlFor="dday-diet">Préférence alimentaire</label>
+                    <label className={styles.foodTitle} htmlFor="dday-diet">
+                        Préférence alimentaire
+                    </label>
                 </div>
                 <div>
                     <input

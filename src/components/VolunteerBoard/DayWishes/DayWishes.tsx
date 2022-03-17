@@ -14,9 +14,10 @@ const DayWishes: FC = (): JSX.Element | null => {
 
     return (
         <div className={styles.dayWishes}>
+            <div className={styles.title}>Mes présences</div>
             <div className={styles.daysLine}>
-                <span className={styles.dayLineTitle}>Mes jours de présence :</span>
-                {dayWishesString && <span>{dayWishesString}</span>}
+                <span className={styles.dayLineTitle}>Mes jours :</span>
+                {dayWishesString && <b>{dayWishesString}</b>}
                 {!dayWishesString && <span className={styles.dayLineEmpty}>Non renseignés</span>}
             </div>
             {comment && (
