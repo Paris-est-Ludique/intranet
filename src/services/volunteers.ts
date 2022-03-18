@@ -15,7 +15,7 @@ export class Volunteer {
 
     roles: string[] = []
 
-    active = ""
+    active = "inconnu"
 
     discordId = ""
 
@@ -134,6 +134,7 @@ export interface VolunteerTeamWishes {
 
 export interface VolunteerDayWishes {
     id: Volunteer["id"]
+    active: Volunteer["active"]
     dayWishes: Volunteer["dayWishes"]
     dayWishesComment: Volunteer["dayWishesComment"]
 }

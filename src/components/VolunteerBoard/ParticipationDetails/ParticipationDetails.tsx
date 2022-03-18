@@ -26,27 +26,27 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
             <div className={styles.title}>Mes infos logistiques</div>
             {tshirtCount === 0 && (
                 <div className={styles.line}>
-                    Je n'ai <b>aucun t-shirt</b> et je suis taillé <b>{tshirtSize}</b>
+                    Je n'ai <b>aucun t-shirt</b> et je suis taillé·e <b>{tshirtSize}</b>
                 </div>
             )}
             {tshirtCount === 1 && (
                 <div className={styles.line}>
-                    J'ai déjà <b>1 t-shirt</b> et je suis taillé <b>{tshirtSize}</b>
+                    J'ai <b>un seul t-shirt</b> et je suis taillé·e <b>{tshirtSize}</b>
                 </div>
             )}
             {tshirtCount === 2 && (
                 <div className={styles.line}>
-                    J'ai déjà <b>2 t-shirts</b>
+                    J'ai au moins <b>deux t-shirts</b>
                 </div>
             )}
             {adult === 0 && (
                 <div className={styles.line}>
-                    Je serai <b>mineur</b> les 2-3 juillet 2022
+                    Le 2 juillet 2022, je serai <b>mineur·e</b>
                 </div>
             )}
             {adult === 1 && (
                 <div className={styles.line}>
-                    Je serai <b>majeur</b> les 2-3 juillet 2022
+                    Le 2 juillet 2022, je serai <b>majeur·e</b>
                 </div>
             )}
             <div className={styles.line}>

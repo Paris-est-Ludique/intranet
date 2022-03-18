@@ -7,6 +7,7 @@ import { displayModal, MODAL_IDS } from "../../../store/ui"
 
 const DayWishes: FC = (): JSX.Element | null => {
     const [userWishes] = useUserDayWishes()
+    const participation = get(userWishes, "active", "inconnu")
     const dayWishesString = get(userWishes, "dayWishes", []).map(getDayLabel).join(", ")
     const comment = get(userWishes, "dayWishesComment", "")
     const execDisplayModal = useAction(displayModal)
@@ -15,11 +16,34 @@ const DayWishes: FC = (): JSX.Element | null => {
     return (
         <div className={styles.dayWishes}>
             <div className={styles.title}>Mes présences</div>
-            <div className={styles.daysLine}>
-                <span className={styles.dayLineTitle}>Mes jours :</span>
-                {dayWishesString && <b>{dayWishesString}</b>}
-                {!dayWishesString && <span className={styles.dayLineEmpty}>Non renseignés</span>}
-            </div>
+            {participation === "non" && (
+                <div className={styles.participationLabel}>
+                    Je <b>ne participerai pas</b> à PeL 2022 :(
+                </div>
+            )}
+            {participation === "oui" && (
+                <div className={styles.participationLabel}>
+                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2022 !
+                </div>
+            )}
+            {participation === "peut-etre" && (
+                <div className={styles.participationLabel}>
+                    Je <b>ne sais pas encore</b> si je participerai à PeL 2022
+                </div>
+            )}
+            {participation === "inconnu" && (
+                <div className={styles.lineEmpty}>Participation à PeL 2022 non renseignée</div>
+            )}
+
+            {participation !== "non" && (
+                <div className={styles.daysLine}>
+                    <span className={styles.dayLineTitle}>Mes jours :</span>
+                    {dayWishesString && <b>{dayWishesString}</b>}
+                    {!dayWishesString && (
+                        <span className={styles.dayLineEmpty}>Non renseignés</span>
+                    )}
+                </div>
+            )}
             {comment && (
                 <div className={styles.commentLine}>
                     <span className={styles.commentLineTitle}>Mon commentaire :</span>

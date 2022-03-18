@@ -98,3 +98,12 @@
     border-radius: 16px;
     font-weight: bold;
 }
+
+@mixin form-grey-button {
+    padding: 7px 20px;
+    background-color: $color-grey-medium;
+    border: 0;
+    color: $color-white;
+    border-radius: 16px;
+    font-weight: bold;
+}

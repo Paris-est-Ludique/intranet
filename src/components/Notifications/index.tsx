@@ -94,7 +94,7 @@ const Notifications = (): JSX.Element | null => {
                                 <input
                                     type="radio"
                                     value="oui"
-                                    name="gender"
+                                    name="participation"
                                     checked={participation === "oui"}
                                     onChange={onChangeValue2}
                                 />{" "}
@@ -104,7 +104,7 @@ const Notifications = (): JSX.Element | null => {
                                 <input
                                     type="radio"
                                     value="non"
-                                    name="gender"
+                                    name="participation"
                                     checked={participation === "non"}
                                     onChange={onChangeValue2}
                                 />{" "}
@@ -114,7 +114,7 @@ const Notifications = (): JSX.Element | null => {
                                 <input
                                     type="radio"
                                     value="peut-etre"
-                                    name="gender"
+                                    name="participation"
                                     checked={participation === "peut-etre"}
                                     onChange={onChangeValue2}
                                 />{" "}

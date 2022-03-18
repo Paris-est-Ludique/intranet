@@ -15,7 +15,7 @@ type Props = {
 
 const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
     const sizeRef = useRef<HTMLSelectElement | null>(null)
-    const dietRef = useRef<HTMLInputElement | null>(null)
+    const dietRef = useRef<HTMLTextAreaElement | null>(null)
     const [tshirtCountState, setTshirtCount] = useState<number>(0)
     const [adultState, setAdult] = useState<number>(0)
 
@@ -66,7 +66,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                 <div className={styles.leftCol}>
                     <div className={styles.tshirtCountTitle}>Combien as-tu de t-shirts PeL ?</div>
                 </div>
-                <div>
+                <div className={styles.rightCol}>
                     <label className={styles.tshirtCountLabel}>
                         <input
                             type="radio"
@@ -74,7 +74,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                             onChange={() => onTshirtCountChange(0)}
                             checked={tshirtCountState === 0}
                         />{" "}
-                        0
+                        Aucun
                     </label>
                     <label className={styles.tshirtCountLabel}>
                         <input
@@ -83,7 +83,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                             onChange={() => onTshirtCountChange(1)}
                             checked={tshirtCountState === 1}
                         />{" "}
-                        1
+                        Un seul
                     </label>
                     <label className={styles.tshirtCountLabel}>
                         <input
@@ -92,17 +92,17 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                             onChange={() => onTshirtCountChange(2)}
                             checked={tshirtCountState === 2}
                         />{" "}
-                        2 ou plus
+                        Au moins deux
                     </label>
                 </div>
             </div>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
                     <label htmlFor="tshirtSize" className={styles.tshirtSizesTitle}>
-                        Taille
+                        Quelle est ta taille de t-shirt ?
                     </label>
                 </div>
-                <div>
+                <div className={styles.rightCol}>
                     <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
                         {tshirtSizes.map((size) => (
                             <option key={size} value={size}>
@@ -115,9 +115,9 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
 
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
-                    <div className={styles.adultTitle}>Le 2 juillet 2022 tu auras :</div>
+                    <div className={styles.adultTitle}>Seras-tu majeur·e au 2 juillet 2022 ?</div>
                 </div>
-                <div>
+                <div className={styles.rightCol}>
                     <label className={styles.adultLabel}>
                         <input
                             type="radio"
@@ -125,7 +125,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                             onChange={() => onAdultChange(0)}
                             checked={adultState === 0}
                         />{" "}
-                        17 ou moins
+                        Non, je serai mineur·e
                     </label>
                     <label className={styles.adultLabel}>
                         <input
@@ -134,27 +134,19 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                             onChange={() => onAdultChange(1)}
                             checked={adultState === 1}
                         />{" "}
-                        18 ans ou plus
+                        Oui, je serai majeur·e
                     </label>
                 </div>
             </div>
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <label className={styles.foodTitle} htmlFor="dday-diet">
-                        Préférence alimentaire
-                    </label>
-                </div>
-                <div>
-                    <input
-                        id="dday-diet"
-                        type="text"
-                        ref={dietRef}
-                        placeholder="végétarien ? halal ? ..."
-                    />
-                </div>
+            <div className={styles.dietWrapper}>
+                <label htmlFor="diet">Préférence alimentaire ?</label>
+                <textarea id="diet" ref={dietRef} placeholder="végétarien ? halal ? ..." />
             </div>
             <div className={styles.buttonWrapper}>
-                <FormButton onClick={onSubmit}>Enregistrer</FormButton>
+                <FormButton onClick={onSubmit}>Enregistrer</FormButton>{" "}
+                <FormButton onClick={afterSubmit} type="grey">
+                    Annuler
+                </FormButton>
             </div>
         </div>
     )

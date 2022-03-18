@@ -32,9 +32,9 @@ const TeamWishes: FC<Props> = (): JSX.Element | null => {
         <div className={styles.root}>
             <div className={styles.title}>Mon choix d'équipe</div>
             {teamWishesString && (
-                <span>
+                <div className={styles.line}>
                     Mes équipes préférées : <b>{teamWishesString}</b>
-                </span>
+                </div>
             )}
             {!teamWishesString && <span className={styles.lineEmpty}>Non renseignés</span>}
             {comment && (

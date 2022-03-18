@@ -15,10 +15,6 @@
         display: flex;
     }
 
-    label {
-        display: block;
-        width: 170px;
-    }
     input[type="text"] {
         min-width: 175px;
         border: 1px solid $color-grey-medium;
@@ -30,41 +26,40 @@
     flex: 0 0 240px;
 }
 
-.tshirtCountTitle {
+.rightCol {
+    text-align: center;
+}
+
+.tshirtCountTitle,
+.tshirtSizesTitle,
+.adultTitle {
     display: inline-block;
-    width: 240px;
+    width: 280px;
     margin-bottom: 10px;
 }
 
 .tshirtCountLabel {
-    margin-bottom: 10px;
-    width: 55px;
-}
-
-.tshirtSizesTitle {
+    text-align: left;
     display: inline-block;
-    width: 240px;
     margin-bottom: 10px;
+    width: 180px;
 }
 
 .tshirtCountSelect {
     width: 120px;
     margin-bottom: 10px;
+    margin-right: 60px;
     border: 1px solid $color-grey-medium;
     border-radius: 4px;
     background-color: $color-white;
     outline: 0;
 }
 
-.adultTitle {
-    display: inline-block;
-    width: 240px;
-    margin-bottom: 10px;
-}
-
 .adultLabel {
+    text-align: left;
+    display: inline-block;
     margin-bottom: 10px;
-    width: 55px;
+    width: 180px;
 }
 
 .buttonWrapper {
@@ -72,6 +67,19 @@
     text-align: center;
 }
 
-.foodTitle {
-    margin-bottom: 10px;
+.dietWrapper {
+    margin: 6px 0 14px;
+
+    label {
+        display: block;
+        padding: 6px 0 2px 4px;
+    }
+    textarea {
+        width: 100%;
+        height: 50px;
+        padding: 5px;
+        border: 1px solid $color-grey-light;
+        background-color: $color-grey-lighter;
+        outline: 0;
+    }
 }

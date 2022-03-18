@@ -30,10 +30,11 @@ export const useUserDayWishes = (): [any, any] => {
     )
 
     const saveWishes = useCallback(
-        (days, comment) => {
+        (active, days, comment) => {
             if (!userWishes) return
             save(jwtToken, 0, {
                 id: userWishes.id,
+                active,
                 dayWishes: days,
                 dayWishesComment: comment,
             })

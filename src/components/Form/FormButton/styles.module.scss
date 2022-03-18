@@ -3,3 +3,6 @@
 .button {
     @include form-button;
 }
+.greyButton {
+    @include form-grey-button;
+}

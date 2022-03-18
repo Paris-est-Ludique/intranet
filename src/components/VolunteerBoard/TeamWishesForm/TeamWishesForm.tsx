@@ -96,7 +96,10 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                 </div>
             </div>
             <div className={styles.buttonWrapper}>
-                <FormButton onClick={onSubmit}>Enregistrer</FormButton>
+                <FormButton onClick={onSubmit}>Enregistrer</FormButton>{" "}
+                <FormButton onClick={afterSubmit} type="grey">
+                    Annuler
+                </FormButton>
             </div>
         </div>
     )

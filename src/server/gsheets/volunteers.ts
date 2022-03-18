@@ -186,6 +186,9 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
     }
     const newVolunteer = _.cloneDeep(volunteer)
 
+    if (wishes.active !== undefined) {
+        newVolunteer.active = wishes.active
+    }
     if (wishes.dayWishes !== undefined) {
         newVolunteer.dayWishes = wishes.dayWishes
     }
@@ -197,6 +200,7 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
         toDatabase: newVolunteer,
         toCaller: {
             id: newVolunteer.id,
+            active: newVolunteer.active,
             dayWishes: newVolunteer.dayWishes,
             dayWishesComment: newVolunteer.dayWishesComment,
         } as VolunteerDayWishes,

@@ -2,8 +2,17 @@
 @import "../../../theme/mixins";
 
 .title {
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     font-weight: bold;
+}
+
+.participationLabel {
+    margin-right: 5px;
+    font-style: bold;
+}
+
+.yesParticipation {
+    color: $color-orange;
 }
 
 .dayWishes {
@@ -13,8 +22,10 @@
     padding-right: 90px;
 }
 
+.participationLabel,
 .daysLine,
 .commentLine {
+    margin-bottom: 5px;
     span {
         display: inline-block;
     }
@@ -24,7 +35,8 @@
     padding-right: 5px;
 }
 
-.dayLineEmpty {
+.lineEmpty {
+    margin: 0 5px 5px 0;
     color: $color-red;
     font-style: italic;
 }
