@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useRef, useState } from "react"
+import { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import classnames from "classnames"
 import get from "lodash/get"
 import set from "lodash/set"
@@ -10,12 +10,15 @@ import {
     useUserDayWishes,
 } from "../daysWishes.utils"
 import FormButton from "../../Form/FormButton/FormButton"
+import { fetchVolunteerDayWishesSetIfNeed } from "../../../store/volunteerDayWishesSet"
+import IgnoreButton from "../../Form/IgnoreButton/IgnoreButton"
 
 type Props = {
+    children?: ReactNode | undefined
     afterSubmit?: () => void | undefined
 }
 
-const DayWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element => {
+const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     const [participationState, setParticipation] = useState("inconnu")
     const [selection, setSelection] = useState(daysChoiceSelectionDefaultState)
     const commentRef = useRef<HTMLTextAreaElement | null>(null)
@@ -145,18 +148,35 @@ const DayWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element => {
                 <label htmlFor="day-choice-comment">Un commentaire, une précision ?</label>
                 <textarea id="day-choice-comment" ref={commentRef} />
             </div>
-            <div className={styles.dayWishesButtonWrapper}>
-                <FormButton onClick={onChoiceSubmit}>Enregistrer</FormButton>{" "}
-                <FormButton onClick={afterSubmit} type="grey">
-                    Annuler
-                </FormButton>
+            <div className={styles.buttonWrapper}>
+                <FormButton onClick={onChoiceSubmit}>Enregistrer</FormButton>
+                {children === undefined && (
+                    <>
+                        {" "}
+                        <FormButton onClick={afterSubmit} type="grey">
+                            Annuler
+                        </FormButton>{" "}
+                    </>
+                )}
+                {children !== undefined && (
+                    <>
+                        {" "}
+                        <IgnoreButton onClick={afterSubmit} text="Ignorer">
+                            {children}
+                        </IgnoreButton>{" "}
+                    </>
+                )}
             </div>
         </div>
     )
 }
 
 DayWishesForm.defaultProps = {
+    children: undefined,
     afterSubmit: undefined,
 }
 
 export default memo(DayWishesForm)
+
+// Fetch server-side data here
+export const fetchFor = [fetchVolunteerDayWishesSetIfNeed]

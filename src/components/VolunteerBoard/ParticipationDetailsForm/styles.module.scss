@@ -27,6 +27,7 @@
 }
 
 .rightCol {
+    width: 100%;
     text-align: center;
 }
 
@@ -42,13 +43,17 @@
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;
-    width: 180px;
+    width: 220px;
 }
 
-.tshirtCountSelect {
-    width: 120px;
+.tshirtSizeLabel {
+    text-align: left;
+    display: inline-block;
     margin-bottom: 10px;
-    margin-right: 60px;
+    width: 220px;
+}
+
+.tshirtSizeSelect {
     border: 1px solid $color-grey-medium;
     border-radius: 4px;
     background-color: $color-white;
@@ -59,12 +64,7 @@
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;
-    width: 180px;
-}
-
-.buttonWrapper {
-    margin-bottom: 10px;
-    text-align: center;
+    width: 220px;
 }
 
 .dietWrapper {
@@ -82,4 +82,9 @@
         background-color: $color-grey-lighter;
         outline: 0;
     }
+}
+
+.buttonWrapper {
+    margin-bottom: 10px;
+    text-align: center;
 }

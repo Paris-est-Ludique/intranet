@@ -6,6 +6,7 @@ import styles from "./styles.module.scss"
 
 const MainMenu: FC = (): JSX.Element | null => {
     const connected = useSelector(isUserConnected)
+
     const [opened, setOpened] = useState(false)
 
     const onOpen = useCallback(() => {
@@ -24,6 +25,9 @@ const MainMenu: FC = (): JSX.Element | null => {
                 ☰
             </button>
             <ul className={classnames(styles.mainMenu, opened && styles.opened)}>
+                <li className={styles.mainMenuItem}>
+                    <a href="/">Page d'accueil</a>
+                </li>
                 <li className={styles.mainMenuItem}>
                     <a href="/annonces">Annonces</a>
                 </li>

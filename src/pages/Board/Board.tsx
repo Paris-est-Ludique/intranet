@@ -5,10 +5,7 @@ import { useSelector } from "react-redux"
 import { AppThunk } from "../../store"
 import { selectUserJwtToken } from "../../store/auth"
 import Page from "../../components/ui/Page/Page"
-import Board from "../../components/VolunteerBoard/Board"
-import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
-import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunteerParticipationDetailsSet"
-import { fetchForTeamWishesForm } from "../../components"
+import { Board, fetchForBoard } from "../../components"
 
 export type Props = RouteComponentProps
 
@@ -27,10 +24,6 @@ const BoardPage: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => [
-    fetchVolunteerDayWishesSetIfNeed(),
-    fetchVolunteerParticipationDetailsSetIfNeed(),
-    ...fetchForTeamWishesForm.map((f) => f()),
-]
+export const loadData = (): AppThunk[] => [...fetchForBoard.map((f) => f())]
 
 export default memo(BoardPage)

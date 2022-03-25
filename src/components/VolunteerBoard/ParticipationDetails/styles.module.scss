@@ -17,6 +17,11 @@
     margin-bottom: 5px;
 }
 
+.lineEmpty {
+    color: $color-red;
+    font-style: italic;
+}
+
 .editButton {
     @include vertical-center();
 

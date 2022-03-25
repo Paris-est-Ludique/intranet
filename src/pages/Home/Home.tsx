@@ -4,11 +4,10 @@ import { useSelector } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppThunk } from "../../store"
-import { LoginForm, Notifications, fetchForBoardForms } from "../../components"
+import { fetchForNotifications, LoginForm, Notifications } from "../../components"
 import styles from "./styles.module.scss"
 import { fetchVolunteerNotifsSetIfNeed } from "../../store/volunteerNotifsSet"
 import { selectUserJwtToken } from "../../store/auth"
-import Page from "../../components/ui/Page/Page"
 
 export type Props = RouteComponentProps
 
@@ -18,11 +17,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
     if (jwtToken === undefined) return <p>Loading...</p>
 
     if (jwtToken) {
-        return (
-            <Page>
-                <Notifications />
-            </Page>
-        )
+        return <Notifications />
     }
     return (
         <div>
@@ -44,7 +39,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [
     fetchVolunteerNotifsSetIfNeed(),
-    ...fetchForBoardForms.map((f) => f()),
+    ...fetchForNotifications.map((f) => f()),
 ]
 
 export default memo(HomePage)

@@ -22,8 +22,8 @@
     @include flex-center;
 }
 
-@mixin page-content-wrapper($desktopWidth: 520px) {
-    margin: 10px;
+@mixin page-content-wrapper($desktopWidth: 720px) {
+    margin: 10px 0;
     padding: 10px;
     background-color: $color-white;
     border-radius: 15px;
@@ -31,6 +31,7 @@
     width: 100%;
 
     @include desktop {
+        margin: 10px;
         padding: 20px;
         width: $desktopWidth;
     }
@@ -43,7 +44,7 @@
     background-color: $color-grey-lighter;
 }
 
-@mixin nav-menu($desktopWidth: 520px) {
+@mixin nav-menu($desktopWidth: 720px) {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -53,7 +54,7 @@
     }
 }
 
-@mixin nav-menu-item($desktopWidth: 520px) {
+@mixin nav-menu-item($desktopWidth: 720px) {
     display: inline-block;
     margin: 0 4px;
 

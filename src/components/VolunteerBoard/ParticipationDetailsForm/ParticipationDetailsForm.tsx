@@ -1,19 +1,18 @@
-import { FC, memo, useCallback, useEffect, useRef, useState } from "react"
+import { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import get from "lodash/get"
 import set from "lodash/set"
 import styles from "./styles.module.scss"
-import {
-    foodDefaultValue,
-    tshirtSizes,
-    useUserParticipationDetails,
-} from "../participationDetails.utils"
+import { tshirtSizes, useUserParticipationDetails } from "../participationDetails.utils"
 import FormButton from "../../Form/FormButton/FormButton"
+import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../../store/volunteerParticipationDetailsSet"
+import IgnoreButton from "../../Form/IgnoreButton/IgnoreButton"
 
 type Props = {
+    children?: ReactNode | undefined
     afterSubmit?: () => void | undefined
 }
 
-const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
+const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => {
     const sizeRef = useRef<HTMLSelectElement | null>(null)
     const dietRef = useRef<HTMLTextAreaElement | null>(null)
     const [tshirtCountState, setTshirtCount] = useState<number>(0)
@@ -23,7 +22,7 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
 
     const onSubmit = useCallback(() => {
         const tshirtSize = get(sizeRef, "current.value", "")
-        const food = get(dietRef, "current.value", "") || foodDefaultValue
+        const food = get(dietRef, "current.value", "")
         saveParticipationDetails({
             tshirtSize,
             tshirtCount: tshirtCountState,
@@ -103,13 +102,15 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                     </label>
                 </div>
                 <div className={styles.rightCol}>
-                    <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
-                        {tshirtSizes.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
-                        ))}
-                    </select>
+                    <label className={styles.tshirtSizeLabel}>
+                        <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
+                            {tshirtSizes.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
                 </div>
             </div>
 
@@ -143,17 +144,34 @@ const ParticipationDetailsForm: FC<Props> = ({ afterSubmit }): JSX.Element | nul
                 <textarea id="diet" ref={dietRef} placeholder="végétarien ? halal ? ..." />
             </div>
             <div className={styles.buttonWrapper}>
-                <FormButton onClick={onSubmit}>Enregistrer</FormButton>{" "}
-                <FormButton onClick={afterSubmit} type="grey">
-                    Annuler
-                </FormButton>
+                <FormButton onClick={onSubmit}>Enregistrer</FormButton>
+                {children === undefined && (
+                    <>
+                        {" "}
+                        <FormButton onClick={afterSubmit} type="grey">
+                            Annuler
+                        </FormButton>{" "}
+                    </>
+                )}
+                {children !== undefined && (
+                    <>
+                        {" "}
+                        <IgnoreButton onClick={afterSubmit} text="Ignorer">
+                            {children}
+                        </IgnoreButton>{" "}
+                    </>
+                )}
             </div>
         </div>
     )
 }
 
 ParticipationDetailsForm.defaultProps = {
+    children: undefined,
     afterSubmit: undefined,
 }
 
 export default memo(ParticipationDetailsForm)
+
+// Fetch server-side data here
+export const fetchFor = [fetchVolunteerParticipationDetailsSetIfNeed]

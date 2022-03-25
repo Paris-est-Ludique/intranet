@@ -6,7 +6,11 @@
 }
 
 .notificationsContent {
-    @include inner-content-wrapper;
+    @include page-content-wrapper;
+}
+
+.notificationsContentNarrow {
+    @include page-content-wrapper(520px);
 }
 
 .pushNotificationsPage {
@@ -14,7 +18,7 @@
 }
 
 .pushNotificationsContent {
-    @include inner-content-wrapper;
+    @include page-content-wrapper;
 }
 
 .notifIntro {

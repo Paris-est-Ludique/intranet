@@ -32,16 +32,17 @@ const DayWishes: FC = (): JSX.Element | null => {
                 </div>
             )}
             {participation === "inconnu" && (
-                <div className={styles.lineEmpty}>Participation à PeL 2022 non renseignée</div>
+                <div className={styles.lineEmpty}>
+                    Participation à PeL 2022{" "}
+                    <span className={styles.lineEmpty}>non renseignées</span>
+                </div>
             )}
 
             {participation !== "non" && (
                 <div className={styles.daysLine}>
                     <span className={styles.dayLineTitle}>Mes jours :</span>
                     {dayWishesString && <b>{dayWishesString}</b>}
-                    {!dayWishesString && (
-                        <span className={styles.dayLineEmpty}>Non renseignés</span>
-                    )}
+                    {!dayWishesString && <span className={styles.lineEmpty}>Non renseignés</span>}
                 </div>
             )}
             {comment && (

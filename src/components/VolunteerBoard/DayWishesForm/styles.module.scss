@@ -24,6 +24,7 @@
 }
 
 .rightCol {
+    width: 100%;
     text-align: center;
 }
 
@@ -37,7 +38,7 @@
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;
-    width: 180px;
+    width: 280px;
 }
 
 .dayWishesTitle {
@@ -93,7 +94,7 @@
     }
 }
 
-.dayWishesButtonWrapper {
+.buttonWrapper {
     margin-bottom: 10px;
     text-align: center;
 }

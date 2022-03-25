@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useRef } from "react"
+import { FC, memo, ReactNode, useCallback, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import get from "lodash/get"
 import set from "lodash/set"
@@ -9,12 +9,14 @@ import { fetchTeamListIfNeed, selectSortedActiveTeams } from "../../../store/tea
 import useSelection from "../useSelection"
 import { fetchVolunteerTeamWishesSetIfNeed } from "../../../store/volunteerTeamWishesSet"
 import FormButton from "../../Form/FormButton/FormButton"
+import IgnoreButton from "../../Form/IgnoreButton/IgnoreButton"
 
 type Props = {
+    children?: ReactNode | undefined
     afterSubmit?: () => void | undefined
 }
 
-const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
+const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => {
     const teams = useSelector(selectSortedActiveTeams)
     const { selection, setSelection, toggleToSelection, isInSelection } = useSelection()
     const commentRef = useRef<HTMLTextAreaElement | null>(null)
@@ -35,7 +37,7 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
     }, [selection, saveWishes, afterSubmit])
 
     return (
-        <div className={styles.root}>
+        <div>
             <div className={styles.title}>Mon choix d'équipe</div>
             <div className={styles.intro}>
                 <p>
@@ -73,7 +75,7 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                         <textarea id="day-choice-comment" ref={commentRef} />
                     </div>
                 </div>
-                <div>
+                <div className={styles.rightCol}>
                     <ul className={styles.teamList}>
                         {teams.map((team: any) => (
                             <li
@@ -96,16 +98,30 @@ const TeamWishesForm: FC<Props> = ({ afterSubmit }): JSX.Element | null => {
                 </div>
             </div>
             <div className={styles.buttonWrapper}>
-                <FormButton onClick={onSubmit}>Enregistrer</FormButton>{" "}
-                <FormButton onClick={afterSubmit} type="grey">
-                    Annuler
-                </FormButton>
+                <FormButton onClick={onSubmit}>Enregistrer</FormButton>
+                {children === undefined && (
+                    <>
+                        {" "}
+                        <FormButton onClick={afterSubmit} type="grey">
+                            Annuler
+                        </FormButton>{" "}
+                    </>
+                )}
+                {children !== undefined && (
+                    <>
+                        {" "}
+                        <IgnoreButton onClick={afterSubmit} text="Ignorer">
+                            {children}
+                        </IgnoreButton>{" "}
+                    </>
+                )}
             </div>
         </div>
     )
 }
 
 TeamWishesForm.defaultProps = {
+    children: undefined,
     afterSubmit: undefined,
 }
 

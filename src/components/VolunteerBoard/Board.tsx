@@ -6,11 +6,10 @@ import ParticipationDetailsFormModal from "./ParticipationDetailsForm/Participat
 import TeamWishes from "./TeamWishes/TeamWishes"
 import TeamWishesFormModal from "./TeamWishesForm/TeamWishesFormModal"
 import withUserConnected from "../../utils/withUserConnected"
-import { fetchVolunteerDayWishesSetIfNeed } from "../../store/volunteerDayWishesSet"
-import { fetchVolunteerParticipationDetailsSetIfNeed } from "../../store/volunteerParticipationDetailsSet"
-import { fetchTeamListIfNeed } from "../../store/teamList"
-import { fetchVolunteerTeamWishesSetIfNeed } from "../../store/volunteerTeamWishesSet"
 import ContentTitle from "../ui/Content/ContentTitle"
+import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
+import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
+import { fetchFor as fetchForTeamWishesForm } from "./TeamWishesForm/TeamWishesForm"
 
 const Board: FC = (): JSX.Element => (
     <>
@@ -27,8 +26,7 @@ const Board: FC = (): JSX.Element => (
 export default memo(withUserConnected(Board))
 
 export const fetchFor = [
-    fetchVolunteerDayWishesSetIfNeed,
-    fetchVolunteerParticipationDetailsSetIfNeed,
-    fetchTeamListIfNeed,
-    fetchVolunteerTeamWishesSetIfNeed,
+    ...fetchForDayWishesForm,
+    ...fetchForParticipationDetailsForm,
+    ...fetchForTeamWishesForm,
 ]
