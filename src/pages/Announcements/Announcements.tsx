@@ -11,6 +11,7 @@ import styles from "./styles.module.scss"
 import { fetchAnnouncementListIfNeed } from "../../store/announcementList"
 import { Announcement } from "../../services/announcement"
 import { selectUserJwtToken } from "../../store/auth"
+import ContentTitle from "../../components/ui/Content/ContentTitle"
 
 export type Props = RouteComponentProps
 
@@ -42,7 +43,10 @@ const AnnouncementsPage: FC<Props> = (): JSX.Element => {
 
         return (
             <div className={styles.announcements}>
-                <div className={styles.announcementsContent}>{listElements}</div>
+                <div className={styles.announcementsContent}>
+                    <ContentTitle title="Annonces" />
+                    {listElements}
+                </div>
             </div>
         )
     }

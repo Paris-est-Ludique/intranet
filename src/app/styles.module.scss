@@ -9,6 +9,7 @@
     background-color: $color-white;
     border-top: $border-large;
     border-bottom: $border-large;
+    height: 52px;
 
     @include desktop {
         margin: 20px 0 35px;
@@ -63,7 +64,7 @@
 
     @include desktop {
         top: auto;
-        bottom: 5px;
+        bottom: 0;
         left: 420px;
         right: 10px;
         text-align: center;

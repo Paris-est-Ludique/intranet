@@ -20,6 +20,7 @@ import DayWishesForm, {
 } from "../VolunteerBoard/DayWishesForm/DayWishesForm"
 import { useUserParticipationDetails } from "../VolunteerBoard/participationDetails.utils"
 import FormButton from "../Form/FormButton/FormButton"
+import { toastError, toastSuccess } from "../../store/utils"
 
 let prevNotifs: VolunteerNotifs | undefined
 
@@ -212,7 +213,7 @@ const Notifications = (): JSX.Element | null => {
     const comment10 = get(userWishes, "dayWishesComment", "")
     const needToShow10 = participation10 === "inconnu" || (newSelection.length === 0 && !comment10)
 
-    if (!_.includes(hidden, 10) && needToShow10) {
+    if (!_.includes(hidden, 10) && _.isEmpty(notifs) && needToShow10) {
         notifs.push(
             <div key="10">
                 <div className={styles.notificationsPage}>
@@ -239,7 +240,7 @@ const Notifications = (): JSX.Element | null => {
     const comment = get(teamWishesData, "teamWishesComment", "")
     const needToShow11 = teamWishesString.length === 0 && !comment
 
-    if (!_.includes(hidden, 11) && needToShow11) {
+    if (!_.includes(hidden, 11) && _.isEmpty(notifs) && needToShow11) {
         notifs.push(
             <div key="11">
                 <div className={styles.notificationsPage}>
@@ -266,7 +267,7 @@ const Notifications = (): JSX.Element | null => {
     const food = get(participationDetails, "food", "")
     const needToShow12 = !tshirtSize && !food
 
-    if (!_.includes(hidden, 12) && needToShow12) {
+    if (!_.includes(hidden, 12) && _.isEmpty(notifs) && needToShow12) {
         notifs.push(
             <div key="12">
                 <div className={styles.notificationsPage}>
@@ -290,7 +291,6 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
 */
 
     const [acceptsNotifs, setAcceptsNotifs] = useState("")
-    const [notifMessage, setNotifMessage] = useState("")
 
     const mounted = useRef(false)
     useEffect(() => {
@@ -317,138 +317,143 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const onChangePushNotifs = useCallback(
-        async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-            event.preventDefault()
-            if (isNode) {
-                return
-            }
+    const onChangeValue99 = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setAcceptsNotifs(e.target.value)
 
-            if (!("serviceWorker" in navigator)) {
-                return
-            }
+    const onSubmit99 = useCallback(async (): Promise<void> => {
+        if (isNode) {
+            return
+        }
 
-            const isChecked = event.target.value === "oui"
-            if (!isChecked) {
-                setNotifMessage("Réponse mémorisée.")
-                setAcceptsNotifs("non")
-                dispatch(
-                    fetchVolunteerNotifsSet(jwtToken, 0, {
-                        acceptsNotifs: "non",
-                    })
-                )
-                return
-            }
+        if (!("serviceWorker" in navigator)) {
+            return
+        }
 
-            const registration = await navigator.serviceWorker.ready
-
-            if (!registration.pushManager) {
-                setNotifMessage(
-                    "Il y a un problème avec le push manager. Il faudrait utiliser un navigateur plus récent !"
-                )
-                return
-            }
-
-            const convertedVapidKey = urlBase64ToUint8Array(
-                process.env.FORCE_ORANGE_PUBLIC_VAPID_KEY
+        if (acceptsNotifs === "non") {
+            setAcceptsNotifs("non")
+            dispatch(
+                fetchVolunteerNotifsSet(jwtToken, 0, {
+                    hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 99],
+                    acceptsNotifs: "non",
+                })
             )
+            return
+        }
 
-            function urlBase64ToUint8Array(base64String?: string) {
-                if (!base64String) {
-                    return ""
-                }
-                const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
-                // eslint-disable-next-line
-                const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/")
+        const registration = await navigator.serviceWorker.ready
 
-                const rawData = atob(base64)
-                const outputArray = new Uint8Array(rawData.length)
+        if (!registration.pushManager) {
+            toastError(
+                "Il y a un problème avec le push manager. Il faudrait utiliser un navigateur plus récent !"
+            )
+            dispatch(
+                fetchVolunteerNotifsSet(jwtToken, 0, {
+                    hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 99],
+                })
+            )
+            return
+        }
 
-                for (let i = 0; i < rawData.length; i += 1) {
-                    outputArray[i] = rawData.charCodeAt(i)
-                }
-                return outputArray
+        const convertedVapidKey = urlBase64ToUint8Array(process.env.FORCE_ORANGE_PUBLIC_VAPID_KEY)
+
+        function urlBase64ToUint8Array(base64String?: string) {
+            if (!base64String) {
+                return ""
             }
+            const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
+            // eslint-disable-next-line
+            const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/")
 
-            if (!convertedVapidKey) {
-                console.error("No convertedVapidKey available")
+            const rawData = atob(base64)
+            const outputArray = new Uint8Array(rawData.length)
+
+            for (let i = 0; i < rawData.length; i += 1) {
+                outputArray[i] = rawData.charCodeAt(i)
             }
+            return outputArray
+        }
 
-            try {
-                const existedSubscription = await registration.pushManager.getSubscription()
+        if (!convertedVapidKey) {
+            toastError("No convertedVapidKey available")
+        }
 
-                if (existedSubscription === null) {
-                    // No subscription detected, make a request
-                    try {
-                        const newSubscription = await registration.pushManager.subscribe({
-                            applicationServerKey: convertedVapidKey,
-                            userVisibleOnly: true,
-                        })
-                        // New subscription added
-                        if (
-                            volunteerNotifs?.acceptsNotifs === "oui" &&
-                            !subscriptionEqualsSave(
-                                newSubscription,
-                                volunteerNotifs?.pushNotifSubscription
-                            )
-                        ) {
-                            setNotifMessage(
-                                "Un autre navigateur était notifié, mais c'est maintenant celui-ci qui le sera."
-                            )
-                        } else {
-                            setNotifMessage("C'est mémorisé !")
-                        }
+        try {
+            const existedSubscription = await registration.pushManager.getSubscription()
 
-                        setAcceptsNotifs("oui")
-                        dispatch(
-                            fetchVolunteerNotifsSet(jwtToken, 0, {
-                                pushNotifSubscription: JSON.stringify(newSubscription),
-                                acceptsNotifs: "oui",
-                            })
-                        )
-                    } catch (_e) {
-                        if (Notification.permission !== "granted") {
-                            setNotifMessage(
-                                "Mince tu as bloqué les notifications pour le site des bénévoles ! En haut juste à gauche de la barre d'adresse, il y a une icone de cadenas ou de message barré sur lequel cliquer pour annuler ce blocage."
-                            )
-                        } else {
-                            setNotifMessage(
-                                "Il y a eu une erreur avec l'enregistrement avec le Service Worker. Il faudrait utiliser un navigateur plus récent !"
-                            )
-                        }
-                    }
-                } else {
-                    // Existed subscription detected
+            if (existedSubscription === null) {
+                // No subscription detected, make a request
+                try {
+                    const newSubscription = await registration.pushManager.subscribe({
+                        applicationServerKey: convertedVapidKey,
+                        userVisibleOnly: true,
+                    })
+                    // New subscription added
                     if (
                         volunteerNotifs?.acceptsNotifs === "oui" &&
                         !subscriptionEqualsSave(
-                            existedSubscription,
+                            newSubscription,
                             volunteerNotifs?.pushNotifSubscription
                         )
                     ) {
-                        setNotifMessage(
+                        toastSuccess(
                             "Un autre navigateur était notifié, mais c'est maintenant celui-ci qui le sera."
                         )
-                    } else {
-                        setNotifMessage("C'est mémorisé !")
                     }
 
-                    setAcceptsNotifs("oui")
                     dispatch(
                         fetchVolunteerNotifsSet(jwtToken, 0, {
-                            pushNotifSubscription: JSON.stringify(existedSubscription),
+                            pushNotifSubscription: JSON.stringify(newSubscription),
                             acceptsNotifs: "oui",
+                            hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 99],
                         })
                     )
+                } catch (_e) {
+                    if (Notification.permission !== "granted") {
+                        toastError(
+                            "Mince tu as bloqué les notifications pour le site des bénévoles ! En haut juste à gauche de la barre d'adresse, il y a une icone de cadenas ou de message barré sur lequel cliquer pour annuler ce blocage.",
+                            false
+                        )
+                    } else {
+                        toastError(
+                            "Il y a eu une erreur avec l'enregistrement avec le Service Worker. Il faudrait utiliser un navigateur plus récent !"
+                        )
+                    }
                 }
-            } catch (_e) {
-                setNotifMessage(
-                    "Il y a eu une erreur avec l'enregistrement avec le Service Worker. Il faudrait utiliser un navigateur plus récent !"
+            } else {
+                // Existed subscription detected
+                if (
+                    volunteerNotifs?.acceptsNotifs === "oui" &&
+                    !subscriptionEqualsSave(
+                        existedSubscription,
+                        volunteerNotifs?.pushNotifSubscription
+                    )
+                ) {
+                    toastSuccess(
+                        "Un autre navigateur était notifié, mais c'est maintenant celui-ci qui le sera."
+                    )
+                }
+
+                dispatch(
+                    fetchVolunteerNotifsSet(jwtToken, 0, {
+                        pushNotifSubscription: JSON.stringify(existedSubscription),
+                        acceptsNotifs: "oui",
+                        hiddenNotifs: [...(volunteerNotifs?.hiddenNotifs || []), 99],
+                    })
                 )
             }
-        },
-        [dispatch, jwtToken, volunteerNotifs]
-    )
+        } catch (_e) {
+            toastError(
+                "Il y a eu une erreur avec l'enregistrement avec le Service Worker. Il faudrait utiliser un navigateur plus récent !"
+            )
+        }
+    }, [
+        acceptsNotifs,
+        dispatch,
+        jwtToken,
+        volunteerNotifs?.acceptsNotifs,
+        volunteerNotifs?.hiddenNotifs,
+        volunteerNotifs?.pushNotifSubscription,
+    ])
 
     function subscriptionEqualsSave(toCheck: PushSubscription, save: string | undefined): boolean {
         if (!save) {
@@ -457,17 +462,15 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
         return _.isEqual(JSON.parse(JSON.stringify(toCheck)), JSON.parse(save))
     }
 
-    if (notifs.length === 0) {
+    const needToShow99 = volunteerNotifs?.acceptsNotifs !== "oui"
+
+    if (!_.includes(hidden, 99) && _.isEmpty(notifs) && needToShow99) {
         notifs.push(
             <div key="pushNotifs">
                 <div className={styles.notificationsPage}>
                     <div className={styles.notificationsContent}>
                         <div className={styles.formLine} key="line-participation">
                             <label>
-                                Tu as fait le tour des dernières infos ou questions importantes,
-                                merci ! :)
-                                <br />
-                                <br />
                                 Acceptes-tu de recevoir une alerte dans ton navigateur quand on en
                                 aura d&apos;autres à t'afficher ici ?<br />
                                 <span className={styles.sousMessage}>
@@ -480,7 +483,7 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                                         value="oui"
                                         name="gender"
                                         checked={acceptsNotifs === "oui"}
-                                        onChange={onChangePushNotifs}
+                                        onChange={onChangeValue99}
                                     />{" "}
                                     Oui
                                 </label>
@@ -490,16 +493,35 @@ Tu n'y es absolument pas obligé(e) ! C'est juste plus pratique.
                                         value="non"
                                         name="gender"
                                         checked={acceptsNotifs === "non"}
-                                        onChange={onChangePushNotifs}
+                                        onChange={onChangeValue99}
                                     />{" "}
                                     Non
                                 </label>
                             </label>
-                            <div className={styles.message}>{notifMessage}</div>
-                            <span className={styles.sousMessage}>
-                                Pas besoin de valider, le site mémorise automatiquement si tu
-                                changes ta réponse.
-                            </span>
+
+                            <div className={styles.formButtons}>
+                                <FormButton onClick={onSubmit99}>Enregistrer</FormButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if (_.isEmpty(notifs)) {
+        notifs.push(
+            <div key="pushNotifs">
+                <div className={styles.notificationsPage}>
+                    <div className={styles.notificationsContent}>
+                        <div className={styles.formLine} key="line-participation">
+                            <label>
+                                Tu as fait le tour des dernières infos ou questions importantes,
+                                merci ! :)
+                                <br />
+                                Nous te préviendrons quand il y en aura de nouvelles.
+                                <br />
+                            </label>
                         </div>
                     </div>
                 </div>

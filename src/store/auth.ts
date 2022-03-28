@@ -37,7 +37,11 @@ export const { setCurrentUser, logoutUser } = auth.actions
 
 export const selectAuthData = (state: AppState): AuthState => state.auth
 
+export const selectRouter = (state: AppState): AppState["router"] => state.router
+
 export const selectUserJwtToken = createSelector(selectAuthData, (authData) => authData.jwt)
+
+export const routerSelector = createSelector(selectRouter, (authData) => authData)
 
 export const selectUserRoles = createSelector(selectAuthData, (authData) => authData.roles)
 

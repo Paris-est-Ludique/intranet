@@ -43,11 +43,24 @@ export default [
                 component: Login,
             },
             {
+                path: "/sidentifier",
+                component: Login,
+            },
+            {
                 path: "/forgot",
                 component: Forgot,
             },
             {
+                path: "/oubli",
+                component: Forgot,
+            },
+            {
                 path: "/equipes",
+                component: AsyncTeams,
+                loadData: loadTeamsData,
+            },
+            {
+                path: "/teams",
                 component: AsyncTeams,
                 loadData: loadTeamsData,
             },

@@ -13,10 +13,10 @@ export interface StateRequest {
     error?: string
 }
 
-export function toastError(message: string): void {
+export function toastError(message: string, autoClose: number | false = 6000): void {
     toast.error(message, {
         position: "top-center",
-        autoClose: 6000,
+        ...(autoClose ? { autoClose } : {}),
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
@@ -25,10 +25,10 @@ export function toastError(message: string): void {
     })
 }
 
-export function toastSuccess(message: string): void {
+export function toastSuccess(message: string, autoClose: number | false = 5000): void {
     toast.success(message, {
         position: "top-center",
-        autoClose: 5000,
+        ...(autoClose ? { autoClose } : {}),
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,

@@ -43,7 +43,7 @@ const LoginForm = (): JSX.Element => {
             </div>
             {loginError && <div className={styles.error}>{loginError}</div>}
             <div className={styles.link}>
-                <Link to="/forgot"> Demander un nouveau mot de passe </Link>
+                <Link to="/oubli"> Demander un nouveau mot de passe </Link>
             </div>
         </form>
     )
