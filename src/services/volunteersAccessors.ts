@@ -3,7 +3,7 @@ import {
     elementName,
     Volunteer,
     VolunteerDayWishes,
-    VolunteerNotifs,
+    VolunteerAsks,
     VolunteerParticipationDetails,
     VolunteerTeamWishes,
     VolunteerWithoutId,
@@ -21,8 +21,8 @@ export const volunteerLogin =
 
 export const volunteerForgot = serviceAccessors.customPost<[{ email: string }]>("Forgot")
 
-export const volunteerNotifsSet =
-    serviceAccessors.securedCustomPost<[number, Partial<VolunteerNotifs>]>("NotifsSet")
+export const volunteerAsksSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerAsks>]>("AsksSet")
 
 export const volunteerTeamWishesSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerTeamWishes>]>("TeamWishesSet")

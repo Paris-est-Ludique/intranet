@@ -7,7 +7,7 @@ import ErrorBoundary from "./ErrorBoundary"
 import GameList from "./GameList"
 import Loading from "./Loading"
 import LoginForm from "./LoginForm"
-import Notifications, { fetchFor as fetchForNotifications } from "./Notifications"
+import Asks, { fetchFor as fetchForAsks } from "./Asks"
 import ParticipationDetailsForm, {
     fetchFor as fetchForParticipationDetailsForm,
 } from "./VolunteerBoard/ParticipationDetailsForm/ParticipationDetailsForm"
@@ -30,8 +30,8 @@ export {
     GameList,
     Loading,
     LoginForm,
-    Notifications,
-    fetchForNotifications,
+    Asks,
+    fetchForAsks,
     ParticipationDetailsForm,
     fetchForParticipationDetailsForm,
     PreRegisterForm,

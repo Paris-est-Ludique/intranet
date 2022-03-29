@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import { RouteConfig, renderRoutes } from "react-router-config"
 import { Helmet } from "react-helmet"
 import { ToastContainer } from "react-toastify"
@@ -29,7 +28,7 @@ const App = ({ route }: Route): JSX.Element => (
             <div className={styles.logo} />
             <div>
                 <h1 className={styles.siteName}>
-                    <Link to="/">{config.APP.title}</Link>
+                    <a href="/">{config.APP.title}</a>
                 </h1>
                 <div className={styles.siteDescription}>{config.APP.description}</div>
             </div>

@@ -25,7 +25,7 @@ import {
     volunteerSet,
     volunteerLogin,
     volunteerForgot,
-    volunteerNotifsSet,
+    volunteerAsksSet,
     volunteerParticipationDetailsSet,
     volunteerTeamWishesSet,
     volunteerDayWishesSet,
@@ -92,7 +92,7 @@ app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 // UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
-app.post("/VolunteerNotifsSet", secure as RequestHandler, volunteerNotifsSet)
+app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
 app.post(
     "/VolunteerParticipationDetailsSet",
     secure as RequestHandler,

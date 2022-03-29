@@ -33,7 +33,7 @@ export class Volunteer {
 
     teamWishesComment = ""
 
-    hiddenNotifs: number[] = []
+    hiddenAsks: number[] = []
 
     created = new Date()
 
@@ -64,7 +64,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     food: "alimentation",
     teamWishes: "enviesEquipe",
     teamWishesComment: "commentaireEnviesEquipe",
-    hiddenNotifs: "notifsCachees",
+    hiddenAsks: "questionsCachees",
     created: "creation",
     password1: "passe1",
     password2: "passe2",
@@ -92,7 +92,7 @@ export const volunteerExample: Volunteer = {
     food: "Végétarien",
     teamWishes: [],
     teamWishesComment: "",
-    hiddenNotifs: [],
+    hiddenAsks: [],
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
     password2: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
@@ -116,12 +116,12 @@ export interface VolunteerForgot {
     message: string
 }
 
-export interface VolunteerNotifs {
+export interface VolunteerAsks {
     id: Volunteer["id"]
     firstname: Volunteer["firstname"]
     adult: Volunteer["adult"]
     active: Volunteer["active"]
-    hiddenNotifs: Volunteer["hiddenNotifs"]
+    hiddenAsks: Volunteer["hiddenAsks"]
     pushNotifSubscription: Volunteer["pushNotifSubscription"]
     acceptsNotifs: Volunteer["acceptsNotifs"]
 }

@@ -14,7 +14,7 @@ import volunteerList from "./volunteerList"
 import volunteerSet from "./volunteerSet"
 import volunteerLogin from "./volunteerLogin"
 import volunteerForgot from "./volunteerForgot"
-import volunteerNotifsSet from "./volunteerNotifsSet"
+import volunteerAsksSet from "./volunteerAsksSet"
 import volunteerParticipationDetailsSet from "./volunteerParticipationDetailsSet"
 import volunteerDayWishesSet from "./volunteerDayWishesSet"
 import volunteerTeamWishesSet from "./volunteerTeamWishesSet"
@@ -37,7 +37,7 @@ export default (history: History) => ({
     volunteerSet,
     volunteerLogin,
     volunteerForgot,
-    volunteerNotifsSet,
+    volunteerAsksSet,
     volunteerParticipationDetailsSet,
     volunteerDayWishesSet,
     volunteerTeamWishesSet,

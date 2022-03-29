@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from "react"
-import { Link } from "react-router-dom"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { AppState } from "../../store"
 import { fetchVolunteerLogin } from "../../store/volunteerLogin"
@@ -43,7 +42,7 @@ const LoginForm = (): JSX.Element => {
             </div>
             {loginError && <div className={styles.error}>{loginError}</div>}
             <div className={styles.link}>
-                <Link to="/oubli"> Demander un nouveau mot de passe </Link>
+                <a href="/oubli"> Demander un nouveau mot de passe </a>
             </div>
         </form>
     )

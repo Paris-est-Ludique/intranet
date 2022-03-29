@@ -1,12 +1,12 @@
 import { FC, memo } from "react"
-import { RouteComponentProps, Link } from "react-router-dom"
+import { RouteComponentProps } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppThunk } from "../../store"
-import { fetchForNotifications, LoginForm, Notifications } from "../../components"
+import { fetchForAsks, LoginForm, Asks } from "../../components"
 import styles from "./styles.module.scss"
-import { fetchVolunteerNotifsSetIfNeed } from "../../store/volunteerNotifsSet"
+import { fetchVolunteerAsksSetIfNeed } from "../../store/volunteerAsksSet"
 import { selectUserJwtToken } from "../../store/auth"
 
 export type Props = RouteComponentProps
@@ -17,7 +17,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
     if (jwtToken === undefined) return <p>Loading...</p>
 
     if (jwtToken) {
-        return <Notifications />
+        return <Asks />
     }
     return (
         <div>
@@ -29,7 +29,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
             </div>
             <div className={styles.homePage}>
                 <div className={styles.navigationLink}>
-                    <Link to="/sinscrire"> S&apos;informer sur le bénévolat </Link>
+                    <a href="/sinscrire"> S&apos;informer sur le bénévolat </a>
                 </div>
             </div>
         </div>
@@ -38,8 +38,8 @@ const HomePage: FC<Props> = (): JSX.Element => {
 
 // Fetch server-side data here
 export const loadData = (): AppThunk[] => [
-    fetchVolunteerNotifsSetIfNeed(),
-    ...fetchForNotifications.map((f) => f()),
+    fetchVolunteerAsksSetIfNeed(),
+    ...fetchForAsks.map((f) => f()),
 ]
 
 export default memo(HomePage)

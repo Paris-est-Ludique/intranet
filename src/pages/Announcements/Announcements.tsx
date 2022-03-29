@@ -1,6 +1,6 @@
 import { FC, memo } from "react"
 import * as _ from "lodash"
-import { RouteComponentProps, Link } from "react-router-dom"
+import { RouteComponentProps } from "react-router-dom"
 import { useSelector, shallowEqual } from "react-redux"
 import { Helmet } from "react-helmet"
 import { EntityState } from "@reduxjs/toolkit"
@@ -60,7 +60,7 @@ const AnnouncementsPage: FC<Props> = (): JSX.Element => {
             </div>
             <div className={styles.announcements}>
                 <div className={styles.navigationLink}>
-                    <Link to="/sinscrire"> S&apos;informer sur le bénévolat </Link>
+                    <a href="/sinscrire"> S&apos;informer sur le bénévolat </a>
                 </div>
             </div>
         </div>

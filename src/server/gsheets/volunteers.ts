@@ -7,7 +7,7 @@ import {
     Volunteer,
     VolunteerWithoutId,
     VolunteerLogin,
-    VolunteerNotifs,
+    VolunteerAsks,
     VolunteerTeamWishes,
     translationVolunteer,
     VolunteerDayWishes,
@@ -115,10 +115,10 @@ async function sendForgetEmail(email: string, password: string): Promise<void> {
     }
 }
 
-export const volunteerNotifsSet = expressAccessor.set(async (list, body, id) => {
+export const volunteerAsksSet = expressAccessor.set(async (list, body, id) => {
     const requestedId = +body[0] || id
     if (requestedId !== id && requestedId !== 0) {
-        throw Error(`On ne peut acceder qu'à ses propres notifs`)
+        throw Error(`On ne peut acceder qu'à ses propres questions`)
     }
     const notifChanges = body[1]
     const volunteer = list.find((v) => v.id === requestedId)
@@ -136,10 +136,10 @@ export const volunteerNotifsSet = expressAccessor.set(async (list, body, id) => 
             firstname: newVolunteer.firstname,
             adult: newVolunteer.adult,
             active: newVolunteer.active,
-            hiddenNotifs: newVolunteer.hiddenNotifs,
+            hiddenAsks: newVolunteer.hiddenAsks,
             pushNotifSubscription: newVolunteer.pushNotifSubscription,
             acceptsNotifs: newVolunteer.acceptsNotifs,
-        } as VolunteerNotifs,
+        } as VolunteerAsks,
     }
 })
 

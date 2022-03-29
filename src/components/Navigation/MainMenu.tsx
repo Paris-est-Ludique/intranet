@@ -37,7 +37,7 @@ const MainMenu: FC = (): JSX.Element | null => {
             <ul className={classnames(styles.mainMenu, opened && styles.opened)}>
                 {createMenuItem("Questions", "/")}
                 {createMenuItem("Annonces", "/annonces")}
-                createMenuItem("Mon profil", "/profil")
+                {createMenuItem("Mon profil", "/profil")}
                 <button type="button" className={styles.close} onClick={onClose}>
                     ×
                 </button>

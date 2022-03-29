@@ -1,5 +1,4 @@
 import { memo } from "react"
-import { Link } from "react-router-dom"
 
 import { Volunteer } from "../../services/volunteers"
 import styles from "./styles.module.scss"
@@ -14,9 +13,9 @@ const VolunteerList = ({ items }: Props) => (
         <ul>
             {items.map(({ id, lastname, firstname }) => (
                 <li key={id}>
-                    <Link to={`/Volunteer/${id}`}>
+                    <a href={`/Volunteer/${id}`}>
                         <b>{firstname}</b> {lastname}
-                    </Link>
+                    </a>
                 </li>
             ))}
         </ul>

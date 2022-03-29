@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from "react"
-import { Link } from "react-router-dom"
 import { AppDispatch } from "../../store"
 import { fetchVolunteerForgot } from "../../store/volunteerForgot"
 import styles from "./styles.module.scss"
@@ -40,7 +39,7 @@ const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
             <div className={styles.error}>{error}</div>
             <div className={styles.message}>{message}</div>
             <div className={styles.link}>
-                <Link to="/"> S&apos;identifier </Link>
+                <a href="/"> S&apos;identifier </a>
             </div>
         </form>
     )
