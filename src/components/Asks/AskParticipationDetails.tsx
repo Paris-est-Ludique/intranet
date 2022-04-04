@@ -21,7 +21,7 @@ export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
     const [participationDetails] = useUserParticipationDetails()
     const tshirtSize = get(participationDetails, "tshirtSize", "")
     const food = get(participationDetails, "food", "")
-    const needToShow = !tshirtSize && !food
+    const needToShow = !tshirtSize || !food
 
     addAsk(
         asks,

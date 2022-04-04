@@ -1,3 +1,4 @@
+import { lowerFirst } from "lodash"
 import { Request, Response, NextFunction } from "express"
 import webpush from "web-push"
 import {
@@ -107,10 +108,7 @@ async function notifyAboutAnnouncement(): Promise<void> {
     }
 
     const audience = volunteerList.filter(
-        (v) =>
-            v.acceptsNotifs === "oui" &&
-            !v.discordId &&
-            (v.active === "oui" || v.active === "peut-etre")
+        (v) => v.acceptsNotifs === "oui" && (v.active === "oui" || v.active === "peut-etre")
     )
 
     console.error(
@@ -119,10 +117,17 @@ async function notifyAboutAnnouncement(): Promise<void> {
             .join(", ")}`
     )
 
+    const announceDescription: string =
+        {
+            gazette: / - /.test(toSend.title)
+                ? `la ${lowerFirst(toSend.title.replace(/.* - /, ""))}`
+                : `la gazette ${lowerFirst(toSend.title)}`,
+            "compte rendu": `le compte-rendu du ${lowerFirst(toSend.title)}`,
+        }[toSend.type] || toSend.title
+
     audience.forEach((v) => {
         sendNotifToVolunteer(v, {
-            message:
-                "Clique-moi pour voir la gazette de février dans la page Annonces !\n\nFini les emails/spam, cette notification est notre nouveau moyen de te prévenir :)",
+            message: `Clique-moi pour voir ${announceDescription}`,
         })
     })
 
