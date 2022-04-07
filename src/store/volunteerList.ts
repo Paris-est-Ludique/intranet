@@ -1,8 +1,8 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 
 import { StateRequest, toastError, elementListFetch } from "./utils"
 import { Volunteer } from "../services/volunteers"
-import { AppThunk, AppState } from "."
+import { AppThunk, AppState, EntitiesRequest } from "."
 import { volunteerListGet } from "../services/volunteersAccessors"
 
 const volunteerAdapter = createEntityAdapter<Volunteer>()
@@ -47,3 +47,14 @@ export const fetchVolunteerListIfNeed = (): AppThunk => (dispatch, getState) => 
 
     return null
 }
+
+export const selectVolunteerListState = (state: AppState): EntitiesRequest<Volunteer> =>
+    state.volunteerList
+
+export const selectVolunteerList = createSelector(
+    selectVolunteerListState,
+    ({ ids, entities, readyStatus }) => {
+        if (readyStatus !== "success") return []
+        return ids.map((id) => entities[id]) as Volunteer[]
+    }
+)

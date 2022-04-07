@@ -29,6 +29,7 @@ import {
     volunteerParticipationDetailsSet,
     volunteerTeamWishesSet,
     volunteerDayWishesSet,
+    volunteerListGet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -86,6 +87,7 @@ app.post("/PreVolunteerAdd", preVolunteerAdd)
 app.get("/PreVolunteerCountGet", preVolunteerCountGet)
 app.post("/VolunteerLogin", volunteerLogin)
 app.post("/VolunteerForgot", volunteerForgot)
+app.get("/VolunteerListGet", volunteerListGet)
 
 // Secured APIs
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
