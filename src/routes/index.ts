@@ -3,6 +3,7 @@ import { RouteConfig } from "react-router-config"
 import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/Announcements"
+import AsyncTeamAssignment, { loadData as loadTeamAssignmentData } from "../pages/TeamAssignment"
 import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
@@ -83,6 +84,11 @@ export default [
                 path: "/annonces",
                 component: AsyncAnnouncements,
                 loadData: loadAnnouncementsData,
+            },
+            {
+                path: "/team-assign-e26as",
+                component: AsyncTeamAssignment,
+                loadData: loadTeamAssignmentData,
             },
             {
                 component: NotFound,
