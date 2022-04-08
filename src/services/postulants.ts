@@ -9,7 +9,15 @@ export class Postulant {
 
     mobile = ""
 
+    howToContact = ""
+
     potential = false
+
+    alreadyCame = false
+
+    firstMeeting = ""
+
+    commentFirstMeeting = ""
 
     comment = ""
 }
@@ -20,7 +28,11 @@ export const translationPostulant: { [k in keyof Postulant]: string } = {
     lastname: "nom",
     email: "email",
     mobile: "telephone",
+    howToContact: "commentContacter",
     potential: "potentiel",
+    alreadyCame: "déjàVenu",
+    firstMeeting: "dateRencontre",
+    commentFirstMeeting: "commentaireDateRencontre",
     comment: "commentaire",
 }
 

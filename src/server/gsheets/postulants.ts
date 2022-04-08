@@ -28,6 +28,12 @@ export const postulantAdd = expressAccessor.add(async (list, body) => {
         firstname: trim(params.firstname),
         email: trim(params.email),
         mobile: canonicalMobile(params.mobile),
+        howToContact: trim(params.howToContact),
+        potential: params.potential === true,
+        alreadyCame: params.alreadyCame === true,
+        firstMeeting: trim(params.firstMeeting),
+        commentFirstMeeting: trim(params.commentFirstMeeting),
+        comment: trim(params.comment),
     })
 
     return {
