@@ -38,6 +38,8 @@ export class Volunteer implements VolunteerPartial {
 
     canHelpBefore = ""
 
+    pelMember = false
+
     hiddenAsks: number[] = []
 
     created = new Date()
@@ -71,6 +73,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     teamWishesComment: "commentaireEnviesEquipe",
     howToContact: "commentContacter",
     canHelpBefore: "aideEnAmont",
+    pelMember: "membrePel",
     hiddenAsks: "questionsCachees",
     created: "creation",
     password1: "passe1",
@@ -117,6 +120,7 @@ export const volunteerExample: Volunteer = {
     teamWishesComment: "",
     howToContact: "",
     canHelpBefore: "",
+    pelMember: false,
     hiddenAsks: [],
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",

@@ -2,18 +2,30 @@ import React, { memo, useEffect, useState } from "react"
 import { useSelector, shallowEqual } from "react-redux"
 import { toast } from "react-toastify"
 import _ from "lodash"
+import classnames from "classnames"
 import styles from "./styles.module.scss"
 
 import { fetchPostulantAdd } from "../../store/postulantAdd"
 import { AppDispatch, AppState } from "../../store"
 import { fetchVolunteerPartialAdd } from "../../store/volunteerPartialAdd"
 import FormButton from "../Form/FormButton/FormButton"
+import { validEmail } from "../../utils/standardization"
+import { toastError } from "../../store/utils"
 
 interface Props {
     dispatch: AppDispatch
 }
 
-let backgroundId = 1
+const animations = [
+    [styles.imgTransitionDoHide, styles.imgTransitionShow],
+    [styles.imgTransitionHidden, styles.imgTransitionShow],
+    [styles.imgTransitionReset, styles.imgTransitionShow],
+    [styles.imgTransitionAbouToShow, styles.imgTransitionShow],
+    [styles.imgTransitionShow, styles.imgTransitionDoHide],
+    [styles.imgTransitionShow, styles.imgTransitionHidden],
+    [styles.imgTransitionShow, styles.imgTransitionReset],
+    [styles.imgTransitionShow, styles.imgTransitionAbouToShow],
+]
 const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [potentialVolunteer, setPotentialVolunteer] = useState(true)
     const [firstname, setFirstname] = useState("")
@@ -26,16 +38,18 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [firstMeeting, setFirstMeeting] = useState("")
     const [commentFirstMeeting, setCommentFirstMeeting] = useState("")
     const [canHelpBefore, setCanHelpBefore] = useState("")
+    const [pelMember, setPelMember] = useState(false)
     const [howToContact, setHowToContact] = useState("Email")
     const [sending, setSending] = useState(false)
-    const [changingBackground, setChangingBackground] = useState(styles.pelImg1)
+    const [changingBackground, setChangingBackground] = useState(0)
 
     useEffect(() => {
-        setInterval(() => {
-            backgroundId = backgroundId === 1 ? 2 : 1
-            setChangingBackground(backgroundId === 1 ? styles.pelImg1 : styles.pelImg2)
-        }, 20000)
-    }, [setChangingBackground])
+        const timer = setInterval(() => {
+            setChangingBackground((changingBackground + 1) % animations.length)
+        }, 60000 / animations.length)
+        return () => clearInterval(timer)
+    }, [changingBackground, setChangingBackground])
+    const transitionClass = (i: number) => animations[changingBackground][i - 1]
 
     const sendTextDispatch =
         (dispatchSetter: React.Dispatch<React.SetStateAction<string>>) =>
@@ -58,22 +72,12 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
             dispatchSetter(e.target.value)
 
     const onSubmit = () => {
+        if (!validEmail(email)) {
+            toastError("Cet email est invalid ><")
+            return
+        }
         if (firstname && lastname && email && mobile && !sending) {
             if (potentialVolunteer) {
-                /*
-potentialVolunteer,
-firstname,
-lastname,
-email,
-mobile,
-comment,
-alreadyCame,
-firstMeeting,
-commentFirstMeeting,
-canHelpBefore,
-howToContact,
-
-    */
                 dispatch(
                     fetchPostulantAdd({
                         potential: true,
@@ -97,6 +101,7 @@ howToContact,
                         mobile,
                         howToContact,
                         canHelpBefore,
+                        pelMember,
                     })
                 )
                 dispatch(
@@ -173,8 +178,9 @@ howToContact,
                     d&apos;animateurs bénévoles, du coin des petits joueurs, de l&apos;espace
                     tournois, ou de l&apos;espace prototypes.
                 </p>
-                <div id="pelImg" className={changingBackground}>
-                    {" "}
+                <div id="pelImg" className={styles.pelImg}>
+                    <div className={classnames(styles.pelImg1, transitionClass(1))}> </div>
+                    <div className={classnames(styles.pelImg2, transitionClass(2))}> </div>
                 </div>
             </dd>
             <dt>Et les bénévoles de PeL ?</dt>
@@ -201,11 +207,11 @@ howToContact,
                     tout !
                 </p>
                 <p>
-                    La majorité d&apos;entre nous sommes bénévoles les <b>samedi et dimanche</b>,
-                    mais certains bénévoles ne sont pas disponibles les deux jours. On leur demande
-                    alors d&apos;aider à la mise en place jeudi ou vendredi, ou au rangement le
-                    lundi, à la place d'un des jours du weekend. Bref, chacun participe comme il
-                    peut mais deux jours minimum !
+                    La majorité d'entre nous sommes bénévoles les <b>samedi et dimanche</b>, mais
+                    certains bénévoles ne sont pas disponibles les deux jours. On leur demande alors
+                    d'aider à la mise en place jeudi ou vendredi, ou au rangement le lundi, à la
+                    place d'un des jours du weekend. Bref, chacun participe comme il peut mais deux
+                    jours minimum !
                 </p>
                 <p>
                     Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en
@@ -366,6 +372,7 @@ howToContact,
                             accueillir 16 000 visiteurs. La plupart des rectangles colorés que tu
                             vois dessus sont d'énormes barnums, ou agglomérats de tonnelles.
                         </p>
+                        <div className={styles.barnumsImg}> </div>
                         <div className={styles.planImg}> </div>
                         <p>
                             Les espaces jeux bleu, violet, gris, ou marron sont installés et animés
@@ -469,7 +476,7 @@ howToContact,
                 <dl className={styles.registerIntro}>
                     <dd>
                         <p>
-                            Top ! On fait en sorte qu'il y ait assez de bénévole expérimentés pour
+                            Top ! On fait en sorte qu'il y ait assez de bénévoles expérimentés pour
                             les nombreux curieux comme toi, donc pour ne pas gâcher leur temps on
                             compte sur ta présence :)
                         </p>
@@ -509,14 +516,14 @@ howToContact,
                         En tant que bénévole, tu fais selon tes envies, tes disponibilités, ton
                         énergie. Si personne ne veut faire quelque chose de primordial pour le
                         festival, on paye quelqu'un de l'extérieur. Par exemple le transport+montage
-                        des tentes+tables, ou la sécurité de nuit. Et si ce quelque chose n'est pas
-                        primordiale et que personne ne veut s'en occuper, bah tant pis on le fait
-                        pas ^^
+                        des tentes+tables, ou la sécurité de nuit sont délégués à des prestataires.
+                        Et si ce quelque chose n'est pas primordiale et que personne ne veut s'en
+                        occuper, bah tant pis on le fait pas ^^
                     </p>
                     <p>
                         Après on essaye de faire plein de choses sans aide extérieure. Pour le
                         plaisir de collaborer à un projet entre bénévoles parfois devenus amis, pour
-                        aquérir de nouvelles compétences, parce que chaque économie d'argent fait
+                        acquérir de nouvelles compétences, parce que chaque économie d'argent fait
                         baisser le prix d'entrée au festival et contribue à le rendre plus
                         accessible.
                     </p>
@@ -560,7 +567,7 @@ howToContact,
                     )}
                     {canHelpBefore === "non" && (
                         <p>
-                            Aucun soucis tu nous seras d'une aide précieuse le jour J c'est déjà
+                            Aucun souci tu nous seras d'une aide précieuse le jour J c'est déjà
                             énorme !
                         </p>
                     )}
@@ -573,10 +580,61 @@ howToContact,
         </>
     )
 
+    const pelMemberQuestion = !potentialVolunteer && (
+        <>
+            <dl className={styles.registerIntro}>
+                <dt>Association Paris est Ludique</dt>
+                <dd>
+                    <p>
+                        Légalement il faut que le festival soit organisé par une structure, et c'est
+                        l'association <i>Paris est Ludique !</i> qui s'en charge. Pour aider à
+                        organiser bénévolement le festival il faut donc en faire partie. Ça n'engage
+                        à rien et c'est gratuit, mais absolument nécessaire.
+                    </p>
+                </dd>
+            </dl>
+            <div className={styles.inputWrapper}>
+                <div className={styles.leftCol}>
+                    <div className={styles.multipleChoiceTitle}>
+                        Acceptes-tu de devenir membre de l'association <i>Paris est Ludique !</i> ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <div className={styles.rightColContainer}>
+                        {["Oui", "Non"].map((option) => (
+                            <label className={styles.shortAnswerLabel} key={option}>
+                                <input
+                                    type="radio"
+                                    name="pelMember"
+                                    onChange={sendBooleanRadioboxDispatch(
+                                        setPelMember,
+                                        option === "Oui"
+                                    )}
+                                    checked={pelMember === (option === "Oui")}
+                                />{" "}
+                                {option}
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            {!pelMember && (
+                <dl className={styles.registerIntro}>
+                    <dd>
+                        <p>
+                            Tant que tu n'as pas accepté cette condition je suis désolé on ne peut
+                            pas continuer.
+                        </p>
+                    </dd>
+                </dl>
+            )}
+        </>
+    )
+
     const nameMobileEmail = (
         <>
             <dl className={styles.registerIntro}>
-                <dt>Quelques infos sur toi</dt>
+                <dt>Quelques infos sur toi pour finir</dt>
             </dl>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftColTiny}>
@@ -643,20 +701,18 @@ howToContact,
                 </div>
                 <div className={styles.rightCol}>
                     <div className={styles.rightColContainer}>
-                        {["Email", "SMS", "WhatsApp", "Signal", "Appeler", "Aucun"].map(
-                            (option) => (
-                                <label className={styles.shortAnswerLabel} key={option}>
-                                    <input
-                                        type="radio"
-                                        name="howToContact"
-                                        value={option}
-                                        onChange={sendRadioboxDispatch(setHowToContact)}
-                                        checked={howToContact === option}
-                                    />{" "}
-                                    {option}
-                                </label>
-                            )
-                        )}
+                        {["Email", "SMS", "WhatsApp", "Signal", "Appel", "Aucun"].map((option) => (
+                            <label className={styles.shortAnswerLabel} key={option}>
+                                <input
+                                    type="radio"
+                                    name="howToContact"
+                                    value={option}
+                                    onChange={sendRadioboxDispatch(setHowToContact)}
+                                    checked={howToContact === option}
+                                />{" "}
+                                {option}
+                            </label>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -665,10 +721,10 @@ howToContact,
                     <dd>
                         <p>
                             Aïe ça va poser problème, je suis désolé. Il faut faire un effort en
-                            choisir un moyen de communication proposé.
+                            choisissant un moyen de communication proposé.
                         </p>
                         <p>
-                            Tu en connais un meilleur que ceux proposés et suffisemment répendu ?
+                            Tu en connais un suffisamment répandu et meilleur que ceux proposés ?
                             Parle-nous en à benevoles@parisestludique.fr :)
                         </p>
                     </dd>
@@ -704,8 +760,13 @@ howToContact,
                     {cameAsVisitor}
                     {meeting}
                     {helpBefore}
-                    {nameMobileEmail}
-                    {howToContact !== "Aucun" && submitButton}
+                    {pelMemberQuestion}
+                    {pelMember && (
+                        <>
+                            {nameMobileEmail}
+                            {howToContact !== "Aucun" && submitButton}
+                        </>
+                    )}
                 </>
             )}
         </form>

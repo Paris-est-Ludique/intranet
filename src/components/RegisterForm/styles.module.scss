@@ -120,6 +120,39 @@
     }
 }
 
+.imgTransitionReset {
+    left: calc(90vw);
+    transition: none;
+    @include desktop {
+        left: 552px;
+    }
+}
+.imgTransitionAbouToShow {
+    left: calc(90vw);
+    transition: left ease-in-out 1000ms;
+    @include desktop {
+        left: 552px;
+    }
+}
+.imgTransitionShow {
+    left: 0;
+    transition: left ease-in-out 1000ms;
+}
+.imgTransitionDoHide {
+    left: calc(-90vw);
+    transition: left ease-in-out 1000ms;
+    @include desktop {
+        left: -552px;
+    }
+}
+.imgTransitionHidden {
+    left: calc(-90vw);
+    transition: none;
+    @include desktop {
+        left: -552px;
+    }
+}
+
 .pelImg1 {
     background: url("../../app/img/pel2016.jpg") no-repeat center center;
 }
@@ -128,14 +161,21 @@
 }
 .pelImg1,
 .pelImg2 {
-    position: relative;
+    position: absolute;
     width: calc(90vw);
     height: calc(60vw);
     background-size: cover;
-    background-size: cover;
-    background-size: cover;
-    background-size: cover;
-    transition: background 2000ms ease-in-out 3000ms;
+
+    @include desktop {
+        width: 552px;
+        height: 368px;
+    }
+}
+.pelImg {
+    position: relative;
+    width: calc(90vw);
+    height: calc(60vw);
+    overflow: hidden;
 
     @include desktop {
         width: 552px;
@@ -148,9 +188,6 @@
     width: calc(90vw);
     height: calc(40vw);
     background: url("../../app/img/bene2019.jpg") no-repeat center center;
-    background-size: cover;
-    background-size: cover;
-    background-size: cover;
     background-size: cover;
 
     @include desktop {
@@ -165,12 +202,22 @@
     height: calc(168vw);
     background: url("../../app/img/plan2019.jpg") no-repeat center center;
     background-size: cover;
-    background-size: cover;
-    background-size: cover;
-    background-size: cover;
 
     @include desktop {
         width: 552px;
         height: 1028px;
+    }
+}
+
+.barnumsImg {
+    position: relative;
+    width: calc(90vw);
+    height: calc(18vw);
+    background: url("../../app/img/barnums.jpg") no-repeat center center;
+    background-size: cover;
+
+    @include desktop {
+        width: 552px;
+        height: 112px;
     }
 }

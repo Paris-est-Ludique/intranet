@@ -49,6 +49,7 @@ export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
         mobile: canonicalMobile(params.mobile),
         howToContact: trim(params.howToContact),
         canHelpBefore: trim(params.canHelpBefore),
+        pelMember: params.pelMember === true,
         password1: passwordHash,
         password2: passwordHash,
     })
