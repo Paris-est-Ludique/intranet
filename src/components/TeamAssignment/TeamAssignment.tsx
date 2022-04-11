@@ -4,10 +4,13 @@ import withUserConnected from "../../utils/withUserConnected"
 import { fetchTeamListIfNeed } from "../../store/teamList"
 import { fetchVolunteerListIfNeed } from "../../store/volunteerList"
 import VolunteersWithTeamWishes from "./VolunteersWithTeamWishes"
+import TeamsWithCandidates from "./TeamsWithCandidates"
 
 const TeamAssignment: FC = (): JSX.Element => (
     <>
-        <ContentTitle title="Affectation aux équipes" />
+        <ContentTitle title="Choix par équipes" />
+        <TeamsWithCandidates />
+        <ContentTitle title="Choix des bénévoles" />
         <VolunteersWithTeamWishes />
     </>
 )
