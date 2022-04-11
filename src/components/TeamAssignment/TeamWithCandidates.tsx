@@ -1,8 +1,10 @@
-import { FC, memo } from "react"
+import { FC, memo, useCallback } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "@reduxjs/toolkit"
+import classnames from "classnames"
 import { selectVolunteerList } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
+import styles from "./styles.module.scss"
 
 const selectTeamsWithVolunteersCandidates = createSelector(
     selectVolunteerList,
@@ -15,7 +17,10 @@ const selectTeamsWithVolunteersCandidates = createSelector(
                     ...volunteer,
                     teamWishes: volunteer.teamWishes.map((wishId) => {
                         const matchingTeam = teams.find((team: any) => wishId === team?.id)
-                        return matchingTeam?.name
+                        return {
+                            id: matchingTeam?.id,
+                            name: matchingTeam?.name,
+                        }
                     }),
                 }))
             return {
@@ -33,6 +38,11 @@ type Props = {
 const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
     const teams = useSelector(selectTeamsWithVolunteersCandidates)
     const team = teams.find((t) => t.id === teamId)
+
+    const onTeamSelected = useCallback((volunteerId, selectedTeamId) => {
+        console.log("select ", volunteerId, selectedTeamId)
+    }, [])
+
     if (!team) return null
 
     return (
@@ -46,7 +56,23 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
                         <b>
                             {firstname} {lastname}
                         </b>{" "}
-                        : {teamWishes.join(", ")}
+                        :
+                        {teamWishes.map((teamWish) => {
+                            const active = false
+                            return (
+                                <button
+                                    key={teamWish.id}
+                                    type="button"
+                                    onClick={() => onTeamSelected(id, teamWish.id)}
+                                    className={classnames(
+                                        styles.teamWishButton,
+                                        active && styles.teamActive
+                                    )}
+                                >
+                                    {teamWish.name}
+                                </button>
+                            )
+                        })}
                     </li>
                 ))}
             </ul>

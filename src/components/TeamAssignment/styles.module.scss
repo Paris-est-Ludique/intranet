@@ -21,3 +21,17 @@
         padding: 4px 10px;
     }
 }
+
+.teamWishButton {
+    margin: 0 2px;
+    padding: 2px;
+
+    &.teamActive {
+        font-weight: bold;
+        color: $color-orange;
+    }
+
+    &:hover {
+        background-color: #fb0;
+    }
+}
