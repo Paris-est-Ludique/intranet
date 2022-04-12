@@ -86,7 +86,7 @@ export default [
                 loadData: loadAnnouncementsData,
             },
             {
-                path: "/team-assign-e26as",
+                path: "/team-assign",
                 component: AsyncTeamAssignment,
                 loadData: loadTeamAssignmentData,
             },

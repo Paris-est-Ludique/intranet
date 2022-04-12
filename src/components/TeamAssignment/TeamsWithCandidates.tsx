@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 import { selectTeamList } from "../../store/teamList"
 import TeamWithCandidates from "./TeamWithCandidates"
 import styles from "./styles.module.scss"
+import withUserRole from "../../utils/withUserRole"
 
 const TeamsWithCandidates: FC = (): JSX.Element => {
     const teams = useSelector(selectTeamList)
@@ -25,4 +26,4 @@ const TeamsWithCandidates: FC = (): JSX.Element => {
     )
 }
 
-export default memo(TeamsWithCandidates)
+export default withUserRole("répartiteur", memo(TeamsWithCandidates))
