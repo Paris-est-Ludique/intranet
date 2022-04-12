@@ -7,7 +7,7 @@ import { postulantAdd } from "../services/postulantsAccessors"
 const postulantAdapter = createEntityAdapter<Postulant>()
 
 const postulantAddSlice = createSlice({
-    name: "addPostulant",
+    name: "postulantAdd",
     initialState: postulantAdapter.getInitialState({
         readyStatus: "idle",
     } as StateRequest),
@@ -17,7 +17,7 @@ const postulantAddSlice = createSlice({
         },
         getSuccess: (state, { payload }: PayloadAction<Postulant>) => {
             state.readyStatus = "success"
-            postulantAdapter.addOne(state, payload)
+            postulantAdapter.setOne(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"

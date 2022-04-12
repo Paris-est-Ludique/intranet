@@ -12,7 +12,6 @@ import {
     translationVolunteer,
     VolunteerDayWishes,
     VolunteerParticipationDetails,
-    VolunteerPartialAddReturn,
 } from "../../services/volunteers"
 import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
@@ -31,7 +30,9 @@ export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
     const params = body[0]
     const volunteer = getByEmail(list, params.email)
     if (volunteer) {
-        throw Error("Il y a déjà un bénévole avec cet email")
+        throw Error(
+            "Il y a déjà un bénévole avec cet email. Mieux vaut redemander un mot de passe si tu l'as oublié."
+        )
     }
     if (!validMobile(params.mobile)) {
         throw Error("Numéro de téléphone invalide, contacter pierre.scelles@gmail.com")
@@ -54,13 +55,30 @@ export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
         password2: passwordHash,
     })
 
+    await sendSignUpEmail(newVolunteer.email, password)
+
     return {
         toDatabase: newVolunteer,
-        toCaller: {
-            password,
-        } as VolunteerPartialAddReturn,
+        toCaller: {},
     }
 })
+
+async function sendSignUpEmail(email: string, password: string): Promise<void> {
+    const apiKey = process.env.SENDGRID_API_KEY || ""
+    if (__DEV__ || apiKey === "") {
+        console.error(`Fake sending signup email to ${email} with password ${password}`)
+    } else {
+        sgMail.setApiKey(apiKey)
+        const msg = {
+            to: email,
+            from: "contact@parisestludique.fr",
+            subject: "Accès au site des bénévoles de Paris est Ludique",
+            text: `Ton inscription est bien enregistrée, l'aventure PeL peut commencer ! :)\nVoici ton mot de passe pour accéder au site des bénévoles où tu t'es inscrit.e : ${password}\nTu y trouveras notamment comment on communique entre bénévoles.\nBonne journée !\nPierre`,
+            html: `Ton inscription est bien enregistrée, l'aventure PeL peut commencer ! :)<br />Voici ton mot de passe pour accéder au <a href="https://fo.parisestludique.fr/">site des bénévoles</a> : <strong>${password}</strong><br />Tu y trouveras notamment comment on communique entre bénévoles.<br />Bonne journée !<br />Pierre`,
+        }
+        await sgMail.send(msg)
+    }
+}
 
 export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, bodyArray) => {
     const [body] = bodyArray

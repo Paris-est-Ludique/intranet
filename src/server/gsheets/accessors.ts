@@ -604,7 +604,7 @@ async function tryNTimes<T>(
         return await func()
     } catch (e: any) {
         console.error(e?.error || e?.message || e)
-        console.error(`${repeatCount} attemps left every ${delayBetweenAttempts}`)
+        console.error(`${repeatCount} attempts left every ${delayBetweenAttempts}`)
         await new Promise<void>((resolve) => {
             setTimeout(() => resolve(), delayBetweenAttempts)
         })

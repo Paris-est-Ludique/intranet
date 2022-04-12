@@ -24,7 +24,7 @@ export class Volunteer implements VolunteerPartial {
 
     dayWishesComment = ""
 
-    tshirtCount = ""
+    tshirtCount = 0
 
     tshirtSize = ""
 
@@ -92,12 +92,6 @@ export class VolunteerPartial {
     mobile = ""
 }
 
-export class VolunteerPartialAddReturn {
-    id = 0
-
-    password = ""
-}
-
 export const elementName = "Volunteer"
 
 export const volunteerExample: Volunteer = {
@@ -113,7 +107,7 @@ export const volunteerExample: Volunteer = {
     discordId: "",
     dayWishes: [],
     dayWishesComment: "",
-    tshirtCount: "1",
+    tshirtCount: 1,
     tshirtSize: "Femme M",
     food: "Végétarien",
     teamWishes: [],

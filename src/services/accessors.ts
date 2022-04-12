@@ -30,6 +30,9 @@ export default class ServiceAccessors<
                     ...axiosConfig,
                     params: { id },
                 })
+                if (data.error) {
+                    throw Error(data.error)
+                }
                 return { data }
             } catch (error) {
                 return { error: error as Error }
@@ -51,6 +54,9 @@ export default class ServiceAccessors<
                     `${config.API_URL}/${this.elementName}ListGet`,
                     axiosConfig
                 )
+                if (data.error) {
+                    throw Error(data.error)
+                }
                 return { data }
             } catch (error) {
                 return { error: error as Error }
@@ -100,6 +106,9 @@ export default class ServiceAccessors<
                     volunteerWithoutId,
                     axiosConfig
                 )
+                if (data.error) {
+                    throw Error(data.error)
+                }
                 return { data }
             } catch (error) {
                 return { error: error as Error }
@@ -122,6 +131,9 @@ export default class ServiceAccessors<
                     volunteer,
                     axiosConfig
                 )
+                if (data.error) {
+                    throw Error(data.error)
+                }
                 return { data }
             } catch (error) {
                 return { error: error as Error }
@@ -143,6 +155,9 @@ export default class ServiceAccessors<
                     `${config.API_URL}/${this.elementName}CountGet`,
                     axiosConfig
                 )
+                if (data.error) {
+                    throw Error(data.error)
+                }
                 return { data }
             } catch (error) {
                 return { error: error as Error }

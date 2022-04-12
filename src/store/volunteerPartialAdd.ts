@@ -7,7 +7,7 @@ import { volunteerPartialAdd } from "../services/volunteersAccessors"
 const volunteerAdapter = createEntityAdapter<Volunteer>()
 
 const volunteerPartialAddSlice = createSlice({
-    name: "addVolunteer",
+    name: "volunteerAdd",
     initialState: volunteerAdapter.getInitialState({
         readyStatus: "idle",
     } as StateRequest),
@@ -17,7 +17,7 @@ const volunteerPartialAddSlice = createSlice({
         },
         getSuccess: (state, { payload }: PayloadAction<Volunteer>) => {
             state.readyStatus = "success"
-            volunteerAdapter.addOne(state, payload)
+            volunteerAdapter.setOne(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"

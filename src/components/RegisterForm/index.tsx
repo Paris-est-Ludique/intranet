@@ -76,53 +76,8 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
             toastError("Cet email est invalid ><")
             return
         }
-        if (firstname && lastname && email && mobile && !sending) {
-            if (potentialVolunteer) {
-                dispatch(
-                    fetchPostulantAdd({
-                        potential: true,
-                        firstname,
-                        lastname,
-                        email,
-                        mobile,
-                        howToContact,
-                        alreadyCame,
-                        firstMeeting,
-                        commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
-                        comment,
-                    })
-                )
-            } else {
-                dispatch(
-                    fetchVolunteerPartialAdd({
-                        firstname,
-                        lastname,
-                        email,
-                        mobile,
-                        howToContact,
-                        canHelpBefore,
-                        pelMember,
-                    })
-                )
-                dispatch(
-                    fetchPostulantAdd({
-                        potential: false,
-                        firstname,
-                        lastname,
-                        email,
-                        mobile,
-                        howToContact,
-                        alreadyCame,
-                        firstMeeting,
-                        commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
-                        comment,
-                    })
-                )
-            }
-
-            setSending(true)
-        } else {
-            toast.warning("Il faut remplir les queques infos sur toi ><", {
+        if (!firstname || !lastname || !email || !mobile || sending) {
+            toast.warning("Il faut remplir les quelques infos sur toi ><", {
                 position: "top-center",
                 autoClose: 6000,
                 hideProgressBar: true,
@@ -131,33 +86,95 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 draggable: true,
                 progress: undefined,
             })
+            return
         }
+
+        if (potentialVolunteer) {
+            dispatch(
+                fetchPostulantAdd({
+                    potential: true,
+                    firstname,
+                    lastname,
+                    email,
+                    mobile,
+                    howToContact,
+                    alreadyCame,
+                    firstMeeting,
+                    commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
+                    comment,
+                })
+            )
+        } else {
+            dispatch(
+                fetchVolunteerPartialAdd({
+                    firstname,
+                    lastname,
+                    email,
+                    mobile,
+                    howToContact,
+                    canHelpBefore,
+                    pelMember,
+                })
+            )
+            dispatch(
+                fetchPostulantAdd({
+                    potential: false,
+                    firstname,
+                    lastname,
+                    email,
+                    mobile,
+                    howToContact,
+                    alreadyCame,
+                    firstMeeting,
+                    commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
+                    comment,
+                })
+            )
+        }
+
+        setSending(true)
     }
 
-    const { error, entities: postulant } = useSelector(
+    const { error: postulantError, entities: postulant } = useSelector(
         (state: AppState) => state.postulantAdd,
         shallowEqual
     )
 
+    const { error: volunteerError, entities: volunteer } = useSelector(
+        (state: AppState) => state.volunteerAdd,
+        shallowEqual
+    )
+
     let sendSuccess
-    if (!_.isEmpty(postulant)) {
+    let sendError
+    let sendingElement
+    if (
+        !postulantError &&
+        !_.isEmpty(postulant) &&
+        (potentialVolunteer || (!volunteerError && !_.isEmpty(volunteer)))
+    ) {
         if (sending) {
             setSending(false)
         }
         sendSuccess = <span className={styles.success}>Formulaire envoyé !</span>
-    }
-
-    let sendError
-    if (error && _.isEmpty(postulant)) {
+    } else if (postulantError && _.isEmpty(postulant)) {
         if (sending) {
             setSending(false)
         }
-        sendError = <span className={styles.error}>{error}</span>
-    }
-
-    let sendingElement
-    if (sending) {
-        sendingElement = <span className={styles.sending}>Envoi en cours...</span>
+        sendError = <span className={styles.error}>{postulantError}</span>
+    } else if (volunteerError && _.isEmpty(volunteer)) {
+        if (sending) {
+            setSending(false)
+        }
+        sendError = <span className={styles.error}>{volunteerError}</span>
+    } else if (sending) {
+        sendingElement = (
+            <span className={styles.sending}>
+                Envoi en cours...
+                <br />
+                En cas de problème, écrire à contact@parisestludique.fr
+            </span>
+        )
     }
 
     const intro = (
