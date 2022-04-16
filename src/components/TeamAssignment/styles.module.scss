@@ -35,3 +35,16 @@
         background-color: #fb0;
     }
 }
+
+.volunteerName {
+    font-weight: bold;
+}
+
+.daysDisplay {
+    font-weight: normal;
+    color: $color-grey-medium;
+
+    strong {
+        color: $color-green;
+    }
+}

@@ -31,6 +31,16 @@ const selectTeamsWithVolunteersCandidates = createSelector(
         })
 )
 
+type PropsDaysDisplay = {
+    dayWishes: string[]
+}
+
+const DaysDisplay: FC<PropsDaysDisplay> = ({ dayWishes }): JSX.Element => (
+    <span className={styles.daysDisplay}>
+        {dayWishes.map((day) => (day === "S" || day === "D" ? <strong>{day}</strong> : day))}
+    </span>
+)
+
 type Props = {
     teamId: number
 }
@@ -51,12 +61,11 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
                 Equipe {team.name} ({team.volunteers.length}) :
             </div>
             <ul>
-                {team.volunteers.map(({ id, lastname, firstname, teamWishes }) => (
+                {team.volunteers.map(({ id, lastname, firstname, teamWishes, dayWishes }) => (
                     <li key={id}>
-                        <b>
-                            {firstname} {lastname}
-                        </b>{" "}
-                        :
+                        <span className={styles.volunteerName}>
+                            {firstname} {lastname} (<DaysDisplay dayWishes={dayWishes} />)
+                        </span>
                         {teamWishes.map((teamWish) => {
                             const active = false
                             return (
