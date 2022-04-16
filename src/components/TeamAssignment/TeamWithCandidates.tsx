@@ -54,7 +54,7 @@ type Props = {
 
 const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
     const teams = useSelector(selectTeamsWithVolunteersCandidates)
-    const team = teams.find((t) => t.id === teamId)
+    const currentTeam = teams.find((t) => t.id === teamId)
     const [, saveTeam] = useTeamAssign()
 
     const onTeamSelected = useCallback(
@@ -64,37 +64,39 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
         [saveTeam]
     )
 
-    if (!team) return null
+    if (!currentTeam) return null
 
     return (
         <div>
             <div>
-                Equipe {team.name} ({team.volunteers.length}) :
+                Equipe {currentTeam.name} ({currentTeam.volunteers.length}) :
             </div>
             <ul>
-                {team.volunteers.map(({ id, lastname, firstname, teamWishes, dayWishes }) => (
-                    <li key={id}>
-                        <span className={styles.volunteerName}>
-                            {firstname} {lastname} (<DaysDisplay dayWishes={dayWishes} />)
-                        </span>
-                        {teamWishes.map((teamWish) => {
-                            const active = false
-                            return (
-                                <button
-                                    key={teamWish.id}
-                                    type="button"
-                                    onClick={() => onTeamSelected(id, teamWish.id)}
-                                    className={classnames(
-                                        styles.teamWishButton,
-                                        active && styles.teamActive
-                                    )}
-                                >
-                                    {teamWish.name}
-                                </button>
-                            )
-                        })}
-                    </li>
-                ))}
+                {currentTeam.volunteers.map(
+                    ({ id, lastname, firstname, teamWishes, dayWishes, team }) => (
+                        <li key={id}>
+                            <span className={styles.volunteerName}>
+                                {firstname} {lastname} (<DaysDisplay dayWishes={dayWishes} />)
+                            </span>
+                            {teamWishes.map((teamWish) => {
+                                const active = teamWish.id === team
+                                return (
+                                    <button
+                                        key={teamWish.id}
+                                        type="button"
+                                        onClick={() => onTeamSelected(id, teamWish.id)}
+                                        className={classnames(
+                                            styles.teamWishButton,
+                                            active && styles.teamActive
+                                        )}
+                                    >
+                                        {teamWish.name}
+                                    </button>
+                                )
+                            })}
+                        </li>
+                    )
+                )}
             </ul>
         </div>
     )
