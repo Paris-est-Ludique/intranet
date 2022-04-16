@@ -6,6 +6,7 @@ import { selectVolunteerList } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
 import { useTeamAssign } from "./teamAssign.utils"
+import TeamMembers from "../TeamMembers/TeamMembers"
 
 const selectTeamsWithVolunteersCandidates = createSelector(
     selectVolunteerList,
@@ -64,13 +65,13 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
         [saveTeam]
     )
 
-    if (!currentTeam) return null
+    if (!currentTeam) return <div />
 
     return (
         <div>
-            <div>
-                Equipe {currentTeam.name} ({currentTeam.volunteers.length}) :
-            </div>
+            <div className={styles.teamHeaderName}>Equipe {currentTeam.name}</div>
+            <TeamMembers teamId={teamId} />
+            <div>Bénévoles intéressés ({currentTeam.volunteers.length}) :</div>
             <ul>
                 {currentTeam.volunteers.map(
                     ({ id, lastname, firstname, teamWishes, dayWishes, team }) => (

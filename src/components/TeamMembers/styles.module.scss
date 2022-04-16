@@ -1,0 +1,45 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.volunteers {
+    padding: 0;
+    list-style: none;
+}
+
+$height: 24px;
+
+.volunteer {
+    height: $height;
+    line-height: $height;
+    margin-bottom: 3px;
+}
+
+.volunteerName {
+    display: inline-block;
+    height: $height;
+    width: 250px;
+    padding-right: 4px;
+    text-align: right;
+}
+
+.dayTitle {
+    display: inline-block;
+    width: 50px;
+    height: $height;
+    margin: 0 2px;
+    text-align: center;
+}
+
+.day {
+    display: inline-block;
+    width: 50px;
+    height: $height;
+    margin: 0 2px;
+    text-align: center;
+    background-color: $color-red;
+    color: transparent;
+
+    &.available {
+        background-color: $color-green;
+    }
+}
