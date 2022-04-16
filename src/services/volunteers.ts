@@ -29,6 +29,8 @@ export class Volunteer {
 
     food = ""
 
+    team = 0
+
     teamWishes: number[] = []
 
     teamWishesComment = ""
@@ -62,6 +64,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     tshirtCount: "nbDeTshirts",
     tshirtSize: "tailleDeTshirts",
     food: "alimentation",
+    team: "équipe",
     teamWishes: "enviesEquipe",
     teamWishesComment: "commentaireEnviesEquipe",
     hiddenAsks: "questionsCachees",
@@ -90,6 +93,7 @@ export const volunteerExample: Volunteer = {
     tshirtCount: "1",
     tshirtSize: "Femme M",
     food: "Végétarien",
+    team: 2,
     teamWishes: [],
     teamWishesComment: "",
     hiddenAsks: [],
@@ -145,4 +149,10 @@ export interface VolunteerParticipationDetails {
     tshirtCount: Volunteer["tshirtCount"]
     adult: Volunteer["adult"]
     food: Volunteer["food"]
+}
+
+export interface VolunteerTeamAssign {
+    id: Volunteer["id"]
+    volunteer: number
+    team: Volunteer["team"]
 }

@@ -12,6 +12,7 @@ import {
     translationVolunteer,
     VolunteerDayWishes,
     VolunteerParticipationDetails,
+    VolunteerTeamAssign,
 } from "../../services/volunteers"
 import { canonicalEmail } from "../../utils/standardization"
 import { getJwt } from "../secure"
@@ -246,8 +247,31 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
     }
 })
 
+export const volunteerTeamAssignSet = expressAccessor.set(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    const assigner = list.find((v) => v.id === requestedId)
+    if (!assigner || !assigner.roles.includes("répartiteur")) {
+        throw Error(`Vous n'avez pas les droits pas assigner les équipes.`)
+    }
+
+    const teamAssign = body[1] as VolunteerTeamAssign
+    const volunteer = list.find((v) => v.id === teamAssign.volunteer)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${teamAssign.volunteer}`)
+    }
+    const newVolunteer = _.cloneDeep(volunteer)
+    newVolunteer.team = teamAssign.team
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            id: newVolunteer.id,
+            team: newVolunteer.team,
+        } as VolunteerTeamAssign,
+    }
+})
+
 function getByEmail<T extends { email: string }>(list: T[], rawEmail: string): T | undefined {
     const email = canonicalEmail(rawEmail || "")
-    const volunteer = list.find((v) => canonicalEmail(v.email) === email)
-    return volunteer
+    return list.find((v) => canonicalEmail(v.email) === email)
 }

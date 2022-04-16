@@ -6,6 +6,7 @@ import {
     VolunteerAsks,
     VolunteerParticipationDetails,
     VolunteerTeamWishes,
+    VolunteerTeamAssign,
     VolunteerWithoutId,
 } from "./volunteers"
 
@@ -34,3 +35,6 @@ export const volunteerParticipationDetailsSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerParticipationDetails>]>(
         "ParticipationDetailsSet"
     )
+
+export const volunteerTeamAssignSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerTeamAssign>]>("TeamAssignSet")

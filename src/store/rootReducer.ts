@@ -18,6 +18,7 @@ import volunteerAsksSet from "./volunteerAsksSet"
 import volunteerParticipationDetailsSet from "./volunteerParticipationDetailsSet"
 import volunteerDayWishesSet from "./volunteerDayWishesSet"
 import volunteerTeamWishesSet from "./volunteerTeamWishesSet"
+import volunteerTeamAssignSet from "./volunteerTeamAssignSet"
 import wishAdd from "./wishAdd"
 import wishList from "./wishList"
 
@@ -41,6 +42,7 @@ export default (history: History) => ({
     volunteerParticipationDetailsSet,
     volunteerDayWishesSet,
     volunteerTeamWishesSet,
+    volunteerTeamAssignSet,
     wishAdd,
     wishList,
     router: connectRouter(history) as any,

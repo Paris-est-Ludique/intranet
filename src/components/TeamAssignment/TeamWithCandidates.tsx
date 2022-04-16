@@ -5,6 +5,7 @@ import classnames from "classnames"
 import { selectVolunteerList } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
+import { useTeamAssign } from "./teamAssign.utils"
 
 const selectTeamsWithVolunteersCandidates = createSelector(
     selectVolunteerList,
@@ -37,7 +38,13 @@ type PropsDaysDisplay = {
 
 const DaysDisplay: FC<PropsDaysDisplay> = ({ dayWishes }): JSX.Element => (
     <span className={styles.daysDisplay}>
-        {dayWishes.map((day) => (day === "S" || day === "D" ? <strong>{day}</strong> : day))}
+        {dayWishes.map((day) =>
+            day === "S" || day === "D" ? (
+                <strong key={day}>{day}</strong>
+            ) : (
+                <span key={day}>{day}</span>
+            )
+        )}
     </span>
 )
 
@@ -48,10 +55,14 @@ type Props = {
 const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
     const teams = useSelector(selectTeamsWithVolunteersCandidates)
     const team = teams.find((t) => t.id === teamId)
+    const [, saveTeam] = useTeamAssign()
 
-    const onTeamSelected = useCallback((volunteerId, selectedTeamId) => {
-        console.log("select ", volunteerId, selectedTeamId)
-    }, [])
+    const onTeamSelected = useCallback(
+        (volunteerId, selectedTeamId) => {
+            saveTeam(volunteerId, selectedTeamId)
+        },
+        [saveTeam]
+    )
 
     if (!team) return null
 

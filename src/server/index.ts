@@ -29,6 +29,7 @@ import {
     volunteerParticipationDetailsSet,
     volunteerTeamWishesSet,
     volunteerDayWishesSet,
+    volunteerTeamAssignSet,
     volunteerListGet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
@@ -102,6 +103,7 @@ app.post(
 )
 app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
+app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
 
 // Push notification subscription
 app.post("/notifications/subscribe", notificationsSubscribe)
