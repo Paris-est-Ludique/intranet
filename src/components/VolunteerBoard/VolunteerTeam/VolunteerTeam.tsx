@@ -5,11 +5,13 @@ import useAction from "../../../utils/useAction"
 import styles from "./styles.module.scss"
 import { selectUserId } from "../../../store/auth"
 import { fetchVolunteerListIfNeed, selectVolunteerList } from "../../../store/volunteerList"
+import { selectTeamList } from "../../../store/teamList"
 
 const useUserTeam = () => {
     const userId = useSelector(selectUserId)
     const fetch = useAction(fetchVolunteerListIfNeed)
     const volunteers = useSelector(selectVolunteerList)
+    const teams = useSelector(selectTeamList)
 
     useEffect(() => {
         if (userId) fetch()
@@ -20,7 +22,7 @@ const useUserTeam = () => {
         [volunteers, userId]
     )
 
-    return user?.team
+    return useMemo(() => teams.find((t) => t?.id === user?.team), [user, teams])
 }
 
 const VolunteerTeam: FC = (): JSX.Element => {
@@ -29,8 +31,8 @@ const VolunteerTeam: FC = (): JSX.Element => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.title}>Mon équipe</div>
-            <TeamMembers teamId={team} />
+            <div className={styles.title}>Mon équipe : {team.name}</div>
+            <TeamMembers teamId={team.id} />
         </div>
     )
 }
