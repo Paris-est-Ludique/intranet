@@ -45,6 +45,8 @@ export const routerSelector = createSelector(selectRouter, (authData) => authDat
 
 export const selectUserRoles = createSelector(selectAuthData, (authData) => authData.roles)
 
+export const selectUserId = createSelector(selectAuthData, (authData) => authData.id)
+
 export const isUserConnected = createSelector(selectUserJwtToken, (token) => !!token)
 
 export default auth.reducer

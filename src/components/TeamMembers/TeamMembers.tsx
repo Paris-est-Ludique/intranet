@@ -7,6 +7,7 @@ import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
 import { Volunteer } from "../../services/volunteers"
 import { Team } from "../../services/teams"
+import withUserRole from "../../utils/withUserRole"
 
 interface ExtendedVolunteer extends Volunteer {
     teamObject: Team | undefined
@@ -25,6 +26,14 @@ const selectVolunteersWithTeam = createSelector(
 )
 
 const hasDay = (day: string) => (volunteer: Volunteer) => volunteer.dayWishes.includes(day)
+
+type VolunteerEmailProps = {
+    email: string
+}
+
+const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole("référent", ({ email }) => (
+    <div className={styles.volunteerEmail}>{email}</div>
+))
 
 type Props = {
     teamId: number
@@ -65,7 +74,7 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
                     >
                         D
                     </div>
-                    <div className={styles.volunteerEmail}>{volunteer.email}</div>
+                    <VolunteerEmail email={volunteer.email} />
                 </li>
             ))}
         </ul>

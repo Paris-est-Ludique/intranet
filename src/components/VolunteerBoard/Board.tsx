@@ -10,6 +10,7 @@ import ContentTitle from "../ui/Content/ContentTitle"
 import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
 import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
 import { fetchFor as fetchForTeamWishesForm } from "./TeamWishesForm/TeamWishesForm"
+import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
 
 const Board: FC = (): JSX.Element => (
     <>
@@ -20,6 +21,7 @@ const Board: FC = (): JSX.Element => (
         <ParticipationDetailsFormModal />
         <TeamWishes />
         <TeamWishesFormModal />
+        <VolunteerTeam />
     </>
 )
 
