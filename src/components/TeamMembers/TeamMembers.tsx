@@ -65,6 +65,7 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
                     >
                         D
                     </div>
+                    <div className={styles.volunteerEmail}>{volunteer.email}</div>
                 </li>
             ))}
         </ul>

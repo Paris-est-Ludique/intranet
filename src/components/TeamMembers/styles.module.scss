@@ -17,9 +17,15 @@ $height: 24px;
 .volunteerName {
     display: inline-block;
     height: $height;
-    width: 250px;
+    width: 230px;
     padding-right: 4px;
     text-align: right;
+}
+
+.volunteerEmail {
+    display: inline-block;
+    height: $height;
+    padding-left: 4px;
 }
 
 .dayTitle {
