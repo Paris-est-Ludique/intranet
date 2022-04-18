@@ -59,8 +59,8 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
     const [, saveTeam] = useTeamAssign()
 
     const onTeamSelected = useCallback(
-        (volunteerId, selectedTeamId) => {
-            saveTeam(volunteerId, selectedTeamId)
+        (volunteer, selectedTeamId) => {
+            saveTeam(volunteer, selectedTeamId)
         },
         [saveTeam]
     )
@@ -85,7 +85,7 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
                                     <button
                                         key={teamWish.id}
                                         type="button"
-                                        onClick={() => onTeamSelected(id, teamWish.id)}
+                                        onClick={() => onTeamSelected({ id, team }, teamWish.id)}
                                         className={classnames(
                                             styles.teamWishButton,
                                             active && styles.teamActive

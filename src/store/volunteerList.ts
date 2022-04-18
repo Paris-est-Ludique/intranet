@@ -48,6 +48,8 @@ export const fetchVolunteerListIfNeed = (): AppThunk => (dispatch, getState) => 
     return null
 }
 
+export const refreshVolunteerList = (): AppThunk => (dispatch) => dispatch(fetchVolunteerList())
+
 export const selectVolunteerListState = (state: AppState): EntitiesRequest<Volunteer> =>
     state.volunteerList
 

@@ -4,9 +4,11 @@ import { selectUserJwtToken } from "../../store/auth"
 import { AppState } from "../../store"
 import useAction from "../../utils/useAction"
 import { fetchVolunteerTeamAssignSet } from "../../store/volunteerTeamAssignSet"
+import { refreshVolunteerList } from "../../store/volunteerList"
 
 export const useTeamAssign = (): [any, any] => {
     const save = useAction(fetchVolunteerTeamAssignSet)
+    const refreshVolunteers = useAction(refreshVolunteerList)
     const jwtToken = useSelector(selectUserJwtToken)
     const teamSet = useSelector(
         (state: AppState) => state.volunteerTeamAssignSet?.entity,
@@ -14,13 +16,14 @@ export const useTeamAssign = (): [any, any] => {
     )
 
     const saveWishes = useCallback(
-        (volunteerId, teamId) => {
-            save(jwtToken, 0, {
-                volunteer: volunteerId,
-                team: teamId,
+        async (volunteer, teamId) => {
+            await save(jwtToken, 0, {
+                volunteer: volunteer.id,
+                team: volunteer.team === teamId ? 0 : teamId,
             })
+            refreshVolunteers()
         },
-        [save, jwtToken]
+        [save, refreshVolunteers, jwtToken]
     )
 
     return [teamSet, saveWishes]
