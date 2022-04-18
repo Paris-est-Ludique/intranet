@@ -30,6 +30,11 @@
 .teamWishButton {
     margin: 0 2px;
     padding: 2px;
+    color: $color-grey-dark;
+
+    &.teamCurrent {
+        color: $color-black;
+    }
 
     &.teamActive {
         font-weight: bold;

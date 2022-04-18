@@ -81,6 +81,7 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
                             </span>
                             {teamWishes.map((teamWish) => {
                                 const active = teamWish.id === team
+                                const current = teamWish.id === teamId
                                 return (
                                     <button
                                         key={teamWish.id}
@@ -88,6 +89,7 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
                                         onClick={() => onTeamSelected({ id, team }, teamWish.id)}
                                         className={classnames(
                                             styles.teamWishButton,
+                                            current && styles.teamCurrent,
                                             active && styles.teamActive
                                         )}
                                     >
