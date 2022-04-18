@@ -45,6 +45,10 @@ $height: 24px;
     background-color: $color-red;
     color: transparent;
 
+    &.unknown {
+        background-color: $color-grey-medium;
+    }
+
     &.available {
         background-color: $color-green;
     }

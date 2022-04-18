@@ -35,6 +35,31 @@ const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole("référent", ({ em
     <div className={styles.volunteerEmail}>{email}</div>
 ))
 
+type DaysAvailabilityProps = {
+    volunteer: Volunteer
+}
+
+const DaysAvailability: FC<DaysAvailabilityProps> = ({ volunteer }): JSX.Element => {
+    if (volunteer.dayWishes.length === 0) {
+        return (
+            <>
+                <div className={classnames(styles.day, styles.unknown)}>S</div>
+                <div className={classnames(styles.day, styles.unknown)}>D</div>
+            </>
+        )
+    }
+    return (
+        <>
+            <div className={classnames(styles.day, hasDay("S")(volunteer) && styles.available)}>
+                S
+            </div>
+            <div className={classnames(styles.day, hasDay("D")(volunteer) && styles.available)}>
+                D
+            </div>
+        </>
+    )
+}
+
 type Props = {
     teamId: number
 }
@@ -58,22 +83,7 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
                     <div className={styles.volunteerName}>
                         {volunteer.firstname} {volunteer.lastname}
                     </div>
-                    <div
-                        className={classnames(
-                            styles.day,
-                            hasDay("S")(volunteer) && styles.available
-                        )}
-                    >
-                        S
-                    </div>
-                    <div
-                        className={classnames(
-                            styles.day,
-                            hasDay("D")(volunteer) && styles.available
-                        )}
-                    >
-                        D
-                    </div>
+                    <DaysAvailability volunteer={volunteer} />
                     <VolunteerEmail email={volunteer.email} />
                 </li>
             ))}
