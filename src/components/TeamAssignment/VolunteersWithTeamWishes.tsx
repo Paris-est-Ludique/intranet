@@ -1,11 +1,11 @@
 import { FC, memo } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "@reduxjs/toolkit"
-import { selectVolunteerList } from "../../store/volunteerList"
+import { selectVolunteerListAlphaSorted } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
 
 const selectVolunteersWithTeamWishes = createSelector(
-    selectVolunteerList,
+    selectVolunteerListAlphaSorted,
     selectTeamList,
     (volunteers, teams) =>
         volunteers

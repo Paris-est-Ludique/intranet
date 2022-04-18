@@ -2,14 +2,14 @@ import { FC, memo, useCallback } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "@reduxjs/toolkit"
 import classnames from "classnames"
-import { selectVolunteerList } from "../../store/volunteerList"
+import { selectVolunteerListAlphaSorted } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
 import { useTeamAssign } from "./teamAssign.utils"
 import TeamMembers from "../TeamMembers/TeamMembers"
 
 const selectTeamsWithVolunteersCandidates = createSelector(
-    selectVolunteerList,
+    selectVolunteerListAlphaSorted,
     selectTeamList,
     (volunteers, teams) =>
         teams.map(({ id, name }: any) => {

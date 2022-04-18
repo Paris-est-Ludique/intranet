@@ -60,3 +60,9 @@ export const selectVolunteerList = createSelector(
         return ids.map((id) => entities[id]) as Volunteer[]
     }
 )
+
+const fullName = (volunteer: Volunteer) => `${volunteer.firstname} ${volunteer.lastname}`
+
+export const selectVolunteerListAlphaSorted = createSelector(selectVolunteerList, (volunteer) =>
+    [...volunteer].sort((vA, vB) => fullName(vA).localeCompare(fullName(vB)))
+)

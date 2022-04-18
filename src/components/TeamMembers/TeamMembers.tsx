@@ -2,7 +2,7 @@ import { FC } from "react"
 import { createSelector } from "@reduxjs/toolkit"
 import { useSelector } from "react-redux"
 import classnames from "classnames"
-import { selectVolunteerList } from "../../store/volunteerList"
+import { selectVolunteerListAlphaSorted } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
 import { Volunteer } from "../../services/volunteers"
@@ -14,7 +14,7 @@ interface ExtendedVolunteer extends Volunteer {
 }
 
 const selectVolunteersWithTeam = createSelector(
-    selectVolunteerList,
+    selectVolunteerListAlphaSorted,
     selectTeamList,
     (volunteers, teams): ExtendedVolunteer[] =>
         volunteers
