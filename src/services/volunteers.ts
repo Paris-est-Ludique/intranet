@@ -139,6 +139,11 @@ export interface VolunteerForgot {
     message: string
 }
 
+export interface VolunteerDiscordId {
+    id: Volunteer["id"]
+    discordId: Volunteer["discordId"]
+}
+
 export interface VolunteerAsks {
     id: Volunteer["id"]
     firstname: Volunteer["firstname"]

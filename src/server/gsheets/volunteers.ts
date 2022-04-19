@@ -23,8 +23,19 @@ const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
 )
 
 export const volunteerListGet = expressAccessor.listGet()
-// export const volunteerAdd = expressAccessor.add()
 export const volunteerSet = expressAccessor.set()
+
+export const volunteerDiscordId = expressAccessor.get(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    if (requestedId !== id && requestedId !== 0) {
+        throw Error(`On ne peut acceder qu'à ses propres envies de jours`)
+    }
+    const volunteer = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    return _.pick(volunteer, "id", "discordId")
+})
 
 export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
     const params = body[0]

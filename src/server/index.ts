@@ -22,10 +22,11 @@ import { gameListGet } from "./gsheets/games"
 import { postulantAdd } from "./gsheets/postulants"
 import { teamListGet } from "./gsheets/teams"
 import {
+    volunteerAsksSet,
     volunteerDayWishesSet,
     volunteerForgot,
+    volunteerDiscordId,
     volunteerLogin,
-    volunteerAsksSet,
     volunteerPartialAdd,
     volunteerParticipationDetailsSet,
     volunteerSet,
@@ -92,7 +93,7 @@ app.post("/VolunteerForgot", volunteerForgot)
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
-// UNSAFE app.post("/VolunteerGet", secure as RequestHandler, volunteerGet)
+app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
 app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
 app.post(
     "/VolunteerParticipationDetailsSet",

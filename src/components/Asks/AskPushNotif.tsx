@@ -191,7 +191,7 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
         volunteerAsks,
         true,
         needToShow,
-        <div className={styles.formLine} key="line-participation">
+        <div className={styles.formLine}>
             <label>
                 Acceptes-tu de recevoir une alerte dans ton navigateur quand on en aura
                 d&apos;autres à t'afficher ici ?<br />

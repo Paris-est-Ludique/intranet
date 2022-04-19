@@ -7,4 +7,4 @@ const serviceAccessors = new ServiceAccessors<AnnouncementWithoutId, Announcemen
 // export const announcementAdd = serviceAccessors.add()
 // export const announcementSet = serviceAccessors.set()
 
-export const announcementListGet = serviceAccessors.secureListGet()
+export const announcementListGet = serviceAccessors.securedListGet()

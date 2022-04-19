@@ -3,19 +3,21 @@ import React, { memo } from "react"
 import styles from "./styles.module.scss"
 import { useAskTools } from "./utils"
 import { AskWelcome } from "./AskWelcome"
-import { AskPushNotif } from "./AskPushNotif"
+import { AskDiscord, fetchFor as fetchForDiscord } from "./AskDiscord"
 import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
 import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
 import {
     AskParticipationDetails,
     fetchFor as fetchForParticipationDetails,
 } from "./AskParticipationDetails"
+import { AskPushNotif } from "./AskPushNotif"
 
 const Asks = (): JSX.Element | null => {
     const { volunteerAsks } = useAskTools()
     const asks: JSX.Element[] = []
 
     AskWelcome(asks, 1)
+    AskDiscord(asks, 3)
 
     AskDayWishes(asks, 10)
     AskTeamWishes(asks, 11)
@@ -28,7 +30,7 @@ const Asks = (): JSX.Element | null => {
             <div key="pushNotifs">
                 <div className={styles.notificationsPage}>
                     <div className={styles.notificationsContent}>
-                        <div className={styles.formLine} key="line-participation">
+                        <div className={styles.formLine}>
                             <label>
                                 Tu as fait le tour des dernières infos ou questions importantes,
                                 merci ! :)
@@ -54,6 +56,7 @@ export default memo(Asks)
 
 // Fetch server-side data here
 export const fetchFor = [
+    ...fetchForDiscord,
     ...fetchForDayWishes,
     ...fetchForTeamWishes,
     ...fetchForParticipationDetails,

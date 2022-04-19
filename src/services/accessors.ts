@@ -64,7 +64,7 @@ export default class ServiceAccessors<
         }
     }
 
-    secureListGet(): (jwt: string) => Promise<{
+    securedListGet(): (jwt: string) => Promise<{
         data?: Element[]
         error?: Error
     }> {
@@ -181,6 +181,37 @@ export default class ServiceAccessors<
                     `${config.API_URL}/${this.elementName}${apiName}`,
                     params,
                     axiosConfig
+                )
+                if (data.error) {
+                    throw Error(data.error)
+                }
+                return { data }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
+    securedCustomGet<InputElements extends Array<any>>(
+        apiName: string
+    ): (
+        jwt: string,
+        ...params: InputElements
+    ) => Promise<{
+        data?: any
+        error?: Error
+    }> {
+        interface ElementGetResponse {
+            data?: any
+            error?: Error
+        }
+        return async (jwt: string, ...params: InputElements): Promise<ElementGetResponse> => {
+            try {
+                const auth = { headers: { Authorization: `Bearer ${jwt}` } }
+                const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
+                const { data } = await axios.get(
+                    `${config.API_URL}/${this.elementName}${apiName}`,
+                    { ...fullAxiosConfig, params }
                 )
                 if (data.error) {
                     throw Error(data.error)

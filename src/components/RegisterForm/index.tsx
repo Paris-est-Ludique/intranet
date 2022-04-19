@@ -778,7 +778,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     {meeting}
                     {helpBefore}
                     {pelMemberQuestion}
-                    {pelMember && (
+                    {(potentialVolunteer || pelMember) && (
                         <>
                             {nameMobileEmail}
                             {howToContact !== "Aucun" && submitButton}

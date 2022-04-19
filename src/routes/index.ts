@@ -8,7 +8,6 @@ import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
 import AsyncVolunteers, { loadData as loadVolunteersData } from "../pages/Volunteers"
 import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
-import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
 import Forgot from "../pages/Forgot"
 import NotFound from "../pages/NotFound"
@@ -32,11 +31,6 @@ export default [
                 path: "/sinscrire",
                 component: AsyncRegisterPage,
                 loadData: loadRegisterPage,
-            },
-            {
-                path: "/VolunteerPage/:id",
-                component: AsyncVolunteerPage,
-                loadData: loadVolunteerPageData,
             },
             {
                 path: "/login",

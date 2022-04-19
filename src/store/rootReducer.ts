@@ -7,8 +7,8 @@ import announcementList from "./announcementList"
 import postulantAdd from "./postulantAdd"
 import teamList from "./teamList"
 import ui from "./ui"
-import volunteer from "./volunteer"
 import volunteerAdd from "./volunteerPartialAdd"
+import volunteerDiscordId from "./volunteerDiscordId"
 import volunteerList from "./volunteerList"
 import volunteerSet from "./volunteerSet"
 import volunteerLogin from "./volunteerLogin"
@@ -29,8 +29,8 @@ export default (history: History) => ({
     postulantAdd,
     teamList,
     ui,
-    volunteer,
     volunteerAdd,
+    volunteerDiscordId,
     volunteerList,
     volunteerSet,
     volunteerLogin,

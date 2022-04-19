@@ -34,7 +34,7 @@ export function addAsk(
     volunteerAsks: VolunteerAsks | undefined,
     isNarrow: boolean,
     needToShow: boolean,
-    children: JSX.Element
+    children: JSX.Element | undefined
 ): void {
     const hidden = volunteerAsks?.hiddenAsks || []
     if (_.includes(hidden, id) || !_.isEmpty(asks) || !needToShow) {
