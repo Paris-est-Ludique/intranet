@@ -4,12 +4,11 @@ import App from "../app"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/Announcements"
 import AsyncTeamAssignment, { loadData as loadTeamAssignmentData } from "../pages/TeamAssignment"
-import AsyncPreRegisterPage, { loadData as loadPreRegisterPage } from "../pages/PreRegister"
+import AsyncRegisterPage, { loadData as loadRegisterPage } from "../pages/Register"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
 import AsyncVolunteers, { loadData as loadVolunteersData } from "../pages/Volunteers"
 import AsyncWish, { loadData as loadWishData } from "../pages/Wish"
-import AsyncVolunteerPage, { loadData as loadVolunteerPageData } from "../pages/VolunteerPage"
 import Login from "../pages/Login"
 import Forgot from "../pages/Forgot"
 import NotFound from "../pages/NotFound"
@@ -26,18 +25,13 @@ export default [
             },
             {
                 path: "/preRegister",
-                component: AsyncPreRegisterPage,
-                loadData: loadPreRegisterPage,
+                component: AsyncRegisterPage,
+                loadData: loadRegisterPage,
             },
             {
                 path: "/sinscrire",
-                component: AsyncPreRegisterPage,
-                loadData: loadPreRegisterPage,
-            },
-            {
-                path: "/VolunteerPage/:id",
-                component: AsyncVolunteerPage,
-                loadData: loadVolunteerPageData,
+                component: AsyncRegisterPage,
+                loadData: loadRegisterPage,
             },
             {
                 path: "/login",

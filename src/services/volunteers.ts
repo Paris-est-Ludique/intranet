@@ -1,4 +1,5 @@
-export class Volunteer {
+/* eslint-disable max-classes-per-file */
+export class Volunteer implements VolunteerPartial {
     id = 0
 
     lastname = ""
@@ -9,7 +10,7 @@ export class Volunteer {
 
     mobile = ""
 
-    photo = ""
+    photo = "anonyme.png"
 
     adult = 1
 
@@ -23,17 +24,23 @@ export class Volunteer {
 
     dayWishesComment = ""
 
-    tshirtCount = ""
+    tshirtCount = 0
 
     tshirtSize = ""
 
-    food = ""
+    food = "Aucune"
 
     team = 0
 
     teamWishes: number[] = []
 
     teamWishesComment = ""
+
+    howToContact = ""
+
+    canHelpBefore = ""
+
+    pelMember = false
 
     hiddenAsks: number[] = []
 
@@ -67,12 +74,25 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     team: "équipe",
     teamWishes: "enviesEquipe",
     teamWishesComment: "commentaireEnviesEquipe",
+    howToContact: "commentContacter",
+    canHelpBefore: "aideEnAmont",
+    pelMember: "membrePel",
     hiddenAsks: "questionsCachees",
     created: "creation",
     password1: "passe1",
     password2: "passe2",
     pushNotifSubscription: "pushNotifSubscription",
     acceptsNotifs: "accepteLesNotifs",
+}
+
+export class VolunteerPartial {
+    lastname = ""
+
+    firstname = ""
+
+    email = ""
+
+    mobile = ""
 }
 
 export const elementName = "Volunteer"
@@ -90,12 +110,15 @@ export const volunteerExample: Volunteer = {
     discordId: "",
     dayWishes: [],
     dayWishesComment: "",
-    tshirtCount: "1",
+    tshirtCount: 1,
     tshirtSize: "Femme M",
     food: "Végétarien",
     team: 2,
     teamWishes: [],
     teamWishesComment: "",
+    howToContact: "",
+    canHelpBefore: "",
+    pelMember: false,
     hiddenAsks: [],
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
@@ -118,6 +141,11 @@ export interface VolunteerLogin {
 
 export interface VolunteerForgot {
     message: string
+}
+
+export interface VolunteerDiscordId {
+    id: Volunteer["id"]
+    discordId: Volunteer["discordId"]
 }
 
 export interface VolunteerAsks {

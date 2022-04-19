@@ -7,7 +7,7 @@ import { SheetNames, saveLocalDb, loadLocalDb } from "./localDb"
 
 export { SheetNames } from "./localDb"
 
-// Test write attack with: wget --header='Content-Type:application/json' --post-data='{"prenom":"Pierre","nom":"SCELLES","email":"test@gmail.com","telephone":"0601010101","dejaBenevole":false,"commentaire":""}' http://localhost:3000/PreVolunteerAdd
+// Test write attack with: wget --header='Content-Type:application/json' --post-data='{"prenom":"Pierre","nom":"SCELLES","email":"test@gmail.com","telephone":"0601010101","dejaBenevole":false,"commentaire":""}' http://localhost:3000/PostulantAdd
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
@@ -122,7 +122,7 @@ export class Sheet<
         return (_.max(ids) || 0) + 1
     }
 
-    async add(elementWithoutId: ElementNoId): Promise<Element> {
+    async add(elementWithoutId: Omit<Element, "id">): Promise<Element> {
         const elements: Element[] = (await this.getList()) || []
         // eslint-disable-next-line @typescript-eslint/ban-types
         const element: Element = { id: await this.nextId(), ...elementWithoutId } as Element
@@ -604,7 +604,7 @@ async function tryNTimes<T>(
         return await func()
     } catch (e: any) {
         console.error(e?.error || e?.message || e)
-        console.error(`${repeatCount} attemps left every ${delayBetweenAttempts}`)
+        console.error(`${repeatCount} attempts left every ${delayBetweenAttempts}`)
         await new Promise<void>((resolve) => {
             setTimeout(() => resolve(), delayBetweenAttempts)
         })

@@ -14,7 +14,7 @@ import {
     VolunteerParticipationDetails,
     VolunteerTeamAssign,
 } from "../../services/volunteers"
-import { canonicalEmail } from "../../utils/standardization"
+import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
 
 const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
@@ -24,8 +24,73 @@ const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
 )
 
 export const volunteerListGet = expressAccessor.listGet()
-export const volunteerAdd = expressAccessor.add()
 export const volunteerSet = expressAccessor.set()
+
+export const volunteerDiscordId = expressAccessor.get(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    if (requestedId !== id && requestedId !== 0) {
+        throw Error(`On ne peut acceder qu'à ses propres envies de jours`)
+    }
+    const volunteer = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    return _.pick(volunteer, "id", "discordId")
+})
+
+export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
+    const params = body[0]
+    const volunteer = getByEmail(list, params.email)
+    if (volunteer) {
+        throw Error(
+            "Il y a déjà un bénévole avec cet email. Mieux vaut redemander un mot de passe si tu l'as oublié."
+        )
+    }
+    if (!validMobile(params.mobile)) {
+        throw Error("Numéro de téléphone invalide, contacter pierre.scelles@gmail.com")
+    }
+
+    const password = generatePassword()
+    const passwordHash = await bcrypt.hash(password, 10)
+
+    const newVolunteer = _.omit(new Volunteer(), "id")
+
+    _.assign(newVolunteer, {
+        lastname: trim(params.lastname),
+        firstname: trim(params.firstname),
+        email: trim(params.email),
+        mobile: canonicalMobile(params.mobile),
+        howToContact: trim(params.howToContact),
+        canHelpBefore: trim(params.canHelpBefore),
+        pelMember: params.pelMember === true,
+        password1: passwordHash,
+        password2: passwordHash,
+    })
+
+    await sendSignUpEmail(newVolunteer.email, password)
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {},
+    }
+})
+
+async function sendSignUpEmail(email: string, password: string): Promise<void> {
+    const apiKey = process.env.SENDGRID_API_KEY || ""
+    if (__DEV__ || apiKey === "") {
+        console.error(`Fake sending signup email to ${email} with password ${password}`)
+    } else {
+        sgMail.setApiKey(apiKey)
+        const msg = {
+            to: email,
+            from: "contact@parisestludique.fr",
+            subject: "Accès au site des bénévoles de Paris est Ludique",
+            text: `Ton inscription est bien enregistrée, l'aventure PeL peut commencer ! :)\nVoici ton mot de passe pour accéder au site des bénévoles où tu t'es inscrit.e : ${password}\nTu y trouveras notamment comment on communique entre bénévoles.\nBonne journée !\nPierre`,
+            html: `Ton inscription est bien enregistrée, l'aventure PeL peut commencer ! :)<br />Voici ton mot de passe pour accéder au <a href="https://fo.parisestludique.fr/">site des bénévoles</a> : <strong>${password}</strong><br />Tu y trouveras notamment comment on communique entre bénévoles.<br />Bonne journée !<br />Pierre`,
+        }
+        await sgMail.send(msg)
+    }
+}
 
 export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, bodyArray) => {
     const [body] = bodyArray

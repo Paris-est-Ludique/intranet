@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
-import { StateRequest, toastError, toastSuccess, elementAddFetch } from "./utils"
+import { StateRequest, elementAddFetch } from "./utils"
 import { Volunteer } from "../services/volunteers"
-import { volunteerAdd } from "../services/volunteersAccessors"
+import { volunteerPartialAdd } from "../services/volunteersAccessors"
 
 const volunteerAdapter = createEntityAdapter<Volunteer>()
 
-const volunteerAddSlice = createSlice({
-    name: "addVolunteer",
+const volunteerPartialAddSlice = createSlice({
+    name: "volunteerAdd",
     initialState: volunteerAdapter.getInitialState({
         readyStatus: "idle",
     } as StateRequest),
@@ -17,7 +17,7 @@ const volunteerAddSlice = createSlice({
         },
         getSuccess: (state, { payload }: PayloadAction<Volunteer>) => {
             state.readyStatus = "success"
-            volunteerAdapter.addOne(state, payload)
+            volunteerAdapter.setOne(state, payload)
         },
         getFailure: (state, { payload }: PayloadAction<string>) => {
             state.readyStatus = "failure"
@@ -26,14 +26,14 @@ const volunteerAddSlice = createSlice({
     },
 })
 
-export default volunteerAddSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerAddSlice.actions
+export default volunteerPartialAddSlice.reducer
+export const { getRequesting, getSuccess, getFailure } = volunteerPartialAddSlice.actions
 
-export const fetchVolunteerAdd = elementAddFetch(
-    volunteerAdd,
+export const fetchVolunteerPartialAdd = elementAddFetch(
+    volunteerPartialAdd,
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors de l'ajout d'un bénévole: ${error.message}`),
-    () => toastSuccess("Volunteer ajoutée !")
+    () => null,
+    () => null
 )

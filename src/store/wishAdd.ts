@@ -7,7 +7,7 @@ import { wishAdd } from "../services/wishesAccessors"
 const wishAdapter = createEntityAdapter<Wish>()
 
 const wishAddSlice = createSlice({
-    name: "addWish",
+    name: "wishAdd",
     initialState: wishAdapter.getInitialState({
         readyStatus: "idle",
     } as StateRequest),

@@ -35,9 +35,9 @@ export const auth = createSlice({
 
 export const { setCurrentUser, logoutUser } = auth.actions
 
-export const selectAuthData = (state: AppState): AuthState => state.auth
+const selectAuthData = (state: AppState): AuthState => state.auth
 
-export const selectRouter = (state: AppState): AppState["router"] => state.router
+const selectRouter = (state: AppState): AppState["router"] => state.router
 
 export const selectUserJwtToken = createSelector(selectAuthData, (authData) => authData.jwt)
 
