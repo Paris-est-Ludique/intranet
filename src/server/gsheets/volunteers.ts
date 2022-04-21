@@ -23,7 +23,12 @@ const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
     translationVolunteer
 )
 
-export const volunteerListGet = expressAccessor.listGet()
+export const volunteerListGet = expressAccessor.get(async (list, _body, id) => {
+    if (id <= 0) {
+        throw Error(`L'accès est réservé aux utilisateurs identifiés`)
+    }
+    return list
+})
 export const volunteerSet = expressAccessor.set()
 
 export const volunteerDiscordId = expressAccessor.get(async (list, body, id) => {
@@ -174,8 +179,8 @@ async function sendForgetEmail(email: string, password: string): Promise<void> {
             to: email,
             from: "contact@parisestludique.fr",
             subject: "Nouveau mot de passe pour le site bénévole de Paris est Ludique",
-            text: `Voici le nouveau mot de passe : ${password}\nL'ancien fonctionne encore, si tu t'en rappelles.`,
-            html: `Voici le nouveau mot de passe : <strong>${password}</strong><br />L'ancien fonctionne encore, si tu t'en rappelles.`,
+            text: `Voici le nouveau mot de passe : ${password}\nPour te connecter à https://fo.parisestludique.fr`,
+            html: `Voici le nouveau mot de passe : <strong>${password}</strong>\nPour te connecter à <a href="https://fo.parisestludique.fr">https://fo.parisestludique.fr</a>`,
         }
         await sgMail.send(msg)
     }

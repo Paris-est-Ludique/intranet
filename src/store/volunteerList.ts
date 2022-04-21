@@ -42,13 +42,23 @@ export const fetchVolunteerList = elementListFetch(
 
 const shouldFetchVolunteerList = (state: AppState) => state.volunteerList.readyStatus !== "success"
 
-export const fetchVolunteerListIfNeed = (): AppThunk => (dispatch, getState) => {
-    if (shouldFetchVolunteerList(getState())) return dispatch(fetchVolunteerList())
+export const fetchVolunteerListIfNeed =
+    (id = 0): AppThunk =>
+    (dispatch, getState) => {
+        let jwt = ""
 
-    return null
-}
+        if (!id) {
+            ;({ jwt, id } = getState().auth)
+        }
+        if (shouldFetchVolunteerList(getState())) return dispatch(fetchVolunteerList(jwt))
 
-export const refreshVolunteerList = (): AppThunk => (dispatch) => dispatch(fetchVolunteerList())
+        return null
+    }
+
+export const refreshVolunteerList =
+    (jwt: string): AppThunk =>
+    (dispatch) =>
+        dispatch(fetchVolunteerList(jwt))
 
 export const selectVolunteerListState = (state: AppState): EntitiesRequest<Volunteer> =>
     state.volunteerList

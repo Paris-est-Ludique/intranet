@@ -12,7 +12,7 @@ import {
 
 const serviceAccessors = new ServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
 
-export const volunteerListGet = serviceAccessors.listGet()
+export const volunteerListGet = serviceAccessors.securedListGet()
 export const volunteerDiscordIdGet = serviceAccessors.securedCustomGet<[number]>("DiscordId")
 export const volunteerPartialAdd = serviceAccessors.customPost<[Partial<Volunteer>]>("PartialAdd")
 export const volunteerSet = serviceAccessors.set()

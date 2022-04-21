@@ -90,7 +90,7 @@ app.post("/PostulantAdd", postulantAdd)
 app.post("/VolunteerPartialAdd", volunteerPartialAdd)
 app.post("/VolunteerLogin", volunteerLogin)
 app.post("/VolunteerForgot", volunteerForgot)
-app.get("/VolunteerListGet", volunteerListGet)
+app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
 
 // Secured APIs
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)

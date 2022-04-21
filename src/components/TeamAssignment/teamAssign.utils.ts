@@ -21,7 +21,7 @@ export const useTeamAssign = (): [any, any] => {
                 volunteer: volunteer.id,
                 team: volunteer.team === teamId ? 0 : teamId,
             })
-            refreshVolunteers()
+            refreshVolunteers(jwtToken)
         },
         [save, refreshVolunteers, jwtToken]
     )
