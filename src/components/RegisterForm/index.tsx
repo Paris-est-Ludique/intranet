@@ -448,7 +448,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         répondre à toutes tes questions liées au bénévolat ou au festival.
                     </p>
                     <p>
-                        Ces rencontres ont lieu dans un bar/resto calme à Châtelet, le{" "}
+                        Ces rencontres ont lieu à 19h dans un bar/resto calme à Châtelet, le{" "}
                         <a
                             href="https://goo.gl/maps/N5NYWDF66vNQDFMh8"
                             target="_blank"
@@ -470,8 +470,10 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 <div className={styles.rightCol}>
                     <div className={styles.rightColContainer}>
                         {[
-                            { value: "20avril", desc: "Mercredi 20 avril à 19h" },
-                            { value: "13mai", desc: "Vendredi 13 mai à 19h30" },
+                            { value: "13mai", desc: "Vendredi 13 mai" },
+                            { value: "24mai", desc: "Mardi 24 mai" },
+                            { value: "1juin", desc: "Mercredi 1er juin" },
+                            { value: "9juin", desc: "Jeudi 9 juin" },
                             { value: "", desc: "Aucune date possible" },
                         ].map((option) => (
                             <label className={styles.longAnswerLabel} key={option.value}>
@@ -718,7 +720,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 </div>
                 <div className={styles.rightCol}>
                     <div className={styles.rightColContainer}>
-                        {["Email", "SMS", "WhatsApp", "Signal", "Appel", "Aucun"].map((option) => (
+                        {["WhatsApp", "Signal", "SMS", "Email", "Appel", "Aucun"].map((option) => (
                             <label className={styles.shortAnswerLabel} key={option}>
                                 <input
                                     type="radio"
@@ -737,12 +739,12 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 <dl className={styles.registerIntro}>
                     <dd>
                         <p>
-                            Aïe ça va poser problème, je suis désolé. Il faut faire un effort en
-                            choisissant un moyen de communication proposé.
+                            Aïe ça va poser problème, je suis désolé. Il faut qu'on puisse te
+                            contacter par l'un des moyens de communication proposés.
                         </p>
                         <p>
                             Tu en connais un suffisamment répandu et meilleur que ceux proposés ?
-                            Parle-nous en à benevoles@parisestludique.fr :)
+                            Parle-nous en à benevoles@parisestludique.fr !!
                         </p>
                     </dd>
                 </dl>

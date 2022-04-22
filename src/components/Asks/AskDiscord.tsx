@@ -11,7 +11,7 @@ import {
 
 export function AskDiscord(asks: JSX.Element[], id: number): void {
     const { dispatch, jwtToken, volunteerAsks } = useAskTools()
-    const discordId: number | undefined = useSelector(selectVolunteerDiscordId)
+    const discordId: string | undefined = useSelector(selectVolunteerDiscordId)
 
     const onSubmit = useCallback((): void => {
         dispatch(

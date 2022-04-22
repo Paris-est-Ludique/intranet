@@ -61,5 +61,5 @@ export const fetchVolunteerDiscordIdIfNeed =
 
 export const selectVolunteerDiscordId = createSelector(
     (state: AppState) => state,
-    (state): number | undefined => state.volunteerDiscordId?.entity?.id
+    (state): string | undefined => state.volunteerDiscordId?.entity?.discordId
 )
