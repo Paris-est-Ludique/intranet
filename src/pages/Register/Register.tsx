@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { Helmet } from "react-helmet"
 
 import { AppThunk } from "../../store"
-import { RegisterForm } from "../../components"
+import { RegisterForm, fetchForRegisterForm } from "../../components"
 import styles from "./styles.module.scss"
 
 export type Props = RouteComponentProps
@@ -22,6 +22,6 @@ const RegisterPage: FC<Props> = (): JSX.Element => {
 }
 
 // Fetch server-side data here
-export const loadData = (): AppThunk[] => []
+export const loadData = (): AppThunk[] => [...fetchForRegisterForm.map((f) => f())]
 
 export default memo(RegisterPage)

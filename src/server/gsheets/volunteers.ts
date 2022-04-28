@@ -155,7 +155,7 @@ export const volunteerForgot = expressAccessor.set(async (list, bodyArray) => {
     return {
         toDatabase: newVolunteer,
         toCaller: {
-            message: `Un nouveau mot de passe t'a été envoyé par email. Regarde bien dans les spams, il pourrait y être :/`,
+            message: `Un nouveau mot de passe t'a été envoyé par email. Regarde bien dans les spams, il pourrait y être ><`,
         },
     }
 })

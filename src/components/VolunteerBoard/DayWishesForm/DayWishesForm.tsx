@@ -1,4 +1,5 @@
 import { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from "react"
+import { useSelector } from "react-redux"
 import classnames from "classnames"
 import get from "lodash/get"
 import set from "lodash/set"
@@ -12,6 +13,10 @@ import {
 import FormButton from "../../Form/FormButton/FormButton"
 import { fetchVolunteerDayWishesSetIfNeed } from "../../../store/volunteerDayWishesSet"
 import IgnoreButton from "../../Form/IgnoreButton/IgnoreButton"
+import {
+    fetchMiscDiscordInvitationIfNeed,
+    selectMiscDiscordInvitation,
+} from "../../../store/miscDiscordInvitation"
 
 type Props = {
     children?: ReactNode | undefined
@@ -23,6 +28,7 @@ const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     const [selection, setSelection] = useState(daysChoiceSelectionDefaultState)
     const commentRef = useRef<HTMLTextAreaElement | null>(null)
     const [userWishes, saveWishes] = useUserDayWishes()
+    const discordInvitation = useSelector(selectMiscDiscordInvitation)
 
     const onParticipationChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setParticipation(e.target.value)
@@ -107,11 +113,7 @@ const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                     <br />
                     Si tu as besoin d&apos;infos, viens nous en parler sur le serveur Discord ! Pour
                     le rejoindre,{" "}
-                    <a
-                        href="https://discord.com/invite/eXhjKxSBB4"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
+                    <a href={discordInvitation} target="_blank" rel="noreferrer">
                         clique ici{" "}
                     </a>
                     .
@@ -179,4 +181,4 @@ DayWishesForm.defaultProps = {
 export default memo(DayWishesForm)
 
 // Fetch server-side data here
-export const fetchFor = [fetchVolunteerDayWishesSetIfNeed]
+export const fetchFor = [fetchVolunteerDayWishesSetIfNeed, fetchMiscDiscordInvitationIfNeed]

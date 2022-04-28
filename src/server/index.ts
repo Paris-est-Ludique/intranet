@@ -40,6 +40,7 @@ import { notificationsSubscribe, notificationMain } from "./notifications"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
 import { addStatus, showStatusAt } from "./status"
+import { miscMeetingDateListGet, miscDiscordInvitation } from "./gsheets/miscs"
 
 checkAccess()
 
@@ -84,6 +85,7 @@ app.get(
  */
 // Google Sheets API
 app.get("/GameListGet", gameListGet)
+app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
 app.post("/PostulantAdd", postulantAdd)
@@ -94,6 +96,7 @@ app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
 
 // Secured APIs
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
+app.get("/MiscDiscordInvitationGet", secure as RequestHandler, miscDiscordInvitation)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)

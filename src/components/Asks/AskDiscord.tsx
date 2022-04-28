@@ -8,10 +8,15 @@ import {
     fetchVolunteerDiscordIdIfNeed,
     selectVolunteerDiscordId,
 } from "../../store/volunteerDiscordId"
+import {
+    fetchMiscDiscordInvitationIfNeed,
+    selectMiscDiscordInvitation,
+} from "../../store/miscDiscordInvitation"
 
 export function AskDiscord(asks: JSX.Element[], id: number): void {
     const { dispatch, jwtToken, volunteerAsks } = useAskTools()
     const discordId: string | undefined = useSelector(selectVolunteerDiscordId)
+    const discordInvitation = useSelector(selectMiscDiscordInvitation)
 
     const onSubmit = useCallback((): void => {
         dispatch(
@@ -38,8 +43,8 @@ export function AskDiscord(asks: JSX.Element[], id: number): void {
                 totalement via la gestion des notifications.
                 <br />
                 Pour rejoindre le serveur PeL, voici le lien d'invitation à cliquer :{" "}
-                <a href="https://discord.gg/eXhjKxSBB4" onClick={onSubmit}>
-                    https://discord.gg/eXhjKxSBB4
+                <a href={discordInvitation} onClick={onSubmit}>
+                    {discordInvitation}
                 </a>{" "}
                 !
             </p>
@@ -64,4 +69,4 @@ export function AskDiscord(asks: JSX.Element[], id: number): void {
 }
 
 // Fetch server-side data here
-export const fetchFor = [fetchVolunteerDiscordIdIfNeed]
+export const fetchFor = [fetchVolunteerDiscordIdIfNeed, fetchMiscDiscordInvitationIfNeed]

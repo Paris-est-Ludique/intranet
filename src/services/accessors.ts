@@ -165,6 +165,32 @@ export default class ServiceAccessors<
         }
     }
 
+    customGet<InputElements extends Array<any>, OutputType>(
+        apiName: string
+    ): (...params: InputElements) => Promise<{
+        data?: any
+        error?: Error
+    }> {
+        interface ElementGetResponse {
+            data?: any
+            error?: Error
+        }
+        return async (...params: InputElements): Promise<ElementGetResponse> => {
+            try {
+                const { data } = await axios.get(
+                    `${config.API_URL}/${this.elementName}${apiName}`,
+                    { ...axiosConfig, params }
+                )
+                if (data.error) {
+                    throw Error(data.error)
+                }
+                return { data } as { data: OutputType }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
     customPost<InputElements extends Array<any>>(
         apiName: string
     ): (...params: InputElements) => Promise<{
@@ -192,7 +218,7 @@ export default class ServiceAccessors<
         }
     }
 
-    securedCustomGet<InputElements extends Array<any>>(
+    securedCustomGet<InputElements extends Array<any>, OutputType>(
         apiName: string
     ): (
         jwt: string,
@@ -216,7 +242,7 @@ export default class ServiceAccessors<
                 if (data.error) {
                     throw Error(data.error)
                 }
-                return { data }
+                return { data } as { data: OutputType }
             } catch (error) {
                 return { error: error as Error }
             }

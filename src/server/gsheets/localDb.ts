@@ -14,6 +14,8 @@ export class SheetNames {
 
     Games = "Jeux"
 
+    Miscs = "Divers"
+
     Postulants = "Postulants"
 
     Teams = "Equipes"

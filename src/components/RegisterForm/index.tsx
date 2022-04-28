@@ -11,6 +11,10 @@ import { fetchVolunteerPartialAdd } from "../../store/volunteerPartialAdd"
 import FormButton from "../Form/FormButton/FormButton"
 import { validEmail } from "../../utils/standardization"
 import { toastError } from "../../store/utils"
+import {
+    fetchMiscMeetingDateListIfNeed,
+    selectMiscMeetingDateList,
+} from "../../store/miscMeetingDateList"
 
 interface Props {
     dispatch: AppDispatch
@@ -42,6 +46,8 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [howToContact, setHowToContact] = useState("Email")
     const [sending, setSending] = useState(false)
     const [changingBackground, setChangingBackground] = useState(0)
+
+    const meetingDateList = useSelector(selectMiscMeetingDateList)
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -456,6 +462,14 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         >
                             Street Food Market
                         </a>
+                        , ou à une soirée festive à 2 pas du lieu du festival, aux{" "}
+                        <a
+                            href="https://www.captainturtle.fr/aperos-petanque-paris/"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            apéros de la pétanque
+                        </a>
                         .
                     </p>
                 </dd>
@@ -469,13 +483,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 </div>
                 <div className={styles.rightCol}>
                     <div className={styles.rightColContainer}>
-                        {[
-                            { value: "13mai", desc: "Vendredi 13 mai" },
-                            { value: "24mai", desc: "Mardi 24 mai" },
-                            { value: "1juin", desc: "Mercredi 1er juin" },
-                            { value: "9juin", desc: "Jeudi 9 juin" },
-                            { value: "", desc: "Aucune date possible" },
-                        ].map((option) => (
+                        {_.concat(
+                            meetingDateList.map((meetingDetails) => ({
+                                value: meetingDetails.meetingId,
+                                desc: meetingDetails.meetingTitle,
+                            })),
+                            { value: "", desc: "Aucune date possible" }
+                        ).map((option) => (
                             <label className={styles.longAnswerLabel} key={option.value}>
                                 <input
                                     type="radio"
@@ -793,3 +807,6 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 }
 
 export default memo(RegisterForm)
+
+// Fetch server-side data here
+export const fetchFor = [fetchMiscMeetingDateListIfNeed]
