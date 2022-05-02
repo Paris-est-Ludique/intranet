@@ -8,6 +8,7 @@ import styles from "./styles.module.scss"
 import { Volunteer } from "../../services/volunteers"
 import { Team } from "../../services/teams"
 import withUserRole from "../../utils/withUserRole"
+import ROLES from "../../utils/roles.constants"
 
 interface ExtendedVolunteer extends Volunteer {
     teamObject: Team | undefined
@@ -31,7 +32,7 @@ type VolunteerEmailProps = {
     email: string
 }
 
-const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole("référent", ({ email }) => (
+const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole(ROLES.TEAMLEAD, ({ email }) => (
     <div className={styles.volunteerEmail}>{email}</div>
 ))
 

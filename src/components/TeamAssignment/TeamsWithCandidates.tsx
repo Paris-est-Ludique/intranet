@@ -4,6 +4,7 @@ import { selectTeamList } from "../../store/teamList"
 import TeamWithCandidates from "./TeamWithCandidates"
 import styles from "./styles.module.scss"
 import withUserRole from "../../utils/withUserRole"
+import ROLES from "../../utils/roles.constants"
 
 const TeamsWithCandidates: FC = (): JSX.Element => {
     const teams = useSelector(selectTeamList)
@@ -26,4 +27,4 @@ const TeamsWithCandidates: FC = (): JSX.Element => {
     )
 }
 
-export default withUserRole("répartiteur", memo(TeamsWithCandidates))
+export default withUserRole(ROLES.ASSIGNER, memo(TeamsWithCandidates))
