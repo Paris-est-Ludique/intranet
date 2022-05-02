@@ -65,15 +65,7 @@
 
 .mainMenuItem {
     display: inline-block;
-    margin: 0;
-    padding: 7px 6px 6px;
-    border: 1px solid $color-black;
-    border-width: 1px 1px 0;
-    border-radius: 10px 10px 0 0;
-    text-align: center;
-    background-color: $color-grey-light;
-    cursor: pointer;
-    color: $color-grey-dark;
+    margin: 0 6px;
 
     @include mobile {
         display: block;
@@ -89,6 +81,22 @@
         background-color: $color-black;
     }
 
+    @include desktop {
+        margin: 0;
+        padding: 7px 6px 6px;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+        cursor: pointer;
+        color: $color-grey-dark;
+        border: solid $color-black;
+        border-width: 1px 1px 0;
+        background-color: $color-grey-light;
+
+        &:not(.active) a:hover {
+            color: $color-white;
+        }
+    }
+
     a {
         font-size: 0.9em;
         font-weight: bold;
@@ -99,9 +107,5 @@
             display: block;
             padding: 10px 15px;
         }
-    }
-
-    &:not(.active) a:hover {
-        color: $color-white;
     }
 }

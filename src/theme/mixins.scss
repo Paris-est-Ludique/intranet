@@ -1,13 +1,13 @@
 @import "./variables";
 
 @mixin desktop {
-    @media (min-width: 800px) {
+    @media (min-width: 900px) {
         @content;
     }
 }
 
 @mixin mobile {
-    @media (max-width: 799px) {
+    @media (max-width: 899px) {
         @content;
     }
 }
@@ -23,8 +23,8 @@
 }
 
 @mixin page-content-wrapper($desktopWidth: 720px) {
-    margin: 10px 0;
-    padding: 10px;
+    margin: 10px 4px;
+    padding: 6px;
     background-color: $color-white;
     border-radius: 15px;
     border: $border-large;
