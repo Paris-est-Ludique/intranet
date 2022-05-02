@@ -16,6 +16,7 @@
     display: flex;
     justify-content: center;
     align-content: center;
+    width: 100%;
 }
 
 @mixin page-wrapper-center {
@@ -34,6 +35,10 @@
         margin: 10px;
         padding: 20px;
         width: $desktopWidth;
+    }
+
+    &::after {
+        flex-basis: 100%;
     }
 }
 

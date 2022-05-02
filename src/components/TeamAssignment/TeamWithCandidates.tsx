@@ -28,7 +28,13 @@ const selectTeamsWithVolunteersCandidates = createSelector(
             return {
                 id,
                 name,
-                volunteers: volunteersSelection,
+                volunteersWithoutTeam: volunteersSelection.filter((volunteer) => !volunteer.team),
+                volunteersWithCurrentTeam: volunteersSelection.filter(
+                    (volunteer) => volunteer.team === id
+                ),
+                volunteersWithOtherTeam: volunteersSelection.filter(
+                    (volunteer) => volunteer.team && volunteer.team !== id
+                ),
             }
         })
 )
@@ -49,21 +55,59 @@ const DaysDisplay: FC<PropsDaysDisplay> = ({ dayWishes }): JSX.Element => (
     </span>
 )
 
-type Props = {
+type TeamWithCandidatesVolunteerProps = {
+    volunteer: any
     teamId: number
 }
 
-const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
-    const teams = useSelector(selectTeamsWithVolunteersCandidates)
-    const currentTeam = teams.find((t) => t.id === teamId)
+const TeamWithCandidatesVolunteer: FC<TeamWithCandidatesVolunteerProps> = ({
+    teamId,
+    volunteer,
+}): JSX.Element => {
+    const { id, lastname, firstname, teamWishes, dayWishes, team } = volunteer
     const [, saveTeam] = useTeamAssign()
 
     const onTeamSelected = useCallback(
-        (volunteer, selectedTeamId) => {
-            saveTeam(volunteer, selectedTeamId)
+        (selectedVolunteer, selectedTeamId) => {
+            saveTeam(selectedVolunteer, selectedTeamId)
         },
         [saveTeam]
     )
+
+    return (
+        <li key={id}>
+            <span className={styles.volunteerName}>
+                {firstname} {lastname} (<DaysDisplay dayWishes={dayWishes} />)
+            </span>
+            {teamWishes.map((teamWish: any) => {
+                const active = teamWish.id === team
+                const current = teamWish.id === teamId
+                return (
+                    <button
+                        key={teamWish.id}
+                        type="button"
+                        onClick={() => onTeamSelected({ id, team }, teamWish.id)}
+                        className={classnames(
+                            styles.teamWishButton,
+                            current && styles.teamCurrent,
+                            active && styles.teamActive
+                        )}
+                    >
+                        {teamWish.name}
+                    </button>
+                )
+            })}
+        </li>
+    )
+}
+
+type TeamWithCandidatesProps = {
+    teamId: number
+}
+
+const TeamWithCandidates: FC<TeamWithCandidatesProps> = ({ teamId }): JSX.Element => {
+    const teams = useSelector(selectTeamsWithVolunteersCandidates)
+    const currentTeam = teams.find((t) => t.id === teamId)
 
     if (!currentTeam) return <div />
 
@@ -71,35 +115,33 @@ const TeamWithCandidates: FC<Props> = ({ teamId }): JSX.Element | null => {
         <div>
             <div className={styles.teamHeaderName}>Equipe {currentTeam.name}</div>
             <TeamMembers teamId={teamId} />
-            <div>Bénévoles intéressés ({currentTeam.volunteers.length}) :</div>
+            <div>Bénévoles intéressés :</div>
             <ul>
-                {currentTeam.volunteers.map(
-                    ({ id, lastname, firstname, teamWishes, dayWishes, team }) => (
-                        <li key={id}>
-                            <span className={styles.volunteerName}>
-                                {firstname} {lastname} (<DaysDisplay dayWishes={dayWishes} />)
-                            </span>
-                            {teamWishes.map((teamWish) => {
-                                const active = teamWish.id === team
-                                const current = teamWish.id === teamId
-                                return (
-                                    <button
-                                        key={teamWish.id}
-                                        type="button"
-                                        onClick={() => onTeamSelected({ id, team }, teamWish.id)}
-                                        className={classnames(
-                                            styles.teamWishButton,
-                                            current && styles.teamCurrent,
-                                            active && styles.teamActive
-                                        )}
-                                    >
-                                        {teamWish.name}
-                                    </button>
-                                )
-                            })}
-                        </li>
-                    )
-                )}
+                {currentTeam.volunteersWithoutTeam.map((volunteer) => (
+                    <TeamWithCandidatesVolunteer
+                        key={volunteer.id}
+                        teamId={teamId}
+                        volunteer={volunteer}
+                    />
+                ))}
+            </ul>
+            <ul>
+                {currentTeam.volunteersWithCurrentTeam.map((volunteer) => (
+                    <TeamWithCandidatesVolunteer
+                        key={volunteer.id}
+                        teamId={teamId}
+                        volunteer={volunteer}
+                    />
+                ))}
+            </ul>
+            <ul>
+                {currentTeam.volunteersWithOtherTeam.map((volunteer) => (
+                    <TeamWithCandidatesVolunteer
+                        key={volunteer.id}
+                        teamId={teamId}
+                        volunteer={volunteer}
+                    />
+                ))}
             </ul>
         </div>
     )
