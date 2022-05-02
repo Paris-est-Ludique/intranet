@@ -1,8 +1,9 @@
 import { FC, useCallback, useState } from "react"
 import { useSelector } from "react-redux"
 import classnames from "classnames"
-import { isUserConnected, routerSelector } from "../../store/auth"
+import { isUserConnected, routerSelector, selectUserRoles } from "../../store/auth"
 import styles from "./styles.module.scss"
+import ROLES from "../../utils/roles.constants"
 
 interface MenuItemProps {
     name: string
@@ -17,6 +18,15 @@ const MenuItem: FC<MenuItemProps> = ({ name, pathname }): JSX.Element => {
             <a href={pathname}>{name}</a>
         </li>
     )
+}
+
+interface RestrictMenuItemProps extends MenuItemProps {
+    role: string
+}
+
+const RestrictMenuItem: FC<RestrictMenuItemProps> = ({ name, pathname, role }): JSX.Element => {
+    const roles = useSelector(selectUserRoles)
+    return roles.includes(role) ? <MenuItem name={name} pathname={pathname} /> : <div />
 }
 
 const MainMenu: FC = (): JSX.Element => {
@@ -42,6 +52,11 @@ const MainMenu: FC = (): JSX.Element => {
                 <MenuItem name="Questions" pathname="/" />
                 <MenuItem name="Annonces" pathname="/annonces" />
                 <MenuItem name="Mon profil" pathname="/profil" />
+                <RestrictMenuItem
+                    role={ROLES.ASSIGNER}
+                    name="Gestion équipes"
+                    pathname="/team-assign"
+                />
                 <button type="button" className={styles.close} onClick={onClose}>
                     ×
                 </button>
