@@ -6,6 +6,8 @@ export class Misc {
 
     meetingTitle = ""
 
+    meetingUrl = ""
+
     discordInvitation = ""
 }
 
@@ -13,6 +15,7 @@ export const translationMisc: { [k in keyof Misc]: string } = {
     id: "id",
     meetingId: "rencontreId",
     meetingTitle: "rencontreTitre",
+    meetingUrl: "rencontreUrl",
     discordInvitation: "invitationDiscord",
 }
 
@@ -24,6 +27,7 @@ export interface MiscMeetingDate {
     id: Misc["id"]
     meetingId: Misc["meetingId"]
     meetingTitle: Misc["meetingTitle"]
+    meetingUrl: Misc["meetingUrl"]
 }
 
 export interface MiscDiscordInvitation {

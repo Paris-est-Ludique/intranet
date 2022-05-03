@@ -37,6 +37,7 @@ export const miscMeetingDateListGet = expressAccessor.get(async (list) =>
                     id: misc.id,
                     meetingId: misc.meetingId,
                     meetingTitle: misc.meetingTitle,
+                    meetingUrl: misc.meetingUrl,
                 } as MiscMeetingDate)
         )
 )

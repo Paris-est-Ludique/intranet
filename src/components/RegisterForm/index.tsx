@@ -162,7 +162,12 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         if (sending) {
             setSending(false)
         }
-        sendSuccess = <span className={styles.success}>Formulaire envoyé !</span>
+        sendSuccess = (
+            <span className={styles.success}>
+                Formulaire envoyé !<br />
+                Tu as reçu un email de confirmation, peut-être dans tes spams.
+            </span>
+        )
     } else if (postulantError && _.isEmpty(postulant)) {
         if (sending) {
             setSending(false)
@@ -178,7 +183,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
             <span className={styles.sending}>
                 Envoi en cours...
                 <br />
-                En cas de problème, écrire à contact@parisestludique.fr
+                En cas de problème, écrire à benevoles@parisestludique.fr
             </span>
         )
     }
@@ -457,6 +462,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         Ces rencontres ont lieu à 19h dans un bar/resto calme à Châtelet, le{" "}
                         <a
                             href="https://goo.gl/maps/N5NYWDF66vNQDFMh8"
+                            key="sfmMap"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -465,6 +471,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         , ou à une soirée festive à 2 pas du lieu du festival, aux{" "}
                         <a
                             href="https://www.captainturtle.fr/aperos-petanque-paris/"
+                            key="petanque"
                             target="_blank"
                             rel="noreferrer"
                         >
