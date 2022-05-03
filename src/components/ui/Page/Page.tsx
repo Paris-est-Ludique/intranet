@@ -7,7 +7,9 @@ type Props = {
 
 const Page: FC<Props> = ({ children }): JSX.Element => (
     <div className={styles.pageWrapper}>
-        <div className={styles.pageContent}>{children}</div>
+        {React.Children.map(children, (child) => (
+            <div className={styles.pageContent}>{child}</div>
+        ))}
     </div>
 )
 

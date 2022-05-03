@@ -4,6 +4,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import { selectVolunteerListAlphaSorted } from "../../store/volunteerList"
 import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
+import ContentTitle from "../ui/Content/ContentTitle"
 
 const selectVolunteersWithTeamWishes = createSelector(
     selectVolunteerListAlphaSorted,
@@ -23,24 +24,52 @@ const selectVolunteersWithTeamWishes = createSelector(
             }))
 )
 
+const selectVolunteersWithTeam = createSelector(selectVolunteersWithTeamWishes, (volunteers) =>
+    volunteers.filter((volunteer) => volunteer.teamObject)
+)
+
+const selectVolunteersWithoutTeam = createSelector(selectVolunteersWithTeamWishes, (volunteers) =>
+    volunteers.filter((volunteer) => !volunteer.teamObject)
+)
+
 const VolunteersWithTeamWishes: FC = (): JSX.Element => {
-    const volunteers = useSelector(selectVolunteersWithTeamWishes)
+    const volunteersWithTeam = useSelector(selectVolunteersWithTeam)
+    const volunteersWithoutTeam = useSelector(selectVolunteersWithoutTeam)
 
     return (
-        <div>
-            <div>Bénévoles ayant choisi des équipes ({volunteers.length}) :</div>
-            <ul>
-                {volunteers.map(({ id, lastname, firstname, teamWishes, teamObject }) => (
-                    <li key={id}>
-                        <span className={styles.volunteerName}>
-                            {firstname} {lastname}{" "}
-                        </span>
-                        <span className={styles.teamActive}>{teamObject?.name} </span>
-                        <span>{teamWishes.join(", ")}</span>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <ContentTitle title="Choix des bénévoles" />
+            <div>
+                <div>Bénévoles en attente d'équipe ({volunteersWithoutTeam.length}) :</div>
+                <ul>
+                    {volunteersWithoutTeam.map(
+                        ({ id, lastname, firstname, teamWishes, teamObject }) => (
+                            <li key={id}>
+                                <span className={styles.volunteerName}>
+                                    {firstname} {lastname}{" "}
+                                </span>
+                                <span className={styles.teamActive}>{teamObject?.name} </span>
+                                <span>{teamWishes.join(", ")}</span>
+                            </li>
+                        )
+                    )}
+                </ul>
+                <div>Bénévoles dans une équipe ({volunteersWithTeam.length}) :</div>
+                <ul>
+                    {volunteersWithTeam.map(
+                        ({ id, lastname, firstname, teamWishes, teamObject }) => (
+                            <li key={id}>
+                                <span className={styles.volunteerName}>
+                                    {firstname} {lastname}{" "}
+                                </span>
+                                <span className={styles.teamActive}>{teamObject?.name} </span>
+                                <span>{teamWishes.join(", ")}</span>
+                            </li>
+                        )
+                    )}
+                </ul>
+            </div>
+        </>
     )
 }
 

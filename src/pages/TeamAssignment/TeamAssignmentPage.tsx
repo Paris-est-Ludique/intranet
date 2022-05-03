@@ -6,6 +6,7 @@ import { AppThunk } from "../../store"
 import { selectUserJwtToken } from "../../store/auth"
 import Page from "../../components/ui/Page/Page"
 import { TeamAssignment, fetchForTeamAssignment } from "../../components"
+import VolunteersWithTeamWishes from "../../components/TeamAssignment/VolunteersWithTeamWishes"
 
 export type Props = RouteComponentProps
 
@@ -15,9 +16,14 @@ const TeamAssignmentPage: FC<Props> = (): JSX.Element => {
     if (jwtToken === undefined) return <p>Loading...</p>
     if (jwtToken) {
         return (
-            <Page>
-                <TeamAssignment />
-            </Page>
+            <>
+                <Page>
+                    <TeamAssignment />
+                </Page>
+                <Page>
+                    <VolunteersWithTeamWishes />
+                </Page>
+            </>
         )
     }
     return <div>Besoin d'être identifié</div>

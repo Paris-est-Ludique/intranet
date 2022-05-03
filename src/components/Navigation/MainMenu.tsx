@@ -1,13 +1,36 @@
 import { FC, useCallback, useState } from "react"
 import { useSelector } from "react-redux"
 import classnames from "classnames"
-import { isUserConnected, routerSelector } from "../../store/auth"
+import { isUserConnected, routerSelector, selectUserRoles } from "../../store/auth"
 import styles from "./styles.module.scss"
+import ROLES from "../../utils/roles.constants"
 
-const MainMenu: FC = (): JSX.Element | null => {
-    const connected = useSelector(isUserConnected)
+interface MenuItemProps {
+    name: string
+    pathname: string
+}
+
+const MenuItem: FC<MenuItemProps> = ({ name, pathname }): JSX.Element => {
     const router = useSelector(routerSelector)
+    const isActive = (router as any)?.location?.pathname === pathname
+    return (
+        <li className={classnames(styles.mainMenuItem, isActive ? styles.active : null)}>
+            <a href={pathname}>{name}</a>
+        </li>
+    )
+}
 
+interface RestrictMenuItemProps extends MenuItemProps {
+    role: string
+}
+
+const RestrictMenuItem: FC<RestrictMenuItemProps> = ({ name, pathname, role }): JSX.Element => {
+    const roles = useSelector(selectUserRoles)
+    return roles.includes(role) ? <MenuItem name={name} pathname={pathname} /> : <div />
+}
+
+const MainMenu: FC = (): JSX.Element => {
+    const connected = useSelector(isUserConnected)
     const [opened, setOpened] = useState(false)
 
     const onOpen = useCallback(() => {
@@ -18,16 +41,7 @@ const MainMenu: FC = (): JSX.Element | null => {
         setOpened(false)
     }, [setOpened])
 
-    if (!connected) return null
-
-    function createMenuItem(name: string, pathname: string): JSX.Element {
-        const isActive = (router as any)?.location?.pathname === pathname
-        return (
-            <li className={classnames(styles.mainMenuItem, isActive ? styles.active : null)}>
-                <a href={pathname}>{name}</a>
-            </li>
-        )
-    }
+    if (!connected) return <div />
 
     return (
         <nav>
@@ -35,9 +49,14 @@ const MainMenu: FC = (): JSX.Element | null => {
                 ☰
             </button>
             <ul className={classnames(styles.mainMenu, opened && styles.opened)}>
-                {createMenuItem("Questions", "/")}
-                {createMenuItem("Annonces", "/annonces")}
-                {createMenuItem("Mon profil", "/profil")}
+                <MenuItem name="Questions" pathname="/" />
+                <MenuItem name="Annonces" pathname="/annonces" />
+                <MenuItem name="Mon profil" pathname="/profil" />
+                <RestrictMenuItem
+                    role={ROLES.ASSIGNER}
+                    name="Gestion équipes"
+                    pathname="/team-assign"
+                />
                 <button type="button" className={styles.close} onClick={onClose}>
                     ×
                 </button>
