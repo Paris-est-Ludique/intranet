@@ -76,11 +76,6 @@
         }
     }
 
-    &.active {
-        color: $color-yellow;
-        background-color: $color-black;
-    }
-
     @include desktop {
         margin: 0;
         padding: 7px 6px 6px;
@@ -95,6 +90,11 @@
         &:not(.active) a:hover {
             color: $color-white;
         }
+    }
+
+    &.active {
+        color: $color-yellow;
+        background-color: $color-black;
     }
 
     a {
