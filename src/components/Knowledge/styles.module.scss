@@ -1,6 +1,13 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
 
+.showUnknownOnlyLabel {
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 280px;
+}
+
 .boxList {
     padding: 0;
     list-style: none;
