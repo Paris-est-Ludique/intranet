@@ -1,0 +1,9 @@
+@import "../../theme/mixins";
+
+.knowledgesPage {
+    @include page-wrapper-center;
+}
+
+.knowledgesContent {
+    @include page-content-wrapper(700px);
+}

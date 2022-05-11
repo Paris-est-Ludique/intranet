@@ -3,6 +3,7 @@ import { connectRouter } from "connected-react-router"
 
 import announcementList from "./announcementList"
 import auth from "./auth"
+import boxList from "./boxList"
 import gameList from "./gameList"
 import miscDiscordInvitation from "./miscDiscordInvitation"
 import miscMeetingDateList from "./miscMeetingDateList"
@@ -10,16 +11,17 @@ import postulantAdd from "./postulantAdd"
 import teamList from "./teamList"
 import ui from "./ui"
 import volunteerAdd from "./volunteerPartialAdd"
-import volunteerDiscordId from "./volunteerDiscordId"
-import volunteerList from "./volunteerList"
-import volunteerSet from "./volunteerSet"
-import volunteerLogin from "./volunteerLogin"
-import volunteerForgot from "./volunteerForgot"
 import volunteerAsksSet from "./volunteerAsksSet"
-import volunteerParticipationDetailsSet from "./volunteerParticipationDetailsSet"
 import volunteerDayWishesSet from "./volunteerDayWishesSet"
-import volunteerTeamWishesSet from "./volunteerTeamWishesSet"
+import volunteerDiscordId from "./volunteerDiscordId"
+import volunteerForgot from "./volunteerForgot"
+import volunteerList from "./volunteerList"
+import volunteerLogin from "./volunteerLogin"
+import volunteerKnowledgeSet from "./volunteerKnowledgeSet"
+import volunteerParticipationDetailsSet from "./volunteerParticipationDetailsSet"
+import volunteerSet from "./volunteerSet"
 import volunteerTeamAssignSet from "./volunteerTeamAssignSet"
+import volunteerTeamWishesSet from "./volunteerTeamWishesSet"
 import wishAdd from "./wishAdd"
 import wishList from "./wishList"
 
@@ -28,6 +30,7 @@ import wishList from "./wishList"
 export default (history: History) => ({
     announcementList,
     auth,
+    boxList,
     gameList,
     miscDiscordInvitation,
     miscMeetingDateList,
@@ -35,16 +38,17 @@ export default (history: History) => ({
     teamList,
     ui,
     volunteerAdd,
-    volunteerDiscordId,
-    volunteerList,
-    volunteerSet,
-    volunteerLogin,
-    volunteerForgot,
     volunteerAsksSet,
-    volunteerParticipationDetailsSet,
     volunteerDayWishesSet,
-    volunteerTeamWishesSet,
+    volunteerDiscordId,
+    volunteerForgot,
+    volunteerList,
+    volunteerLogin,
+    volunteerKnowledgeSet,
+    volunteerParticipationDetailsSet,
+    volunteerSet,
     volunteerTeamAssignSet,
+    volunteerTeamWishesSet,
     wishAdd,
     wishList,
     router: connectRouter(history) as any,

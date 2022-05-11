@@ -12,6 +12,8 @@ const ANONYMIZED_DB_PATH = path.resolve(process.cwd(), "access/dbAnonymized.json
 export class SheetNames {
     Announcements = "Annonces"
 
+    Boxes = "Boîtes"
+
     Games = "Jeux"
 
     Miscs = "Divers"

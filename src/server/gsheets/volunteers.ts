@@ -1,4 +1,4 @@
-import _ from "lodash"
+import { assign, cloneDeep, keys, omit, pick } from "lodash"
 import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
@@ -13,6 +13,7 @@ import {
     VolunteerDayWishes,
     VolunteerParticipationDetails,
     VolunteerTeamAssign,
+    VolunteerKnowledge,
 } from "../../services/volunteers"
 import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
@@ -40,7 +41,7 @@ export const volunteerDiscordId = expressAccessor.get(async (list, body, id) => 
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
-    return _.pick(volunteer, "id", "discordId")
+    return pick(volunteer, "id", "discordId")
 })
 
 export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
@@ -58,9 +59,9 @@ export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
     const password = generatePassword()
     const passwordHash = await bcrypt.hash(password, 10)
 
-    const newVolunteer = _.omit(new Volunteer(), "id")
+    const newVolunteer = omit(new Volunteer(), "id")
 
-    _.assign(newVolunteer, {
+    assign(newVolunteer, {
         lastname: trim(params.lastname),
         firstname: trim(params.firstname),
         email: trim(params.email),
@@ -135,7 +136,7 @@ export const volunteerForgot = expressAccessor.set(async (list, bodyArray) => {
     if (!volunteer) {
         throw Error("Il n'y a aucun bénévole avec cet email")
     }
-    const newVolunteer = _.cloneDeep(volunteer)
+    const newVolunteer = cloneDeep(volunteer)
 
     const now = +new Date()
     const timeSinceLastSent = now - lastForgot[volunteer.id]
@@ -196,9 +197,9 @@ export const volunteerAsksSet = expressAccessor.set(async (list, body, id) => {
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
-    const newVolunteer = _.cloneDeep(volunteer)
+    const newVolunteer = cloneDeep(volunteer)
 
-    _.assign(newVolunteer, _.pick(notifChanges, _.keys(newVolunteer)))
+    assign(newVolunteer, pick(notifChanges, keys(newVolunteer)))
 
     return {
         toDatabase: newVolunteer,
@@ -226,7 +227,7 @@ export const volunteerTeamWishesSet = expressAccessor.set(async (list, body, id,
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
-    const newVolunteer = _.cloneDeep(volunteer)
+    const newVolunteer = cloneDeep(volunteer)
 
     if (wishes.teamWishes !== undefined) {
         newVolunteer.teamWishes = wishes.teamWishes
@@ -255,7 +256,7 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
-    const newVolunteer = _.cloneDeep(volunteer)
+    const newVolunteer = cloneDeep(volunteer)
 
     if (wishes.active !== undefined) {
         newVolunteer.active = wishes.active
@@ -290,7 +291,7 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
-    const newVolunteer = _.cloneDeep(volunteer)
+    const newVolunteer = cloneDeep(volunteer)
 
     if (wishes.tshirtSize !== undefined) {
         newVolunteer.tshirtSize = wishes.tshirtSize
@@ -329,7 +330,7 @@ export const volunteerTeamAssignSet = expressAccessor.set(async (list, body, id)
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${teamAssign.volunteer}`)
     }
-    const newVolunteer = _.cloneDeep(volunteer)
+    const newVolunteer = cloneDeep(volunteer)
     newVolunteer.team = teamAssign.team
 
     return {
@@ -345,3 +346,26 @@ function getByEmail<T extends { email: string }>(list: T[], rawEmail: string): T
     const email = canonicalEmail(rawEmail || "")
     return list.find((v) => canonicalEmail(v.email) === email)
 }
+
+export const volunteerKnowledgeSet = expressAccessor.set(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    const volunteer = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    const knowledge = body[1] as VolunteerKnowledge
+    const newVolunteer = cloneDeep(volunteer)
+    if (knowledge?.ok !== undefined) newVolunteer.ok = knowledge.ok
+    if (knowledge?.bof !== undefined) newVolunteer.bof = knowledge.bof
+    if (knowledge?.niet !== undefined) newVolunteer.niet = knowledge.niet
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            id: newVolunteer.id,
+            ok: newVolunteer.ok,
+            bof: newVolunteer.bof,
+            niet: newVolunteer.niet,
+        } as VolunteerKnowledge,
+    }
+})

@@ -53,6 +53,12 @@ export class Volunteer implements VolunteerPartial {
     pushNotifSubscription = ""
 
     acceptsNotifs = ""
+
+    ok: number[] = []
+
+    bof: number[] = []
+
+    niet: number[] = []
 }
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
@@ -83,6 +89,9 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     password2: "passe2",
     pushNotifSubscription: "pushNotifSubscription",
     acceptsNotifs: "accepteLesNotifs",
+    ok: "OK",
+    bof: "Bof",
+    niet: "Niet",
 }
 
 export class VolunteerPartial {
@@ -125,6 +134,9 @@ export const volunteerExample: Volunteer = {
     password2: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
     pushNotifSubscription: "",
     acceptsNotifs: "",
+    ok: [5, 7, 24, 26, 31, 38, 50, 52, 54, 58],
+    bof: [9, 12, 16, 27, 34, 35, 36],
+    niet: [13, 18, 19, 23, 47, 53, 59, 67],
 }
 
 export const emailRegexp =
@@ -183,4 +195,12 @@ export interface VolunteerTeamAssign {
     id: Volunteer["id"]
     volunteer: number
     team: Volunteer["team"]
+}
+
+export type VolunteerKnowledgeWithoutId = Omit<VolunteerKnowledge, "id">
+export interface VolunteerKnowledge {
+    id: Volunteer["id"]
+    ok: Volunteer["ok"]
+    bof: Volunteer["bof"]
+    niet: Volunteer["niet"]
 }

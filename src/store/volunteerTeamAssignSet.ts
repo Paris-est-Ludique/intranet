@@ -37,7 +37,8 @@ export const fetchVolunteerTeamAssignSet = elementFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des notifications: ${error.message}`)
+    (error: Error) =>
+        toastError(`Erreur lors du chargement des assignation d'équipe: ${error.message}`)
 )
 
 const shouldFetchVolunteerTeamAssignSet = (state: AppState, id: number) =>

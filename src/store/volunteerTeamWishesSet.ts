@@ -37,7 +37,7 @@ export const fetchVolunteerTeamWishesSet = elementFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des notifications: ${error.message}`)
+    (error: Error) => toastError(`Erreur lors du chargement des choix d'équipe: ${error.message}`)
 )
 
 const shouldFetchVolunteerTeamWishesSet = (state: AppState, id: number) =>

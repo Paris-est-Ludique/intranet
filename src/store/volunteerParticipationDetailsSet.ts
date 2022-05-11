@@ -40,7 +40,8 @@ export const fetchVolunteerParticipationDetailsSet = elementFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des notifications: ${error.message}`)
+    (error: Error) =>
+        toastError(`Erreur lors du chargement des détails de participation: ${error.message}`)
 )
 
 const shouldFetchVolunteerParticipationDetailsSet = (state: AppState, id: number) =>

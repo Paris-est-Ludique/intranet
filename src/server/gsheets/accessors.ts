@@ -406,8 +406,7 @@ export class Sheet<
                         }
                         break
 
-                    default:
-                        // eslint-disable-next-line no-case-declarations
+                    default: {
                         const matchArrayType = type.match(
                             /^(number|string|boolean|date)\[([^\]]+)\]$/
                         )
@@ -438,11 +437,9 @@ export class Sheet<
                                     )
                                     break
 
-                                case "date":
-                                    // eslint-disable-next-line no-case-declarations
+                                case "date": {
                                     const rawDates = rawProp.split(delimiter)
                                     element[prop] = []
-                                    // eslint-disable-next-line no-case-declarations
                                     rawDates.forEach((rawDate) => {
                                         try {
                                             element[prop].push(parseDate(rawDate))
@@ -453,12 +450,14 @@ export class Sheet<
                                         }
                                     })
                                     break
+                                }
                                 default:
                                     throw new Error(
                                         `Unknown array type ${arrayType} in sheet ${this.name} at prop ${prop}`
                                     )
                             }
                         }
+                    }
                 }
                 return element
             },
@@ -492,19 +491,20 @@ export class Sheet<
                         stringifiedElement[prop as keyof Element] = stringifiedDate(value)
                         break
 
-                    default:
-                        // eslint-disable-next-line no-case-declarations
+                    default: {
                         const matchArrayType = type.match(
                             /^(number|string|boolean|date)\[([^\]]+)\]$/
                         )
                         if (!matchArrayType || !_.isArray(value)) {
                             throw new Error(
-                                "Unknown matchArrayType or not an array in stringifyElement"
+                                `Unknown matchArrayType ${JSON.stringify(
+                                    matchArrayType
+                                )} or not an array in stringifyElement for prop ${prop} and value ${JSON.stringify(
+                                    value
+                                )}, ${JSON.stringify(element)}`
                             )
                         }
-                        // eslint-disable-next-line no-case-declarations
                         const arrayType = matchArrayType[1]
-                        // eslint-disable-next-line no-case-declarations
                         const delimiter = matchArrayType[2]
 
                         switch (arrayType) {
@@ -554,6 +554,7 @@ export class Sheet<
                             default:
                                 throw new Error(`Unknown array type ${arrayType}`)
                         }
+                    }
                 }
 
                 return stringifiedElement
@@ -586,7 +587,6 @@ function stringifiedDate(value: unknown): string {
 }
 
 function parseDate(value: string): Date {
-    // eslint-disable-next-line no-case-declarations
     const matchDate = value.match(/^([0-9]+)\/([0-9]+)\/([0-9]+)$/)
     if (!matchDate) {
         throw new Error(`Unable to read date from val ${value}`)

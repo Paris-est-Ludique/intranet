@@ -18,6 +18,7 @@ import ssr from "./ssr"
 import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
+import { detailedBoxListGet } from "./gsheets/boxes"
 import { gameListGet } from "./gsheets/games"
 import { postulantAdd } from "./gsheets/postulants"
 import { teamListGet } from "./gsheets/teams"
@@ -33,6 +34,7 @@ import {
     volunteerTeamWishesSet,
     volunteerTeamAssignSet,
     volunteerListGet,
+    volunteerKnowledgeSet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -84,6 +86,7 @@ app.get(
  * APIs
  */
 // Google Sheets API
+app.get("/BoxDetailedListGet", detailedBoxListGet)
 app.get("/GameListGet", gameListGet)
 app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
 app.get("/WishListGet", wishListGet)
@@ -101,6 +104,7 @@ app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
 app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
+app.post("/VolunteerKnowledgeSet", secure as RequestHandler, volunteerKnowledgeSet)
 app.post(
     "/VolunteerParticipationDetailsSet",
     secure as RequestHandler,

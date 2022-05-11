@@ -37,7 +37,8 @@ export const fetchVolunteerDayWishesSet = elementFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des notifications: ${error.message}`)
+    (error: Error) =>
+        toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`)
 )
 
 const shouldFetchVolunteerDayWishesSet = (state: AppState, id: number) =>

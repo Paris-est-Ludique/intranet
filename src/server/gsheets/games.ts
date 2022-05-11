@@ -8,6 +8,6 @@ const expressAccessor = new ExpressAccessors<GameWithoutId, Game>(
 )
 
 export const gameListGet = expressAccessor.listGet()
-export const gameGet = expressAccessor.get()
-export const gameAdd = expressAccessor.add()
-export const gameSet = expressAccessor.set()
+// export const gameGet = expressAccessor.get()
+// export const gameAdd = expressAccessor.add()
+// export const gameSet = expressAccessor.set()

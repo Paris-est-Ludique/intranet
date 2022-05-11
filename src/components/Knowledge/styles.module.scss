@@ -1,0 +1,117 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.boxList {
+    padding: 0;
+    list-style: none;
+}
+
+.boxItem {
+    padding: 10px 0;
+}
+
+.photoContainer {
+    height: 50px;
+    width: 73px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+.photo {
+    height: 50px;
+    max-width: 73px;
+    position: absolute;
+    left: 0;
+}
+
+.titleContainer {
+    height: 50px;
+    width: 198px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+.shorterTitle {
+    width: 168px;
+}
+.title {
+    height: 50px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.poufpaf {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    display: inline-block;
+    background: url("../../app/img/poufpaf.png");
+    background-size: contain;
+    vertical-align: middle;
+}
+
+.noPoufpaf {
+    display: none;
+}
+
+.knowledgeList {
+    @include clear-ul-style;
+
+    width: 266px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.knowledgeItem {
+    display: inline-block;
+    margin: 3px;
+}
+
+.knowledgeButton {
+    margin: 0;
+    padding: 7px 2px 6px;
+    border: 0;
+    border-radius: 0;
+    width: 60px;
+    text-align: center;
+    color: $color-grey-medium;
+    cursor: pointer;
+
+    &.active {
+        color: $color-yellow;
+    }
+}
+
+.unknown {
+    background-color: $color-unknown;
+
+    &.active {
+        background-color: $color-active-unknown;
+    }
+}
+
+.ok {
+    background-color: $color-ok;
+
+    &.active {
+        background-color: $color-active-ok;
+    }
+}
+
+.bof {
+    background-color: $color-bof;
+
+    &.active {
+        background-color: $color-active-bof;
+    }
+}
+
+.niet {
+    background-color: $color-niet;
+
+    &.active {
+        background-color: $color-active-niet;
+    }
+}

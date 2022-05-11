@@ -5,6 +5,7 @@ import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/Announcements"
 import AsyncTeamAssignment, { loadData as loadTeamAssignmentData } from "../pages/TeamAssignment"
 import AsyncRegisterPage, { loadData as loadRegisterPage } from "../pages/Register"
+import AsyncKnowledge, { loadData as loadKnowledgeData } from "../pages/Knowledge"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
 import AsyncVolunteers, { loadData as loadVolunteersData } from "../pages/Volunteers"
@@ -22,6 +23,11 @@ export default [
                 exact: true,
                 component: AsyncHome,
                 loadData: loadHomeData,
+            },
+            {
+                path: "/connaissances",
+                component: AsyncKnowledge,
+                loadData: loadKnowledgeData,
             },
             {
                 path: "/preRegister",

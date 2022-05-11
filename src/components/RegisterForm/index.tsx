@@ -462,6 +462,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         Ces rencontres ont lieu à 19h dans un bar/resto calme à Châtelet, le{" "}
                         <a
                             href="https://goo.gl/maps/N5NYWDF66vNQDFMh8"
+                            id="sfmMap"
                             key="sfmMap"
                             target="_blank"
                             rel="noreferrer"
@@ -471,6 +472,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         , ou à une soirée festive à 2 pas du lieu du festival, aux{" "}
                         <a
                             href="https://www.captainturtle.fr/aperos-petanque-paris/"
+                            id="petanque"
                             key="petanque"
                             target="_blank"
                             rel="noreferrer"
