@@ -27,7 +27,7 @@ const LoginForm = (): JSX.Element => {
     return (
         <form onSubmit={onSubmit}>
             <div className={styles.loginIntro} key="login-intro">
-                Si tu es bénévole, connecte-toi pour accéder à votre espace.
+                Si tu es bénévole, connecte-toi pour accéder à ton espace.
             </div>
             <div className={styles.formLine} key="line-email">
                 <label htmlFor="email">Email</label>
