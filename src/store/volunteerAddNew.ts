@@ -2,12 +2,13 @@ import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolki
 
 import { StateRequest, elementAddFetch, toastError } from "./utils"
 import { Volunteer } from "../services/volunteers"
-import { volunteerPartialAdd } from "../services/volunteersAccessors"
+import { volunteerAddNew } from "../services/volunteersAccessors"
+import { AppThunk } from "."
 
 const volunteerAdapter = createEntityAdapter<Volunteer>()
 
-const volunteerPartialAddSlice = createSlice({
-    name: "volunteerPartialAdd",
+const volunteerAddNewSlice = createSlice({
+    name: "volunteerAddNew",
     initialState: volunteerAdapter.getInitialState({
         readyStatus: "idle",
     } as StateRequest),
@@ -26,14 +27,19 @@ const volunteerPartialAddSlice = createSlice({
     },
 })
 
-export default volunteerPartialAddSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerPartialAddSlice.actions
+export default volunteerAddNewSlice.reducer
+export const { getRequesting, getSuccess, getFailure } = volunteerAddNewSlice.actions
 
-export const fetchVolunteerPartialAdd = elementAddFetch(
-    volunteerPartialAdd,
+export const fetchVolunteerAddNew = elementAddFetch(
+    volunteerAddNew,
     getRequesting,
     getSuccess,
     getFailure,
-    () => toastError("Erreur d'inscription !"),
+    () => toastError("Erreur d'ajout !"),
     () => null
 )
+
+export const fetchVolunteerAddNewIfNeed = (): AppThunk => (dispatch, getState) => {
+    const { jwt } = getState().auth
+    return dispatch(fetchVolunteerAddNew(jwt))
+}

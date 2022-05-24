@@ -41,19 +41,14 @@ export const fetchVolunteerSet = elementFetch(
     () => toastSuccess("Bénévole modifié !")
 )
 
-const shouldFetchVolunteerSet = (_state: AppState) => true
-
 export const fetchVolunteerSetIfNeed =
     (newPartialVolunteer: Partial<Volunteer>): AppThunk =>
     (dispatch, getState) => {
         const { jwt } = getState().auth
-        if (shouldFetchVolunteerSet(getState()))
-            return dispatch(fetchVolunteerSet(jwt, newPartialVolunteer))
-
-        return null
+        return dispatch(fetchVolunteerSet(jwt, newPartialVolunteer))
     }
 
 export const selectVolunteerSet = createSelector(
     (state: AppState) => state,
-    (state): string | undefined => state.volunteerSet?.entity?.discordId
+    (state): Volunteer | undefined => state.volunteerSet?.entity
 )

@@ -1,4 +1,4 @@
-import { assign, cloneDeep, omit, pick } from "lodash"
+import { assign, cloneDeep, max, omit, pick } from "lodash"
 import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
@@ -29,6 +29,26 @@ export const volunteerListGet = expressAccessor.get(async (list, _body, id) => {
         throw Error(`L'accès est réservé aux utilisateurs identifiés`)
     }
     return list
+})
+
+export const volunteerAddNew = expressAccessor.add(async (list, _body, _id, roles) => {
+    if (!roles.includes("admin")) {
+        throw Error(`À moins d'être admin, on ne peut pas modifier n'importe quel utilisateur`)
+    }
+    const id = (max(list.map((v) => v.id)) || 0) + 1
+    const password = generatePassword()
+    const passwordHash = await bcrypt.hash(password, 10)
+
+    const newVolunteer: Volunteer = new Volunteer()
+    newVolunteer.id = id
+    newVolunteer.password1 = passwordHash
+    newVolunteer.password2 = passwordHash
+    newVolunteer.firstname = password
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: newVolunteer,
+    }
 })
 
 export const volunteerSet = expressAccessor.set(async (list, body, _id, roles) => {

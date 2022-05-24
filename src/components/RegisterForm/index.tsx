@@ -133,7 +133,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     )
 
     const { error: volunteerError, entities: volunteer } = useSelector(
-        (state: AppState) => state.volunteerAdd,
+        (state: AppState) => state.volunteerPartialAdd,
         shallowEqual
     )
 

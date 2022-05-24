@@ -10,16 +10,29 @@ import { toastError } from "../../store/utils"
 interface Props {
     volunteer: Volunteer
     saveVolunteer: (newVolunteer: Partial<Volunteer>) => void
+    addBefore?: () => void
 }
 
-const MemberEdit: FC<Props> = ({ volunteer, saveVolunteer }): JSX.Element => {
+const MemberEdit: FC<Props> = ({ volunteer, saveVolunteer, addBefore }): JSX.Element => {
     const [localVolunteer, setLocalVolunteer] = useState(volunteer)
+
+    async function addAndWait() {
+        if (addBefore) {
+            addBefore()
+            await new Promise<void>((resolve) => {
+                setTimeout(() => resolve(), 1000)
+            })
+        }
+    }
 
     const stringDispatch =
         (propName: string) =>
-        (e: React.ChangeEvent<HTMLInputElement>): void => {
-            saveVolunteer({ id: localVolunteer.id, [propName]: e.target.value })
-            setLocalVolunteer({ ...localVolunteer, [propName]: e.target.value })
+        async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+            const rawValue = e.target.value
+            const value = rawValue
+            await addAndWait()
+            saveVolunteer({ id: localVolunteer.id, [propName]: rawValue })
+            setLocalVolunteer({ ...localVolunteer, [propName]: value })
         }
 
     function stringInput(id: string, value: string): JSX.Element {
@@ -40,13 +53,15 @@ const MemberEdit: FC<Props> = ({ volunteer, saveVolunteer }): JSX.Element => {
 
     const numberDispatch =
         (propName: string) =>
-        (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const value: number = +e.target.value
+        async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+            const rawValue = e.target.value
+            const value: number = +rawValue
             if (!isFinite(value)) {
                 toastError("Should be a number")
                 return
             }
-            saveVolunteer({ id: localVolunteer.id, [propName]: +value })
+            await addAndWait()
+            saveVolunteer({ id: localVolunteer.id, [propName]: rawValue })
             setLocalVolunteer({ ...localVolunteer, [propName]: +value })
         }
 
@@ -68,9 +83,11 @@ const MemberEdit: FC<Props> = ({ volunteer, saveVolunteer }): JSX.Element => {
 
     const booleanDispatch =
         (propName: string) =>
-        (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const value: boolean = e.target.value !== "0" && e.target.value !== ""
-            saveVolunteer({ id: localVolunteer.id, [propName]: value })
+        async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+            const rawValue = e.target.value
+            const value: boolean = rawValue !== "0" && rawValue !== ""
+            await addAndWait()
+            saveVolunteer({ id: localVolunteer.id, [propName]: rawValue })
             setLocalVolunteer({ ...localVolunteer, [propName]: value })
         }
 
@@ -112,6 +129,9 @@ const MemberEdit: FC<Props> = ({ volunteer, saveVolunteer }): JSX.Element => {
     )
 }
 
+MemberEdit.defaultProps = {
+    addBefore: undefined,
+}
 export default withUserRole(ROLES.ADMIN, memo(withUserConnected(MemberEdit)))
 
 export const fetchFor = []

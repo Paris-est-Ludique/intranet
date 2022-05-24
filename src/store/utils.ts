@@ -64,8 +64,8 @@ export function elementFetch<Element, ServiceInput extends Array<any>>(
         }
 }
 
-export function elementAddFetch<Element>(
-    elementAddService: (elementWithoutId: Omit<Element, "id">) => Promise<{
+export function elementAddFetch<Element, ServiceInput extends Array<any>>(
+    elementAddService: (...idArgs: ServiceInput) => Promise<{
         data?: Element | undefined
         error?: Error | undefined
     }>,
@@ -74,12 +74,12 @@ export function elementAddFetch<Element>(
     getFailure: ActionCreatorWithPayload<string, string>,
     errorMessage?: (error: Error) => void,
     successMessage?: () => void
-): (elementWithoutId: Omit<Element, "id">) => AppThunk {
-    return (elementWithoutId: Omit<Element, "id">): AppThunk =>
+): (...idArgs: ServiceInput) => AppThunk {
+    return (...idArgs: ServiceInput): AppThunk =>
         async (dispatch) => {
             dispatch(getRequesting())
 
-            const { error, data } = await elementAddService(elementWithoutId)
+            const { error, data } = await elementAddService(...idArgs)
 
             if (error) {
                 dispatch(getFailure(error.message))

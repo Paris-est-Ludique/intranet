@@ -11,7 +11,7 @@ import miscMeetingDateList from "./miscMeetingDateList"
 import postulantAdd from "./postulantAdd"
 import teamList from "./teamList"
 import ui from "./ui"
-import volunteerAdd from "./volunteerPartialAdd"
+import volunteerPartialAdd from "./volunteerPartialAdd"
 import volunteerAsksSet from "./volunteerAsksSet"
 import volunteerDayWishesSet from "./volunteerDayWishesSet"
 import volunteerDiscordId from "./volunteerDiscordId"
@@ -39,7 +39,7 @@ export default (history: History) => ({
     postulantAdd,
     teamList,
     ui,
-    volunteerAdd,
+    volunteerPartialAdd,
     volunteerAsksSet,
     volunteerDayWishesSet,
     volunteerDiscordId,

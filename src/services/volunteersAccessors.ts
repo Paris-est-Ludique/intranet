@@ -19,6 +19,7 @@ export const volunteerDiscordIdGet = serviceAccessors.securedCustomGet<
     [number],
     VolunteerDiscordId
 >("DiscordId")
+export const volunteerAddNew = serviceAccessors.securedCustomPost<[]>("AddNew")
 export const volunteerPartialAdd = serviceAccessors.customPost<[Partial<Volunteer>]>("PartialAdd")
 
 export const volunteerSet = serviceAccessors.securedCustomPost<[Partial<Volunteer>]>("Set")
