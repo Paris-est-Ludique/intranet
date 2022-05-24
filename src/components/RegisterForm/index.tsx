@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { useSelector, shallowEqual } from "react-redux"
 import { toast } from "react-toastify"
 import _ from "lodash"
@@ -11,6 +11,12 @@ import { fetchVolunteerPartialAdd } from "../../store/volunteerPartialAdd"
 import FormButton from "../Form/FormButton/FormButton"
 import { validEmail } from "../../utils/standardization"
 import { toastError } from "../../store/utils"
+import {
+    sendBooleanRadioboxDispatch,
+    sendTextareaDispatch,
+    sendRadioboxDispatch,
+    sendTextDispatch,
+} from "../input.utils"
 import {
     fetchMiscMeetingDateListIfNeed,
     selectMiscMeetingDateList,
@@ -56,26 +62,6 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         return () => clearInterval(timer)
     }, [changingBackground, setChangingBackground])
     const transitionClass = (i: number) => animations[changingBackground][i - 1]
-
-    const sendTextDispatch =
-        (dispatchSetter: React.Dispatch<React.SetStateAction<string>>) =>
-        (e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatchSetter(e.target.value)
-
-    const sendTextareaDispatch =
-        (dispatchSetter: React.Dispatch<React.SetStateAction<string>>) =>
-        (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            dispatchSetter(e.target.value)
-
-    const sendBooleanRadioboxDispatch =
-        (dispatchSetter: React.Dispatch<React.SetStateAction<boolean>>, isYes: boolean) =>
-        (e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatchSetter(isYes ? !!e.target.value : !e.target.value)
-
-    const sendRadioboxDispatch =
-        (dispatchSetter: React.Dispatch<React.SetStateAction<string>>) =>
-        (e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatchSetter(e.target.value)
 
     const onSubmit = () => {
         if (!validEmail(email)) {

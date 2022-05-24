@@ -1,39 +1,59 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice, createSelector } from "@reduxjs/toolkit"
 
-import { StateRequest, toastError, toastSuccess, elementSet } from "./utils"
+import { StateRequest, toastError, toastSuccess, elementFetch } from "./utils"
 import { Volunteer } from "../services/volunteers"
 import { volunteerSet } from "../services/volunteersAccessors"
+import { AppState, AppThunk } from "."
 
-const volunteerAdapter = createEntityAdapter<Volunteer>()
+type StateVolunteer = { entity?: Volunteer } & StateRequest
+
+export const initialState: StateVolunteer = {
+    readyStatus: "idle",
+}
 
 const volunteerSetSlice = createSlice({
     name: "volunteerSet",
-    initialState: volunteerAdapter.getInitialState({
-        readyStatus: "idle",
-    } as StateRequest),
+    initialState,
     reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<Volunteer>) => {
-            state.readyStatus = "success"
-            volunteerAdapter.setOne(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+        getRequesting: (_) => ({
+            readyStatus: "request",
+        }),
+        getSuccess: (_, { payload }: PayloadAction<Volunteer>) => ({
+            readyStatus: "success",
+            entity: payload,
+        }),
+        getFailure: (_, { payload }: PayloadAction<string>) => ({
+            readyStatus: "failure",
+            error: payload,
+        }),
     },
 })
 
 export default volunteerSetSlice.reducer
 export const { getRequesting, getSuccess, getFailure } = volunteerSetSlice.actions
 
-export const fetchVolunteerSet = elementSet(
+export const fetchVolunteerSet = elementFetch(
     volunteerSet,
     getRequesting,
     getSuccess,
     getFailure,
     (error: Error) => toastError(`Erreur lors de la modification d'un bénévole: ${error.message}`),
     () => toastSuccess("Bénévole modifié !")
+)
+
+const shouldFetchVolunteerSet = (_state: AppState) => true
+
+export const fetchVolunteerSetIfNeed =
+    (newPartialVolunteer: Partial<Volunteer>): AppThunk =>
+    (dispatch, getState) => {
+        const { jwt } = getState().auth
+        if (shouldFetchVolunteerSet(getState()))
+            return dispatch(fetchVolunteerSet(jwt, newPartialVolunteer))
+
+        return null
+    }
+
+export const selectVolunteerSet = createSelector(
+    (state: AppState) => state,
+    (state): string | undefined => state.volunteerSet?.entity?.discordId
 )

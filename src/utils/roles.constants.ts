@@ -3,6 +3,7 @@ type rolesType = {
 }
 
 const ROLES: rolesType = {
+    ADMIN: "admin",
     ASSIGNER: "répartiteur",
     TEAMLEAD: "référent",
 }

@@ -1,0 +1,39 @@
+@import "../../theme/variables";
+@import "../../theme/mixins";
+
+.title {
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+.list {
+    padding: 0;
+    list-style: none;
+}
+
+.item {
+    padding: 10px 0;
+}
+
+.formButtons {
+    margin-top: 10px;
+    padding: 5px 0;
+    text-align: center;
+}
+
+.inputContainer {
+    display: inline-block;
+}
+
+.stringInput {
+    width: 5em;
+}
+.numberInput {
+    width: 3em;
+}
+.booleanInput {
+    width: 1.5em;
+}
+.inputDesc {
+    font-size: small;
+}

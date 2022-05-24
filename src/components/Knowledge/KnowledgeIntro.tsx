@@ -10,7 +10,7 @@ const KnowledgeIntro: React.FC = (): JSX.Element => (
         </p>
         <p>
             OK signifie que tu peux expliquer le jeu, avec au maximum un coup d'oeil aux règles sur
-            un nombre de cartes à distribuer, ou un nombre de PV déclancheur de fin de partie.
+            un nombre de cartes à distribuer, ou un nombre de PV déclencheur de fin de partie.
             <br />
             Bof signifie que tu seras plus utile que la lecture des règles.
         </p>

@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import path from "path"
-import _ from "lodash"
+import _, { assign, pick } from "lodash"
 import { promises as fs, constants } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 import { SheetNames, saveLocalDb, loadLocalDb } from "./localDb"
@@ -185,6 +185,33 @@ export class Sheet<
         const db = await loadLocalDb(this.name)
         this._state = db.state as Element[]
         this._type = db.type as Record<keyof Element, string>
+    }
+
+    parseRawPartialElement(
+        rawPartialElement: Partial<Record<keyof Element, string>>
+    ): Partial<Element> | undefined {
+        if (this._type === undefined) {
+            return undefined
+        }
+        // else
+        const rawPartialFrenchElement = _.mapValues(
+            this.invertedTranslation,
+            (englishProp: string) => (rawPartialElement as any)[englishProp]
+        ) as Element
+
+        const rawFrenchElement = this.stringifyElement(this.frenchSpecimen, this._type)
+        assign(rawFrenchElement, rawPartialFrenchElement)
+
+        const frenchElement = this.parseElement(rawFrenchElement, this._type)
+
+        const element = _.mapValues(
+            this.translation,
+            (frenchProp: string) => (frenchElement as any)[frenchProp]
+        ) as Element
+
+        const partialElement = pick(element, Object.keys(rawPartialElement))
+
+        return partialElement
     }
 
     dbSave(): void {

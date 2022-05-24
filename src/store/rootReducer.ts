@@ -5,6 +5,7 @@ import announcementList from "./announcementList"
 import auth from "./auth"
 import boxList from "./boxList"
 import gameList from "./gameList"
+import gameDetailsUpdate from "./gameDetailsUpdate"
 import miscDiscordInvitation from "./miscDiscordInvitation"
 import miscMeetingDateList from "./miscMeetingDateList"
 import postulantAdd from "./postulantAdd"
@@ -32,6 +33,7 @@ export default (history: History) => ({
     auth,
     boxList,
     gameList,
+    gameDetailsUpdate,
     miscDiscordInvitation,
     miscMeetingDateList,
     postulantAdd,

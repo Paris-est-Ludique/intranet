@@ -1,4 +1,6 @@
 import AnnouncementLink from "./AnnouncementLink"
+import DbEdit, { fetchFor as fetchForDbEdit } from "./Admin/DbEdit"
+import GameDetailsUpdate, { fetchFor as fetchForGameDetailsUpdate } from "./Admin/GameDetailsUpdate"
 import Board, { fetchFor as fetchForBoard } from "./VolunteerBoard/Board"
 import DayWishesForm, {
     fetchFor as fetchForDayWishesForm,
@@ -20,11 +22,14 @@ import TeamWishesForm, {
 } from "./VolunteerBoard/TeamWishesForm/TeamWishesForm"
 import VolunteerList from "./VolunteerList"
 import VolunteerInfo from "./VolunteerInfo"
-import VolunteerSet from "./VolunteerSet"
 import WishAdd from "./WishAdd"
 
 export {
     AnnouncementLink,
+    DbEdit,
+    fetchForDbEdit,
+    GameDetailsUpdate,
+    fetchForGameDetailsUpdate,
     Board,
     fetchForBoard,
     BoxList,
@@ -48,6 +53,5 @@ export {
     fetchForTeamWishesForm,
     VolunteerInfo,
     VolunteerList,
-    VolunteerSet,
     WishAdd,
 }

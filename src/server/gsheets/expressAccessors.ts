@@ -39,6 +39,12 @@ export default class ExpressAccessors<
         return this.sheet as Sheet<ElementNoId, Element>
     }
 
+    parseRawPartialElement(
+        rawPartialElement: Partial<Record<keyof Element, string>>
+    ): Partial<Element> | undefined {
+        return this.sheet?.parseRawPartialElement(rawPartialElement)
+    }
+
     listGet() {
         return async (
             _request: Request,
@@ -49,6 +55,45 @@ export default class ExpressAccessors<
                 const elements = await (await this.getSheet()).getList()
                 if (elements) {
                     response.status(200).json(elements)
+                }
+            } catch (e: any) {
+                response.status(200).json({ error: e.message })
+            }
+        }
+    }
+
+    listSet(
+        custom?: (
+            list: Element[],
+            body: RequestBody,
+            id: number,
+            roles: string[]
+        ) => Promise<CustomSetReturn<Element[]>> | CustomSetReturn<Element[]>
+    ) {
+        return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
+            try {
+                const sheet = await this.getSheet()
+                if (!custom) {
+                    await sheet.setList(request.body)
+                    response.status(200)
+                } else {
+                    const memberId = response?.locals?.jwt?.id || -1
+                    const roles: string[] = response?.locals?.jwt?.roles || []
+                    const list = (await sheet.getList()) || []
+                    const { toDatabase, toCaller } = await custom(
+                        list,
+                        request.body,
+                        memberId,
+                        roles
+                    )
+                    if (toDatabase !== undefined) {
+                        await sheet.setList(toDatabase)
+                    }
+                    if (toCaller !== undefined) {
+                        response.status(200).json(toCaller)
+                    } else {
+                        response.status(200)
+                    }
                 }
             } catch (e: any) {
                 response.status(200).json({ error: e.message })

@@ -1,6 +1,10 @@
 import { RouteConfig } from "react-router-config"
 
 import App from "../app"
+import AsyncDbEdit, { loadData as loadDbEdit } from "../pages/Admin/DbEdit"
+import AsyncGameDetailsUpdate, {
+    loadData as loadGameDetailsUpdate,
+} from "../pages/Admin/GameDetailsUpdate"
 import AsyncHome, { loadData as loadHomeData } from "../pages/Home"
 import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/Announcements"
 import AsyncTeamAssignment, { loadData as loadTeamAssignmentData } from "../pages/TeamAssignment"
@@ -23,6 +27,16 @@ export default [
                 exact: true,
                 component: AsyncHome,
                 loadData: loadHomeData,
+            },
+            {
+                path: "/edit",
+                component: AsyncDbEdit,
+                loadData: loadDbEdit,
+            },
+            {
+                path: "/updateGameDetails",
+                component: AsyncGameDetailsUpdate,
+                loadData: loadGameDetailsUpdate,
             },
             {
                 path: "/connaissances",

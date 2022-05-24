@@ -17,8 +17,6 @@ const mockData: Game[] = [
     {
         id: 5,
         title: "6 qui prend!",
-        author: "Wolfgang Kramer",
-        editor: "(uncredited) , Design Edge , B",
         playersMin: 2,
         playersMax: 10,
         duration: 45,

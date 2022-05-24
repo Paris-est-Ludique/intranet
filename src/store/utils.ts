@@ -118,33 +118,6 @@ export function elementListFetch<Element, ServiceInput extends Array<any>>(
         }
 }
 
-export function elementSet<Element>(
-    elementSetService: (element: Element) => Promise<{
-        data?: Element | undefined
-        error?: Error | undefined
-    }>,
-    getRequesting: ActionCreatorWithoutPayload<string>,
-    getSuccess: ActionCreatorWithPayload<Element, string>,
-    getFailure: ActionCreatorWithPayload<string, string>,
-    errorMessage?: (error: Error) => void,
-    successMessage?: () => void
-): (element: Element) => AppThunk {
-    return (element: Element): AppThunk =>
-        async (dispatch) => {
-            dispatch(getRequesting())
-
-            const { error, data } = await elementSetService(element)
-
-            if (error) {
-                dispatch(getFailure(error.message))
-                errorMessage?.(error)
-            } else {
-                dispatch(getSuccess(data as Element))
-                successMessage?.()
-            }
-        }
-}
-
 export function elementValueFetch<Element>(
     elementListService: () => Promise<{
         data?: Element | undefined

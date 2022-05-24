@@ -19,7 +19,7 @@ import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
 import { detailedBoxListGet } from "./gsheets/boxes"
-import { gameListGet } from "./gsheets/games"
+import { gameListGet, gameDetailsUpdate } from "./gsheets/games"
 import { postulantAdd } from "./gsheets/postulants"
 import { teamListGet } from "./gsheets/teams"
 import {
@@ -100,7 +100,6 @@ app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
 // Secured APIs
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
 app.get("/MiscDiscordInvitationGet", secure as RequestHandler, miscDiscordInvitation)
-app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 app.get("/TeamListGet", teamListGet)
 app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
 app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
@@ -113,6 +112,10 @@ app.post(
 app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
+
+// Admin only
+app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
+app.get("/GameDetailsUpdate", secure as RequestHandler, gameDetailsUpdate)
 
 // Push notification subscription
 app.post("/notifications/subscribe", notificationsSubscribe)

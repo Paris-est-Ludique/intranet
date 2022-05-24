@@ -3,10 +3,6 @@ export class Game {
 
     title = ""
 
-    author = ""
-
-    editor = ""
-
     playersMin = 0
 
     playersMax = 0
@@ -27,8 +23,6 @@ export class Game {
 export const translationGame: { [k in keyof Game]: string } = {
     id: "id",
     title: "titre",
-    author: "auteur",
-    editor: "editeur",
     playersMin: "minJoueurs",
     playersMax: "maxJoueurs",
     duration: "duree",

@@ -163,8 +163,6 @@ export interface VolunteerDiscordId {
 export interface VolunteerAsks {
     id: Volunteer["id"]
     firstname: Volunteer["firstname"]
-    adult: Volunteer["adult"]
-    active: Volunteer["active"]
     hiddenAsks: Volunteer["hiddenAsks"]
     pushNotifSubscription: Volunteer["pushNotifSubscription"]
     acceptsNotifs: Volunteer["acceptsNotifs"]

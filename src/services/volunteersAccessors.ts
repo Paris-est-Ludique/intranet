@@ -20,7 +20,8 @@ export const volunteerDiscordIdGet = serviceAccessors.securedCustomGet<
     VolunteerDiscordId
 >("DiscordId")
 export const volunteerPartialAdd = serviceAccessors.customPost<[Partial<Volunteer>]>("PartialAdd")
-export const volunteerSet = serviceAccessors.set()
+
+export const volunteerSet = serviceAccessors.securedCustomPost<[Partial<Volunteer>]>("Set")
 
 export const volunteerLogin =
     serviceAccessors.customPost<[{ email: string; password: string }]>("Login")

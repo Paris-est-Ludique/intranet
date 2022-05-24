@@ -1,4 +1,4 @@
-import { assign, cloneDeep, keys, omit, pick } from "lodash"
+import { assign, cloneDeep, omit, pick } from "lodash"
 import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
@@ -30,7 +30,30 @@ export const volunteerListGet = expressAccessor.get(async (list, _body, id) => {
     }
     return list
 })
-export const volunteerSet = expressAccessor.set()
+
+export const volunteerSet = expressAccessor.set(async (list, body, _id, roles) => {
+    if (!roles.includes("admin")) {
+        throw Error(`À moins d'être admin, on ne peut pas modifier n'importe quel utilisateur`)
+    }
+    const newPartialVolunteer = body[0] as Partial<Record<keyof Volunteer, string>> & { id: number }
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === newPartialVolunteer.id)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${newPartialVolunteer.id}`)
+    }
+    const newVolunteer: Volunteer = cloneDeep(volunteer)
+
+    const parsedPartialVolunteer = expressAccessor.parseRawPartialElement(newPartialVolunteer)
+    if (parsedPartialVolunteer === undefined) {
+        throw Error(`Erreur au parsing dans volunteerSet`)
+    }
+
+    assign(newVolunteer, parsedPartialVolunteer)
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: newVolunteer,
+    }
+})
 
 export const volunteerDiscordId = expressAccessor.get(async (list, body, id) => {
     const requestedId = +body[0] || id
@@ -132,7 +155,7 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
 const lastForgot: { [id: string]: number } = {}
 export const volunteerForgot = expressAccessor.set(async (list, bodyArray) => {
     const [body] = bodyArray
-    const volunteer = getByEmail(list, body.email)
+    const volunteer: Volunteer | undefined = getByEmail(list, body.email)
     if (!volunteer) {
         throw Error("Il n'y a aucun bénévole avec cet email")
     }
@@ -199,15 +222,17 @@ export const volunteerAsksSet = expressAccessor.set(async (list, body, id) => {
     }
     const newVolunteer = cloneDeep(volunteer)
 
-    assign(newVolunteer, pick(notifChanges, keys(newVolunteer)))
+    if (notifChanges.teamWishes !== undefined) newVolunteer.hiddenAsks = notifChanges.hiddenAsks
+    if (notifChanges.acceptsNotifs !== undefined)
+        newVolunteer.acceptsNotifs = notifChanges.acceptsNotifs
+    if (notifChanges.pushNotifSubscription !== undefined)
+        newVolunteer.pushNotifSubscription = notifChanges.pushNotifSubscription
 
     return {
         toDatabase: newVolunteer,
         toCaller: {
             id: newVolunteer.id,
             firstname: newVolunteer.firstname,
-            adult: newVolunteer.adult,
-            active: newVolunteer.active,
             hiddenAsks: newVolunteer.hiddenAsks,
             pushNotifSubscription: newVolunteer.pushNotifSubscription,
             acceptsNotifs: newVolunteer.acceptsNotifs,
@@ -223,11 +248,11 @@ export const volunteerTeamWishesSet = expressAccessor.set(async (list, body, id,
         )
     }
     const wishes = body[1] as VolunteerTeamWishes
-    const volunteer = list.find((v) => v.id === requestedId)
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === requestedId)
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
-    const newVolunteer = cloneDeep(volunteer)
+    const newVolunteer: Volunteer = cloneDeep(volunteer)
 
     if (wishes.teamWishes !== undefined) {
         newVolunteer.teamWishes = wishes.teamWishes
@@ -252,7 +277,7 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
         throw Error(`On ne peut acceder qu'à ses propres envies de jours`)
     }
     const wishes = body[1] as VolunteerDayWishes
-    const volunteer = list.find((v) => v.id === requestedId)
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === requestedId)
     if (!volunteer) {
         throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
     }
@@ -318,10 +343,8 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
     }
 })
 
-export const volunteerTeamAssignSet = expressAccessor.set(async (list, body, id) => {
-    const requestedId = +body[0] || id
-    const assigner = list.find((v) => v.id === requestedId)
-    if (!assigner || !assigner.roles.includes("répartiteur")) {
+export const volunteerTeamAssignSet = expressAccessor.set(async (list, body, _id, roles) => {
+    if (!roles.includes("répartiteur")) {
         throw Error(`Vous n'avez pas les droits pas assigner les équipes.`)
     }
 
