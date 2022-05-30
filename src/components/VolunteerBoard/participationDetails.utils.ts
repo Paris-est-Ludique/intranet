@@ -6,16 +6,21 @@ import { AppState } from "../../store"
 import { fetchVolunteerParticipationDetailsSet } from "../../store/volunteerParticipationDetailsSet"
 
 export const tshirtSizes = [
+    "XXS",
     "XS",
     "S",
     "M",
     "L",
     "XL",
     "XXL",
+    "3XL",
+    "4XL",
     "Femme S",
     "Femme M",
     "Femme L",
     "Femme XL",
+    "Femme XXL",
+    "Femme 3XL",
 ]
 
 export const foodDefaultValue = "Aucune"

@@ -33,7 +33,7 @@ export const volunteerListGet = expressAccessor.get(async (list, _body, id) => {
 
 export const volunteerAddNew = expressAccessor.add(async (list, _body, _id, roles) => {
     if (!roles.includes("admin")) {
-        throw Error(`À moins d'être admin, on ne peut pas modifier n'importe quel utilisateur`)
+        throw Error(`À moins d'être admin, on ne peut pas ajouter un bénévole`)
     }
     const id = (max(list.map((v) => v.id)) || 0) + 1
     const password = generatePassword()
@@ -53,7 +53,7 @@ export const volunteerAddNew = expressAccessor.add(async (list, _body, _id, role
 
 export const volunteerSet = expressAccessor.set(async (list, body, _id, roles) => {
     if (!roles.includes("admin")) {
-        throw Error(`À moins d'être admin, on ne peut pas modifier n'importe quel utilisateur`)
+        throw Error(`À moins d'être admin, on ne peut pas modifier n'importe quel bénévole`)
     }
     const newPartialVolunteer = body[0] as Partial<Record<keyof Volunteer, string>> & { id: number }
     const volunteer: Volunteer | undefined = list.find((v) => v.id === newPartialVolunteer.id)
