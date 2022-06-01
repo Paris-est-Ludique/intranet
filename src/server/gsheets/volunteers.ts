@@ -243,7 +243,7 @@ export const volunteerAsksSet = expressAccessor.set(async (list, body, id) => {
     }
     const newVolunteer = cloneDeep(volunteer)
 
-    if (notifChanges.teamWishes !== undefined) newVolunteer.hiddenAsks = notifChanges.hiddenAsks
+    if (notifChanges.hiddenAsks !== undefined) newVolunteer.hiddenAsks = notifChanges.hiddenAsks
     if (notifChanges.acceptsNotifs !== undefined)
         newVolunteer.acceptsNotifs = notifChanges.acceptsNotifs
     if (notifChanges.pushNotifSubscription !== undefined)

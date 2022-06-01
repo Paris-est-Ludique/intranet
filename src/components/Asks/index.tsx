@@ -5,6 +5,7 @@ import { useAskTools } from "./utils"
 import { AskWelcome } from "./AskWelcome"
 import { AskDiscord, fetchFor as fetchForDiscord } from "./AskDiscord"
 import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
+import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
 import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
 import {
     AskParticipationDetails,
@@ -22,6 +23,7 @@ const Asks = (): JSX.Element | null => {
     AskDayWishes(asks, 10)
     AskTeamWishes(asks, 11)
     AskParticipationDetails(asks, 12)
+    AskHosting(asks, 20)
 
     AskPushNotif(asks, 99)
 
@@ -58,6 +60,7 @@ export default memo(Asks)
 export const fetchFor = [
     ...fetchForDiscord,
     ...fetchForDayWishes,
+    ...fetchForHosting,
     ...fetchForTeamWishes,
     ...fetchForParticipationDetails,
 ]

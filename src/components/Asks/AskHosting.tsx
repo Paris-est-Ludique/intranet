@@ -2,12 +2,12 @@ import { get } from "lodash"
 import { useCallback } from "react"
 import { fetchVolunteerAsksSet } from "../../store/volunteerAsksSet"
 import { useAskTools, addAsk, answerLaterOnProfile } from "./utils"
-import ParticipationDetailsForm, {
-    fetchFor as fetchForParticipationDetailsForm,
-} from "../VolunteerBoard/ParticipationDetailsForm/ParticipationDetailsForm"
-import { useUserParticipationDetails } from "../VolunteerBoard/participationDetails.utils"
+import HostingForm, {
+    fetchFor as fetchForHostingForm,
+} from "../VolunteerBoard/HostingForm/HostingForm"
+import { useUserHosting } from "../VolunteerBoard/hosting.utils"
 
-export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
+export function AskHosting(asks: JSX.Element[], id: number): void {
     const { dispatch, jwtToken, volunteerAsks } = useAskTools()
 
     const onSubmit = useCallback((): void => {
@@ -18,10 +18,13 @@ export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
         )
     }, [dispatch, id, jwtToken, volunteerAsks?.hiddenAsks])
 
-    const [participationDetails] = useUserParticipationDetails()
-    const tshirtSize = get(participationDetails, "tshirtSize", "")
-    const food = get(participationDetails, "food", "")
-    const needToShow = !tshirtSize || !food
+    const [hosting] = useUserHosting()
+    const needsHosting = get(hosting, "needsHosting", false)
+    const canHostCount = get(hosting, "canHostCount", 0)
+    const distanceToFestival = get(hosting, "distanceToFestival", 0)
+    const hostingComment = get(hosting, "hostingComment", "")
+    const needToShow =
+        !needsHosting && canHostCount === 0 && distanceToFestival === 0 && hostingComment === ""
 
     addAsk(
         asks,
@@ -29,11 +32,9 @@ export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
         volunteerAsks,
         false,
         needToShow,
-        <ParticipationDetailsForm afterSubmit={onSubmit}>
-            {answerLaterOnProfile}
-        </ParticipationDetailsForm>
+        <HostingForm afterSubmit={onSubmit}>{answerLaterOnProfile}</HostingForm>
     )
 }
 
 // Fetch server-side data here
-export const fetchFor = [...fetchForParticipationDetailsForm]
+export const fetchFor = [...fetchForHostingForm]

@@ -41,7 +41,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
 
     return (
         <div>
-            <div className={styles.title}>Mes jours de présence</div>
+            <div className={styles.title}>Mon hébergement</div>
             <div className={classnames(styles.inputWrapper, styles.noBottomMargin)}>
                 <div className={styles.leftCol}>
                     <div className={styles.needsHostingTitle}>
