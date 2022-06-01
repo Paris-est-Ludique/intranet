@@ -1,0 +1,53 @@
+@import "../../../theme/variables";
+@import "../../../theme/mixins";
+
+.title {
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+.hostingLabel {
+    margin-right: 5px;
+    font-style: bold;
+}
+
+.hosting {
+    @include inner-content-wrapper();
+
+    position: relative;
+    padding-right: 90px;
+}
+
+.hostingLabel,
+.commentLine {
+    margin-bottom: 5px;
+    span {
+        display: inline-block;
+    }
+}
+
+.lineEmpty {
+    color: $color-red;
+    font-style: italic;
+}
+
+.commentLineTitle {
+    padding-right: 5px;
+}
+
+.commentLineText {
+    font-style: italic;
+}
+
+.editButton {
+    @include vertical-center();
+
+    position: absolute;
+    right: 20px;
+
+    button {
+        color: $color-green;
+        font-weight: bold;
+        cursor: pointer;
+    }
+}

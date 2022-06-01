@@ -26,6 +26,7 @@ import {
     volunteerAsksSet,
     volunteerDayWishesSet,
     volunteerForgot,
+    volunteerHostingSet,
     volunteerDiscordId,
     volunteerLogin,
     volunteerPartialAdd,
@@ -111,6 +112,7 @@ app.post(
     volunteerParticipationDetailsSet
 )
 app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
+app.post("/VolunteerHostingSet", secure as RequestHandler, volunteerHostingSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
 

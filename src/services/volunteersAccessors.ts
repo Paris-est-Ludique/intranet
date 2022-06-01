@@ -3,6 +3,7 @@ import {
     elementName,
     Volunteer,
     VolunteerDayWishes,
+    VolunteerHosting,
     VolunteerAsks,
     VolunteerParticipationDetails,
     VolunteerTeamWishes,
@@ -37,6 +38,9 @@ export const volunteerTeamWishesSet =
 
 export const volunteerDayWishesSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerDayWishes>]>("DayWishesSet")
+
+export const volunteerHostingSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerHosting>]>("HostingSet")
 
 export const volunteerParticipationDetailsSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerParticipationDetails>]>(

@@ -1,6 +1,8 @@
 import { FC, memo } from "react"
 import DayWishes from "./DayWishes/DayWishes"
 import DayWishesFormModal from "./DayWishesForm/DayWishesFormModal"
+import Hosting from "./Hosting/Hosting"
+import HostingFormModal from "./HostingForm/HostingFormModal"
 import ParticipationDetails from "./ParticipationDetails/ParticipationDetails"
 import ParticipationDetailsFormModal from "./ParticipationDetailsForm/ParticipationDetailsFormModal"
 import TeamWishes from "./TeamWishes/TeamWishes"
@@ -8,6 +10,7 @@ import TeamWishesFormModal from "./TeamWishesForm/TeamWishesFormModal"
 import withUserConnected from "../../utils/withUserConnected"
 import ContentTitle from "../ui/Content/ContentTitle"
 import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
+import { fetchFor as fetchForHostingForm } from "./HostingForm/HostingForm"
 import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
 import { fetchFor as fetchForTeamWishesForm } from "./TeamWishesForm/TeamWishesForm"
 import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
@@ -22,6 +25,8 @@ const Board: FC = (): JSX.Element => (
         <TeamWishes />
         <TeamWishesFormModal />
         <VolunteerTeam />
+        <Hosting />
+        <HostingFormModal />
     </>
 )
 
@@ -29,6 +34,7 @@ export default memo(withUserConnected(Board))
 
 export const fetchFor = [
     ...fetchForDayWishesForm,
+    ...fetchForHostingForm,
     ...fetchForParticipationDetailsForm,
     ...fetchForTeamWishesForm,
 ]

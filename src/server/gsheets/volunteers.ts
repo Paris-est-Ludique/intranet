@@ -11,6 +11,7 @@ import {
     VolunteerTeamWishes,
     translationVolunteer,
     VolunteerDayWishes,
+    VolunteerHosting,
     VolunteerParticipationDetails,
     VolunteerTeamAssign,
     VolunteerKnowledge,
@@ -321,6 +322,43 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
             dayWishes: newVolunteer.dayWishes,
             dayWishesComment: newVolunteer.dayWishesComment,
         } as VolunteerDayWishes,
+    }
+})
+
+export const volunteerHostingSet = expressAccessor.set(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    if (requestedId !== id && requestedId !== 0) {
+        throw Error(`On ne peut acceder qu'à ses propres infos d'hébergement`)
+    }
+    const wishes = body[1] as VolunteerHosting
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    const newVolunteer = cloneDeep(volunteer)
+
+    if (wishes.needsHosting !== undefined) {
+        newVolunteer.needsHosting = wishes.needsHosting
+    }
+    if (wishes.canHostCount !== undefined) {
+        newVolunteer.canHostCount = wishes.canHostCount
+    }
+    if (wishes.distanceToFestival !== undefined) {
+        newVolunteer.distanceToFestival = wishes.distanceToFestival
+    }
+    if (wishes.hostingComment !== undefined) {
+        newVolunteer.hostingComment = wishes.hostingComment
+    }
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            id: newVolunteer.id,
+            needsHosting: newVolunteer.needsHosting,
+            canHostCount: newVolunteer.canHostCount,
+            distanceToFestival: newVolunteer.distanceToFestival,
+            hostingComment: newVolunteer.hostingComment,
+        } as VolunteerHosting,
     }
 })
 

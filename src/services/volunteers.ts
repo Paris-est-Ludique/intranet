@@ -59,6 +59,14 @@ export class Volunteer implements VolunteerPartial {
     bof: number[] = []
 
     niet: number[] = []
+
+    needsHosting = false
+
+    canHostCount = 0
+
+    distanceToFestival = 0
+
+    hostingComment = ""
 }
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
@@ -92,6 +100,10 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     ok: "OK",
     bof: "Bof",
     niet: "Niet",
+    needsHosting: "besoinHébergement",
+    canHostCount: "nombreHébergés",
+    distanceToFestival: "distanceAuFestival",
+    hostingComment: "commentaireHébergement",
 }
 
 export class VolunteerPartial {
@@ -137,6 +149,10 @@ export const volunteerExample: Volunteer = {
     ok: [5, 7, 24, 26, 31, 38, 50, 52, 54, 58],
     bof: [9, 12, 16, 27, 34, 35, 36],
     niet: [13, 18, 19, 23, 47, 53, 59, 67],
+    needsHosting: false,
+    canHostCount: 0,
+    distanceToFestival: 0,
+    hostingComment: "",
 }
 
 export const emailRegexp =
@@ -179,6 +195,14 @@ export interface VolunteerDayWishes {
     active: Volunteer["active"]
     dayWishes: Volunteer["dayWishes"]
     dayWishesComment: Volunteer["dayWishesComment"]
+}
+
+export interface VolunteerHosting {
+    id: Volunteer["id"]
+    needsHosting: Volunteer["needsHosting"]
+    canHostCount: Volunteer["canHostCount"]
+    distanceToFestival: Volunteer["distanceToFestival"]
+    hostingComment: Volunteer["hostingComment"]
 }
 
 export interface VolunteerParticipationDetails {
