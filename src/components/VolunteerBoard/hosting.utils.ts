@@ -4,8 +4,16 @@ import { selectUserJwtToken } from "../../store/auth"
 import { AppState } from "../../store"
 import { fetchVolunteerHostingSet } from "../../store/volunteerHostingSet"
 import useAction from "../../utils/useAction"
+import { VolunteerHosting } from "../../services/volunteers"
 
-export const useUserHosting = (): [any, any] => {
+type SetFunction = (
+    needsHosting: VolunteerHosting["needsHosting"],
+    canHostCount: VolunteerHosting["canHostCount"],
+    distanceToFestival: VolunteerHosting["distanceToFestival"],
+    hostingComment: VolunteerHosting["hostingComment"]
+) => void
+
+export const useUserHosting = (): [VolunteerHosting | undefined, SetFunction] => {
     const save = useAction(fetchVolunteerHostingSet)
     const jwtToken = useSelector(selectUserJwtToken)
     const userWishes = useSelector(

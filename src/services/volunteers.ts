@@ -67,6 +67,8 @@ export class Volunteer implements VolunteerPartial {
     distanceToFestival = 0
 
     hostingComment = ""
+
+    meals: string[] = []
 }
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
@@ -104,6 +106,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     canHostCount: "nombreHébergés",
     distanceToFestival: "distanceAuFestival",
     hostingComment: "commentaireHébergement",
+    meals: "repas",
 }
 
 export class VolunteerPartial {
@@ -153,6 +156,7 @@ export const volunteerExample: Volunteer = {
     canHostCount: 0,
     distanceToFestival: 0,
     hostingComment: "",
+    meals: [],
 }
 
 export const emailRegexp =
@@ -203,6 +207,11 @@ export interface VolunteerHosting {
     canHostCount: Volunteer["canHostCount"]
     distanceToFestival: Volunteer["distanceToFestival"]
     hostingComment: Volunteer["hostingComment"]
+}
+
+export interface VolunteerMeals {
+    id: Volunteer["id"]
+    meals: Volunteer["meals"]
 }
 
 export interface VolunteerParticipationDetails {

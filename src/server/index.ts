@@ -27,9 +27,9 @@ import {
     volunteerDayWishesSet,
     volunteerForgot,
     volunteerHostingSet,
+    volunteerMealsSet,
     volunteerDiscordId,
     volunteerLogin,
-    volunteerPartialAdd,
     volunteerParticipationDetailsSet,
     volunteerSet,
     volunteerTeamWishesSet,
@@ -94,7 +94,7 @@ app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
 app.post("/PostulantAdd", postulantAdd)
-app.post("/VolunteerPartialAdd", volunteerPartialAdd)
+// Disabling registration app.post("/VolunteerPartialAdd", volunteerPartialAdd)
 app.post("/VolunteerLogin", volunteerLogin)
 app.post("/VolunteerForgot", volunteerForgot)
 app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
@@ -113,6 +113,7 @@ app.post(
 )
 app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
 app.post("/VolunteerHostingSet", secure as RequestHandler, volunteerHostingSet)
+app.post("/VolunteerMealsSet", secure as RequestHandler, volunteerMealsSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
 

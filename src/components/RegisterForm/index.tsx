@@ -55,6 +55,8 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 
     const meetingDateList = useSelector(selectMiscMeetingDateList)
 
+    const enableRegistering = false
+
     useEffect(() => {
         const timer = setInterval(() => {
             setChangingBackground((changingBackground + 1) % animations.length)
@@ -234,20 +236,33 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 </p>
                 <div className={styles.beneImg}> </div>
             </dd>
-            <dt>
-                Si l&apos;expérience vous tente, remplissez le formulaire suivant pour devenir
-                bénévole !<br />
-                Vous pouvez aussi juste nous rencontrer avant de vous décider à devenir bénévole, on
-                comprend qu&apos;un saut pareil dans l&apos;inconnu soit difficile.
-                <br />
-                Dans les deux cas, venez rencontrer une poignée d'entre nous dans un bar/resto près
-                de Châtelet ! :) Sur inscription uniquement...
-                <br />
-            </dt>
+
+            {!enableRegistering && (
+                <dt>
+                    L'inscription est clôturée pour l'édition 2022, mais si l'expérience vous tente,
+                    remplissez le formulaire suivant pour devenir bénévole à PeL 2023 !<br />
+                    Dès septembre on se rencontrera sur Paris en petits groupes pour discuter du
+                    festival, du bénévolat et surtout faire connaissance :)
+                    <br />
+                </dt>
+            )}
+
+            {enableRegistering && (
+                <dt>
+                    Si l&apos;expérience vous tente, remplissez le formulaire suivant pour devenir
+                    bénévole !<br />
+                    Vous pouvez aussi juste nous rencontrer avant de vous décider à devenir
+                    bénévole, on comprend qu&apos;un saut pareil dans l&apos;inconnu soit difficile.
+                    <br />
+                    Dans les deux cas, venez rencontrer une poignée d'entre nous dans un bar/resto
+                    près de Châtelet ! :) Sur inscription uniquement...
+                    <br />
+                </dt>
+            )}
         </dl>
     )
 
-    const potentialVolunteerQuestion = (
+    const potentialVolunteerQuestion = enableRegistering && (
         <div className={styles.inputWrapper}>
             <div className={styles.leftCol}>
                 <div className={styles.multipleChoiceTitle}>Je veux devenir bénévole :</div>
@@ -431,7 +446,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         </>
     )
 
-    const meeting = (
+    const meeting = enableRegistering && (
         <>
             <dl className={styles.registerIntro}>
                 {!potentialVolunteer && <dt>Faisons connaissance !</dt>}
@@ -535,7 +550,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         </>
     )
 
-    const helpBefore = !potentialVolunteer && (
+    const helpBefore = enableRegistering && !potentialVolunteer && (
         <>
             <dl className={styles.registerIntro}>
                 <dt>Bénévolat en amont du festival</dt>
@@ -608,7 +623,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         </>
     )
 
-    const pelMemberQuestion = !potentialVolunteer && (
+    const pelMemberQuestion = enableRegistering && !potentialVolunteer && (
         <>
             <dl className={styles.registerIntro}>
                 <dt>Association Paris est Ludique</dt>
@@ -784,7 +799,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 
             {(potentialVolunteer || !alreadyVolunteer) && (
                 <>
-                    {commentQuestion}
+                    {enableRegistering && commentQuestion}
                     {cameAsVisitor}
                     {meeting}
                     {helpBefore}
@@ -792,6 +807,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     {(potentialVolunteer || pelMember) && (
                         <>
                             {nameMobileEmail}
+                            {!enableRegistering && commentQuestion}
                             {howToContact !== "Aucun" && submitButton}
                         </>
                     )}

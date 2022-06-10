@@ -12,6 +12,7 @@ import {
     translationVolunteer,
     VolunteerDayWishes,
     VolunteerHosting,
+    VolunteerMeals,
     VolunteerParticipationDetails,
     VolunteerTeamAssign,
     VolunteerKnowledge,
@@ -362,6 +363,30 @@ export const volunteerHostingSet = expressAccessor.set(async (list, body, id) =>
     }
 })
 
+export const volunteerMealsSet = expressAccessor.set(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    if (requestedId !== id && requestedId !== 0) {
+        throw Error(`On ne peut acceder qu'à ses propres repas`)
+    }
+    const wishes = body[1] as VolunteerMeals
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    const newVolunteer = cloneDeep(volunteer)
+
+    if (wishes.meals !== undefined) {
+        newVolunteer.meals = wishes.meals
+    }
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            id: newVolunteer.id,
+            meals: newVolunteer.meals,
+        } as VolunteerMeals,
+    }
+})
 export const volunteerParticipationDetailsSet = expressAccessor.set(async (list, body, id) => {
     const requestedId = +body[0] || id
     if (requestedId !== id && requestedId !== 0) {

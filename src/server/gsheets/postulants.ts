@@ -71,8 +71,8 @@ async function sendMeetingEmail(
                 to: email,
                 from: "contact@parisestludique.fr",
                 subject: "Première rencontre Paris est Ludique",
-                text: `Salut ${firstname},\n\nNous allons te contacter prochainement pour trouver ensemble un moyen de se rencontrer.\n\nÀ bientôt :)\nPierre`,
-                html: `Salut ${firstname},<br /><br />Nous allons te contacter prochainement pour trouver ensemble un moyen de se rencontrer.<br /><br />À bientôt :)<br />Pierre`,
+                text: `Salut ${firstname},\n\nTon inscription est bien prise en compte !\n\nNous te contacterons pour trouver un moyen de se rencontrer.\n\nÀ bientôt :)\nPierre`,
+                html: `Salut ${firstname},<br /><br />Ton inscription est bien prise en compte !<br /><br />Nous te contacterons pour trouver un moyen de se rencontrer.<br /><br />À bientôt :)<br />Pierre`,
             }
             await sgMail.send(msg)
         }
