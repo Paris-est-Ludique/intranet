@@ -1,25 +1,18 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
-
 .volunteers {
     padding: 0;
     list-style: none;
 }
 
 $height: 24px;
-
 .volunteer {
-    height: $height;
-    line-height: $height;
-    margin-bottom: 3px;
+    display: grid;
+    grid-template-columns: minmax(min-content, 5fr) min-content min-content;
 }
 
 .volunteerName {
-    display: inline-block;
-    height: $height;
-    width: 230px;
-    padding-right: 4px;
-    text-align: right;
+    grid-column: 1;
 }
 
 .volunteerEmail {
@@ -44,11 +37,9 @@ $height: 24px;
     text-align: center;
     background-color: $color-red;
     color: transparent;
-
     &.unknown {
         background-color: $color-grey-medium;
     }
-
     &.available {
         background-color: $color-green;
     }
