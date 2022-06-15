@@ -1,6 +1,11 @@
 # Dependencies
 node_modules
 
+# Sass compiled files
+*.module.css
+*.css.map
+*.css
+
 # Testing
 coverage
 
@@ -19,3 +24,5 @@ access/*
 *.log
 .idea
 announces/*
+/styles.module.css
+.vscode/settings.json
