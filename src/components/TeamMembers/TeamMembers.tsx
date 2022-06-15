@@ -73,22 +73,20 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
     if (volunteers.length === 0) return <div />
 
     return (
-        <ul className={styles.volunteers}>
-            <li>
-                <div className={styles.volunteerName} />
-                <div className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</div>
-                <div className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</div>
-            </li>
+        <div className={styles.volunteers}>
+            <div className={styles.volunteerName} />
+            <div className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</div>
+            <div className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</div>
             {volunteers.map((volunteer) => (
-                <li key={volunteer.id} className={styles.volunteer}>
-                    <div className={styles.volunteerName}>
+                <>
+                    <div key={volunteer.id} className={styles.volunteerName}>
                         {volunteer.firstname} {volunteer.lastname}
                     </div>
                     <DaysAvailability volunteer={volunteer} />
                     <VolunteerEmail email={volunteer.email} />
-                </li>
+                </>
             ))}
-        </ul>
+        </div>
     )
 }
 
