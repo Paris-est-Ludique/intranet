@@ -1,7 +1,7 @@
 # <b>Intranet of the <i>Paris est Ludique</i> board game festival.</b>
 
 <i>This is the intranet used by the volunteers of the assosication Paris est Ludique.</i><br>
-It is built from the boilerplate [React Cool Starter](https://github.com/forceoranj/intranet), on the top of [React](https://facebook.github.io/react), [Redux](https://github.com/reactjs/redux), [React Router](https://reacttraining.com/react-router) and [Express](https://expressjs.com).
+It is built from the boilerplate [React Cool Starter](https://github.com/wellyshen/react-cool-starter), on the top of [React](https://facebook.github.io/react), [Redux](https://github.com/reactjs/redux), [React Router](https://reacttraining.com/react-router) and [Express](https://expressjs.com).
 
 ## Requirements
 
@@ -20,6 +20,7 @@ cd intranet
 **2. Install all of the dependencies:**
 
 ```sh
+npm install yarn
 yarn
 ```
 
