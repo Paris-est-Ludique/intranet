@@ -11,24 +11,6 @@ $height: 24px;
     grid-template-columns: minmax(min-content, 5fr) min-content min-content;
 }
 
-.volunteerName {
-    grid-column: 1;
-}
-
-.volunteerEmail {
-    display: inline-block;
-    height: $height;
-    padding-left: 4px;
-}
-
-.dayTitle {
-    display: inline-block;
-    width: 50px;
-    height: $height;
-    margin: 0 2px;
-    text-align: center;
-}
-
 .day {
     display: inline-block;
     width: 50px;
