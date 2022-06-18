@@ -33,7 +33,7 @@ type VolunteerEmailProps = {
 }
 
 const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole(ROLES.TEAMLEAD, ({ email }) => (
-    <td className={styles.volunteerEmail}>{email}</td>
+    <td> {email}</td>
 ))
 
 type DaysAvailabilityProps = {
@@ -69,16 +69,16 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
     if (volunteers.length === 0) return <div />
 
     return (
-        <table className={styles.volunteers}>
+        <table>
             <tr>
-                <th className={styles.volunteerName}>Volontaires</th>
+                <th>Volontaires</th>
                 <th className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</th>
                 <th className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</th>
                 <th>@</th>
             </tr>
             {volunteers.map((volunteer) => (
                 <tr key={volunteer.id}>
-                    <td className={styles.volunteerName}>
+                    <td>
                         {volunteer.firstname} {volunteer.lastname}
                     </td>
                     <DaysAvailability volunteer={volunteer} />

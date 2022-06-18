@@ -1,14 +1,5 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
-.volunteers {
-    //display: grid;
-    grid-template-columns: minmax(min-content, 5fr) min-content min-content;
-}
-
-.volunteerName {
-    grid-column: first;
-}
-
 .day {
     background-color: $color-red;
     &.unknown {
