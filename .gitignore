@@ -25,4 +25,7 @@ access/*
 .idea
 announces/*
 /styles.module.css
+
+# VS Code stuff
 .vscode/settings.json
+.vscode/launch.json
