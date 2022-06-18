@@ -1,0 +1,4 @@
+{
+    "eslint.lintTask.enable": true,
+    "conventionalCommits.scopes": ["#17", "#20", "#19"]
+}
