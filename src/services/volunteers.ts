@@ -2,9 +2,9 @@
 export class Volunteer implements VolunteerPartial {
     id = 0
 
-    lastname = ""
-
     firstname = ""
+
+    lastname = ""
 
     email = ""
 
@@ -40,8 +40,6 @@ export class Volunteer implements VolunteerPartial {
 
     canHelpBefore = ""
 
-    pelMember = false
-
     hiddenAsks: number[] = []
 
     created = new Date()
@@ -73,8 +71,8 @@ export class Volunteer implements VolunteerPartial {
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     id: "id",
-    lastname: "nom",
     firstname: "prenom",
+    lastname: "nom",
     email: "mail",
     mobile: "telephone",
     photo: "photo",
@@ -92,7 +90,6 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     teamWishesComment: "commentaireEnviesEquipe",
     howToContact: "commentContacter",
     canHelpBefore: "aideEnAmont",
-    pelMember: "membrePel",
     hiddenAsks: "questionsCachees",
     created: "creation",
     password1: "passe1",
@@ -110,9 +107,9 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
 }
 
 export class VolunteerPartial {
-    lastname = ""
-
     firstname = ""
+
+    lastname = ""
 
     email = ""
 
@@ -142,7 +139,6 @@ export const volunteerExample: Volunteer = {
     teamWishesComment: "",
     howToContact: "",
     canHelpBefore: "",
-    pelMember: false,
     hiddenAsks: [],
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
@@ -220,6 +216,13 @@ export interface VolunteerParticipationDetails {
     tshirtCount: Volunteer["tshirtCount"]
     adult: Volunteer["adult"]
     food: Volunteer["food"]
+}
+
+export interface VolunteerPersonalInfo {
+    id: Volunteer["id"]
+    firstname: Volunteer["firstname"]
+    lastname: Volunteer["lastname"]
+    photo: string
 }
 
 export interface VolunteerTeamAssign {

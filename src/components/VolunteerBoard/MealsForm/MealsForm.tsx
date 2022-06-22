@@ -46,11 +46,8 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
             <div className={styles.leftCol}>
                 <div className={styles.needsMealsTitle}>
                     <b>{mealDays[i].name}</b>
-                    {i === 0 && <>, accompagné d'un délicieux brownie tout chocolat</>}
-                    {i === 1 && (
-                        <>, accompagné du même brownie. Enfin, un autre que celui de la veille</>
-                    )}{" "}
-                    :
+                    {(i === 0 || i === 1) && <>, accompagné d'un délicieux brownie tout chocolat</>}
+                    {i === 2 && <>, accompagné d'une part de tarte indéterminée</>} :
                 </div>
             </div>
             <div className={styles.rightCol}>
@@ -89,6 +86,13 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     return (
         <div>
             <div className={styles.title}>Mes repas</div>
+            <div className={classnames(styles.inputWrapper)}>
+                <div>
+                    La composition exacte des repas ne sera pas connues avant le festival (risque de
+                    changement d'ingrédient au dernier moment). Elle sera disponible au moment de
+                    récupérer ton repas pour que tu puisses contrôler l'absence d'allergène.
+                </div>
+            </div>
             {dayWishesString.includes("S") ? (
                 <>
                     {getBreakfeastElement("Samedi")}

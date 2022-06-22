@@ -1,9 +1,9 @@
-import { FC, memo, useCallback } from "react"
+import { FC, memo } from "react"
 import { find, get } from "lodash"
 import styles from "./styles.module.scss"
 import { useUserMeals, mealDays, MealOption } from "../meals.utils"
-import useAction from "../../../utils/useAction"
-import { displayModal, MODAL_IDS } from "../../../store/ui"
+// import useAction from "../../../utils/useAction"
+// import { displayModal, MODAL_IDS } from "../../../store/ui"
 import { useUserDayWishes } from "../daysWishes.utils"
 
 const Meals: FC = (): JSX.Element | null => {
@@ -11,8 +11,8 @@ const Meals: FC = (): JSX.Element | null => {
     const [userWishes] = useUserDayWishes()
     const meals = get(userMeals, "meals", [])
     const dayWishesString = get(userWishes, "dayWishes", [])
-    const execDisplayModal = useAction(displayModal)
-    const onEdit = useCallback(() => execDisplayModal(MODAL_IDS.MEALS), [execDisplayModal])
+    // const execDisplayModal = useAction(displayModal)
+    // const onEdit = useCallback(() => execDisplayModal(MODAL_IDS.MEALS), [execDisplayModal])
     const mealChoices = mealDays.map((meal, i: number) =>
         find(meal.options, { abbr: meals[i] || "" })
     ) as MealOption[]
@@ -53,10 +53,13 @@ const Meals: FC = (): JSX.Element | null => {
                 </div>
             )}
 
-            <div className={styles.editButton} key="edit">
+            {/* <div className={styles.editButton} key="edit">
                 <button type="button" onClick={onEdit}>
                     Modifier
                 </button>
+            </div> */}
+            <div className={styles.editButton} key="edit">
+                Plus modifiable
             </div>
         </div>
     )

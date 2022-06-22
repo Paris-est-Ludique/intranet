@@ -12,6 +12,7 @@ import {
     VolunteerDiscordId,
     VolunteerKnowledge,
     VolunteerMeals,
+    VolunteerPersonalInfo,
 } from "./volunteers"
 
 const serviceAccessors = new ServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
@@ -50,6 +51,9 @@ export const volunteerParticipationDetailsSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerParticipationDetails>]>(
         "ParticipationDetailsSet"
     )
+
+export const volunteerPersonalInfoSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerPersonalInfo>]>("PersonalInfoSet")
 
 export const volunteerTeamAssignSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerTeamAssign>]>("TeamAssignSet")

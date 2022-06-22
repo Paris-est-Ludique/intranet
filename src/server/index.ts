@@ -31,6 +31,7 @@ import {
     volunteerDiscordId,
     volunteerLogin,
     volunteerParticipationDetailsSet,
+    volunteerPersonalInfoSet,
     volunteerSet,
     volunteerTeamWishesSet,
     volunteerTeamAssignSet,
@@ -52,13 +53,16 @@ notificationMain()
 
 const app = express()
 
+// Allow receiving big images
+app.use(express.json({ limit: "200mb" }))
+app.use(express.urlencoded({ limit: "200mb" }))
+
 // Use helmet to secure Express with various HTTP headers
 app.use(helmet({ contentSecurityPolicy: false }))
 // Prevent HTTP parameter pollution
 app.use(hpp())
 // Compress all requests
 app.use(compression())
-
 // Https with certbot and Let's Encrypt
 if (!__DEV__) {
     app.use("/.well-known/acme-challenge", certbotRouter)
@@ -114,6 +118,7 @@ app.post(
 app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
 app.post("/VolunteerHostingSet", secure as RequestHandler, volunteerHostingSet)
 app.post("/VolunteerMealsSet", secure as RequestHandler, volunteerMealsSet)
+app.post("/VolunteerPersonalInfoSet", secure as RequestHandler, volunteerPersonalInfoSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
 

@@ -24,7 +24,6 @@ access/*
 *.log
 .idea
 announces/*
-/styles.module.css
 
 # VS Code stuff
 .vscode/settings.json

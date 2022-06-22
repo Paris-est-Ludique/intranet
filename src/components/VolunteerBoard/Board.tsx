@@ -15,12 +15,17 @@ import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm
 import { fetchFor as fetchForHostingForm } from "./HostingForm/HostingForm"
 import { fetchFor as fetchForMealsForm } from "./MealsForm/MealsForm"
 import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
+import { fetchFor as fetchForPersonalInfoForm } from "./PersonalInfoForm/PersonalInfoForm"
 import { fetchFor as fetchForTeamWishesForm } from "./TeamWishesForm/TeamWishesForm"
 import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
+import PersonalInfo from "./PersonalInfo/PersonalInfo"
+import PersonalInfoFormModal from "./PersonalInfoForm/PersonalInfoFormModal"
 
 const Board: FC = (): JSX.Element => (
     <>
         <ContentTitle title="Profil spécifique au festival" />
+        <PersonalInfo />
+        <PersonalInfoFormModal />
         <DayWishes />
         <DayWishesFormModal />
         <ParticipationDetails />
@@ -42,5 +47,6 @@ export const fetchFor = [
     ...fetchForHostingForm,
     ...fetchForMealsForm,
     ...fetchForParticipationDetailsForm,
+    ...fetchForPersonalInfoForm,
     ...fetchForTeamWishesForm,
 ]

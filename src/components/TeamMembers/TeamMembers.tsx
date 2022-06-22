@@ -34,7 +34,7 @@ type VolunteerEmailProps = {
 
 const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole(ROLES.TEAMLEAD, ({ email }) => (
     <td> {email}</td>
-))
+), null)
 
 type DaysAvailabilityProps = {
     volunteer: Volunteer

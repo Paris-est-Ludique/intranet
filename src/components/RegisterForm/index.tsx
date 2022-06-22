@@ -48,7 +48,6 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [firstMeeting, setFirstMeeting] = useState("")
     const [commentFirstMeeting, setCommentFirstMeeting] = useState("")
     const [canHelpBefore, setCanHelpBefore] = useState("")
-    const [pelMember, setPelMember] = useState(false)
     const [howToContact, setHowToContact] = useState("Email")
     const [sending, setSending] = useState(false)
     const [changingBackground, setChangingBackground] = useState(0)
@@ -107,7 +106,6 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     mobile,
                     howToContact,
                     canHelpBefore,
-                    pelMember,
                 })
             )
             dispatch(
@@ -623,54 +621,20 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         </>
     )
 
-    const pelMemberQuestion = enableRegistering && !potentialVolunteer && (
+    const pelMember = enableRegistering && (
         <>
             <dl className={styles.registerIntro}>
                 <dt>Association Paris est Ludique</dt>
                 <dd>
                     <p>
                         Légalement il faut que le festival soit organisé par une structure, et c'est
-                        l'association <i>Paris est Ludique !</i> qui s'en charge. Pour aider à
-                        organiser bénévolement le festival il faut donc en faire partie. Ça n'engage
-                        à rien et c'est gratuit, mais absolument nécessaire.
+                        l'association <i>Paris est Ludique !</i> qui s'en charge. Pour avoir un
+                        droit de regard dessus, devenir bénévole à cette édition implique
+                        automatiquement d'en devenir membre jusqu'à septembre prochain. Ça n'engage
+                        à rien et c'est gratuit !
                     </p>
                 </dd>
             </dl>
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <div className={styles.multipleChoiceTitle}>
-                        Acceptes-tu de devenir membre de l'association <i>Paris est Ludique !</i> ?
-                    </div>
-                </div>
-                <div className={styles.rightCol}>
-                    <div className={styles.rightColContainer}>
-                        {["Oui", "Non"].map((option) => (
-                            <label className={styles.shortAnswerLabel} key={option}>
-                                <input
-                                    type="radio"
-                                    name="pelMember"
-                                    onChange={sendBooleanRadioboxDispatch(
-                                        setPelMember,
-                                        option === "Oui"
-                                    )}
-                                    checked={pelMember === (option === "Oui")}
-                                />{" "}
-                                {option}
-                            </label>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            {!pelMember && (
-                <dl className={styles.registerIntro}>
-                    <dd>
-                        <p>
-                            Tant que tu n'as pas accepté cette condition je suis désolé on ne peut
-                            pas continuer.
-                        </p>
-                    </dd>
-                </dl>
-            )}
         </>
     )
 
@@ -803,14 +767,10 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     {cameAsVisitor}
                     {meeting}
                     {helpBefore}
-                    {pelMemberQuestion}
-                    {(potentialVolunteer || pelMember) && (
-                        <>
-                            {nameMobileEmail}
-                            {!enableRegistering && commentQuestion}
-                            {howToContact !== "Aucun" && submitButton}
-                        </>
-                    )}
+                    {pelMember}
+                    {nameMobileEmail}
+                    {!enableRegistering && commentQuestion}
+                    {howToContact !== "Aucun" && submitButton}
                 </>
             )}
         </form>
