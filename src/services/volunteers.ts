@@ -238,3 +238,13 @@ export interface VolunteerKnowledge {
     bof: Volunteer["bof"]
     niet: Volunteer["niet"]
 }
+
+export type VolunteerDetailedKnowledgeWithoutId = Omit<VolunteerDetailedKnowledge, "id">
+export interface VolunteerDetailedKnowledge {
+    id: Volunteer["id"]
+    nickname: string
+    ok: Volunteer["ok"]
+    bof: Volunteer["bof"]
+    niet: Volunteer["niet"]
+    dayWishes: Volunteer["dayWishes"]
+}

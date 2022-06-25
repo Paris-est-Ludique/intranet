@@ -60,3 +60,7 @@ export const volunteerTeamAssignSet =
 
 export const volunteerKnowledgeSet =
     serviceAccessors.securedCustomPost<[number, Partial<VolunteerKnowledge>]>("KnowledgeSet")
+
+export const volunteerDetailedKnowledgeList = serviceAccessors.securedCustomPost<[number]>(
+    "DetailedKnowledgeListGet"
+)

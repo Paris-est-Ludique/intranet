@@ -13,14 +13,7 @@ export const gameListGet = expressAccessor.listGet()
 // export const gameAdd = expressAccessor.add()
 // export const gameSet = expressAccessor.set()
 
-export const gameDetailsUpdate = expressAccessor.listSet(async (list, _body, _id, roles) => {
-    if (!roles.includes("admin")) {
-        throw Error(
-            `À moins d'être admin, on ne peut pas modifier n'importe quel jeu, ${JSON.stringify(
-                roles
-            )}`
-        )
-    }
+export const gameDetailsUpdate = expressAccessor.listSet(async (list) => {
     const newList = cloneDeep(list)
 
     // TODO update game list details from BGG

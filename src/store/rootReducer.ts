@@ -21,6 +21,7 @@ import volunteerMealsSet from "./volunteerMealsSet"
 import volunteerList from "./volunteerList"
 import volunteerLogin from "./volunteerLogin"
 import volunteerKnowledgeSet from "./volunteerKnowledgeSet"
+import volunteerDetailedKnowledgeList from "./volunteerDetailedKnowledgeList"
 import volunteerParticipationDetailsSet from "./volunteerParticipationDetailsSet"
 import volunteerPersonalInfoSet from "./volunteerPersonalInfoSet"
 import volunteerSet from "./volunteerSet"
@@ -52,6 +53,7 @@ export default (history: History) => ({
     volunteerList,
     volunteerLogin,
     volunteerKnowledgeSet,
+    volunteerDetailedKnowledgeList,
     volunteerParticipationDetailsSet,
     volunteerPersonalInfoSet,
     volunteerSet,

@@ -2,6 +2,13 @@
 @import "../theme/mixins";
 @import "../theme/main";
 
+.cardPage {
+    background-color: $color-white;
+    // overflow: auto;
+    display: table;
+    width: 100vw;
+}
+
 .header {
     position: relative;
     margin: 10px 0 20px;

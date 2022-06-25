@@ -10,6 +10,7 @@ import GameList from "./GameList"
 import Loading from "./Loading"
 import LoginForm from "./LoginForm"
 import BoxList, { fetchFor as fetchForKnowledge } from "./Knowledge/BoxList"
+import KnowledgeCard, { fetchFor as fetchForKnowledgeCard } from "./Knowledge/KnowledgeCard"
 import KnowledgeIntro from "./Knowledge/KnowledgeIntro"
 import Asks, { fetchFor as fetchForAsks } from "./Asks"
 import ParticipationDetailsForm, {
@@ -34,6 +35,8 @@ export {
     fetchForBoard,
     BoxList,
     fetchForKnowledge,
+    KnowledgeCard,
+    fetchForKnowledgeCard,
     DayWishesForm,
     fetchForDayWishesForm,
     ErrorBoundary,

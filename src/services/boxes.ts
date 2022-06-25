@@ -43,6 +43,16 @@ export class DetailedBox {
     poufpaf = new Game().poufpaf
 
     bggId = new Game().bggId
+
+    playersMin = new Game().playersMin
+
+    playersMax = new Game().playersMax
+
+    duration = new Game().duration
+
+    type = new Game().type
+
+    container = ""
 }
 
 export type DetailedBoxWithoutId = Omit<DetailedBox, "id">

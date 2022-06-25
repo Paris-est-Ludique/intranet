@@ -14,6 +14,7 @@ export const detailedBoxListGet = expressAccessor.get(async (list) => {
     }
 
     return list
+        .filter((box) => box)
         .filter((box) => !box.unplayable)
         .map((box) => {
             const game = gameList.find((g) => g.id === box.gameId)
@@ -27,6 +28,11 @@ export const detailedBoxListGet = expressAccessor.get(async (list) => {
                 bggPhoto: game.bggPhoto,
                 poufpaf: game.poufpaf,
                 bggId: game.bggId,
+                container: box.container,
+                playersMin: game.playersMin,
+                playersMax: game.playersMax,
+                duration: game.duration,
+                type: game.type,
             } as DetailedBox
         })
 })

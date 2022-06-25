@@ -1,6 +1,6 @@
 import path from "path"
 import * as fs from "fs"
-import { assign, cloneDeep, max, omit, pick } from "lodash"
+import { assign, cloneDeep, max, omit, pick, remove } from "lodash"
 import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
@@ -18,6 +18,7 @@ import {
     VolunteerParticipationDetails,
     VolunteerTeamAssign,
     VolunteerKnowledge,
+    VolunteerDetailedKnowledge,
     VolunteerPersonalInfo,
 } from "../../services/volunteers"
 import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
@@ -533,3 +534,34 @@ export const volunteerKnowledgeSet = expressAccessor.set(async (list, body, id) 
         } as VolunteerKnowledge,
     }
 })
+
+export const volunteerDetailedKnowledgeList = expressAccessor.get(async (list) => {
+    const volunteerList = list.filter((v) => v.team === 2)
+
+    return volunteerList.map((volunteer) => {
+        const nickname = getUniqueNickname(volunteerList, volunteer)
+
+        return {
+            id: volunteer.id,
+            nickname,
+            ok: volunteer.ok,
+            bof: volunteer.bof,
+            niet: volunteer.niet,
+            dayWishes: volunteer.dayWishes,
+        } as VolunteerDetailedKnowledge
+    })
+})
+
+function getUniqueNickname(list: Volunteer[], volunteer: Volunteer): string {
+    const lastnameList = list
+        .filter((v) => v.firstname === volunteer.firstname)
+        .map((v) => v.lastname)
+    let lastnamePrefix = ""
+    while (lastnameList.length > 1) {
+        lastnamePrefix += volunteer.lastname.charAt(lastnamePrefix.length)
+        // eslint-disable-next-line no-loop-func
+        remove(lastnameList, (lastname) => !lastname.startsWith(lastnamePrefix))
+    }
+    const nickname = `${volunteer.firstname}${lastnamePrefix ? ` ${lastnamePrefix}.` : ""}`
+    return nickname
+}

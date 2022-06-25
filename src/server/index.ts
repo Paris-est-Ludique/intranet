@@ -38,6 +38,7 @@ import {
     volunteerListGet,
     volunteerKnowledgeSet,
     volunteerAddNew,
+    volunteerDetailedKnowledgeList,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -92,6 +93,7 @@ app.get(
  * APIs
  */
 // Google Sheets API
+app.get("/GameDetailsUpdate", gameDetailsUpdate)
 app.get("/BoxDetailedListGet", detailedBoxListGet)
 app.get("/GameListGet", gameListGet)
 app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
@@ -111,6 +113,11 @@ app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
 app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
 app.post("/VolunteerKnowledgeSet", secure as RequestHandler, volunteerKnowledgeSet)
 app.post(
+    "/VolunteerDetailedKnowledgeListGet",
+    secure as RequestHandler,
+    volunteerDetailedKnowledgeList
+)
+app.post(
     "/VolunteerParticipationDetailsSet",
     secure as RequestHandler,
     volunteerParticipationDetailsSet
@@ -125,7 +132,6 @@ app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssig
 // Admin only
 app.post("/VolunteerAddNew", secure as RequestHandler, volunteerAddNew)
 app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
-app.get("/GameDetailsUpdate", secure as RequestHandler, gameDetailsUpdate)
 
 // Push notification subscription
 app.post("/notifications/subscribe", notificationsSubscribe)

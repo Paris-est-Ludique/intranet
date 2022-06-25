@@ -2,11 +2,11 @@ import { PayloadAction, createSlice, createEntityAdapter, createSelector } from 
 import { sortedUniqBy, sortBy } from "lodash"
 
 import { StateRequest, toastError, elementListFetch } from "./utils"
-import { Box } from "../services/boxes"
+import { DetailedBox } from "../services/boxes"
 import { AppThunk, AppState, EntitiesRequest } from "."
 import { detailedBoxListGet } from "../services/boxesAccessors"
 
-const boxAdapter = createEntityAdapter<Box>()
+const boxAdapter = createEntityAdapter<DetailedBox>()
 
 export const initialState = boxAdapter.getInitialState({
     readyStatus: "idle",
@@ -19,7 +19,7 @@ const boxList = createSlice({
         getRequesting: (state) => {
             state.readyStatus = "request"
         },
-        getSuccess: (state, { payload }: PayloadAction<Box[]>) => {
+        getSuccess: (state, { payload }: PayloadAction<DetailedBox[]>) => {
             state.readyStatus = "success"
             boxAdapter.setAll(state, payload)
         },
@@ -49,7 +49,7 @@ export const fetchBoxListIfNeed = (): AppThunk => (dispatch, getState) => {
     return null
 }
 
-export const selectBoxListState = (state: AppState): EntitiesRequest<Box> => state.boxList
+export const selectBoxListState = (state: AppState): EntitiesRequest<DetailedBox> => state.boxList
 
 export const selectBoxList = createSelector(
     selectBoxListState,
@@ -60,11 +60,9 @@ export const selectBoxList = createSelector(
 )
 
 export const selectSortedUniqueDetailedBoxes = createSelector(selectBoxList, (boxes) =>
-    sortedUniqBy(
-        sortBy(
-            boxes.filter((box) => box && !box.unplayable),
-            "title"
-        ),
-        "title"
-    )
+    sortedUniqBy(sortBy(boxes, "title"), "title")
+)
+
+export const selectContainerSortedDetailedBoxes = createSelector(selectBoxList, (boxes) =>
+    sortBy(boxes, "container")
 )
