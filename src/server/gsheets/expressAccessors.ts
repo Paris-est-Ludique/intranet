@@ -67,7 +67,9 @@ export default class ExpressAccessors<
             list: Element[],
             body: RequestBody,
             id: number,
-            roles: string[]
+            roles: string[],
+            request: Request,
+            response: Response
         ) => Promise<CustomSetReturn<Element[]>> | CustomSetReturn<Element[]>
     ) {
         return async (request: Request, response: Response, _next: NextFunction): Promise<void> => {
@@ -84,7 +86,9 @@ export default class ExpressAccessors<
                         list,
                         request.body,
                         memberId,
-                        roles
+                        roles,
+                        request,
+                        response
                     )
                     if (toDatabase !== undefined) {
                         await sheet.setList(toDatabase)

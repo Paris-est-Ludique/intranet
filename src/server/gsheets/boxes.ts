@@ -13,26 +13,27 @@ export const detailedBoxListGet = expressAccessor.get(async (list) => {
         throw Error("Unable to load gameList")
     }
 
-    return list
-        .filter((box) => box)
-        .filter((box) => !box.unplayable)
-        .map((box) => {
-            const game = gameList.find((g) => g.id === box.gameId)
-            if (!game) {
-                throw Error(`Unable to find game #${box.gameId}`)
-            }
-            return {
-                id: box.id,
-                gameId: box.gameId,
-                title: game.title,
-                bggPhoto: game.bggPhoto,
-                poufpaf: game.poufpaf,
-                bggId: game.bggId,
-                container: box.container,
-                playersMin: game.playersMin,
-                playersMax: game.playersMax,
-                duration: game.duration,
-                type: game.type,
-            } as DetailedBox
-        })
+    const toBeAsked: DetailedBox[] = []
+
+    gameList.forEach((game) => {
+        const box: Box | undefined = list.find((g) => g.gameId === game.id)
+        if ((box && box.unplayable) || (!box && !game.toBeKnown)) {
+            return
+        }
+        toBeAsked.push({
+            id: box?.id || 10000 + game.id,
+            gameId: game.id,
+            title: game.title,
+            bggPhoto: game.bggPhoto,
+            poufpaf: game.poufpaf,
+            bggId: game.bggId,
+            container: box?.container || "Non stocké",
+            playersMin: game.playersMin,
+            playersMax: game.playersMax,
+            duration: game.duration,
+            type: game.type,
+        } as DetailedBox)
+    })
+
+    return toBeAsked
 })

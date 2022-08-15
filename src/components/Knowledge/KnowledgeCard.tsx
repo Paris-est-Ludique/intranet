@@ -28,6 +28,9 @@ const boxElement = (
 
     const typeStyle = {
         "": null,
+        "Jeux à deux": null,
+        Rapide: null,
+        Enfants: null,
         Ambiance: styles.verteImg,
         Famille: styles.orangeImg,
         Expert: styles.rougeImg,

@@ -7,8 +7,8 @@ import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
 import { Volunteer } from "../../services/volunteers"
 import { Team } from "../../services/teams"
-import withUserRole from "../../utils/withUserRole"
 import ROLES from "../../utils/roles.constants"
+import { selectUserRoles } from "../../store/auth"
 
 interface ExtendedVolunteer extends Volunteer {
     teamObject: Team | undefined
@@ -28,31 +28,30 @@ const selectVolunteersWithTeam = createSelector(
 
 const hasDay = (day: string) => (volunteer: Volunteer) => volunteer.dayWishes.includes(day)
 
-type VolunteerEmailProps = {
-    email: string
-}
-
-const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole(ROLES.TEAMLEAD, ({ email }) => (
-    <td> {email}</td>
-), null)
-
 type DaysAvailabilityProps = {
     volunteer: Volunteer
 }
 
 const DaysAvailability: FC<DaysAvailabilityProps> = ({ volunteer }): JSX.Element => {
-    if (volunteer.dayWishes.length === 0) {
-        return (
-            <>
-                <td className={classnames(styles.day, styles.unknown)}>S</td>
-                <td className={classnames(styles.day, styles.unknown)}>D</td>
-            </>
-        )
-    }
+    const hasWishes = volunteer.dayWishes.length > 0
     return (
         <>
-            <td className={classnames(styles.day, hasDay("S")(volunteer) && styles.available)} />
-            <td className={classnames(styles.day, hasDay("D")(volunteer) && styles.available)} />
+            <td
+                className={classnames(
+                    styles.day,
+                    hasWishes ? hasDay("S")(volunteer) && styles.available : styles.unknown
+                )}
+            >
+                {hasWishes ? "" : "?"}
+            </td>
+            <td
+                className={classnames(
+                    styles.day,
+                    hasWishes ? hasDay("D")(volunteer) && styles.available : styles.unknown
+                )}
+            >
+                {hasWishes ? "" : "?"}
+            </td>
         </>
     )
 }
@@ -65,26 +64,39 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
     const volunteers = useSelector(selectVolunteersWithTeam).filter(
         (volunteer) => volunteer?.teamObject?.id === teamId
     )
+    const roles = useSelector(selectUserRoles)
 
     if (volunteers.length === 0) return <div />
 
     return (
-        <table>
-            <tr>
-                <th>Volontaires</th>
-                <th className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</th>
-                <th className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</th>
-                <th>@</th>
-            </tr>
-            {volunteers.map((volunteer) => (
-                <tr key={volunteer.id}>
-                    <td>
-                        {volunteer.firstname} {volunteer.lastname}
-                    </td>
-                    <DaysAvailability volunteer={volunteer} />
-                    <VolunteerEmail email={volunteer.email} />
+        <table className={styles.teamMembers}>
+            <tbody>
+                <tr>
+                    <th>Bénévoles</th>
+                    <th className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</th>
+                    <th className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</th>
                 </tr>
-            ))}
+                {volunteers.map((volunteer) => (
+                    <tr key={volunteer.id}>
+                        <td
+                            className={classnames(
+                                styles.volunteerName,
+                                roles.includes(ROLES.TEAMLEAD) && styles.extendedVolunteerName
+                            )}
+                        >
+                            {volunteer.firstname} {volunteer.lastname}
+                            {roles.includes(ROLES.TEAMLEAD) && (
+                                <>
+                                    {" "}
+                                    <span className={styles.email}>&lt;{volunteer.email}&gt;</span>
+                                    <span className={styles.hiddenText}>,</span>
+                                </>
+                            )}
+                        </td>
+                        <DaysAvailability volunteer={volunteer} />
+                    </tr>
+                ))}
+            </tbody>
         </table>
     )
 }

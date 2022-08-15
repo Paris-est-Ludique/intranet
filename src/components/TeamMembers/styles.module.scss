@@ -2,10 +2,39 @@
 @import "../../theme/mixins";
 .day {
     background-color: $color-red;
+    text-align: center;
+    min-width: 10%;
     &.unknown {
         background-color: $color-grey-medium;
     }
     &.available {
         background-color: $color-green;
     }
+}
+
+.teamMembers {
+    @include mobile {
+        width: 100%;
+    }
+}
+
+.volunteerName {
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.extendedVolunteerName {
+    @include mobile {
+        width: 100%;
+        max-width: 0;
+    }
+}
+
+.email {
+    font-size: smaller;
+}
+
+.hiddenText {
+    font-size: 1px;
+    width: 0.1px;
 }

@@ -26,6 +26,7 @@ const mockData: Game[] = [
             "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
         bggId: 432,
         ean: "3421272101313",
+        toBeKnown: false,
     },
 ]
 const mockError = "Oops! Something went wrong."

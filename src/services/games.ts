@@ -9,7 +9,7 @@ export class Game {
 
     duration = 0
 
-    type: "Ambiance" | "Famille" | "Expert" | "" = ""
+    type: "Ambiance" | "Famille" | "Expert" | "Rapide" | "Jeux à deux" | "Enfants" | "" = ""
 
     poufpaf = ""
 
@@ -18,6 +18,8 @@ export class Game {
     ean = ""
 
     bggPhoto = ""
+
+    toBeKnown = false
 }
 
 export const translationGame: { [k in keyof Game]: string } = {
@@ -31,6 +33,7 @@ export const translationGame: { [k in keyof Game]: string } = {
     bggId: "bggId",
     ean: "ean",
     bggPhoto: "bggPhoto",
+    toBeKnown: "àConnaitre",
 }
 
 export const elementName = "Game"
