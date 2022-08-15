@@ -33,7 +33,7 @@ type VolunteerEmailProps = {
 }
 
 const VolunteerEmail: FC<VolunteerEmailProps> = withUserRole(ROLES.TEAMLEAD, ({ email }) => (
-    <div className={styles.volunteerEmail}>{email}</div>
+    <td> {email}</td>
 ))
 
 type DaysAvailabilityProps = {
@@ -44,19 +44,15 @@ const DaysAvailability: FC<DaysAvailabilityProps> = ({ volunteer }): JSX.Element
     if (volunteer.dayWishes.length === 0) {
         return (
             <>
-                <div className={classnames(styles.day, styles.unknown)}>S</div>
-                <div className={classnames(styles.day, styles.unknown)}>D</div>
+                <td className={classnames(styles.day, styles.unknown)}>S</td>
+                <td className={classnames(styles.day, styles.unknown)}>D</td>
             </>
         )
     }
     return (
         <>
-            <div className={classnames(styles.day, hasDay("S")(volunteer) && styles.available)}>
-                S
-            </div>
-            <div className={classnames(styles.day, hasDay("D")(volunteer) && styles.available)}>
-                D
-            </div>
+            <td className={classnames(styles.day, hasDay("S")(volunteer) && styles.available)} />
+            <td className={classnames(styles.day, hasDay("D")(volunteer) && styles.available)} />
         </>
     )
 }
@@ -73,22 +69,23 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
     if (volunteers.length === 0) return <div />
 
     return (
-        <ul className={styles.volunteers}>
-            <li>
-                <div className={styles.volunteerName} />
-                <div className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</div>
-                <div className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</div>
-            </li>
+        <table>
+            <tr>
+                <th>Volontaires</th>
+                <th className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</th>
+                <th className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</th>
+                <th>@</th>
+            </tr>
             {volunteers.map((volunteer) => (
-                <li key={volunteer.id} className={styles.volunteer}>
-                    <div className={styles.volunteerName}>
+                <tr key={volunteer.id}>
+                    <td>
                         {volunteer.firstname} {volunteer.lastname}
-                    </div>
+                    </td>
                     <DaysAvailability volunteer={volunteer} />
                     <VolunteerEmail email={volunteer.email} />
-                </li>
+                </tr>
             ))}
-        </ul>
+        </table>
     )
 }
 
