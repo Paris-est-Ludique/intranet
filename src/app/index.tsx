@@ -50,6 +50,7 @@ const App = ({ route, location }: Route): JSX.Element => {
             {/* Child routes won't render without this */}
             {renderRoutes(route.routes)}
             <ToastContainer />
+            <script>var browser = browser || chrome</script>
         </div>
     )
 }

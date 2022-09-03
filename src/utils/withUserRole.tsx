@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { selectUserRoles } from "../store/auth"
 
-function withUserRole<T>(
+function withUserRole<T extends JSX.IntrinsicAttributes>(
     requiredRole: string,
     Component: React.ComponentType<T>,
     doShowMissingRole: true | null = true

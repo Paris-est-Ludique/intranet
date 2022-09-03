@@ -4,6 +4,7 @@ import useAction from "../../utils/useAction"
 import { selectUserJwtToken } from "../../store/auth"
 import { AppState } from "../../store"
 import { fetchVolunteerParticipationDetailsSet } from "../../store/volunteerParticipationDetailsSet"
+import { VolunteerParticipationDetails } from "../../services/volunteers"
 
 export const tshirtSizes = [
     "XXS",
@@ -25,7 +26,17 @@ export const tshirtSizes = [
 
 export const foodDefaultValue = "Aucune"
 
-export const useUserParticipationDetails = (): [any, any] => {
+type SetFunction = (
+    tshirtSize: VolunteerParticipationDetails["tshirtSize"],
+    tshirtCount: VolunteerParticipationDetails["tshirtCount"],
+    adult: VolunteerParticipationDetails["adult"],
+    food: VolunteerParticipationDetails["food"]
+) => void
+
+export const useUserParticipationDetails = (): [
+    VolunteerParticipationDetails | undefined,
+    SetFunction
+] => {
     const save = useAction(fetchVolunteerParticipationDetailsSet)
     const jwtToken = useSelector(selectUserJwtToken)
     const userParticipationDetails = useSelector(
@@ -33,8 +44,8 @@ export const useUserParticipationDetails = (): [any, any] => {
         shallowEqual
     )
 
-    const saveParticipationDetails = useCallback(
-        ({ tshirtSize, tshirtCount, adult, food }) => {
+    const saveParticipationDetails: SetFunction = useCallback(
+        (tshirtSize, tshirtCount, adult, food) => {
             if (!userParticipationDetails) return
             save(jwtToken, 0, {
                 id: userParticipationDetails.id,

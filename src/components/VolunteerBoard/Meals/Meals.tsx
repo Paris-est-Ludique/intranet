@@ -9,8 +9,8 @@ import { useUserDayWishes } from "../daysWishes.utils"
 const Meals: FC = (): JSX.Element | null => {
     const [userMeals] = useUserMeals()
     const [userWishes] = useUserDayWishes()
-    const meals = get(userMeals, "meals", [])
-    const dayWishesString = get(userWishes, "dayWishes", [])
+    const meals = get(userMeals, "meals", []) as string[]
+    const dayWishesString = get(userWishes, "dayWishes", []) as string[]
     // const execDisplayModal = useAction(displayModal)
     // const onEdit = useCallback(() => execDisplayModal(MODAL_IDS.MEALS), [execDisplayModal])
     const mealChoices = mealDays.map((meal, i: number) =>

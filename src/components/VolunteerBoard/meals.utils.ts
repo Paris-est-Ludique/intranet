@@ -54,7 +54,7 @@ export const useUserMeals = (): [VolunteerMeals | undefined, SetFunction] => {
         shallowEqual
     )
 
-    const saveWishes = useCallback(
+    const saveWishes: SetFunction = useCallback(
         (meals) => {
             if (!userWishes) return
             save(jwtToken, 0, {

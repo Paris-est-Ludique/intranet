@@ -21,7 +21,7 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     const [userMeals, saveMeals] = useUserMeals()
     const [userWishes] = useUserDayWishes()
     const meals = get(userMeals, "meals", [])
-    const dayWishesString = get(userWishes, "dayWishes", [])
+    const dayWishesString = get(userWishes, "dayWishes", []) as string[]
 
     useEffect(() => {
         setSaturdayLunchMeal(meals[0] || "")

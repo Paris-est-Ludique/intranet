@@ -227,7 +227,6 @@ export interface VolunteerPersonalInfo {
 
 export interface VolunteerTeamAssign {
     id: Volunteer["id"]
-    volunteer: number
     team: Volunteer["team"]
 }
 

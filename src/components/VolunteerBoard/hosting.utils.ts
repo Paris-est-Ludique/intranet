@@ -21,7 +21,7 @@ export const useUserHosting = (): [VolunteerHosting | undefined, SetFunction] =>
         shallowEqual
     )
 
-    const saveWishes = useCallback(
+    const saveWishes: SetFunction = useCallback(
         (needsHosting, canHostCount, distanceToFestival, hostingComment) => {
             if (!userWishes) return
             save(jwtToken, 0, {

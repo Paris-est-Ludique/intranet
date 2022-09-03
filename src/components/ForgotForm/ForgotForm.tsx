@@ -1,4 +1,5 @@
 import React, { memo, useCallback } from "react"
+import type {} from "redux-thunk/extend-redux"
 import { AppDispatch } from "../../store"
 import { fetchVolunteerForgot } from "../../store/volunteerForgot"
 import styles from "./styles.module.scss"

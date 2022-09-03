@@ -491,9 +491,9 @@ export const volunteerTeamAssignSet = expressAccessor.set(async (list, body, _id
     }
 
     const teamAssign = body[1] as VolunteerTeamAssign
-    const volunteer: Volunteer | undefined = list.find((v) => v.id === teamAssign.volunteer)
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === teamAssign.id)
     if (!volunteer) {
-        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${teamAssign.volunteer}`)
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${teamAssign.id}`)
     }
     const newVolunteer: Volunteer = cloneDeep(volunteer)
     newVolunteer.team = teamAssign.team

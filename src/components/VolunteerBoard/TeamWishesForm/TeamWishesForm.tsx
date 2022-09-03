@@ -28,11 +28,11 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
         set(commentRef, "current.value", get(userWishes, "teamWishesComment", ""))
     }, [userWishes, setSelection])
 
-    const onTeamClick = useCallback((id) => toggleToSelection(id), [toggleToSelection])
+    const onTeamClick = useCallback((id: number) => toggleToSelection(id), [toggleToSelection])
 
     const onSubmit = useCallback(() => {
         const teamWishesComment = get(commentRef, "current.value", "")
-        saveWishes({ teamWishes: selection, teamWishesComment })
+        saveWishes(selection as number[], teamWishesComment)
         if (afterSubmit) afterSubmit()
     }, [selection, saveWishes, afterSubmit])
 

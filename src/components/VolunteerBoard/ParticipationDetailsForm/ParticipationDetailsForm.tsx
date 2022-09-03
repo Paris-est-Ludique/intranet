@@ -23,24 +23,19 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
     const onSubmit = useCallback(() => {
         const tshirtSize = get(sizeRef, "current.value", "")
         const food = get(dietRef, "current.value", "")
-        saveParticipationDetails({
-            tshirtSize,
-            tshirtCount: tshirtCountState,
-            adult: adultState,
-            food,
-        })
+        saveParticipationDetails(tshirtSize, tshirtCountState, adultState, food)
         if (afterSubmit) afterSubmit()
     }, [tshirtCountState, adultState, saveParticipationDetails, afterSubmit])
 
     const onTshirtCountChange = useCallback(
-        (value) => {
+        (value: number) => {
             setTshirtCount(value)
         },
         [setTshirtCount]
     )
 
     const onAdultChange = useCallback(
-        (value) => {
+        (value: number) => {
             setAdult(value)
         },
         [setAdult]

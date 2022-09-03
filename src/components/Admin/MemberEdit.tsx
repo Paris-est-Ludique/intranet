@@ -7,7 +7,7 @@ import { Volunteer } from "../../services/volunteers"
 import styles from "./styles.module.scss"
 import { toastError } from "../../store/utils"
 
-interface Props {
+interface Props extends JSX.IntrinsicAttributes {
     volunteer: Volunteer
     saveVolunteer: (newVolunteer: Partial<Volunteer>) => void
     addBefore?: () => void

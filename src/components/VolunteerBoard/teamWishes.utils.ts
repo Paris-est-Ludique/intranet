@@ -6,7 +6,12 @@ import { AppState } from "../../store"
 import { fetchVolunteerTeamWishesSet } from "../../store/volunteerTeamWishesSet"
 import { VolunteerTeamWishes } from "../../services/volunteers"
 
-export const useUserTeamWishes = (): [VolunteerTeamWishes | undefined, any] => {
+type SetFunction = (
+    teamWishes: VolunteerTeamWishes["teamWishes"],
+    teamWishesComment: VolunteerTeamWishes["teamWishesComment"]
+) => void
+
+export const useUserTeamWishes = (): [VolunteerTeamWishes | undefined, SetFunction] => {
     const save = useAction(fetchVolunteerTeamWishesSet)
     const jwtToken = useSelector(selectUserJwtToken)
     const userTeamWishes = useSelector(
@@ -14,8 +19,8 @@ export const useUserTeamWishes = (): [VolunteerTeamWishes | undefined, any] => {
         shallowEqual
     )
 
-    const saveTeamWishes = useCallback(
-        ({ teamWishes, teamWishesComment }) => {
+    const saveTeamWishes: SetFunction = useCallback(
+        (teamWishes, teamWishesComment) => {
             if (!userTeamWishes) return
             save(jwtToken, 0, {
                 id: userTeamWishes.id,

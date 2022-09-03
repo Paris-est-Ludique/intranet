@@ -1,7 +1,7 @@
 import { ReactNode, PureComponent } from "react"
 
 interface Props {
-    children?: ReactNode
+    children: ReactNode | undefined
 }
 interface State {
     error: Error | null

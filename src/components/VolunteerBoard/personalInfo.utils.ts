@@ -20,7 +20,7 @@ export const useUserPersonalInfo = (): [VolunteerPersonalInfo | undefined, SetFu
         shallowEqual
     )
 
-    const saveWishes = useCallback(
+    const saveWishes: SetFunction = useCallback(
         (firstname, lastname, photo) => {
             if (!userWishes) return
             save(jwtToken, 0, {

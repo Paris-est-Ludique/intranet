@@ -7,7 +7,7 @@ import styles from "./styles.module.scss"
 import {
     daysChoice,
     daysChoiceSelectionDefaultState,
-    selectionChoices,
+    SelectionChoices,
     useUserDayWishes,
 } from "../daysWishes.utils"
 import FormButton from "../../Form/FormButton/FormButton"
@@ -36,12 +36,13 @@ const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     useEffect(() => {
         if (!userWishes) return
         const participation = get(userWishes, "active", "inconnu")
-        const newSelection = get(userWishes, "dayWishes", []).reduce(
-            (acc: selectionChoices, day: string) => ({
+        const dayWishes = get(userWishes, "dayWishes", []) as string[]
+        const newSelection = dayWishes.reduce(
+            (acc: SelectionChoices, day: string) => ({
                 ...acc,
                 [day]: true,
             }),
-            daysChoice
+            {} as SelectionChoices
         )
         setParticipation(participation)
         setSelection(newSelection)
@@ -49,7 +50,7 @@ const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     }, [setParticipation, setSelection, commentRef, userWishes])
 
     const onChoiceClick = useCallback(
-        (id) => {
+        (id: string) => {
             setSelection({
                 ...selection,
                 [id]: !selection[id],

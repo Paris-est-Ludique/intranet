@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from "react"
 import { useSelector, shallowEqual } from "react-redux"
+import type {} from "redux-thunk/extend-redux"
 import { toast } from "react-toastify"
 import _ from "lodash"
 import classnames from "classnames"

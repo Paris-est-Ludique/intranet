@@ -64,10 +64,9 @@ export const fetchVolunteerKnowledgeSetIfNeed =
         return null
     }
 
-export const useVolunteerKnowledge = (): [
-    VolunteerKnowledge | undefined,
-    (newVolunteerKnowledge: VolunteerKnowledge) => void
-] => {
+type SetFunction = (newVolunteerKnowledge: VolunteerKnowledge) => void
+
+export const useVolunteerKnowledge = (): [VolunteerKnowledge | undefined, SetFunction] => {
     const save = useAction(fetchVolunteerKnowledgeSet)
     const jwtToken = useSelector(selectUserJwtToken)
     const volunteerKnowledge = useSelector(
@@ -75,8 +74,8 @@ export const useVolunteerKnowledge = (): [
         shallowEqual
     )
 
-    const saveVolunteerKnowledge = useCallback(
-        (newVolunteerKnowledge: VolunteerKnowledge) => {
+    const saveVolunteerKnowledge: SetFunction = useCallback(
+        (newVolunteerKnowledge) => {
             save(jwtToken, 0, newVolunteerKnowledge)
         },
         [save, jwtToken]

@@ -7,7 +7,10 @@ import { selectTeamList } from "../../store/teamList"
 import styles from "./styles.module.scss"
 import { useTeamAssign } from "./teamAssign.utils"
 import TeamMembers from "../TeamMembers/TeamMembers"
+import { Volunteer } from "../../services/volunteers"
 
+type NamedWishes = { id: number; name: string }
+type VolunteerWithTeamWishesNames = Omit<Volunteer, "teamWishes"> & { teamWishes: NamedWishes[] }
 const selectTeamsWithVolunteersCandidates = createSelector(
     selectVolunteerListAlphaSorted,
     selectTeamList,
@@ -15,16 +18,19 @@ const selectTeamsWithVolunteersCandidates = createSelector(
         teams.map(({ id, name }: any) => {
             const volunteersSelection = volunteers
                 .filter((volunteer) => volunteer.teamWishes.includes(id))
-                .map((volunteer) => ({
-                    ...volunteer,
-                    teamWishes: volunteer.teamWishes.map((wishId) => {
-                        const matchingTeam = teams.find((team: any) => wishId === team?.id)
-                        return {
-                            id: matchingTeam?.id,
-                            name: matchingTeam?.name,
-                        }
-                    }),
-                }))
+                .map(
+                    (volunteer) =>
+                        ({
+                            ...volunteer,
+                            teamWishes: volunteer.teamWishes.map((wishId) => {
+                                const matchingTeam = teams.find((team: any) => wishId === team?.id)
+                                return {
+                                    id: matchingTeam?.id,
+                                    name: matchingTeam?.name,
+                                }
+                            }),
+                        } as VolunteerWithTeamWishesNames)
+                )
             return {
                 id,
                 name,
@@ -56,7 +62,7 @@ const DaysDisplay: FC<PropsDaysDisplay> = ({ dayWishes }): JSX.Element => (
 )
 
 type TeamWithCandidatesVolunteerProps = {
-    volunteer: any
+    volunteer: VolunteerWithTeamWishesNames
     teamId: number
 }
 
@@ -68,8 +74,8 @@ const TeamWithCandidatesVolunteer: FC<TeamWithCandidatesVolunteerProps> = ({
     const [, saveTeam] = useTeamAssign()
 
     const onTeamSelected = useCallback(
-        (selectedVolunteer, selectedTeamId) => {
-            saveTeam(selectedVolunteer, selectedTeamId)
+        (selectedVolunteerId: number, selectedTeamId: number) => {
+            saveTeam(selectedVolunteerId, selectedTeamId)
         },
         [saveTeam]
     )
@@ -86,7 +92,7 @@ const TeamWithCandidatesVolunteer: FC<TeamWithCandidatesVolunteerProps> = ({
                     <button
                         key={teamWish.id}
                         type="button"
-                        onClick={() => onTeamSelected({ id, team }, teamWish.id)}
+                        onClick={() => onTeamSelected(id, teamWish.id)}
                         className={classnames(
                             styles.teamWishButton,
                             current && styles.teamCurrent,

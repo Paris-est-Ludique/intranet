@@ -19,9 +19,9 @@ export function AskDayWishes(asks: JSX.Element[], id: number): void {
     }, [dispatch, id, jwtToken, volunteerAsks?.hiddenAsks])
 
     const [userWishes] = useUserDayWishes()
-    const participation = get(userWishes, "active", "inconnu")
-    const newSelection = get(userWishes, "dayWishes", [])
-    const comment = get(userWishes, "dayWishesComment", "")
+    const participation = get(userWishes, "active", "inconnu") as string
+    const newSelection = get(userWishes, "dayWishes", []) as string[]
+    const comment = get(userWishes, "dayWishesComment", "") as string
     const needToShow = participation === "inconnu" || (newSelection.length === 0 && !comment)
 
     addAsk(

@@ -5,8 +5,11 @@ import { AppState } from "../../store"
 import useAction from "../../utils/useAction"
 import { fetchVolunteerTeamAssignSet } from "../../store/volunteerTeamAssignSet"
 import { refreshVolunteerList } from "../../store/volunteerList"
+import { VolunteerTeamAssign } from "../../services/volunteers"
 
-export const useTeamAssign = (): [any, any] => {
+type SetFunction = (id: VolunteerTeamAssign["id"], team: VolunteerTeamAssign["team"]) => void
+
+export const useTeamAssign = (): [VolunteerTeamAssign | undefined, SetFunction] => {
     const save = useAction(fetchVolunteerTeamAssignSet)
     const refreshVolunteers = useAction(refreshVolunteerList)
     const jwtToken = useSelector(selectUserJwtToken)
@@ -15,11 +18,11 @@ export const useTeamAssign = (): [any, any] => {
         shallowEqual
     )
 
-    const saveWishes = useCallback(
-        async (volunteer, teamId) => {
+    const saveWishes: SetFunction = useCallback(
+        async (id, team) => {
             await save(jwtToken, 0, {
-                volunteer: volunteer.id,
-                team: volunteer.team === teamId ? 0 : teamId,
+                id,
+                team,
             })
             refreshVolunteers(jwtToken)
         },

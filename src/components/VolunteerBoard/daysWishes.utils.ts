@@ -4,6 +4,7 @@ import { selectUserJwtToken } from "../../store/auth"
 import { AppState } from "../../store"
 import { fetchVolunteerDayWishesSet } from "../../store/volunteerDayWishesSet"
 import useAction from "../../utils/useAction"
+import { VolunteerDayWishes } from "../../services/volunteers"
 
 const daysWishesUtils = ["Jeudi", "Vendredi", "Samedi", "Dimanche", "Lundi"]
 
@@ -12,16 +13,22 @@ export const daysChoice = daysWishesUtils.map((label) => ({
     label,
 }))
 
-export interface selectionChoices {
+export interface SelectionChoices {
     [key: string]: boolean
 }
 
 export const daysChoiceSelectionDefaultState = daysChoice.reduce((state, { id }) => {
     state[id] = false
     return state
-}, <selectionChoices>{})
+}, <SelectionChoices>{})
 
-export const useUserDayWishes = (): [any, any] => {
+type SetFunction = (
+    active: VolunteerDayWishes["active"],
+    dayWishes: VolunteerDayWishes["dayWishes"],
+    dayWishesComment: VolunteerDayWishes["dayWishesComment"]
+) => void
+
+export const useUserDayWishes = (): [VolunteerDayWishes | undefined, SetFunction] => {
     const save = useAction(fetchVolunteerDayWishesSet)
     const jwtToken = useSelector(selectUserJwtToken)
     const userWishes = useSelector(
@@ -29,14 +36,14 @@ export const useUserDayWishes = (): [any, any] => {
         shallowEqual
     )
 
-    const saveWishes = useCallback(
-        (active, days, comment) => {
+    const saveWishes: SetFunction = useCallback(
+        (active, dayWishes, dayWishesComment) => {
             if (!userWishes) return
             save(jwtToken, 0, {
                 id: userWishes.id,
                 active,
-                dayWishes: days,
-                dayWishesComment: comment,
+                dayWishes,
+                dayWishesComment,
             })
         },
         [userWishes, save, jwtToken]
