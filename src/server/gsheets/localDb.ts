@@ -20,6 +20,8 @@ export class SheetNames {
 
     Postulants = "Postulants"
 
+    Retex = "Retex"
+
     Teams = "Equipes"
 
     Volunteers = "Membres"

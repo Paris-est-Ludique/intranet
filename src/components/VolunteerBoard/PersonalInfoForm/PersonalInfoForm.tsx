@@ -96,7 +96,6 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
                             type="file"
                             name="myImage"
                             onChange={(event) => {
-                                console.log(event?.target?.files?.[0])
                                 setSelectedImage(event?.target?.files?.[0] || null)
                             }}
                         />
@@ -134,7 +133,7 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
                 {children !== undefined && (
                     <>
                         {" "}
-                        <IgnoreButton onClick={afterSubmit} text="Ignorer">
+                        <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
                             {children}
                         </IgnoreButton>{" "}
                     </>

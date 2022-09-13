@@ -52,7 +52,7 @@ const MainMenu: FC = (): JSX.Element => {
                 <MenuItem name="Questions" pathname="/" />
                 <MenuItem name="Annonces" pathname="/annonces" />
                 <MenuItem name="Mon profil" pathname="/profil" />
-                <MenuItem name="Mes connaissances" pathname="/connaissances" />
+                {/* <MenuItem name="Mes connaissances" pathname="/connaissances" /> */}
                 <RestrictMenuItem
                     role={ROLES.ASSIGNER}
                     name="Gestion équipes"

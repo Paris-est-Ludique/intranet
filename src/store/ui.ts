@@ -27,10 +27,12 @@ const selectUiData = (state: AppState) => state.ui
 export const selectActiveModalId = createSelector(selectUiData, (ui) => ui.modalId)
 
 export const MODAL_IDS = {
+    BRUNCH: "BRUNCH",
     DAYWISHES: "DAYWISHES",
     HOSTING: "HOSTING",
     MEALS: "MEALS",
     PARTICIPATIONDETAILS: "PARTICIPATIONDETAILS",
     PERSONALINFO: "PERSONALINFO",
+    RETEX: "RETEX",
     TEAMWISHES: "TEAMWISHES",
 }

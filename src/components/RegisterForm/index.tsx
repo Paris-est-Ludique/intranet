@@ -709,7 +709,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 </div>
                 <div className={styles.rightCol}>
                     <div className={styles.rightColContainer}>
-                        {["WhatsApp", "Signal", "SMS", "Email", "Appel", "Aucun"].map((option) => (
+                        {["WhatsApp", "Signal", "SMS", "Email", "Aucun"].map((option) => (
                             <label className={styles.shortAnswerLabel} key={option}>
                                 <input
                                     type="radio"

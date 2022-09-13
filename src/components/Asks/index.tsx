@@ -3,16 +3,18 @@ import React, { memo } from "react"
 import styles from "./styles.module.scss"
 import { useAskTools } from "./utils"
 import { AskWelcome } from "./AskWelcome"
+import { AskBrunch, fetchFor as fetchForBrunch } from "./AskBrunch"
+import { AskRetex, fetchFor as fetchForRetex } from "./AskRetex"
 import { AskDiscord, fetchFor as fetchForDiscord } from "./AskDiscord"
-import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
-import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
+// import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
+// import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
 // import { AskMeals, fetchFor as fetchForMeals } from "./AskMeals"
-import { AskPersonalInfo, fetchFor as fetchForPersonalInfo } from "./AskPersonalInfo"
-import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
-import {
-    AskParticipationDetails,
-    fetchFor as fetchForParticipationDetails,
-} from "./AskParticipationDetails"
+// import { AskPersonalInfo, fetchFor as fetchForPersonalInfo } from "./AskPersonalInfo"
+// import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
+// import {
+//     AskParticipationDetails,
+//     fetchFor as fetchForParticipationDetails,
+// } from "./AskParticipationDetails"
 import { AskPushNotif } from "./AskPushNotif"
 
 const Asks = (): JSX.Element | null => {
@@ -20,13 +22,15 @@ const Asks = (): JSX.Element | null => {
     const asks: JSX.Element[] = []
 
     AskWelcome(asks, 1)
-    AskDiscord(asks, 3)
+    AskBrunch(asks, 2)
+    AskRetex(asks, 3)
+    AskDiscord(asks, 5)
 
-    AskDayWishes(asks, 10)
-    AskTeamWishes(asks, 11)
-    AskParticipationDetails(asks, 12)
-    AskPersonalInfo(asks, 15)
-    AskHosting(asks, 20)
+    // AskDayWishes(asks, 10)
+    // AskTeamWishes(asks, 11)
+    // AskParticipationDetails(asks, 12)
+    // AskPersonalInfo(asks, 15)
+    // AskHosting(asks, 20)
     // AskMeals(asks, 22)
 
     AskPushNotif(asks, 99)
@@ -62,11 +66,13 @@ export default memo(Asks)
 
 // Fetch server-side data here
 export const fetchFor = [
+    ...fetchForBrunch,
+    ...fetchForRetex,
     ...fetchForDiscord,
-    ...fetchForDayWishes,
-    ...fetchForHosting,
+    // ...fetchForDayWishes,
+    // ...fetchForHosting,
     // ...fetchForMeals,
-    ...fetchForTeamWishes,
-    ...fetchForParticipationDetails,
-    ...fetchForPersonalInfo,
+    // ...fetchForTeamWishes,
+    // ...fetchForParticipationDetails,
+    // ...fetchForPersonalInfo,
 ]

@@ -151,7 +151,7 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
                 {children !== undefined && (
                     <>
                         {" "}
-                        <IgnoreButton onClick={afterSubmit} text="Ignorer">
+                        <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
                             {children}
                         </IgnoreButton>{" "}
                     </>

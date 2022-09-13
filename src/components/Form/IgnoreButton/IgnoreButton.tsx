@@ -37,7 +37,7 @@ const FormButton: FC<Props> = ({ children, text, onClick }): JSX.Element => {
                     </button>
                     <div>{children}</div>
                     <button type="button" className={styles.greyButton} onClick={onIgnore}>
-                        Ok, ignorer
+                        Vraiment passer au questionnaire suivant
                     </button>
                 </div>
             )}

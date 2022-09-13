@@ -110,7 +110,7 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
                 {children !== undefined && (
                     <>
                         {" "}
-                        <IgnoreButton onClick={afterSubmit} text="Ignorer">
+                        <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
                             {children}
                         </IgnoreButton>{" "}
                     </>

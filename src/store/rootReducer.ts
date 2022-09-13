@@ -9,6 +9,7 @@ import gameDetailsUpdate from "./gameDetailsUpdate"
 import miscDiscordInvitation from "./miscDiscordInvitation"
 import miscMeetingDateList from "./miscMeetingDateList"
 import postulantAdd from "./postulantAdd"
+import retexSet from "./retexSet"
 import teamList from "./teamList"
 import ui from "./ui"
 import volunteerPartialAdd from "./volunteerPartialAdd"
@@ -41,6 +42,7 @@ export default (history: History) => ({
     miscDiscordInvitation,
     miscMeetingDateList,
     postulantAdd,
+    retexSet,
     teamList,
     ui,
     volunteerPartialAdd,

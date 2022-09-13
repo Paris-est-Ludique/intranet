@@ -2,7 +2,8 @@
 @import "../../../theme/mixins";
 
 .title {
-    padding: 15px 0;
+    padding: 4px;
+    margin: 15px 0;
     font-weight: bold;
     text-align: center;
 }
@@ -13,10 +14,16 @@
     @include desktop {
         display: flex;
     }
+
+    input[type="text"] {
+        min-width: 175px;
+        border: 1px solid $color-grey-medium;
+        outline: 0;
+    }
 }
 
 .leftCol {
-    flex: 0 0 320px;
+    flex: 0 0 240px;
 }
 
 .rightCol {
@@ -24,56 +31,50 @@
     text-align: center;
 }
 
-.needsMealsTitle {
+.brunchTitle {
     display: inline-block;
     width: 320px;
     margin-bottom: 10px;
 }
 
-.mealsLabel {
+.invisible {
+    display: none;
+}
+
+.brunchLabel {
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;
-    width: 220px;
+    width: 280px;
 }
 
-.mealsTitle {
+.brunchPresenceTitle {
     display: inline-block;
     width: 320px;
     margin-bottom: 10px;
 }
 
-.mealsList {
-    @include clear-ul-style;
-
+.brunchPresenceLabel {
+    text-align: left;
     display: inline-block;
-    width: 204px;
-    text-align: center;
+    margin-bottom: 10px;
+    width: 80px;
 }
 
-.mealsItem {
+.guestCountTitle {
     display: inline-block;
-    margin: 3px;
+    width: 320px;
+    margin-bottom: 10px;
 }
 
-.mealsButton {
-    margin: 0;
-    padding: 7px 2px 6px;
-    border: 0;
-    border-radius: 0;
-    width: 90px;
-    text-align: center;
-    color: $color-grey-dark;
-    background-color: $color-grey-light;
-    cursor: pointer;
-
-    &.active {
-        color: $color-yellow;
-        background-color: $color-black;
-    }
+.guestCountLabel {
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 80px;
 }
 
-.mealsCommentWrapper {
+.questionWrapper {
     margin: 6px 0 14px;
 
     label {
@@ -82,7 +83,7 @@
     }
     textarea {
         width: 100%;
-        height: 50px;
+        height: 75px;
         padding: 5px;
         border: 1px solid $color-grey-light;
         background-color: $color-grey-lighter;
@@ -93,4 +94,16 @@
 .buttonWrapper {
     margin-bottom: 10px;
     text-align: center;
+}
+
+.preAnswerWrapper {
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+.preAnswerButton {
+    @include form-button;
+
+    margin-left: 2px;
+    margin-top: 2px;
 }

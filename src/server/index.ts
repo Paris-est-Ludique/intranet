@@ -47,6 +47,7 @@ import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
 import { addStatus, showStatusAt } from "./status"
 import { miscMeetingDateListGet, miscDiscordInvitation } from "./gsheets/miscs"
+import { retexSet } from "./gsheets/retex"
 
 checkAccess()
 
@@ -108,6 +109,7 @@ app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
 // Secured APIs
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
 app.get("/MiscDiscordInvitationGet", secure as RequestHandler, miscDiscordInvitation)
+app.post("/RetexSet", secure as RequestHandler, retexSet)
 app.get("/TeamListGet", teamListGet)
 app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
 app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
