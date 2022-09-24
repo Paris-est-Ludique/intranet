@@ -20,6 +20,7 @@ import {
     VolunteerKnowledge,
     VolunteerDetailedKnowledge,
     VolunteerPersonalInfo,
+    VolunteerLoan,
 } from "../../services/volunteers"
 import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
@@ -550,6 +551,31 @@ export const volunteerDetailedKnowledgeList = expressAccessor.get(async (list) =
             dayWishes: volunteer.dayWishes,
         } as VolunteerDetailedKnowledge
     })
+})
+
+export const volunteerLoanSet = expressAccessor.set(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    const volunteer: Volunteer | undefined = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+    const loan = body[1] as VolunteerLoan
+    const newVolunteer: Volunteer = cloneDeep(volunteer)
+    if (loan?.loanable !== undefined) newVolunteer.loanable = loan.loanable
+    if (loan?.playable !== undefined) newVolunteer.playable = loan.playable
+    if (loan?.giftable !== undefined) newVolunteer.giftable = loan.giftable
+    if (loan?.noOpinion !== undefined) newVolunteer.noOpinion = loan.noOpinion
+
+    return {
+        toDatabase: newVolunteer,
+        toCaller: {
+            id: newVolunteer.id,
+            loanable: newVolunteer.loanable,
+            playable: newVolunteer.playable,
+            giftable: newVolunteer.giftable,
+            noOpinion: newVolunteer.noOpinion,
+        } as VolunteerLoan,
+    }
 })
 
 function getUniqueNickname(list: Volunteer[], volunteer: Volunteer): string {

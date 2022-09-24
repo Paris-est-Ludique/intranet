@@ -17,6 +17,9 @@ const mockData: Game[] = [
     {
         id: 5,
         title: "6 qui prend!",
+        bggId: 432,
+        bggIdAlternative: "",
+        bggTitle: "6 nimmt!",
         playersMin: 2,
         playersMax: 10,
         duration: 45,
@@ -24,7 +27,6 @@ const mockData: Game[] = [
         poufpaf: "0-9-2/6-qui-prend-6-nimmt",
         bggPhoto:
             "https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg",
-        bggId: 432,
         ean: "3421272101313",
         toBeKnown: false,
     },

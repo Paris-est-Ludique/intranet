@@ -3,14 +3,11 @@ import { useSelector } from "react-redux"
 import styles from "./styles.module.scss"
 import BoxItem from "./BoxItem"
 import { fetchBoxListIfNeed, selectSortedUniqueDetailedBoxes } from "../../store/boxList"
-import {
-    fetchVolunteerKnowledgeSetIfNeed,
-    useVolunteerKnowledge,
-} from "../../store/volunteerKnowledgeSet"
+import { fetchVolunteerLoanSetIfNeed, useVolunteerLoan } from "../../store/volunteerLoanSet"
 
-const BoxList: React.FC = (): JSX.Element | null => {
+const LoanBoxList: React.FC = (): JSX.Element | null => {
     const detailedBoxes = useSelector(selectSortedUniqueDetailedBoxes)
-    const [volunteerKnowledge, saveVolunteerKnowledge] = useVolunteerKnowledge()
+    const [volunteerLoan, saveVolunteerLoan] = useVolunteerLoan()
     const [showUnknownOnly, setShowUnknownOnly] = useState(false)
 
     const onShowUnknownOnly = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -22,14 +19,15 @@ const BoxList: React.FC = (): JSX.Element | null => {
         (box) =>
             !box ||
             !showUnknownOnly ||
-            !volunteerKnowledge ||
-            (!volunteerKnowledge.ok.includes(box.gameId) &&
-                !volunteerKnowledge.bof.includes(box.gameId) &&
-                !volunteerKnowledge.niet.includes(box.gameId))
+            !volunteerLoan ||
+            (!volunteerLoan.loanable.includes(box.gameId) &&
+                !volunteerLoan.playable.includes(box.gameId) &&
+                !volunteerLoan.giftable.includes(box.gameId) &&
+                !volunteerLoan.noOpinion.includes(box.gameId))
     )
 
     return (
-        <div>
+        <div className={styles.loanThings}>
             <label className={styles.showUnknownOnlyLabel}>
                 <input
                     type="checkbox"
@@ -43,8 +41,8 @@ const BoxList: React.FC = (): JSX.Element | null => {
                 {boxesToShow.map((detailedBox: any) => (
                     <BoxItem
                         detailedBox={detailedBox}
-                        volunteerKnowledge={volunteerKnowledge}
-                        saveVolunteerKnowledge={saveVolunteerKnowledge}
+                        volunteerLoan={volunteerLoan}
+                        saveVolunteerLoan={saveVolunteerLoan}
                         key={detailedBox.id}
                     />
                 ))}
@@ -53,6 +51,6 @@ const BoxList: React.FC = (): JSX.Element | null => {
     )
 }
 
-export default memo(BoxList)
+export default memo(LoanBoxList)
 
-export const fetchFor = [fetchBoxListIfNeed, fetchVolunteerKnowledgeSetIfNeed]
+export const fetchFor = [fetchBoxListIfNeed, fetchVolunteerLoanSetIfNeed]

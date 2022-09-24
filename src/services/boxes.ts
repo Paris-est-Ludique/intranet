@@ -38,11 +38,13 @@ export class DetailedBox {
 
     title = new Game().title
 
+    bggId = new Game().bggId
+
+    bggIdAlternative = new Game().bggIdAlternative
+
     bggPhoto = new Game().bggPhoto
 
     poufpaf = new Game().poufpaf
-
-    bggId = new Game().bggId
 
     playersMin = new Game().playersMin
 

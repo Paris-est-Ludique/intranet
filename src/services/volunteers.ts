@@ -58,6 +58,14 @@ export class Volunteer implements VolunteerPartial {
 
     niet: number[] = []
 
+    loanable: number[] = []
+
+    playable: number[] = []
+
+    giftable: number[] = []
+
+    noOpinion: number[] = []
+
     needsHosting = false
 
     canHostCount = 0
@@ -99,6 +107,10 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     ok: "OK",
     bof: "Bof",
     niet: "Niet",
+    loanable: "empruntable",
+    playable: "jouable",
+    giftable: "offrable",
+    noOpinion: "sansAvis",
     needsHosting: "besoinHébergement",
     canHostCount: "nombreHébergés",
     distanceToFestival: "distanceAuFestival",
@@ -148,6 +160,10 @@ export const volunteerExample: Volunteer = {
     ok: [5, 7, 24, 26, 31, 38, 50, 52, 54, 58],
     bof: [9, 12, 16, 27, 34, 35, 36],
     niet: [13, 18, 19, 23, 47, 53, 59, 67],
+    loanable: [5, 7],
+    playable: [34, 35, 36],
+    giftable: [13, 67],
+    noOpinion: [3, 4],
     needsHosting: false,
     canHostCount: 0,
     distanceToFestival: 0,
@@ -246,4 +262,13 @@ export interface VolunteerDetailedKnowledge {
     bof: Volunteer["bof"]
     niet: Volunteer["niet"]
     dayWishes: Volunteer["dayWishes"]
+}
+
+export type VolunteerLoanWithoutId = Omit<VolunteerLoan, "id">
+export interface VolunteerLoan {
+    id: Volunteer["id"]
+    loanable: Volunteer["loanable"]
+    playable: Volunteer["playable"]
+    giftable: Volunteer["giftable"]
+    noOpinion: Volunteer["noOpinion"]
 }

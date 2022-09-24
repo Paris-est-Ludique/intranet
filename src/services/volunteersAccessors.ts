@@ -13,6 +13,7 @@ import {
     VolunteerKnowledge,
     VolunteerMeals,
     VolunteerPersonalInfo,
+    VolunteerLoan,
 } from "./volunteers"
 
 const serviceAccessors = new ServiceAccessors<VolunteerWithoutId, Volunteer>(elementName)
@@ -64,3 +65,6 @@ export const volunteerKnowledgeSet =
 export const volunteerDetailedKnowledgeList = serviceAccessors.securedCustomPost<[number]>(
     "DetailedKnowledgeListGet"
 )
+
+export const volunteerLoanSet =
+    serviceAccessors.securedCustomPost<[number, Partial<VolunteerLoan>]>("LoanSet")

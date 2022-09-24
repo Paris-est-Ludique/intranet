@@ -1,0 +1,9 @@
+@import "../../theme/mixins";
+
+.loanPage {
+    @include page-wrapper-center;
+}
+
+.loanContent {
+    @include page-content-wrapper(700px);
+}

@@ -10,6 +10,7 @@ import AsyncAnnouncements, { loadData as loadAnnouncementsData } from "../pages/
 import AsyncTeamAssignment, { loadData as loadTeamAssignmentData } from "../pages/TeamAssignment"
 import AsyncRegisterPage, { loadData as loadRegisterPage } from "../pages/Register"
 import AsyncKnowledge, { loadData as loadKnowledgeData } from "../pages/Knowledge"
+import AsyncLoan, { loadData as loadLoanData } from "../pages/Loan"
 import AsyncKnowledgeCards, { loadData as loadCardKnowledgeData } from "../pages/KnowledgeCards"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
@@ -43,6 +44,11 @@ export default [
                 path: "/connaissances",
                 component: AsyncKnowledge,
                 loadData: loadKnowledgeData,
+            },
+            {
+                path: "/emprunts",
+                component: AsyncLoan,
+                loadData: loadLoanData,
             },
             {
                 path: "/fiches",

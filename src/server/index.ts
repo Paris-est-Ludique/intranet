@@ -39,6 +39,7 @@ import {
     volunteerKnowledgeSet,
     volunteerAddNew,
     volunteerDetailedKnowledgeList,
+    volunteerLoanSet,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -119,6 +120,7 @@ app.post(
     secure as RequestHandler,
     volunteerDetailedKnowledgeList
 )
+app.post("/VolunteerLoanSet", secure as RequestHandler, volunteerLoanSet)
 app.post(
     "/VolunteerParticipationDetailsSet",
     secure as RequestHandler,
