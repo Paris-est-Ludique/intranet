@@ -1,6 +1,7 @@
 import path from "path"
 import * as fs from "fs"
-import { assign, cloneDeep, max, omit, pick } from "lodash"
+import { assign, cloneDeep, map, max, omit, pick, some } from "lodash"
+// import { assign, cloneDeep, max, omit, pick } from "lodash"
 import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
@@ -155,19 +156,27 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
         throw Error("Il n'y a aucun bénévole avec cet email")
     }
 
+    // Try all password combinations with or without space after
     const password = body.password || ""
-    const password1Match = await bcrypt.compare(
+    const passwords: string[] = [
         password,
-        volunteer.password1.replace(/^\$2y/, "$2a")
+        `${password} `,
+        password.replace(/ $/, ""),
+        password.replace(/\s+ $/, ""),
+        `${password.replace(/\s+ $/, "")} `,
+    ]
+    const toTry = [
+        ...map(passwords, (p) => [p, volunteer.password1]),
+        ...map(passwords, (p) => [p, volunteer.password2]),
+    ] as [string, string][]
+    const tries = await Promise.all(
+        map(toTry, async ([p, save]) => bcrypt.compare(p, save.replace(/^\$2y/, "$2a")))
     )
-    if (!password1Match) {
-        const password2Match = await bcrypt.compare(
-            password,
-            volunteer.password2.replace(/^\$2y/, "$2a")
-        )
-        if (!password2Match) {
-            throw Error("Mauvais mot de passe pour cet email")
-        }
+
+    console.log("tries", JSON.stringify(tries))
+
+    if (!some(tries)) {
+        throw Error("Mauvais mot de passe pour cet email")
     }
 
     const jwt = await getJwt(volunteer.id, volunteer.roles)
