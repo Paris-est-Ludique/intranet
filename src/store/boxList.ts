@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 import { sortedUniqBy, sortBy } from "lodash"
 
-import { StateRequest, toastError, elementListFetch } from "./utils"
+import { StateRequest, toastError, elementListFetch, gameTitleOrder } from "./utils"
 import { DetailedBox } from "../services/boxes"
 import { AppThunk, AppState, EntitiesRequest } from "."
 import { detailedBoxListGet } from "../services/boxesAccessors"
@@ -59,9 +59,10 @@ export const selectBoxList = createSelector(
     }
 )
 
-export const selectSortedUniqueDetailedBoxes = createSelector(selectBoxList, (boxes) =>
-    sortedUniqBy(sortBy(boxes, "title"), "title")
-)
+export const selectSortedUniqueDetailedBoxes = createSelector(selectBoxList, (boxes) => {
+    const validBoxes = boxes.filter((box) => box) as DetailedBox[]
+    return sortedUniqBy(sortBy(validBoxes, gameTitleOrder), gameTitleOrder)
+})
 
 export const selectContainerSortedDetailedBoxes = createSelector(selectBoxList, (boxes) =>
     sortBy(boxes, "container")

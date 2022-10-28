@@ -1,8 +1,24 @@
 import axios from "axios"
 import { Parser } from "xml2js"
-import { assign, cloneDeep, find } from "lodash"
+import {
+    assign,
+    cloneDeep,
+    every,
+    find,
+    groupBy,
+    last,
+    mapValues,
+    reduce,
+    some,
+    sortBy,
+} from "lodash"
 import ExpressAccessors from "./expressAccessors"
-import { Game, GameWithoutId, translationGame } from "../../services/games"
+import { getSheet } from "./accessors"
+import { Game, GameWithoutId, GameWithVolunteers, translationGame } from "../../services/games"
+import { translationVolunteer, Volunteer, VolunteerWithoutId } from "../../services/volunteers"
+import { translationBox, Box, BoxWithoutId } from "../../services/boxes"
+import { getUniqueNickname } from "./tools"
+import { gameTitleCategory, gameTitleExactCategory, gameTitleOrder } from "../../store/utils"
 
 const expressAccessor = new ExpressAccessors<GameWithoutId, Game>(
     "Games",
@@ -10,7 +26,7 @@ const expressAccessor = new ExpressAccessors<GameWithoutId, Game>(
     translationGame
 )
 
-export const gameListGet = expressAccessor.listGet()
+// export const gameListGet = expressAccessor.listGet()
 // export const gameGet = expressAccessor.get()
 // export const gameAdd = expressAccessor.add()
 // export const gameSet = expressAccessor.set()
@@ -18,7 +34,7 @@ export const gameListGet = expressAccessor.listGet()
 export const gameDetailsUpdate = expressAccessor.listSet(
     async (list, _body, _id, _roles, request) => {
         request.setTimeout(500000)
-        const newList = cloneDeep(list)
+        const newList: Game[] = cloneDeep(list)
 
         const data = await getData()
         const parser = new Parser()
@@ -98,3 +114,214 @@ async function getData(): Promise<string> {
     }
     return data
 }
+
+export const gameListGet = expressAccessor.get(async (list) => {
+    const boxSheet = await getSheet<BoxWithoutId, Box>("Boxes", new Box(), translationBox)
+
+    const boxList = await boxSheet.getList()
+    if (!boxList) {
+        throw Error("Unable to load boxList")
+    }
+
+    const toBeAsked: Game[] = []
+
+    list.forEach((game) => {
+        const box: Box | undefined = boxList.find((b) => b.gameId === game.id)
+        if (!box) {
+            return
+        }
+        toBeAsked.push({
+            id: game.id,
+            title: game.title,
+            bggId: game.bggId,
+            bggIdAlternative: game.bggIdAlternative,
+            bggPhoto: game.bggPhoto,
+            poufpaf: game.poufpaf,
+            playersMin: game.playersMin,
+            playersMax: game.playersMax,
+            duration: game.duration,
+            type: game.type,
+        } as Game)
+    })
+
+    return toBeAsked
+})
+
+export const gameWithVolunteersListGet = expressAccessor.get(
+    async (list, _body, id): Promise<GameWithVolunteers[]> => {
+        if (id <= 0) {
+            throw Error(`L'accès est réservé aux utilisateurs identifiés`)
+        }
+        const volunteerSheet = await getSheet<VolunteerWithoutId, Volunteer>(
+            "Volunteers",
+            new Volunteer(),
+            translationVolunteer
+        )
+        const volunteerList = await volunteerSheet.getList()
+        if (!volunteerList) {
+            throw Error("Unable to load volunteers")
+        }
+
+        const currentVolunteer: Volunteer | undefined = volunteerList.find((v) => v.id === id)
+        if (!currentVolunteer) {
+            throw Error(`Unknown volunteer ${id}`)
+        }
+
+        const boxSheet = await getSheet<BoxWithoutId, Box>("Boxes", new Box(), translationBox)
+        const boxList = await boxSheet.getList()
+        if (!boxList) {
+            throw Error("Unable to load boxes")
+        }
+
+        const giftGameIds = list
+            .filter((game) =>
+                every(
+                    volunteerList,
+                    (v) => !v.loanable.includes(game.id) && !v.playable.includes(game.id)
+                )
+            )
+            .map((game) => game.id)
+
+        const gamesToLoan = list
+            .filter((game) => currentVolunteer.loanable.includes(game.id))
+            .map((game) => ({
+                ...cloneDeep(game),
+                volunteerNicknames: volunteerToNicknameList(
+                    volunteerList.filter((v) => v.loanable.includes(game.id)),
+                    volunteerList
+                ),
+                toLoan: true,
+                boxCount: boxList.filter((b) => b.gameId === game.id).length,
+            }))
+
+        const gamesToGift = list
+            .filter(
+                (game) =>
+                    giftGameIds.includes(game.id) && currentVolunteer.loanable.includes(game.id)
+            )
+            .map((game) => ({
+                ...cloneDeep(game),
+                volunteerNicknames: volunteerToNicknameList(
+                    volunteerList.filter((v) => v.loanable.includes(game.id)),
+                    volunteerList
+                ),
+                toLoan: false,
+                boxCount: boxList.filter((b) => b.gameId === game.id).length,
+            }))
+
+        return [...gamesToLoan, ...gamesToGift]
+    }
+)
+
+function volunteerToNicknameList(volunteers: Volunteer[], allVolunteers: Volunteer[]): string[] {
+    return volunteers
+        .map((v) => getUniqueNickname(allVolunteers, v))
+        .sort((a, b) => a.localeCompare(b))
+}
+
+export const gamesToGiveListGet = expressAccessor.get(async (list): Promise<string[]> => {
+    const volunteerSheet = await getSheet<VolunteerWithoutId, Volunteer>(
+        "Volunteers",
+        new Volunteer(),
+        translationVolunteer
+    )
+    const volunteerList = await volunteerSheet.getList()
+    if (!volunteerList) {
+        throw Error("Unable to load volunteers")
+    }
+
+    const boxSheet = await getSheet<BoxWithoutId, Box>("Boxes", new Box(), translationBox)
+    const boxList = await boxSheet.getList()
+    if (!boxList) {
+        throw Error("Unable to load boxes")
+    }
+
+    volunteerList[105].playable = []
+
+    const giftGameTitles = list
+        .filter((game) =>
+            every(
+                volunteerList,
+                (v) => !v.loanable.includes(game.id) && !v.playable.includes(game.id)
+            )
+        )
+        .map((game) => game.title)
+
+    return giftGameTitles
+})
+type GameCategory = { start: string; end: string; titles: string[] }
+export const gameTitleOrderCategories = expressAccessor.get(
+    async (list): Promise<GameCategory[]> => {
+        const volunteerSheet = await getSheet<VolunteerWithoutId, Volunteer>(
+            "Volunteers",
+            new Volunteer(),
+            translationVolunteer
+        )
+        const volunteerList = await volunteerSheet.getList()
+        if (!volunteerList) {
+            throw Error("Unable to load volunteers")
+        }
+
+        const boxSheet = await getSheet<BoxWithoutId, Box>("Boxes", new Box(), translationBox)
+        const boxList = await boxSheet.getList()
+        if (!boxList) {
+            throw Error("Unable to load boxes")
+        }
+
+        volunteerList[105].playable = []
+
+        const giftGameIds = list
+            .filter((game) =>
+                every(
+                    volunteerList,
+                    (v) => !v.loanable.includes(game.id) && !v.playable.includes(game.id)
+                )
+            )
+            .map((game) => game.id)
+
+        const gamesToLoan = sortBy(
+            list.filter((game) => !giftGameIds.includes(game.id)).map((game) => cloneDeep(game)),
+            gameTitleOrder
+        )
+
+        const exaustiveCats = mapValues(groupBy(gamesToLoan, gameTitleCategory), (gameList) =>
+            gameList.map((game) => game.title)
+        )
+
+        const cats: GameCategory[] = reduce(
+            Object.entries(exaustiveCats),
+            (res, [exaustiveCat, catTitles]) => {
+                const prevCat = last(res)
+                const prevCount = prevCat?.titles.length || 0
+                if (prevCount === 0 || prevCount + catTitles.length > 10) {
+                    const newCat = {
+                        start: exaustiveCat,
+                        end: exaustiveCat,
+                        titles: [...catTitles],
+                    }
+                    res.push(newCat)
+                } else if (prevCat !== undefined) {
+                    prevCat.end = exaustiveCat
+                    catTitles.forEach((title) => prevCat.titles.push(title))
+                }
+                return res
+            },
+            [] as GameCategory[]
+        )
+
+        const catList: string[] = cats.map((cat) => `${cat.start}-${cat.end}`)
+
+        console.log(catList.join("\n"))
+
+        const availableGiftIds = giftGameIds.filter((id) =>
+            some(volunteerList, (v: Volunteer) => v.giftable.includes(id))
+        )
+        console.log("availableGiftIds", availableGiftIds)
+
+        gamesToLoan.forEach((g) => gameTitleExactCategory(g))
+
+        return cats
+    }
+)
+
+// _.mapValues(list, cat => cat.length)

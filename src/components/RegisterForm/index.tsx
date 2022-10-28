@@ -8,7 +8,6 @@ import styles from "./styles.module.scss"
 
 import { fetchPostulantAdd } from "../../store/postulantAdd"
 import { AppDispatch, AppState } from "../../store"
-import { fetchVolunteerPartialAdd } from "../../store/volunteerPartialAdd"
 import FormButton from "../Form/FormButton/FormButton"
 import { validEmail } from "../../utils/standardization"
 import { toastError } from "../../store/utils"
@@ -38,24 +37,21 @@ const animations = [
     [styles.imgTransitionShow, styles.imgTransitionAbouToShow],
 ]
 const RegisterForm = ({ dispatch }: Props): JSX.Element => {
-    const [potentialVolunteer, setPotentialVolunteer] = useState(true)
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
     const [mobile, setMobile] = useState("")
-    const [alreadyVolunteer, setAlreadyVolunteer] = useState(false)
     const [comment, setComment] = useState("")
     const [alreadyCame, setAlreadyCame] = useState(true)
     const [firstMeeting, setFirstMeeting] = useState("")
     const [commentFirstMeeting, setCommentFirstMeeting] = useState("")
-    const [canHelpBefore, setCanHelpBefore] = useState("")
     const [howToContact, setHowToContact] = useState("Email")
     const [sending, setSending] = useState(false)
     const [changingBackground, setChangingBackground] = useState(0)
 
     const meetingDateList = useSelector(selectMiscMeetingDateList)
 
-    const enableRegistering = false
+    const enableRegistering = true
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -83,47 +79,29 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
             return
         }
 
-        if (potentialVolunteer) {
-            dispatch(
-                fetchPostulantAdd({
-                    potential: true,
-                    firstname,
-                    lastname,
-                    email,
-                    mobile,
-                    howToContact,
-                    alreadyCame,
-                    firstMeeting,
-                    commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
-                    comment,
-                })
-            )
-        } else {
-            dispatch(
-                fetchVolunteerPartialAdd({
-                    firstname,
-                    lastname,
-                    email,
-                    mobile,
-                    howToContact,
-                    canHelpBefore,
-                })
-            )
-            dispatch(
-                fetchPostulantAdd({
-                    potential: false,
-                    firstname,
-                    lastname,
-                    email,
-                    mobile,
-                    howToContact,
-                    alreadyCame,
-                    firstMeeting,
-                    commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
-                    comment,
-                })
-            )
-        }
+        dispatch(
+            fetchPostulantAdd({
+                potential: true,
+                firstname,
+                lastname,
+                email,
+                mobile,
+                howToContact,
+                alreadyCame,
+                firstMeeting,
+                commentFirstMeeting: firstMeeting ? "" : commentFirstMeeting,
+                comment,
+            })
+        )
+        // dispatch(
+        //     fetchVolunteerPartialAdd({
+        //         firstname,
+        //         lastname,
+        //         email,
+        //         mobile,
+        //         howToContact,
+        //     })
+        // )
 
         setSending(true)
     }
@@ -141,11 +119,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     let sendSuccess
     let sendError
     let sendingElement
-    if (
-        !postulantError &&
-        !_.isEmpty(postulant) &&
-        (potentialVolunteer || (!volunteerError && !_.isEmpty(volunteer)))
-    ) {
+    if (!postulantError && !_.isEmpty(postulant)) {
         if (sending) {
             setSending(false)
         }
@@ -181,11 +155,11 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
             <dd>
                 <p>
                     Un festival en plein air dédié aux <b>jeux de société modernes</b> sous toutes
-                    leurs formes. Les samedi 2 et dimanche 3 juillet 2022 !
+                    leurs formes. Les samedi 24 et dimanche 25 juin 2023 !
                 </p>
                 <p>
-                    En 2019 lors de la dernière édition, ce sont <b>16 000</b> joueurs qui se sont
-                    réunis sous 300 chapiteaux et 2 000 tables.
+                    En 2022, ce sont <b>18 000</b> visiteurs qui sont venus sous 300 chapiteaux et 2
+                    000 tables.
                 </p>
                 <p>
                     Les 2 jours que durent le festival sont entièrement dédiés à ce que le public{" "}
@@ -211,7 +185,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     toute l&apos;année ^^
                 </p>
                 <p>
-                    Pendant le festival de 2019, nous étions <b>187 bénévoles</b> organisés en
+                    Pendant le festival de 2022, nous étions <b>196 bénévoles</b> organisés en
                     équipes qui chouchoutent les visiteurs en les accueillant, en s&apos;assurant
                     que tout se passe bien, ou encore en expliquant des règles de jeux.
                 </p>
@@ -224,9 +198,9 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 <p>
                     La majorité d'entre nous sommes bénévoles les <b>samedi et dimanche</b>, mais
                     certains bénévoles ne sont pas disponibles les deux jours. On leur demande alors
-                    d'aider à la mise en place jeudi ou vendredi, ou au rangement le lundi, à la
-                    place d'un des jours du weekend. Bref, chacun participe comme il peut mais deux
-                    jours minimum !
+                    d'aider à la mise en place mercredi, jeudi ou vendredi, ou au rangement le
+                    lundi, à la place d'un des jours du weekend. Bref, chacun participe comme il
+                    peut mais <b>deux jours minimum</b> !
                 </p>
                 <p>
                     Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en
@@ -238,8 +212,8 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 
             {!enableRegistering && (
                 <dt>
-                    L'inscription est clôturée pour l'édition 2022, mais si l'expérience vous tente,
-                    remplissez le formulaire suivant pour devenir bénévole à PeL 2023 !<br />
+                    L'inscription est clôturée pour l'édition 2023, mais si l'expérience te tente,
+                    remplis le formulaire suivant pour devenir bénévole à PeL 2024 !<br />
                     Dès septembre on se rencontrera sur Paris en petits groupes pour discuter du
                     festival, du bénévolat et surtout faire connaissance :)
                     <br />
@@ -248,96 +222,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 
             {enableRegistering && (
                 <dt>
-                    Si l&apos;expérience vous tente, remplissez le formulaire suivant pour devenir
-                    bénévole !<br />
-                    Vous pouvez aussi juste nous rencontrer avant de vous décider à devenir
-                    bénévole, on comprend qu&apos;un saut pareil dans l&apos;inconnu soit difficile.
-                    <br />
-                    Dans les deux cas, venez rencontrer une poignée d'entre nous dans un bar/resto
-                    près de Châtelet ! :) Sur inscription uniquement...
+                    Si tu as envie de donner le sourire à des milliers de gens, remplis le
+                    formulaire suivant pour rencontrer une poignée d'entre nous dans un bar/resto
+                    près de Châtelet, avant de te décider ou non à devenir bénévole :)
                     <br />
                 </dt>
             )}
         </dl>
-    )
-
-    const potentialVolunteerQuestion = enableRegistering && (
-        <div className={styles.inputWrapper}>
-            <div className={styles.leftCol}>
-                <div className={styles.multipleChoiceTitle}>Je veux devenir bénévole :</div>
-            </div>
-            <div className={styles.rightCol}>
-                {["Tout de suite !", "Peut-être après une rencontre avec des bénévoles"].map(
-                    (option) => (
-                        <label className={styles.longAnswerLabel} key={option}>
-                            <input
-                                type="radio"
-                                name="potentialVolunteer"
-                                onChange={sendBooleanRadioboxDispatch(
-                                    setPotentialVolunteer,
-                                    option !== "Tout de suite !"
-                                )}
-                                checked={potentialVolunteer === (option !== "Tout de suite !")}
-                            />{" "}
-                            {option}
-                        </label>
-                    )
-                )}
-            </div>
-        </div>
-    )
-
-    const alreadyVolunteerQuestion = !potentialVolunteer && (
-        <>
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <div className={styles.multipleChoiceTitle}>J'ai déjà été bénévole à PeL</div>
-                </div>
-                <div className={styles.rightCol}>
-                    <div className={styles.rightColContainer}>
-                        {["Oui", "Non"].map((option) => (
-                            <label className={styles.shortAnswerLabel} key={option}>
-                                <input
-                                    type="radio"
-                                    name="alreadyVolunteer"
-                                    onChange={sendBooleanRadioboxDispatch(
-                                        setAlreadyVolunteer,
-                                        option === "Oui"
-                                    )}
-                                    checked={alreadyVolunteer === (option === "Oui")}
-                                />{" "}
-                                {option}
-                            </label>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {alreadyVolunteer && (
-                <dl className={styles.registerIntro}>
-                    <dd>
-                        <p>Dans ce cas pourquoi t'inscris-tu ici ? ^^</p>
-                        <p>
-                            Si tu te rappelles de l'email que tu avais utilisé à ta dernière
-                            inscription sur le site Force Orange des bénévoles (même sur l'ancienne
-                            version) tu peux{" "}
-                            <a href="/sidentifier" target="_blank" rel="noreferrer">
-                                t'identifier ici
-                            </a>{" "}
-                            avec ton ancien mot de passe, ou en{" "}
-                            <a href="/sinscrire" target="_blank" rel="noreferrer">
-                                demander un nouveau ici
-                            </a>
-                            .
-                        </p>
-                        <p>
-                            Autrement, si tu as changé d'email, mieux vaut nous le communiquer à
-                            benevoles@parisestludique.fr en précisant bien tes nom et prénom :)
-                        </p>
-                    </dd>
-                </dl>
-            )}
-        </>
     )
 
     const commentQuestion = (
@@ -448,10 +339,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const meeting = enableRegistering && (
         <>
             <dl className={styles.registerIntro}>
-                {!potentialVolunteer && <dt>Faisons connaissance !</dt>}
-                {potentialVolunteer && (
-                    <dt>Se rencontrer avant de se décider à devenir bénévole ?</dt>
-                )}
+                <dt>Faisons connaissance !</dt>
                 <dd>
                     <p>
                         On organise des rencontres entre de nouvelles personnes comme toi, et des
@@ -461,23 +349,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     <p>
                         Ces rencontres ont lieu à 19h dans un bar/resto calme à Châtelet, le{" "}
                         <a
-                            href="https://goo.gl/maps/N5NYWDF66vNQDFMh8"
+                            href="https://g.page/lerhinocerosparis?share"
                             id="sfmMap"
                             key="sfmMap"
                             target="_blank"
                             rel="noreferrer"
                         >
-                            Street Food Market
-                        </a>
-                        , ou à une soirée festive à 2 pas du lieu du festival, aux{" "}
-                        <a
-                            href="https://www.captainturtle.fr/aperos-petanque-paris/"
-                            id="petanque"
-                            key="petanque"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            apéros de la pétanque
+                            Rhinocéros
                         </a>
                         .
                     </p>
@@ -535,90 +413,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                             name="commentFirstMeeting"
                             id="commentFirstMeeting"
                             className={styles.inputWrapper}
-                            placeholder={
-                                potentialVolunteer
-                                    ? "Mince. Quelles dates t'arrangeraient ? Ou si c'est plus simple, quels jours sont à éviter ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?"
-                                    : "Ce n'est pas obligé mais ça aurait été top ! Manques-tu de temps ? Préfères-tu une autre date ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?"
-                            }
+                            placeholder="Mince. Quelles dates t'arrangeraient ? Ou si c'est plus simple, quels jours sont à éviter ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?"
                             value={commentFirstMeeting}
                             onChange={sendTextareaDispatch(setCommentFirstMeeting)}
                         />
                     </div>
                 </div>
             )}
-        </>
-    )
-
-    const helpBefore = enableRegistering && !potentialVolunteer && (
-        <>
-            <dl className={styles.registerIntro}>
-                <dt>Bénévolat en amont du festival</dt>
-                <dd>
-                    <p>
-                        En tant que bénévole, tu fais selon tes envies, tes disponibilités, ton
-                        énergie. Si personne ne veut faire quelque chose de primordial pour le
-                        festival, on paye quelqu'un de l'extérieur. Par exemple le transport+montage
-                        des tentes+tables, ou la sécurité de nuit sont délégués à des prestataires.
-                        Et si ce quelque chose n'est pas primordiale et que personne ne veut s'en
-                        occuper, bah tant pis on le fait pas ^^
-                    </p>
-                    <p>
-                        Après on essaye de faire plein de choses sans aide extérieure. Pour le
-                        plaisir de collaborer à un projet entre bénévoles parfois devenus amis, pour
-                        acquérir de nouvelles compétences, parce que chaque économie d'argent fait
-                        baisser le prix d'entrée au festival et contribue à le rendre plus
-                        accessible.
-                    </p>
-                </dd>
-            </dl>
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <div className={styles.multipleChoiceTitle}>
-                        Bref, as-tu le temps et l'envie de voir si tu peux aider en amont du
-                        festival ?
-                    </div>
-                </div>
-                <div className={styles.rightCol}>
-                    <div className={styles.rightColContainer}>
-                        {[
-                            { value: "oui", desc: "Oui" },
-                            { value: "non", desc: "Non" },
-                            { value: "", desc: "Ne sais pas" },
-                        ].map((option) => (
-                            <label className={styles.shortAnswerLabel} key={option.value}>
-                                <input
-                                    type="radio"
-                                    name="canHelpBefore"
-                                    value={option.value}
-                                    onChange={sendRadioboxDispatch(setCanHelpBefore)}
-                                    checked={canHelpBefore === option.value}
-                                />{" "}
-                                {option.desc}
-                            </label>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <dl className={styles.registerIntro}>
-                <dd>
-                    {canHelpBefore === "oui" && (
-                        <p>
-                            Génial ! Quand tu auras fini de t'inscrire et que tu seras identifié sur
-                            le site, nous t'en parlerons plus en détail.
-                        </p>
-                    )}
-                    {canHelpBefore === "non" && (
-                        <p>
-                            Aucun souci tu nous seras d'une aide précieuse le jour J c'est déjà
-                            énorme !
-                        </p>
-                    )}
-                    <p>
-                        Si tu changes d'avis, il sera possible de revenir sur cette décision dans
-                        ton profil sur le site.
-                    </p>
-                </dd>
-            </dl>
         </>
     )
 
@@ -744,9 +545,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const submitButton = (
         <>
             <div className={styles.buttonWrapper}>
-                <FormButton onClick={onSubmit} disabled={!potentialVolunteer && alreadyVolunteer}>
-                    Envoyer
-                </FormButton>
+                <FormButton onClick={onSubmit}>Envoyer</FormButton>
             </div>
             <div className={styles.formReactions}>
                 {sendingElement}
@@ -759,21 +558,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     return (
         <form>
             {intro}
-            {potentialVolunteerQuestion}
-            {alreadyVolunteerQuestion}
-
-            {(potentialVolunteer || !alreadyVolunteer) && (
-                <>
-                    {enableRegistering && commentQuestion}
-                    {cameAsVisitor}
-                    {meeting}
-                    {helpBefore}
-                    {pelMember}
-                    {nameMobileEmail}
-                    {!enableRegistering && commentQuestion}
-                    {howToContact !== "Aucun" && submitButton}
-                </>
-            )}
+            {enableRegistering && commentQuestion}
+            {cameAsVisitor}
+            {meeting}
+            {pelMember}
+            {nameMobileEmail}
+            {!enableRegistering && commentQuestion}
+            {howToContact !== "Aucun" && submitButton}
         </form>
     )
 }

@@ -1,9 +1,13 @@
 @import "../../theme/mixins";
 
-.loanPage {
+.loaningPage {
     @include page-wrapper-center;
 }
 
-.loanContent {
+.loaningContent {
     @include page-content-wrapper(700px);
+}
+
+.hide {
+    display: none;
 }

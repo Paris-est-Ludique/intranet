@@ -1,6 +1,6 @@
 import path from "path"
 import * as fs from "fs"
-import { assign, cloneDeep, max, omit, pick, remove } from "lodash"
+import { assign, cloneDeep, max, omit, pick } from "lodash"
 import bcrypt from "bcrypt"
 import sgMail from "@sendgrid/mail"
 
@@ -24,6 +24,7 @@ import {
 } from "../../services/volunteers"
 import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
+import { getUniqueNickname } from "./tools"
 
 const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
     "Volunteers",
@@ -577,17 +578,3 @@ export const volunteerLoanSet = expressAccessor.set(async (list, body, id) => {
         } as VolunteerLoan,
     }
 })
-
-function getUniqueNickname(list: Volunteer[], volunteer: Volunteer): string {
-    const lastnameList = list
-        .filter((v) => v.firstname === volunteer.firstname)
-        .map((v) => v.lastname)
-    let lastnamePrefix = ""
-    while (lastnameList.length > 1) {
-        lastnamePrefix += volunteer.lastname.charAt(lastnamePrefix.length)
-        // eslint-disable-next-line no-loop-func
-        remove(lastnameList, (lastname) => !lastname.startsWith(lastnamePrefix))
-    }
-    const nickname = `${volunteer.firstname}${lastnamePrefix ? ` ${lastnamePrefix}.` : ""}`
-    return nickname
-}

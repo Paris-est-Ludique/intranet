@@ -16,7 +16,7 @@ export const detailedBoxListGet = expressAccessor.get(async (list) => {
     const toBeAsked: DetailedBox[] = []
 
     gameList.forEach((game) => {
-        const box: Box | undefined = list.find((g) => g.gameId === game.id)
+        const box: Box | undefined = list.find((b) => b.gameId === game.id)
         if ((box && box.unplayable) || (!box && !game.toBeKnown)) {
             return
         }

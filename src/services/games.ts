@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 export class Game {
     id = 0
 
@@ -24,6 +25,14 @@ export class Game {
     bggPhoto = ""
 
     toBeKnown = false
+}
+
+export class GameWithVolunteers extends Game {
+    volunteerNicknames: string[] = []
+
+    toLoan = true
+
+    boxCount = 0
 }
 
 export const translationGame: { [k in keyof Game]: string } = {

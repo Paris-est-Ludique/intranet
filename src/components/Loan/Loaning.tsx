@@ -1,23 +1,21 @@
 import React, { memo, useState } from "react"
 import { useSelector } from "react-redux"
 import styles from "./styles.module.scss"
-import BoxItem from "./BoxItem"
 import { fetchBoxListIfNeed, selectSortedUniqueDetailedBoxes } from "../../store/boxList"
 import { fetchVolunteerLoanSetIfNeed, useVolunteerLoan } from "../../store/volunteerLoanSet"
+import { DetailedBox } from "../../services/boxes"
+import DetailedGameItem from "./DetailedGameItem"
 
-const LoanBoxList: React.FC = (): JSX.Element | null => {
-    const detailedBoxes = useSelector(selectSortedUniqueDetailedBoxes)
+const Loaning: React.FC = (): JSX.Element | null => {
+    const detailedBoxes: DetailedBox[] = useSelector(selectSortedUniqueDetailedBoxes)
     const [volunteerLoan, saveVolunteerLoan] = useVolunteerLoan()
     const [showUnknownOnly, setShowUnknownOnly] = useState(false)
 
     const onShowUnknownOnly = (e: React.ChangeEvent<HTMLInputElement>) =>
         setShowUnknownOnly(e.target.checked)
-
     if (!detailedBoxes || detailedBoxes.length === 0) return null
-
     const boxesToShow = detailedBoxes.filter(
         (box) =>
-            !box ||
             !showUnknownOnly ||
             !volunteerLoan ||
             (!volunteerLoan.loanable.includes(box.gameId) &&
@@ -28,22 +26,22 @@ const LoanBoxList: React.FC = (): JSX.Element | null => {
 
     return (
         <div className={styles.loanThings}>
-            <label className={styles.showUnknownOnlyLabel}>
+            <label className={styles.showCheckboxLabel}>
                 <input
                     type="checkbox"
                     name="showUnknownOnly"
                     onChange={onShowUnknownOnly}
                     checked={showUnknownOnly}
                 />{" "}
-                Uniquement les non-renseignés
+                Afficher uniquement les non-renseignés
             </label>
             <ul className={styles.boxList}>
-                {boxesToShow.map((detailedBox: any) => (
-                    <BoxItem
-                        detailedBox={detailedBox}
+                {boxesToShow.map((game) => (
+                    <DetailedGameItem
+                        detailedGame={game}
                         volunteerLoan={volunteerLoan}
                         saveVolunteerLoan={saveVolunteerLoan}
-                        key={detailedBox.id}
+                        key={game.id}
                     />
                 ))}
             </ul>
@@ -51,6 +49,6 @@ const LoanBoxList: React.FC = (): JSX.Element | null => {
     )
 }
 
-export default memo(LoanBoxList)
+export default memo(Loaning)
 
 export const fetchFor = [fetchBoxListIfNeed, fetchVolunteerLoanSetIfNeed]

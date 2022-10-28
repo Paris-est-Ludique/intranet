@@ -1,6 +1,6 @@
 import { FC, memo } from "react"
-// import DayWishes from "./DayWishes/DayWishes"
-// import DayWishesFormModal from "./DayWishesForm/DayWishesFormModal"
+import DayWishes from "./DayWishes/DayWishes"
+import DayWishesFormModal from "./DayWishesForm/DayWishesFormModal"
 // import Hosting from "./Hosting/Hosting"
 // import HostingFormModal from "./HostingForm/HostingFormModal"
 // import Meals from "./Meals/Meals"
@@ -12,7 +12,7 @@ import { FC, memo } from "react"
 // import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
 import withUserConnected from "../../utils/withUserConnected"
 import ContentTitle from "../ui/Content/ContentTitle"
-// import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
+import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
 // import { fetchFor as fetchForHostingForm } from "./HostingForm/HostingForm"
 // import { fetchFor as fetchForMealsForm } from "./MealsForm/MealsForm"
 // import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
@@ -39,9 +39,9 @@ const Board: FC = (): JSX.Element => {
             {retex && <BrunchFormModal />}
             {retex && <Retex />}
             {retex && <RetexFormModal />}
-            {/* <DayWishes />
-        <DayWishesFormModal />
-        <ParticipationDetails />
+            <DayWishes />
+            <DayWishesFormModal />
+            {/* <ParticipationDetails />
         <ParticipationDetailsFormModal />
         <TeamWishes />
         <TeamWishesFormModal />
@@ -60,7 +60,7 @@ export const fetchFor = [
     ...fetchForPersonalInfoForm,
     ...fetchForRetexForm,
     ...fetchForBrunchForm,
-    // ...fetchForDayWishesForm,
+    ...fetchForDayWishesForm,
     // ...fetchForHostingForm,
     // ...fetchForMealsForm,
     // ...fetchForParticipationDetailsForm,

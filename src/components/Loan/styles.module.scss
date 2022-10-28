@@ -1,11 +1,14 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
 
-.showUnknownOnlyLabel {
+.showCheckboxLabel {
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;
-    width: 280px;
+}
+
+.hide {
+    display: none;
 }
 
 .boxList {
@@ -198,6 +201,22 @@
 
 .noPoufpaf {
     display: none;
+}
+
+.boxCount {
+    height: 50px;
+    width: 73px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.volunteerList {
+    height: 50px;
+    width: 198px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .loanList {

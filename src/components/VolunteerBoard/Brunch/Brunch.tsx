@@ -27,7 +27,10 @@ const Brunch: FC<Props> = (): JSX.Element | null => {
                 )}
                 {question1 === 0 && <>Je ne viendrai pas au brunch </>}
                 {question1 > 0 && (
-                    <>Je viendrai au brunch{question1 > 1 && <> avec {question1} personne(s)</>}</>
+                    <>
+                        Je viendrai au brunch
+                        {question1 > 1 && <> avec {+question1 - 1} personne(s)</>}
+                    </>
                 )}
             </div>
             <div className={styles.editButton}>

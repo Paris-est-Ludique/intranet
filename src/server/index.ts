@@ -19,7 +19,13 @@ import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
 import { detailedBoxListGet } from "./gsheets/boxes"
-import { gameListGet, gameDetailsUpdate } from "./gsheets/games"
+import {
+    gameListGet,
+    gameDetailsUpdate,
+    gameWithVolunteersListGet,
+    gamesToGiveListGet,
+    gameTitleOrderCategories,
+} from "./gsheets/games"
 import { postulantAdd } from "./gsheets/postulants"
 import { teamListGet } from "./gsheets/teams"
 import {
@@ -98,6 +104,8 @@ app.get(
 app.get("/GameDetailsUpdate", gameDetailsUpdate)
 app.get("/BoxDetailedListGet", detailedBoxListGet)
 app.get("/GameListGet", gameListGet)
+app.get("/GamesToGiveListGet", gamesToGiveListGet)
+app.get("/GameTitleOrderCategories", gameTitleOrderCategories)
 app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)
@@ -109,6 +117,7 @@ app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
 
 // Secured APIs
 app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
+app.get("/GameWithVolunteersListGet", secure as RequestHandler, gameWithVolunteersListGet)
 app.get("/MiscDiscordInvitationGet", secure as RequestHandler, miscDiscordInvitation)
 app.post("/RetexSet", secure as RequestHandler, retexSet)
 app.get("/TeamListGet", teamListGet)

@@ -8,8 +8,10 @@ import DayWishesForm, {
 import ErrorBoundary from "./ErrorBoundary"
 import GameList from "./GameList"
 import Loading from "./Loading"
-import LoanBoxList, { fetchFor as fetchForLoan } from "./Loan/LoanBoxList"
-import LoanIntro from "./Loan/LoanIntro"
+import LoaningIntro from "./Loan/LoaningIntro"
+import Loaning, { fetchFor as fetchForLoaning } from "./Loan/Loaning"
+import LoansIntro from "./Loan/LoansIntro"
+import Loans, { fetchFor as fetchForLoans } from "./Loan/Loans"
 import LoginForm from "./LoginForm"
 import KnowledgeBoxList, { fetchFor as fetchForKnowledge } from "./Knowledge/KnowledgeBoxList"
 import KnowledgeCard, { fetchFor as fetchForKnowledgeCard } from "./Knowledge/KnowledgeCard"
@@ -45,9 +47,12 @@ export {
     fetchForKnowledge,
     KnowledgeIntro,
     Loading,
-    LoanBoxList,
-    fetchForLoan,
-    LoanIntro,
+    LoaningIntro,
+    Loaning,
+    fetchForLoaning,
+    LoansIntro,
+    Loans,
+    fetchForLoans,
     LoginForm,
     Asks,
     fetchForAsks,

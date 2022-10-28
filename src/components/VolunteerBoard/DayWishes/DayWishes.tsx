@@ -18,22 +18,22 @@ const DayWishes: FC = (): JSX.Element | null => {
             <div className={styles.title}>Mes présences</div>
             {participation === "non" && (
                 <div className={styles.participationLabel}>
-                    Je <b>ne participerai pas</b> à PeL 2022 :(
+                    Je <b>ne participerai pas</b> à PeL 2023 :(
                 </div>
             )}
             {participation === "oui" && (
                 <div className={styles.participationLabel}>
-                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2022 !
+                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2023 !
                 </div>
             )}
             {participation === "peut-etre" && (
                 <div className={styles.participationLabel}>
-                    Je <b>ne sais pas encore</b> si je participerai à PeL 2022
+                    Je <b>ne sais pas encore</b> si je participerai à PeL 2023
                 </div>
             )}
             {participation === "inconnu" && (
                 <div className={styles.lineEmpty}>
-                    Participation à PeL 2022{" "}
+                    Participation à PeL 2023{" "}
                     <span className={styles.lineEmpty}>non renseignées</span>
                 </div>
             )}

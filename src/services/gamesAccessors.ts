@@ -1,5 +1,5 @@
 import ServiceAccessors from "./accessors"
-import { elementName, Game, GameWithoutId } from "./games"
+import { elementName, Game, GameWithVolunteers, GameWithoutId } from "./games"
 
 const serviceAccessors = new ServiceAccessors<GameWithoutId, Game>(elementName)
 
@@ -9,3 +9,8 @@ export const gameListGet = serviceAccessors.listGet()
 // export const gameSet = serviceAccessors.set()
 
 export const gameDetailsUpdate = serviceAccessors.securedCustomGet<[], Game[]>("DetailsUpdate")
+
+export const gameWithVolunteersListGet = serviceAccessors.securedCustomListGet<
+    [],
+    GameWithVolunteers[]
+>("WithVolunteersListGet")

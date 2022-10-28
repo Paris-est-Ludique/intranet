@@ -37,7 +37,7 @@ const KnowledgeBoxList: React.FC = (): JSX.Element | null => {
                     onChange={onShowUnknownOnly}
                     checked={showUnknownOnly}
                 />{" "}
-                Uniquement les non-renseignés
+                Afficher uniquement les non-renseignés
             </label>
             <ul className={styles.boxList}>
                 {boxesToShow.map((detailedBox: any) => (

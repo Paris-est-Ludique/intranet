@@ -72,7 +72,7 @@ const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 <div className={styles.leftCol}>
                     <div className={styles.participationTitle}>
                         Si les conditions sanitaires te le permettent, souhaites-tu être bénévole à
-                        PeL 2022 ?
+                        PeL les 24 & 25 juin 2023 ?
                     </div>
                 </div>
                 <div className={styles.rightCol}>
@@ -124,6 +124,8 @@ const DayWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 <div className={styles.leftCol}>
                     <div className={styles.dayWishesTitle}>
                         Quels jours viendras-tu ?<br />
+                        Il est tôt pour le dire, tu peux y repondre plus tard sur la page profil.
+                        <br />
                         (Minimum 2 jours dont l'un sera samedi ou dimanche, idéalement samedi{" "}
                         <b>et</b> dimanche ^^)
                     </div>

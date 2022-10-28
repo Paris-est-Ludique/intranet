@@ -2,7 +2,7 @@ import classnames from "classnames"
 import React from "react"
 import styles from "./styles.module.scss"
 
-const LoanIntro: React.FC = (): JSX.Element => (
+const LoaningIntro: React.FC = (): JSX.Element => (
     <div className={styles.loanThings}>
         <h1>Emprunt et tri des jeux</h1>
         <p>
@@ -54,4 +54,4 @@ const LoanIntro: React.FC = (): JSX.Element => (
     </div>
 )
 
-export default LoanIntro
+export default LoaningIntro

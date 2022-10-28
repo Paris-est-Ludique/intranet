@@ -1,9 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
 import path from "path"
-import _ from "lodash"
+import _, { assign } from "lodash"
 import { promises as fs } from "fs"
 import { Volunteer } from "../../services/volunteers"
 import { Postulant } from "../../services/postulants"
+import { Retex } from "../../services/retex"
 
 const DB_PATH = path.resolve(process.cwd(), "access/db.json")
 const DB_TO_LOAD_PATH = path.resolve(process.cwd(), "access/dbToLoad.json")
@@ -273,6 +274,11 @@ function anonimizedDb(_s: States): States {
         ;(s.Postulants as Postulant[]).forEach((v) => {
             anonimizedNameEmailMobile(v)
             v.comment = v.id % 3 === 0 ? "Bonjour, j'adore l'initiative!" : ""
+        })
+    }
+    if (s.Retex) {
+        ;(s.Retex as Retex[]).forEach((r) => {
+            assign(r, new Retex(), { id: r.id, dayWishes: r.dayWishes })
         })
     }
     return s

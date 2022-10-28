@@ -90,6 +90,37 @@ export default class ServiceAccessors<
         }
     }
 
+    securedCustomListGet<InputElements extends Array<any>, OutputType>(
+        apiName: string
+    ): (
+        jwt: string,
+        ...params: InputElements
+    ) => Promise<{
+        data?: any
+        error?: Error
+    }> {
+        interface ElementGetResponse {
+            data?: any
+            error?: Error
+        }
+        return async (jwt: string, ...params: InputElements): Promise<ElementGetResponse> => {
+            try {
+                const auth = { headers: { Authorization: `Bearer ${jwt}` } }
+                const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
+                const { data } = await axios.get(
+                    `${config.API_URL}/${this.elementName}${apiName}`,
+                    { ...fullAxiosConfig, params }
+                )
+                if (data.error) {
+                    throw Error(data.error)
+                }
+                return { data } as { data: OutputType }
+            } catch (error) {
+                return { error: error as Error }
+            }
+        }
+    }
+
     // eslint-disable-next-line @typescript-eslint/ban-types
     add(): (volunteerWithoutId: ElementNoId) => Promise<{
         data?: Element
