@@ -158,7 +158,7 @@ export function gameTitleOrder(boxOrGame: { title: string }): string {
 export function gameTitleCategory(boxOrGame: { title: string }, length = 3): string {
     return gameTitleOrder(boxOrGame)
         .substring(0, length)
-        .replace(/(?<=[0-9]).+/, "")
+        .replace(/([0-9]).+/, "$1")
         .toUpperCase()
 }
 

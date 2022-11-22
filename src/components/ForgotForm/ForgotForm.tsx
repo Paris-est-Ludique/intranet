@@ -13,7 +13,7 @@ interface Props {
 
 const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
     const onSubmit = useCallback(
-        (event: React.SyntheticEvent): void => {
+        (event: React.SyntheticEvent): boolean => {
             event.preventDefault()
             const target = event.target as typeof event.target & {
                 email: { value: string }
@@ -21,6 +21,7 @@ const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
             const email = target.email.value
 
             dispatch(fetchVolunteerForgot({ email }))
+            return false
         },
         [dispatch]
     )
@@ -35,7 +36,7 @@ const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
                 <input type="email" id="email" name="utilisateur" />
             </div>
             <div className={styles.formButtons}>
-                <FormSubmit>Envoyer</FormSubmit>
+                <FormSubmit onClick={onSubmit}>Envoyer</FormSubmit>
             </div>
             <div className={styles.error}>{error}</div>
             <div className={styles.message}>{message}</div>

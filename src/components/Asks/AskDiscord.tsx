@@ -53,7 +53,7 @@ export function AskDiscord(asks: JSX.Element[], id: number): void {
                 équipes s'organisent !
             </p>
             <p>
-                Pour s'y retrouver tellement on est nombreux (plus de 120), il est nécessaire
+                Pour s'y retrouver tellement on est nombreux (plus de 200), il est nécessaire
                 d'avoir son prénom comme alias. Voir même d'avoir ensuite la première lettre de ton
                 nom de famille si un autre bénévole présent sur le serveur a le même prénom. Pour
                 changer ton alias uniquement sur le serveur PeL, il faut faire un clique droit sur

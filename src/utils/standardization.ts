@@ -48,7 +48,7 @@ export function trim(src: string): string {
 export function canonicalFirstname(firstname: string): string {
     return trim(firstname)
         .toLowerCase()
-        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
+        .replace(/(^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s, before) => before + s.toUpperCase())
         .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
         .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
 }
@@ -56,7 +56,7 @@ export function canonicalFirstname(firstname: string): string {
 export function canonicalLastname(lastname: string): string {
     return trim(lastname)
         .toLowerCase()
-        .replace(/(?<=^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s) => s.toUpperCase())
+        .replace(/(^|[\s'-])([a-zA-Z]|[à-ú]|[À-Ú])/gi, (s, before) => before + s.toUpperCase())
         .replace(/\b(de|d'|du|le|la)\b/gi, (s) => s.toLowerCase())
         .replace(/\b(d'|l')/gi, (s) => s.toLowerCase())
 }

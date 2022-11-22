@@ -152,6 +152,7 @@ async function sendSignUpEmail(email: string, password: string): Promise<void> {
 export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, bodyArray) => {
     const [body] = bodyArray
     const volunteer = getByEmail(list, body.email)
+
     if (!volunteer) {
         throw Error("Il n'y a aucun bénévole avec cet email")
     }
@@ -172,8 +173,6 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
     const tries = await Promise.all(
         map(toTry, async ([p, save]) => bcrypt.compare(p, save.replace(/^\$2y/, "$2a")))
     )
-
-    console.log("tries", JSON.stringify(tries))
 
     if (!some(tries)) {
         throw Error("Mauvais mot de passe pour cet email")

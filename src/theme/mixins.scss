@@ -103,6 +103,7 @@
     color: $color-white;
     border-radius: 16px;
     font-weight: bold;
+    cursor: "pointer";
 }
 
 @mixin form-grey-button {

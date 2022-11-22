@@ -7,7 +7,7 @@ const LoaningIntro: React.FC = (): JSX.Element => (
         <h1>Emprunt et tri des jeux</h1>
         <p>
             Lors du brunch des bénévoles ayant contribué au dernier festival, des boîtes de jeux en
-            trop dans la ludothèque seront données, et des boîtes qui passe l'année dans la cave
+            trop dans la ludothèque seront données, et des boîtes qui passent l'année dans la cave
             entre deux éditions seront prêtées pour 4 mois.
         </p>
         <p>

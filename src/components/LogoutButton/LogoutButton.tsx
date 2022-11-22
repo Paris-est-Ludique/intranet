@@ -7,11 +7,12 @@ import styles from "./styles.module.scss"
 const LogoutButton: FC = (): JSX.Element | null => {
     const connected = useSelector(isUserConnected)
 
-    const onClick = useCallback((event: React.SyntheticEvent): void => {
+    const onClick = useCallback((event: React.SyntheticEvent): boolean => {
         event.preventDefault()
         unsetJWT()
         // eslint-disable-next-line no-restricted-globals
         location?.reload()
+        return false
     }, [])
 
     if (!connected) return null
