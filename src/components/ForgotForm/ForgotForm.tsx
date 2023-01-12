@@ -1,4 +1,5 @@
-import React, { memo, useCallback } from "react"
+import React, { memo, useCallback, useRef } from "react"
+import { get } from "lodash"
 import type {} from "redux-thunk/extend-redux"
 import { AppDispatch } from "../../store"
 import { fetchVolunteerForgot } from "../../store/volunteerForgot"
@@ -12,13 +13,13 @@ interface Props {
 }
 
 const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
+    const emailRef = useRef<HTMLInputElement | null>(null)
+
     const onSubmit = useCallback(
         (event: React.SyntheticEvent): boolean => {
             event.preventDefault()
-            const target = event.target as typeof event.target & {
-                email: { value: string }
-            }
-            const email = target.email.value
+            event.stopPropagation()
+            const email = get(emailRef, "current.value", "")
 
             dispatch(fetchVolunteerForgot({ email }))
             return false
@@ -33,7 +34,7 @@ const ForgotForm = ({ dispatch, error, message }: Props): JSX.Element => {
             </div>
             <div className={styles.formLine} key="line-email">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="utilisateur" />
+                <input type="email" id="email" name="utilisateur" ref={emailRef} />
             </div>
             <div className={styles.formButtons}>
                 <FormSubmit onClick={onSubmit}>Envoyer</FormSubmit>
