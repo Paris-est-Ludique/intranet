@@ -62,28 +62,30 @@ async function sendMeetingEmail(
     const miscSheet = await getSheet<MiscWithoutId, Misc>("Miscs", new Misc(), translationMisc)
     const apiKey = process.env.SENDGRID_API_KEY || ""
 
-    if (firstMeeting === "") {
+    const miscList = await miscSheet.getList()
+    if (!miscList) {
+        throw Error("Unable to load miscList")
+    }
+    const hasMeetingDates = miscList?.[0]?.meetingId !== ""
+
+    if (!hasMeetingDates || firstMeeting === "") {
         if (__DEV__ || apiKey === "") {
             console.error(`Fake sending meeting email to ${email}`)
         } else {
             sgMail.setApiKey(apiKey)
+            const visioComment = firstMeeting === "visio" ? " en visio" : ""
             const msg = {
                 to: email,
                 from: "contact@parisestludique.fr",
                 subject: "Première rencontre Paris est Ludique",
-                text: `Salut ${firstname},\n\nTon inscription est bien prise en compte !\n\nNous te contacterons pour trouver un moyen de se rencontrer.\n\nÀ bientôt :)\nPierre`,
-                html: `Salut ${firstname},<br /><br />Ton inscription est bien prise en compte !<br /><br />Nous te contacterons pour trouver un moyen de se rencontrer.<br /><br />À bientôt :)<br />Pierre`,
+                text: `Salut ${firstname},\n\nTon inscription est bien prise en compte !\n\nNous te contacterons pour trouver un moyen de se rencontrer${visioComment}.\n\nÀ bientôt :)\nPierre`,
+                html: `Salut ${firstname},<br /><br />Ton inscription est bien prise en compte !<br /><br />Nous te contacterons pour trouver un moyen de se rencontrer${visioComment}.<br /><br />À bientôt :)<br />Pierre`,
             }
             await sgMail.send(msg)
         }
         return
     }
     // else
-
-    const miscList = await miscSheet.getList()
-    if (!miscList) {
-        throw Error("Unable to load miscList")
-    }
 
     const meetingLine = miscList.find((misc) => misc.meetingId === firstMeeting)
     if (!meetingLine) {

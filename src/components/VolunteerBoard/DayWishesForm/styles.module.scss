@@ -28,13 +28,19 @@
     text-align: center;
 }
 
-.participationTitle {
+.oneCol {
+    width: 100%;
+}
+
+.participationTitle,
+.charteTitle {
     display: inline-block;
     width: 320px;
     margin-bottom: 10px;
 }
 
-.participationLabel {
+.participationLabel,
+.charteLabel {
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;

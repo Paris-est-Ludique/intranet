@@ -7,6 +7,7 @@ import { displayModal, MODAL_IDS } from "../../../store/ui"
 
 const DayWishes: FC = (): JSX.Element | null => {
     const [userWishes] = useUserDayWishes()
+    const charter = get(userWishes, "charter", false)
     const participation = get(userWishes, "active", "inconnu")
     const dayWishesString = get(userWishes, "dayWishes", []).map(getDayLabel).join(", ")
     const comment = get(userWishes, "dayWishesComment", "")
@@ -15,7 +16,13 @@ const DayWishes: FC = (): JSX.Element | null => {
 
     return (
         <div className={styles.dayWishes}>
-            <div className={styles.title}>Mes présences</div>
+            <div className={styles.title}>Mon engagement</div>
+            {!charter && (
+                <div className={styles.lineEmpty}>
+                    Je n'ai pas encore accepté la charte du bénévole :(
+                </div>
+            )}
+
             {participation === "non" && (
                 <div className={styles.participationLabel}>
                     Je <b>ne participerai pas</b> à PeL 2023 :(

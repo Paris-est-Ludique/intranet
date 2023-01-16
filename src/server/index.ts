@@ -53,7 +53,11 @@ import { notificationsSubscribe, notificationMain } from "./notifications"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
 import { addStatus, showStatusAt } from "./status"
-import { miscMeetingDateListGet, miscDiscordInvitation } from "./gsheets/miscs"
+import {
+    miscDiscordInvitation,
+    miscFestivalDateListGet,
+    miscMeetingDateListGet,
+} from "./gsheets/miscs"
 import { retexSet } from "./gsheets/retex"
 
 checkAccess()
@@ -106,6 +110,7 @@ app.get("/BoxDetailedListGet", detailedBoxListGet)
 app.get("/GameListGet", gameListGet)
 app.get("/GamesToGiveListGet", gamesToGiveListGet)
 app.get("/GameTitleOrderCategories", gameTitleOrderCategories)
+app.get("/MiscFestivalDateListGet", miscFestivalDateListGet)
 app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
 app.get("/WishListGet", wishListGet)
 app.post("/WishAdd", wishAdd)

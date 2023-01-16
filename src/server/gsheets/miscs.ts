@@ -2,6 +2,7 @@ import ExpressAccessors from "./expressAccessors"
 import {
     Misc,
     MiscDiscordInvitation,
+    MiscFestivalDate,
     MiscMeetingDate,
     MiscWithoutId,
     translationMisc,
@@ -27,6 +28,18 @@ export const miscDiscordInvitation = expressAccessor.get(async (list, _body, id)
                 } as MiscDiscordInvitation)
         )
 })
+
+export const miscFestivalDateListGet = expressAccessor.get(async (list) =>
+    list
+        .filter((misc) => !!misc.date)
+        .map(
+            (misc) =>
+                ({
+                    id: misc.id,
+                    date: misc.date,
+                } as MiscFestivalDate)
+        )
+)
 
 export const miscMeetingDateListGet = expressAccessor.get(async (list) =>
     list

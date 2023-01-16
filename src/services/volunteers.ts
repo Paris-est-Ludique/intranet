@@ -52,6 +52,8 @@ export class Volunteer implements VolunteerPartial {
 
     acceptsNotifs = ""
 
+    team2022 = 0
+
     ok: number[] = []
 
     bof: number[] = []
@@ -75,6 +77,8 @@ export class Volunteer implements VolunteerPartial {
     hostingComment = ""
 
     meals: string[] = []
+
+    charter = true
 }
 
 export const translationVolunteer: { [k in keyof Volunteer]: string } = {
@@ -104,6 +108,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     password2: "passe2",
     pushNotifSubscription: "pushNotifSubscription",
     acceptsNotifs: "accepteLesNotifs",
+    team2022: "équipe2022",
     ok: "OK",
     bof: "Bof",
     niet: "Niet",
@@ -116,6 +121,7 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     distanceToFestival: "distanceAuFestival",
     hostingComment: "commentaireHébergement",
     meals: "repas",
+    charter: "charte",
 }
 
 export class VolunteerPartial {
@@ -157,6 +163,7 @@ export const volunteerExample: Volunteer = {
     password2: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
     pushNotifSubscription: "",
     acceptsNotifs: "",
+    team2022: 0,
     ok: [5, 7, 24, 26, 31, 38, 50, 52, 54, 58],
     bof: [9, 12, 16, 27, 34, 35, 36],
     niet: [13, 18, 19, 23, 47, 53, 59, 67],
@@ -169,6 +176,7 @@ export const volunteerExample: Volunteer = {
     distanceToFestival: 0,
     hostingComment: "",
     meals: [],
+    charter: false,
 }
 
 export const emailRegexp =
@@ -208,6 +216,7 @@ export interface VolunteerTeamWishes {
 
 export interface VolunteerDayWishes {
     id: Volunteer["id"]
+    charter: Volunteer["charter"]
     active: Volunteer["active"]
     dayWishes: Volunteer["dayWishes"]
     dayWishesComment: Volunteer["dayWishesComment"]

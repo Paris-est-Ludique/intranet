@@ -23,6 +23,7 @@ export const daysChoiceSelectionDefaultState = daysChoice.reduce((state, { id })
 }, <SelectionChoices>{})
 
 type SetFunction = (
+    charter: VolunteerDayWishes["charter"],
     active: VolunteerDayWishes["active"],
     dayWishes: VolunteerDayWishes["dayWishes"],
     dayWishesComment: VolunteerDayWishes["dayWishesComment"]
@@ -37,10 +38,11 @@ export const useUserDayWishes = (): [VolunteerDayWishes | undefined, SetFunction
     )
 
     const saveWishes: SetFunction = useCallback(
-        (active, dayWishes, dayWishesComment) => {
+        (charter, active, dayWishes, dayWishesComment) => {
             if (!userWishes) return
             save(jwtToken, 0, {
                 id: userWishes.id,
+                charter,
                 active,
                 dayWishes,
                 dayWishesComment,

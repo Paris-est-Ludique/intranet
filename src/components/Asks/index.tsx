@@ -3,8 +3,8 @@ import React, { memo } from "react"
 import styles from "./styles.module.scss"
 import { useAskTools } from "./utils"
 import { AskWelcome } from "./AskWelcome"
-import { AskBrunch, fetchFor as fetchForBrunch } from "./AskBrunch"
-import { AskRetex, fetchFor as fetchForRetex } from "./AskRetex"
+// import { AskBrunch, fetchFor as fetchForBrunch } from "./AskBrunch"
+// import { AskRetex, fetchFor as fetchForRetex } from "./AskRetex"
 import { AskDiscord, fetchFor as fetchForDiscord } from "./AskDiscord"
 import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
 // import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
@@ -22,8 +22,8 @@ const Asks = (): JSX.Element | null => {
     const asks: JSX.Element[] = []
 
     AskWelcome(asks, 1)
-    AskBrunch(asks, 2)
-    AskRetex(asks, 3)
+    // AskBrunch(asks, 2)
+    // AskRetex(asks, 3)
     AskDiscord(asks, 5)
 
     AskDayWishes(asks, 10)
@@ -66,8 +66,8 @@ export default memo(Asks)
 
 // Fetch server-side data here
 export const fetchFor = [
-    ...fetchForBrunch,
-    ...fetchForRetex,
+    // ...fetchForBrunch,
+    // ...fetchForRetex,
     ...fetchForDiscord,
     ...fetchForDayWishes,
     // ...fetchForHosting,

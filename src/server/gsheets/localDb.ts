@@ -2,6 +2,7 @@
 import path from "path"
 import _, { assign } from "lodash"
 import { promises as fs } from "fs"
+import { Misc } from "../../services/miscs"
 import { Volunteer } from "../../services/volunteers"
 import { Postulant } from "../../services/postulants"
 import { Retex } from "../../services/retex"
@@ -279,6 +280,17 @@ function anonimizedDb(_s: States): States {
     if (s.Retex) {
         ;(s.Retex as Retex[]).forEach((r) => {
             assign(r, new Retex(), { id: r.id, dayWishes: r.dayWishes })
+        })
+    }
+    if (s.Miscs) {
+        ;(s.Miscs as Misc[]).forEach((r) => {
+            assign(r, new Retex(), {
+                id: r.id,
+                date: r.date,
+                meetingId: r.meetingId,
+                meetingTitle: r.meetingTitle,
+                meetingUrl: r.meetingUrl,
+            })
         })
     }
     return s

@@ -18,6 +18,10 @@ import {
     sendTextDispatch,
 } from "../input.utils"
 import {
+    fetchMiscFestivalDateListIfNeed,
+    selectMiscFestivalDateList,
+} from "../../store/miscFestivalDateList"
+import {
     fetchMiscMeetingDateListIfNeed,
     selectMiscMeetingDateList,
 } from "../../store/miscMeetingDateList"
@@ -49,9 +53,11 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [sending, setSending] = useState(false)
     const [changingBackground, setChangingBackground] = useState(0)
 
+    const festivalDateList = useSelector(selectMiscFestivalDateList)
     const meetingDateList = useSelector(selectMiscMeetingDateList)
 
     const enableRegistering = true
+    const hasMeetingDates = meetingDateList.length > 0
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -149,13 +155,15 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         )
     }
 
+    const festivalFullDate = _.find(festivalDateList, { id: 1 })?.date
+
     const intro = (
         <dl className={styles.registerIntro}>
             <dt>Qu&apos;est-ce que Paris est Ludique ?</dt>
             <dd>
                 <p>
                     Un festival en plein air dédié aux <b>jeux de société modernes</b> sous toutes
-                    leurs formes. Les samedi 24 et dimanche 25 juin 2023 !
+                    leurs formes.{festivalFullDate && ` Les ${festivalFullDate} !`}
                 </p>
                 <p>
                     En 2022, ce sont <b>18 000</b> visiteurs qui sont venus sous 300 chapiteaux et 2
@@ -362,43 +370,91 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 </dd>
             </dl>
 
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <div className={styles.multipleChoiceTitle}>
-                        À quelle date pourrais-tu venir ?
+            {hasMeetingDates ? (
+                <div className={styles.inputWrapper}>
+                    <div className={styles.leftCol}>
+                        <div className={styles.multipleChoiceTitle}>
+                            À quelle date pourrais-tu venir ?
+                        </div>
+                    </div>
+                    <div className={styles.rightCol}>
+                        <div className={styles.rightColContainer}>
+                            {_.concat(
+                                meetingDateList.map((meetingDetails) => ({
+                                    value: meetingDetails.meetingId,
+                                    desc: meetingDetails.meetingTitle,
+                                })),
+                                { value: "", desc: "Aucune date possible" }
+                            ).map((option) => (
+                                <label className={styles.longAnswerLabel} key={option.value}>
+                                    <input
+                                        type="radio"
+                                        name="firstMeeting"
+                                        value={option.value}
+                                        onChange={sendRadioboxDispatch(setFirstMeeting)}
+                                        checked={firstMeeting === option.value}
+                                    />{" "}
+                                    {option.desc}
+                                </label>
+                            ))}
+                        </div>
                     </div>
                 </div>
-                <div className={styles.rightCol}>
-                    <div className={styles.rightColContainer}>
-                        {_.concat(
-                            meetingDateList.map((meetingDetails) => ({
-                                value: meetingDetails.meetingId,
-                                desc: meetingDetails.meetingTitle,
-                            })),
-                            { value: "", desc: "Aucune date possible" }
-                        ).map((option) => (
-                            <label className={styles.longAnswerLabel} key={option.value}>
-                                <input
-                                    type="radio"
-                                    name="firstMeeting"
-                                    value={option.value}
-                                    onChange={sendRadioboxDispatch(setFirstMeeting)}
-                                    checked={firstMeeting === option.value}
-                                />{" "}
-                                {option.desc}
-                            </label>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            ) : null}
 
-            {firstMeeting !== "" && (
+            {!hasMeetingDates && (
+                <div className={styles.inputWrapper}>
+                    <div className={styles.leftCol}>
+                        <div className={styles.multipleChoiceTitle}>
+                            Es-tu dispo un lundi ou mardi soir sur Paris pour nous rencontrer ?
+                        </div>
+                    </div>
+                    <div className={styles.rightCol}>
+                        <div className={styles.rightColContainer}>
+                            {[
+                                { value: "", desc: "Rencontre sur Paris" },
+                                { value: "visio", desc: "Plutôt en visio" },
+                            ].map((option) => (
+                                <label className={styles.longAnswerLabel} key={option.value}>
+                                    <input
+                                        type="radio"
+                                        name="firstMeeting"
+                                        value={option.value}
+                                        onChange={sendRadioboxDispatch(setFirstMeeting)}
+                                        checked={firstMeeting === option.value}
+                                    />{" "}
+                                    {option.desc}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {(!hasMeetingDates || firstMeeting !== "") && (
                 <dl className={styles.registerIntro}>
                     <dd>
                         <p>
-                            Top ! On fait en sorte qu'il y ait assez de bénévoles expérimentés pour
-                            les nombreux curieux comme toi, donc pour ne pas gâcher leur temps on
-                            compte sur ta présence :)
+                            {!hasMeetingDates && firstMeeting === "" && (
+                                <>
+                                    Top ! On te propose très vite des dates, ou à défaut, une visio
+                                    :)
+                                </>
+                            )}
+                            {firstMeeting === "visio" && (
+                                <>
+                                    Top ! On te recontacte très vite avec des dates pour une visio
+                                    avec 2 bénévoles et 2-3 autres personnes intéréssées comme toi
+                                    :)
+                                </>
+                            )}
+                            {hasMeetingDates && firstMeeting !== "" && (
+                                <>
+                                    Top ! On fait en sorte qu'il y ait assez de bénévoles
+                                    expérimentés pour les nombreux curieux comme toi, donc pour ne
+                                    pas gâcher leur temps on compte sur ta présence :)
+                                </>
+                            )}
                         </p>
                         <p>Si tu as un contre-temps, écris-nous à benevoles@parisestludique.fr</p>
                         <p>À très bientôt !</p>
@@ -406,20 +462,33 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                 </dl>
             )}
 
-            {firstMeeting === "" && (
-                <div className={styles.inputWrapper}>
-                    <div className={styles.commentWrapper}>
-                        <textarea
-                            name="commentFirstMeeting"
-                            id="commentFirstMeeting"
-                            className={styles.inputWrapper}
-                            placeholder="Mince. Quelles dates t'arrangeraient ? Ou si c'est plus simple, quels jours sont à éviter ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?"
-                            value={commentFirstMeeting}
-                            onChange={sendTextareaDispatch(setCommentFirstMeeting)}
-                        />
-                    </div>
+            <div
+                className={classnames(
+                    styles.inputWrapper,
+                    !(firstMeeting === "" || firstMeeting === "visio") && styles.hidden
+                )}
+            >
+                <div className={styles.commentWrapper}>
+                    <textarea
+                        name="commentFirstMeeting"
+                        id="commentFirstMeeting"
+                        className={styles.inputWrapper}
+                        placeholder={
+                            (hasMeetingDates && firstMeeting === ""
+                                ? "Mince. Quelles dates t'arrangeraient ? Ou si c'est plus simple, quels jours sont à éviter ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?"
+                                : "") +
+                            (!hasMeetingDates && firstMeeting === ""
+                                ? "As-tu des contraintes horaires les lundis ? Les mardis ?"
+                                : "") +
+                            (firstMeeting === "visio"
+                                ? "As-tu des contraites en terme de jours de la semaine ? D'horaire ?"
+                                : "")
+                        }
+                        value={commentFirstMeeting}
+                        onChange={sendTextareaDispatch(setCommentFirstMeeting)}
+                    />
                 </div>
-            )}
+            </div>
         </>
     )
 
@@ -572,4 +641,4 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 export default memo(RegisterForm)
 
 // Fetch server-side data here
-export const fetchFor = [fetchMiscMeetingDateListIfNeed]
+export const fetchFor = [fetchMiscFestivalDateListIfNeed, fetchMiscMeetingDateListIfNeed]

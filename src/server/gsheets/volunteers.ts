@@ -318,7 +318,16 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
     }
     const newVolunteer: Volunteer = cloneDeep(volunteer)
 
+    if (wishes.charter !== undefined) {
+        newVolunteer.charter = wishes.charter
+        if (!newVolunteer.charter) {
+            wishes.active = "non"
+        }
+    }
     if (wishes.active !== undefined) {
+        if (!newVolunteer.charter && wishes.active === "oui") {
+            throw Error(`La charte doit être acceptée pour pouvoir devenir membre`)
+        }
         newVolunteer.active = wishes.active
     }
     if (wishes.dayWishes !== undefined) {
@@ -332,6 +341,7 @@ export const volunteerDayWishesSet = expressAccessor.set(async (list, body, id) 
         toDatabase: newVolunteer,
         toCaller: {
             id: newVolunteer.id,
+            charter: newVolunteer.charter,
             active: newVolunteer.active,
             dayWishes: newVolunteer.dayWishes,
             dayWishesComment: newVolunteer.dayWishesComment,
