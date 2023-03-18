@@ -22,6 +22,7 @@ module.exports = {
         __CLIENT__: true,
         __SERVER__: false,
         __LOCAL__: false,
+        __REGISTER_DISCORD_COMMANDS__: false,
         __TEST__: true,
     },
     maxConcurrency: 50,

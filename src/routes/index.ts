@@ -11,7 +11,7 @@ import AsyncTeamAssignment, { loadData as loadTeamAssignmentData } from "../page
 import AsyncRegisterPage, { loadData as loadRegisterPage } from "../pages/Register"
 import AsyncKnowledge, { loadData as loadKnowledgeData } from "../pages/Knowledge"
 // import AsyncLoans, { loadData as loadLoansData } from "../pages/Loans"
-// import AsyncLoaning, { loadData as loadLoaningData } from "../pages/Loaning"
+import AsyncLoaning, { loadData as loadLoaningData } from "../pages/Loaning"
 import AsyncKnowledgeCards, { loadData as loadCardKnowledgeData } from "../pages/KnowledgeCards"
 import AsyncTeams, { loadData as loadTeamsData } from "../pages/Teams"
 import AsyncBoard, { loadData as loadBoardData } from "../pages/Board"
@@ -51,11 +51,11 @@ export default [
             //     component: AsyncLoans,
             //     loadData: loadLoansData,
             // },
-            // {
-            //     path: "/emprunter",
-            //     component: AsyncLoaning,
-            //     loadData: loadLoaningData,
-            // },
+            {
+                path: "/emprunter",
+                component: AsyncLoaning,
+                loadData: loadLoaningData,
+            },
             {
                 path: "/fiches",
                 component: AsyncKnowledgeCards,

@@ -2,6 +2,7 @@ declare const __CLIENT__: boolean
 declare const __SERVER__: boolean
 declare const __DEV__: boolean
 declare const __LOCAL__: boolean
+declare const __REGISTER_DISCORD_COMMANDS__: boolean
 declare const __TEST__: boolean
 
 declare module "*.svg"
@@ -19,6 +20,7 @@ declare namespace NodeJS {
         __SERVER__: boolean
         __DEV__: boolean
         __LOCAL__: boolean
+        __REGISTER_DISCORD_COMMANDS__: boolean
         __TEST__: boolean
         $RefreshReg$: () => void
         $RefreshSig$$: () => void

@@ -29,7 +29,7 @@ const LoginForm = (): JSX.Element => {
     return (
         <form>
             <div className={styles.loginIntro} key="login-intro">
-                Si tu es bénévole, connecte-toi pour accéder à ton espace.
+                Si tu es bénévole ou que tu l'as déjà été, connecte-toi pour accéder à ton espace.
             </div>
             <div className={styles.formLine} key="line-email">
                 <label htmlFor="email">Email</label>

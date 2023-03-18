@@ -16,6 +16,8 @@ export class SheetNames {
 
     Boxes = "Boîtes"
 
+    DiscordRoles = "Rôles Discord"
+
     Games = "Jeux"
 
     Miscs = "Divers"

@@ -108,7 +108,9 @@ async function notifyAboutAnnouncement(): Promise<void> {
     }
 
     const audience = volunteerList.filter(
-        (v) => v.acceptsNotifs === "oui" && (v.active === "oui" || v.active === "peut-etre")
+        (v) =>
+            v.acceptsNotifs === "oui" &&
+            (v.active === "oui" || v.active === "peut-etre" || v.active === "à distance")
     )
 
     console.error(

@@ -58,6 +58,7 @@ module.exports = {
         __SERVER__: true,
         __DEV__: true,
         __LOCAL__: false,
+        __REGISTER_DISCORD_COMMANDS__: false,
         __TEST__: false,
     },
 }

@@ -59,6 +59,10 @@ export const selectTeamList = createSelector(
     }
 )
 
+export const selectSortedTeams = createSelector(selectTeamList, (teams) =>
+    [...teams].sort((a, b) => get(a, "order", 0) - get(b, "order", 0))
+)
+
 export const selectSortedActiveTeams = createSelector(selectTeamList, (teams) =>
     [...teams.filter((team) => get(team, "status") === "active")].sort(
         (a, b) => get(a, "order", 0) - get(b, "order", 0)

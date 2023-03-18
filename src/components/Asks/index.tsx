@@ -10,7 +10,7 @@ import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
 // import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
 // import { AskMeals, fetchFor as fetchForMeals } from "./AskMeals"
 // import { AskPersonalInfo, fetchFor as fetchForPersonalInfo } from "./AskPersonalInfo"
-// import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
+import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
 // import {
 //     AskParticipationDetails,
 //     fetchFor as fetchForParticipationDetails,
@@ -27,7 +27,7 @@ const Asks = (): JSX.Element | null => {
     AskDiscord(asks, 5)
 
     AskDayWishes(asks, 10)
-    // AskTeamWishes(asks, 11)
+    AskTeamWishes(asks, 11)
     // AskParticipationDetails(asks, 12)
     // AskPersonalInfo(asks, 15)
     // AskHosting(asks, 20)
@@ -72,7 +72,7 @@ export const fetchFor = [
     ...fetchForDayWishes,
     // ...fetchForHosting,
     // ...fetchForMeals,
-    // ...fetchForTeamWishes,
+    ...fetchForTeamWishes,
     // ...fetchForParticipationDetails,
     // ...fetchForPersonalInfo,
 ]

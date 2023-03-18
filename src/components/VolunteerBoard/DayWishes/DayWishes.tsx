@@ -38,6 +38,12 @@ const DayWishes: FC = (): JSX.Element | null => {
                     Je <b>ne sais pas encore</b> si je participerai à PeL 2023
                 </div>
             )}
+            {participation === "à distance" && (
+                <div className={styles.participationLabel}>
+                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2023 ! Sans y
+                    être pendant le weekend.
+                </div>
+            )}
             {participation === "inconnu" && (
                 <div className={styles.lineEmpty}>
                     Participation à PeL 2023{" "}

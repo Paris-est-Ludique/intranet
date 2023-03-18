@@ -50,6 +50,7 @@ import {
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
 import { notificationsSubscribe, notificationMain } from "./notifications"
+import { /* discordRegisterCommands, */ discordBot, hasDiscordAccess } from "./discordBot"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
 import { addStatus, showStatusAt } from "./status"
@@ -63,6 +64,9 @@ import { retexSet } from "./gsheets/retex"
 checkAccess()
 
 notificationMain()
+
+// discordRegisterCommands()
+discordBot()
 
 const app = express()
 
@@ -242,6 +246,14 @@ if (hasPushNotifAccess) {
 } else {
     addStatus("Push notif:", chalk.blue(`🚧 offline, simulated`))
 }
+
+hasDiscordAccess().then((hasApiAccess: boolean) => {
+    if (hasApiAccess) {
+        addStatus("Discord bot:", chalk.green(`✅ online through discord.js`))
+    } else {
+        addStatus("Discord bot:", chalk.blue(`🚧 no creds, disabled`))
+    }
+})
 
 hasSecret().then((has: boolean) => {
     if (has) {

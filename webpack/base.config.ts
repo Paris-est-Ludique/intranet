@@ -9,6 +9,7 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 export const isDev = process.env.NODE_ENV === "development"
 const isLocal = process.env.LOCAL === "true"
+const isRegisterDiscordCommands = process.env.REGISTER_DISCORD_COMMANDS === "true"
 const getStyleLoaders = (isWeb: boolean, isSass?: boolean) => {
     let loaders: RuleSetUseItem[] = [
         {
@@ -49,6 +50,7 @@ const getPlugins = (isWeb: boolean) => {
             __SERVER__: !isWeb,
             __DEV__: isDev,
             __LOCAL__: isLocal,
+            __REGISTER_DISCORD_COMMANDS__: isRegisterDiscordCommands,
         }),
     ]
 

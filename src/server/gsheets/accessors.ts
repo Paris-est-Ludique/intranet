@@ -11,8 +11,8 @@ export { SheetNames } from "./localDb"
 
 const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
 
-const REMOTE_UPDATE_DELAY = 40000
-const DELAY_BETWEEN_ATTEMPTS = 10000
+const REMOTE_UPDATE_DELAY = 120000
+const DELAY_BETWEEN_ATTEMPTS = 30000
 const DELAY_BETWEEN_FIRST_LOAD = 1500
 
 let creds: string | undefined | null
@@ -59,7 +59,7 @@ export async function getSheet<
         sheet = new Sheet<ElementNoId, Element>(sheetName, specimen, translation)
         await sheet.waitForFirstLoad()
         sheetList[sheetName] = sheet
-        setInterval(() => sheet.dbUpdate(), REMOTE_UPDATE_DELAY)
+        setInterval(() => sheet.dbUpdate(), REMOTE_UPDATE_DELAY * (1 + Math.random() / 10))
     } else {
         sheet = sheetList[sheetName] as Sheet<ElementNoId, Element>
     }
@@ -265,6 +265,7 @@ export class Sheet<
         }
 
         await tryNTimesVoidReturn(async () => {
+            console.log(`dbSaveAsync on ${this.name} at ${new Date()}`)
             // Load sheet into an array of objects
             const rows = await sheet.getRows()
             if (!rows[0]) {
@@ -317,6 +318,7 @@ export class Sheet<
                     await rows[rowToDelete].delete()
                 }
             }
+            console.log(`dbSaveAsync successful on ${this.name} at ${new Date()}`)
         })
     }
 
@@ -330,6 +332,7 @@ export class Sheet<
 
         await tryNTimesVoidReturn(async () => {
             // Load sheet into an array of objects
+            console.log(`dbLoadAsync on ${this.name} at ${new Date()}`)
             const rows = (await sheet.getRows()) as StringifiedElement[]
             const elements: Element[] = []
             if (!rows[0]) {
@@ -357,6 +360,7 @@ export class Sheet<
             })
 
             this._state = elements
+            console.log(`dbLoadAsync successful on ${this.name} at ${new Date()}`)
         })
     }
 
