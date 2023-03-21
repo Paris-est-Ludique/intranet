@@ -265,16 +265,25 @@ async function setAllRoles(client: Client) {
             "0": "",
         }
 
+        const volunteerByDiscordIdNoOrga = _.pickBy(
+            volunteerByDiscordId,
+            (volunteer: Volunteer) => volunteer.team !== 13
+        )
+
         const teamRoleIds: { [key: string]: string } = _.mapValues(teamIds, (v) =>
             _.isEmpty(v)
                 ? ""
                 : guild.roles.cache.find((role) => role.name === `Team-${v}`)?.id || ""
         )
 
-        await setVolunteersRoles(guild, volunteerByDiscordId, teamRoleIds, (volunteer: Volunteer) =>
-            _.includes(["oui", "peut-etre", "à distance"], volunteer.active)
-                ? `${volunteer.team}`
-                : ""
+        await setVolunteersRoles(
+            guild,
+            volunteerByDiscordIdNoOrga,
+            teamRoleIds,
+            (volunteer: Volunteer) =>
+                _.includes(["oui", "peut-etre", "à distance"], volunteer.active)
+                    ? `${volunteer.team}`
+                    : ""
         )
 
         const referentRoleIds: { [key: string]: string } = _.mapValues(teamIds, (v) =>
@@ -285,7 +294,7 @@ async function setAllRoles(client: Client) {
 
         await setVolunteersRoles(
             guild,
-            volunteerByDiscordId,
+            volunteerByDiscordIdNoOrga,
             referentRoleIds,
             (volunteer: Volunteer) =>
                 _.includes(["oui", "peut-etre", "à distance"], volunteer.active) &&
