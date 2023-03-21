@@ -6,7 +6,7 @@ import { fetchVolunteerDayWishesSet } from "../../store/volunteerDayWishesSet"
 import useAction from "../../utils/useAction"
 import { VolunteerDayWishes } from "../../services/volunteers"
 
-const daysWishesUtils = ["Jeudi", "Vendredi", "Samedi", "Dimanche", "Lundi"]
+const daysWishesUtils = ["Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche", "Lundi"]
 
 export const daysChoice = daysWishesUtils.map((label) => ({
     id: label[0],
