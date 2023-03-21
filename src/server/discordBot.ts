@@ -286,7 +286,7 @@ async function setAllRoles(client: Client) {
                     : ""
         )
 
-        const referentRoleIds: { [key: string]: string } = _.mapValues(teamIds, (v) =>
+        const teamReferentRoleIds: { [key: string]: string } = _.mapValues(teamIds, (v) =>
             _.isEmpty(v)
                 ? ""
                 : guild.roles.cache.find((role) => role.name === `Référent-${v}`)?.id || ""
@@ -295,12 +295,25 @@ async function setAllRoles(client: Client) {
         await setVolunteersRoles(
             guild,
             volunteerByDiscordIdNoOrga,
-            referentRoleIds,
+            teamReferentRoleIds,
             (volunteer: Volunteer) =>
                 _.includes(["oui", "peut-etre", "à distance"], volunteer.active) &&
                 volunteer.roles.includes("référent")
                     ? `${volunteer.team}`
                     : "0"
+        )
+
+        const referentRoleId = guild.roles.cache.find((role) => role.name === `Référent`)?.id
+
+        await setVolunteersRoles(
+            guild,
+            volunteerByDiscordIdNoOrga,
+            referentRoleId ? { ref: referentRoleId } : {},
+            (volunteer: Volunteer) =>
+                _.includes(["oui", "peut-etre", "à distance"], volunteer.active) &&
+                volunteer.roles.includes("référent")
+                    ? "ref"
+                    : ""
         )
     } catch (error) {
         console.error("Error in setAllRoles", error)
