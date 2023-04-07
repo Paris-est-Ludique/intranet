@@ -14,6 +14,8 @@ interface ExtendedVolunteer extends Volunteer {
     teamObject: Team | undefined
 }
 
+const dayList = ["m", "j", "v", "S", "D", "l"] // Upper case for important days
+
 const selectVolunteersWithTeam = createSelector(
     selectVolunteerListAlphaSorted,
     selectTeamList,
@@ -36,22 +38,19 @@ const DaysAvailability: FC<DaysAvailabilityProps> = ({ volunteer }): JSX.Element
     const hasWishes = volunteer.dayWishes.length > 0
     return (
         <>
-            <td
-                className={classnames(
-                    styles.day,
-                    hasWishes ? hasDay("S")(volunteer) && styles.available : styles.unknown
-                )}
-            >
-                {hasWishes ? "" : "?"}
-            </td>
-            <td
-                className={classnames(
-                    styles.day,
-                    hasWishes ? hasDay("D")(volunteer) && styles.available : styles.unknown
-                )}
-            >
-                {hasWishes ? "" : "?"}
-            </td>
+            {dayList.map((dayId) => (
+                <td
+                    className={classnames(
+                        styles.day,
+                        hasWishes
+                            ? hasDay(dayId.toUpperCase())(volunteer) && styles.available
+                            : styles.unknown,
+                        dayId === dayId.toUpperCase() ? styles.weekend : styles.week
+                    )}
+                >
+                    {hasWishes ? "" : "?"}
+                </td>
+            ))}
         </>
     )
 }
@@ -73,8 +72,14 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
             <tbody>
                 <tr>
                     <th>Bénévoles</th>
-                    <th className={styles.dayTitle}>S ({volunteers.filter(hasDay("S")).length})</th>
-                    <th className={styles.dayTitle}>D ({volunteers.filter(hasDay("D")).length})</th>
+                    <>
+                        {dayList.map((dayId) => (
+                            <th className={styles.dayTitle}>
+                                {dayId.toUpperCase()} (
+                                {volunteers.filter(hasDay(dayId.toUpperCase())).length})
+                            </th>
+                        ))}
+                    </>
                 </tr>
                 {volunteers.map((volunteer) => (
                     <tr key={volunteer.id}>

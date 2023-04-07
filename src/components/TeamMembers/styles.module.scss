@@ -1,14 +1,26 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
 .day {
-    background-color: $color-red;
     text-align: center;
     min-width: 10%;
-    &.unknown {
+
+    &.weekend {
+        background-color: $color-red;
+    }
+    &.weekend.unknown {
         background-color: $color-grey-medium;
     }
-    &.available {
+    &.weekend.available {
         background-color: $color-green;
+    }
+    &.week {
+        background-color: $color-red-light;
+    }
+    &.week.unknown {
+        background-color: $color-grey-light;
+    }
+    &.week.available {
+        background-color: $color-green-light;
     }
 }
 
