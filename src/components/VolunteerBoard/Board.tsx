@@ -9,7 +9,7 @@ import DayWishesFormModal from "./DayWishesForm/DayWishesFormModal"
 // import ParticipationDetailsFormModal from "./ParticipationDetailsForm/ParticipationDetailsFormModal"
 import TeamWishes from "./TeamWishes/TeamWishes"
 import TeamWishesFormModal from "./TeamWishesForm/TeamWishesFormModal"
-// import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
+import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
 import withUserConnected from "../../utils/withUserConnected"
 import ContentTitle from "../ui/Content/ContentTitle"
 import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
@@ -46,8 +46,8 @@ const Board: FC = (): JSX.Element => (
         <ParticipationDetailsFormModal /> */}
         <TeamWishes />
         <TeamWishesFormModal />
-        {/* <VolunteerTeam />
-        <Hosting />
+        <VolunteerTeam />
+        {/* <Hosting />
         <HostingFormModal />
         <Meals />
         <MealsFormModal /> */}

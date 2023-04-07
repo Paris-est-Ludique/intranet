@@ -15,7 +15,7 @@ import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
 //     AskParticipationDetails,
 //     fetchFor as fetchForParticipationDetails,
 // } from "./AskParticipationDetails"
-import { AskPushNotif } from "./AskPushNotif"
+// import { AskPushNotif } from "./AskPushNotif"
 
 const Asks = (): JSX.Element | null => {
     const { volunteerAsks } = useAskTools()
@@ -33,7 +33,7 @@ const Asks = (): JSX.Element | null => {
     // AskHosting(asks, 20)
     // AskMeals(asks, 22)
 
-    AskPushNotif(asks, 99)
+    // AskPushNotif(asks, 99)
 
     if (_.isEmpty(asks)) {
         asks.push(
