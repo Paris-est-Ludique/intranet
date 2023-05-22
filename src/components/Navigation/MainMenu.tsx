@@ -1,9 +1,11 @@
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useState, useEffect, useMemo } from "react"
 import { useSelector } from "react-redux"
 import classnames from "classnames"
-import { isUserConnected, routerSelector, selectUserRoles } from "../../store/auth"
+import { isUserConnected, routerSelector, selectUserRoles, selectUserId } from "../../store/auth"
 import styles from "./styles.module.scss"
 import ROLES from "../../utils/roles.constants"
+import useAction from "../../utils/useAction"
+import { fetchVolunteerListIfNeed, selectVolunteerList } from "../../store/volunteerList"
 
 interface MenuItemProps {
     name: string
@@ -28,6 +30,27 @@ const RestrictMenuItem: FC<RestrictMenuItemProps> = ({ name, pathname, role }): 
     const roles = useSelector(selectUserRoles)
     return roles.includes(role) ? <MenuItem name={name} pathname={pathname} /> : <div />
 }
+
+interface TeamMenuItemProps extends MenuItemProps {
+    team: number
+}
+
+const TeamMenuItem: FC<TeamMenuItemProps> = ({ name, pathname, team }): JSX.Element => {
+    const fetch = useAction(fetchVolunteerListIfNeed)
+    const userId = useSelector(selectUserId)
+    useEffect(() => {
+        if (userId) fetch()
+    }, [userId, fetch])
+    const volunteers = useSelector(selectVolunteerList)
+    const user = useMemo(
+        () => volunteers.find((volunteer) => volunteer.id === userId),
+        [volunteers, userId]
+    )
+    return user?.team === team ? <MenuItem name={name} pathname={pathname} /> : <div />
+}
+
+// Hardcoded value of the "Jeux à volonté" team
+const TEAM_JAV = 2
 
 const MainMenu: FC = (): JSX.Element => {
     const connected = useSelector(isUserConnected)
@@ -54,7 +77,7 @@ const MainMenu: FC = (): JSX.Element => {
                 <MenuItem name="Mon profil" pathname="/profil" />
                 {/* <MenuItem name="Emprunter" pathname="/emprunter" />
                 <MenuItem name="Emprunts" pathname="/emprunts" /> */}
-                {/* <MenuItem name="Mes connaissances" pathname="/connaissances" /> */}
+                <TeamMenuItem team={TEAM_JAV} name="Mes connaissances" pathname="/connaissances" />
                 <RestrictMenuItem
                     role={ROLES.ASSIGNER}
                     name="Gestion équipes"
