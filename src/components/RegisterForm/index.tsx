@@ -25,6 +25,7 @@ import {
     fetchMiscMeetingDateListIfNeed,
     selectMiscMeetingDateList,
 } from "../../store/miscMeetingDateList"
+import LoginForm from "../LoginForm"
 
 interface Props {
     dispatch: AppDispatch
@@ -47,6 +48,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [mobile, setMobile] = useState("")
     const [comment, setComment] = useState("")
     const [alreadyCame, setAlreadyCame] = useState(true)
+    const [alreadySignup, setAlreadySignup] = useState(false)
     const [firstMeeting, setFirstMeeting] = useState("")
     const [commentFirstMeeting, setCommentFirstMeeting] = useState("")
     const [howToContact, setHowToContact] = useState("Email")
@@ -256,6 +258,47 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 
     const cameAsVisitor = (
         <>
+            <div className={styles.inputWrapper}>
+                <div className={styles.leftCol}>
+                    <div className={styles.multipleChoiceTitle}>
+                        As-tu déjà été bénévole à Paris est Ludique (PeL) ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <div className={styles.rightColContainer}>
+                        {["Oui", "Non"].map((option) => (
+                            <label className={styles.shortAnswerLabel} key={option}>
+                                <input
+                                    type="radio"
+                                    name="alreadySignup"
+                                    onChange={sendBooleanRadioboxDispatch(
+                                        setAlreadySignup,
+                                        option === "Oui"
+                                    )}
+                                    checked={alreadySignup === (option === "Oui")}
+                                />{" "}
+                                {option}
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            {alreadySignup && (
+                <dl className={styles.registerIntro}>
+                    <dt>
+                        Dans ce cas tu n'as pas besoin de t'inscrire ici, tu as déjà un compte sur
+                        Force Orange !
+                    </dt>
+                    <dd>
+                        <p>
+                            Viens simplement t'identifier sur <a href="/">fo.parisestludique.fr</a>{" "}
+                            ou en dessous ^^
+                        </p>
+                        <LoginForm />
+                    </dd>
+                </dl>
+            )}
+
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
                     <div className={styles.multipleChoiceTitle}>
