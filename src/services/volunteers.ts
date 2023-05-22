@@ -68,13 +68,35 @@ export class Volunteer implements VolunteerPartial {
 
     noOpinion: number[] = []
 
-    needsHosting = false
+    hostingType = ""
 
     canHostCount = 0
 
-    distanceToFestival = 0
+    cohostVolunteer = ""
 
-    hostingComment = ""
+    backProblems = false
+
+    hostingNights = ""
+
+    bedType: string[] = []
+
+    isolatedBed = false
+
+    bedConfiguration = ""
+
+    hostAddress = ""
+
+    petAllergies = ""
+
+    transportType = ""
+
+    festivalProximity = ""
+
+    distanceToFestival = ""
+
+    hostingNeedReason = ""
+
+    hostingAbsoluteNeed = true
 
     meals: string[] = []
 
@@ -116,10 +138,21 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     playable: "jouable",
     giftable: "offrable",
     noOpinion: "sansAvis",
-    needsHosting: "besoinHébergement",
+    hostingType: "typeHébergement",
     canHostCount: "nombreHébergés",
+    cohostVolunteer: "colocBénévole",
+    backProblems: "malDeDos",
+    hostingNights: "nuitsHébergé",
+    bedType: "typeDeLit",
+    isolatedBed: "litIsolé",
+    bedConfiguration: "configurationLits",
+    hostAddress: "adresseHebergement",
+    petAllergies: "allergiesAnimaux",
+    transportType: "typeTransport",
+    festivalProximity: "proximitéAuFestival",
     distanceToFestival: "distanceAuFestival",
-    hostingComment: "commentaireHébergement",
+    hostingNeedReason: "reasonDêtreHebergé",
+    hostingAbsoluteNeed: "besoinDhébergement",
     meals: "repas",
     charter: "charte",
 }
@@ -171,10 +204,21 @@ export const volunteerExample: Volunteer = {
     playable: [34, 35, 36],
     giftable: [13, 67],
     noOpinion: [3, 4],
-    needsHosting: false,
+    hostingType: "neither",
     canHostCount: 0,
-    distanceToFestival: 0,
-    hostingComment: "",
+    cohostVolunteer: "",
+    backProblems: false,
+    hostingNights: "",
+    bedType: [],
+    isolatedBed: false,
+    bedConfiguration: "",
+    hostAddress: "",
+    petAllergies: "",
+    transportType: "",
+    festivalProximity: "",
+    distanceToFestival: "",
+    hostingNeedReason: "",
+    hostingAbsoluteNeed: true,
     meals: [],
     charter: false,
 }
@@ -224,23 +268,33 @@ export interface VolunteerDayWishes {
 
 export interface VolunteerHosting {
     id: Volunteer["id"]
-    needsHosting: Volunteer["needsHosting"]
+    hostingType: Volunteer["hostingType"]
     canHostCount: Volunteer["canHostCount"]
+    cohostVolunteer: Volunteer["cohostVolunteer"]
+    backProblems: Volunteer["backProblems"]
+    hostingNights: Volunteer["hostingNights"]
+    bedType: Volunteer["bedType"]
+    isolatedBed: Volunteer["isolatedBed"]
+    bedConfiguration: Volunteer["bedConfiguration"]
+    hostAddress: Volunteer["hostAddress"]
+    petAllergies: Volunteer["petAllergies"]
+    transportType: Volunteer["transportType"]
+    festivalProximity: Volunteer["festivalProximity"]
     distanceToFestival: Volunteer["distanceToFestival"]
-    hostingComment: Volunteer["hostingComment"]
+    hostingNeedReason: Volunteer["hostingNeedReason"]
+    hostingAbsoluteNeed: Volunteer["hostingAbsoluteNeed"]
 }
 
 export interface VolunteerMeals {
     id: Volunteer["id"]
     meals: Volunteer["meals"]
+    food: Volunteer["food"]
 }
 
 export interface VolunteerParticipationDetails {
     id: Volunteer["id"]
     tshirtSize: Volunteer["tshirtSize"]
-    tshirtCount: Volunteer["tshirtCount"]
     adult: Volunteer["adult"]
-    food: Volunteer["food"]
 }
 
 export interface VolunteerPersonalInfo {

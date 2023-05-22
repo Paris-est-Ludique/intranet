@@ -32,7 +32,7 @@
 
 .mealsLabel {
     text-align: left;
-    display: inline-block;
+    display: block;
     margin-bottom: 10px;
     width: 220px;
 }
@@ -73,7 +73,7 @@
     }
 }
 
-.mealsCommentWrapper {
+.foodWrapper {
     margin: 6px 0 14px;
 
     label {

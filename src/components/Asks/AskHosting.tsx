@@ -19,12 +19,8 @@ export function AskHosting(asks: JSX.Element[], id: number): void {
     }, [dispatch, id, jwtToken, volunteerAsks?.hiddenAsks])
 
     const [hosting] = useUserHosting()
-    const needsHosting = get(hosting, "needsHosting", false)
-    const canHostCount = get(hosting, "canHostCount", 0)
-    const distanceToFestival = get(hosting, "distanceToFestival", 0)
-    const hostingComment = get(hosting, "hostingComment", "")
-    const needToShow =
-        !needsHosting && canHostCount === 0 && distanceToFestival === 0 && hostingComment === ""
+    const hostingType = get(hosting, "hostingType", false)
+    const needToShow = hostingType === ""
 
     addAsk(
         asks,

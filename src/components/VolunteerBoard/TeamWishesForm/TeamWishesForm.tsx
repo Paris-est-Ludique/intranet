@@ -71,8 +71,8 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
                         })}
                     </ol>
                     <div className={styles.commentWrapper}>
-                        <label htmlFor="day-choice-comment">Un commentaire, une précision ?</label>
-                        <textarea id="day-choice-comment" ref={commentRef} />
+                        <label htmlFor="team-choice-comment">Un commentaire, une précision ?</label>
+                        <textarea id="team-choice-comment" ref={commentRef} />
                     </div>
                 </div>
                 <div className={styles.rightCol}>

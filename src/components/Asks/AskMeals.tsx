@@ -1,7 +1,7 @@
 import { get } from "lodash"
 import { useCallback } from "react"
 import { fetchVolunteerAsksSet } from "../../store/volunteerAsksSet"
-import { useAskTools, addAsk, answerLaterOnProfile } from "./utils"
+import { useAskTools, addAsk, answerLaterOnProfileBefore } from "./utils"
 import MealsForm, { fetchFor as fetchForMealsForm } from "../VolunteerBoard/MealsForm/MealsForm"
 import { useUserMeals } from "../VolunteerBoard/meals.utils"
 
@@ -16,13 +16,9 @@ export function AskMeals(asks: JSX.Element[], id: number): void {
         )
     }, [dispatch, id, jwtToken, volunteerAsks?.hiddenAsks])
 
-    const [meals] = useUserMeals()
-    const needsMeals = get(meals, "needsMeals", false)
-    const canHostCount = get(meals, "canHostCount", 0)
-    const distanceToFestival = get(meals, "distanceToFestival", 0)
-    const mealsComment = get(meals, "mealsComment", "")
-    const needToShow =
-        !needsMeals && canHostCount === 0 && distanceToFestival === 0 && mealsComment === ""
+    const [userMeals] = useUserMeals()
+    const meals = get(userMeals, "meals", [])
+    const needToShow = meals.length === 0
 
     addAsk(
         asks,
@@ -30,7 +26,9 @@ export function AskMeals(asks: JSX.Element[], id: number): void {
         volunteerAsks,
         false,
         needToShow,
-        <MealsForm afterSubmit={onSubmit}>{answerLaterOnProfile}</MealsForm>
+        <MealsForm afterSubmit={onSubmit}>
+            {answerLaterOnProfileBefore("31 mai à minuit pour commander les repas !")}
+        </MealsForm>
     )
 }
 

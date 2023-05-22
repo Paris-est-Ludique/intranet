@@ -361,27 +361,71 @@ export const volunteerHostingSet = expressAccessor.set(async (list, body, id) =>
     }
     const newVolunteer: Volunteer = cloneDeep(volunteer)
 
-    if (wishes.needsHosting !== undefined) {
-        newVolunteer.needsHosting = wishes.needsHosting
+    if (wishes.hostingType !== undefined) {
+        newVolunteer.hostingType = wishes.hostingType
     }
     if (wishes.canHostCount !== undefined) {
         newVolunteer.canHostCount = wishes.canHostCount
     }
+    if (wishes.cohostVolunteer !== undefined) {
+        newVolunteer.cohostVolunteer = wishes.cohostVolunteer
+    }
+    if (wishes.backProblems !== undefined) {
+        newVolunteer.backProblems = wishes.backProblems
+    }
+    if (wishes.hostingNights !== undefined) {
+        newVolunteer.hostingNights = wishes.hostingNights
+    }
+    if (wishes.bedType !== undefined) {
+        newVolunteer.bedType = wishes.bedType
+    }
+    if (wishes.isolatedBed !== undefined) {
+        newVolunteer.isolatedBed = wishes.isolatedBed
+    }
+    if (wishes.bedConfiguration !== undefined) {
+        newVolunteer.bedConfiguration = wishes.bedConfiguration
+    }
+    if (wishes.hostAddress !== undefined) {
+        newVolunteer.hostAddress = wishes.hostAddress
+    }
+    if (wishes.petAllergies !== undefined) {
+        newVolunteer.petAllergies = wishes.petAllergies
+    }
+    if (wishes.transportType !== undefined) {
+        newVolunteer.transportType = wishes.transportType
+    }
+    if (wishes.festivalProximity !== undefined) {
+        newVolunteer.festivalProximity = wishes.festivalProximity
+    }
     if (wishes.distanceToFestival !== undefined) {
         newVolunteer.distanceToFestival = wishes.distanceToFestival
     }
-    if (wishes.hostingComment !== undefined) {
-        newVolunteer.hostingComment = wishes.hostingComment
+    if (wishes.hostingNeedReason !== undefined) {
+        newVolunteer.hostingNeedReason = wishes.hostingNeedReason
+    }
+    if (wishes.hostingAbsoluteNeed !== undefined) {
+        newVolunteer.hostingAbsoluteNeed = wishes.hostingAbsoluteNeed
     }
 
     return {
         toDatabase: newVolunteer,
         toCaller: {
             id: newVolunteer.id,
-            needsHosting: newVolunteer.needsHosting,
+            hostingType: newVolunteer.hostingType,
             canHostCount: newVolunteer.canHostCount,
+            cohostVolunteer: newVolunteer.cohostVolunteer,
+            backProblems: newVolunteer.backProblems,
+            hostingNights: newVolunteer.hostingNights,
+            bedType: newVolunteer.bedType,
+            isolatedBed: newVolunteer.isolatedBed,
+            bedConfiguration: newVolunteer.bedConfiguration,
+            hostAddress: newVolunteer.hostAddress,
+            petAllergies: newVolunteer.petAllergies,
+            transportType: newVolunteer.transportType,
+            festivalProximity: newVolunteer.festivalProximity,
             distanceToFestival: newVolunteer.distanceToFestival,
-            hostingComment: newVolunteer.hostingComment,
+            hostingNeedReason: newVolunteer.hostingNeedReason,
+            hostingAbsoluteNeed: newVolunteer.hostingAbsoluteNeed,
         } as VolunteerHosting,
     }
 })
@@ -458,20 +502,23 @@ export const volunteerMealsSet = expressAccessor.set(async (list, body, id) => {
         newVolunteer.meals = wishes.meals
     }
 
+    if (wishes.food !== undefined) {
+        newVolunteer.food = wishes.food
+    }
+
     return {
         toDatabase: newVolunteer,
         toCaller: {
             id: newVolunteer.id,
             meals: newVolunteer.meals,
+            food: newVolunteer.food,
         } as VolunteerMeals,
     }
 })
 export const volunteerParticipationDetailsSet = expressAccessor.set(async (list, body, id) => {
     const requestedId = +body[0] || id
     if (requestedId !== id && requestedId !== 0) {
-        throw Error(
-            `On ne peut acceder qu'à ses propres infos de t-shirt, de majorité et d'alimentation`
-        )
+        throw Error(`On ne peut acceder qu'à ses propres infos de t-shirt et de majorité`)
     }
     const wishes = body[1] as VolunteerParticipationDetails
     const volunteer: Volunteer | undefined = list.find((v) => v.id === requestedId)
@@ -483,14 +530,8 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
     if (wishes.tshirtSize !== undefined) {
         newVolunteer.tshirtSize = wishes.tshirtSize
     }
-    if (wishes.tshirtCount !== undefined) {
-        newVolunteer.tshirtCount = wishes.tshirtCount
-    }
     if (wishes.adult !== undefined) {
         newVolunteer.adult = wishes.adult
-    }
-    if (wishes.food !== undefined) {
-        newVolunteer.food = wishes.food
     }
 
     return {
@@ -498,9 +539,7 @@ export const volunteerParticipationDetailsSet = expressAccessor.set(async (list,
         toCaller: {
             id: newVolunteer.id,
             tshirtSize: newVolunteer.tshirtSize,
-            tshirtCount: newVolunteer.tshirtCount,
             adult: newVolunteer.adult,
-            food: newVolunteer.food,
         } as VolunteerParticipationDetails,
     }
 })

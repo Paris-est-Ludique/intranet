@@ -7,48 +7,31 @@ import { displayModal, MODAL_IDS } from "../../../store/ui"
 
 const Hosting: FC = (): JSX.Element | null => {
     const [userWishes] = useUserHosting()
-    const needsHosting = get(userWishes, "needsHosting", false)
+    const hostingType = get(userWishes, "hostingType", "")
     const canHostCount = get(userWishes, "canHostCount", 0)
-    const distanceToFestival = get(userWishes, "distanceToFestival", 0)
-    const comment = get(userWishes, "hostingComment", "")
     const execDisplayModal = useAction(displayModal)
     const onEdit = useCallback(() => execDisplayModal(MODAL_IDS.HOSTING), [execDisplayModal])
 
     return (
         <div className={styles.hosting}>
             <div className={styles.title}>Mon hébergement</div>
-            {!needsHosting && (
+            {(hostingType === "" || hostingType === "neither") && (
                 <div className={styles.hostingLabel}>
-                    Je n'ai pas besoin d'un hébergement proche du festival
+                    Je ne peux héberger personnes que ça arrangerait.
                 </div>
             )}
-            {needsHosting && (
+            {hostingType === "need" && (
                 <div className={styles.hostingLabel}>
-                    J'ai <b>besoin</b> d'un hébergement proche du festival
+                    J'ai précisé mon <b>besoin</b> d'un hébergement par un bénévole proche du
+                    festival
                 </div>
             )}
-            {canHostCount === 0 && distanceToFestival === 0 && (
+            {hostingType === "can" && (
                 <div className={styles.hostingLabel}>
-                    Je ne peux héberger personnes de manière utile.
-                </div>
-            )}
-            {canHostCount > 0 && (
-                <div className={styles.hostingLabel}>
-                    Je peux héberger <b>{canHostCount} personnes</b> !
-                </div>
-            )}
-            {distanceToFestival > 0 && (
-                <div className={styles.hostingLabel}>
-                    Je suis à <b>{distanceToFestival} minutes</b> du festival
+                    Je peux héberger <b>{canHostCount} bénévole(s)</b> !
                 </div>
             )}
 
-            {comment && (
-                <div className={styles.commentLine}>
-                    <span className={styles.commentLineTitle}>Mon commentaire :</span>
-                    <span className={styles.commentLineText}>{comment}</span>
-                </div>
-            )}
             <div className={styles.editButton}>
                 <button type="button" onClick={onEdit}>
                     Modifier

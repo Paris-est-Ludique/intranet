@@ -1,5 +1,6 @@
 import { get } from "lodash"
-import { FC, memo, ReactNode, useCallback, useEffect, useState } from "react"
+import set from "lodash/set"
+import { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import classnames from "classnames"
 import styles from "./styles.module.scss"
 import { mealDays, MealOption, useUserMeals } from "../meals.utils"
@@ -16,28 +17,39 @@ type Props = {
 
 const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     const [saturdayLunchMeal, setSaturdayLunchMeal] = useState("")
+    const [saturdayDinnerMeal, setSaturdayDinnerMeal] = useState("")
     const [sundayLunchMeal, setSundayLunchMeal] = useState("")
     const [sundayDinnerMeal, setSundayDinnerMeal] = useState("")
     const [userMeals, saveMeals] = useUserMeals()
     const [userWishes] = useUserDayWishes()
     const meals = get(userMeals, "meals", [])
     const dayWishesString = get(userWishes, "dayWishes", []) as string[]
+    const foodRef = useRef<HTMLTextAreaElement | null>(null)
 
     useEffect(() => {
         setSaturdayLunchMeal(meals[0] || "")
-        setSundayLunchMeal(meals[1] || "")
-        setSundayDinnerMeal(meals[2] || "")
-    }, [meals])
+        setSaturdayDinnerMeal(meals[1] || "")
+        setSundayLunchMeal(meals[2] || "")
+        setSundayDinnerMeal(meals[3] || "")
+        set(foodRef, "current.value", get(userMeals, "food", ""))
+    }, [meals, userMeals])
 
     const onChoiceSubmit = useCallback(() => {
-        saveMeals([saturdayLunchMeal, sundayLunchMeal, sundayDinnerMeal])
+        const food = get(foodRef, "current.value", "")
+        saveMeals([saturdayLunchMeal, saturdayDinnerMeal, sundayLunchMeal, sundayDinnerMeal], food)
         if (afterSubmit) afterSubmit()
-    }, [saveMeals, saturdayLunchMeal, sundayLunchMeal, sundayDinnerMeal, afterSubmit])
+    }, [
+        saveMeals,
+        saturdayLunchMeal,
+        saturdayDinnerMeal,
+        sundayLunchMeal,
+        sundayDinnerMeal,
+        afterSubmit,
+    ])
 
     const getBreakfeastElement = (dayName: string): JSX.Element => (
         <div key={`${dayName}Matin`}>
-            <b>{dayName} matin</b>, petit dej à 8h avec jus de pomme, multifruit, café, brioches et
-            quatre-quarts, crêpes si bénévoles motivés.
+            <b>{dayName} matin</b>, petit dej avec jus, café, thé, brioche, quatre-quart.
         </div>
     )
 
@@ -45,9 +57,7 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         <div className={classnames(styles.inputWrapper, styles.noBottomMargin)}>
             <div className={styles.leftCol}>
                 <div className={styles.needsMealsTitle}>
-                    <b>{mealDays[i].name}</b>
-                    {(i === 0 || i === 1) && <>, accompagné d'un délicieux brownie tout chocolat</>}
-                    {i === 2 && <>, accompagné d'une part de tarte indéterminée</>} :
+                    <b>{mealDays[i].name}</b> :
                 </div>
             </div>
             <div className={styles.rightCol}>
@@ -97,9 +107,7 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 <>
                     {getBreakfeastElement("Samedi")}
                     {getMealElement(0, saturdayLunchMeal, setSaturdayLunchMeal)}
-                    <div className={styles.mealsLabel} key="SamediSoir">
-                        <b>Samedi soir</b>, apéro dînatoire
-                    </div>
+                    {getMealElement(1, saturdayDinnerMeal, setSaturdayDinnerMeal)}
                 </>
             ) : (
                 getNotVolunteerElement("Samedi")
@@ -110,8 +118,8 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
             {dayWishesString.includes("D") ? (
                 <>
                     {getBreakfeastElement("Dimanche")}
-                    {getMealElement(1, sundayLunchMeal, setSundayLunchMeal)}
-                    {getMealElement(2, sundayDinnerMeal, setSundayDinnerMeal)}
+                    {getMealElement(2, sundayLunchMeal, setSundayLunchMeal)}
+                    {getMealElement(3, sundayDinnerMeal, setSundayDinnerMeal)}
                 </>
             ) : (
                 getNotVolunteerElement("Dimanche")
@@ -119,9 +127,16 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
 
             <div className={classnames(styles.inputWrapper)}>
                 <div>
-                    <b>Jeudi, vendredi et lundi</b>, chacun improvise. Peut-être resto à proximité.
+                    <b>Jeudi, vendredi et lundi</b>, cocktail dejeunatoire avec salades composées,
+                    charcuterie, fromage...
                 </div>
             </div>
+
+            <div className={styles.foodWrapper}>
+                <label htmlFor="food">As-tu des restrictions alimentaires ?</label>
+                <textarea id="food" ref={foodRef} />
+            </div>
+
             <div className={styles.buttonWrapper}>
                 <FormButton onClick={onChoiceSubmit}>Enregistrer</FormButton>
                 {children === undefined && (

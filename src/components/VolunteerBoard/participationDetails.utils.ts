@@ -7,30 +7,57 @@ import { fetchVolunteerParticipationDetailsSet } from "../../store/volunteerPart
 import { VolunteerParticipationDetails } from "../../services/volunteers"
 
 export const tshirtSizes = [
-    "XXS",
-    "XS",
-    "S",
-    "M",
-    "L",
-    "XL",
-    "XXL",
-    "3XL",
-    "4XL",
-    "Femme S",
-    "Femme M",
-    "Femme L",
-    "Femme XL",
-    "Femme XXL",
-    "Femme 3XL",
+    "Aucun",
+    "Enfant col rond 2 ans",
+    "Enfant col rond 3 ans",
+    "Enfant col rond 4 ans",
+    "Enfant col rond 5 ans",
+    "Enfant col rond 6 ans",
+    "Enfant col rond 7 ans",
+    "Enfant col rond 8 ans",
+    "Enfant col rond 9 ans",
+    "Enfant col rond 10 ans",
+    "Enfant col rond 11 ans",
+    "Enfant col rond 12 ans",
+    "Femme col V S",
+    "Femme col V M",
+    "Femme col V L",
+    "Femme col V XL",
+    "Femme col V XXL",
+    "Femme col V 3XL",
+    "Femme col rond XXS",
+    "Femme col rond XS",
+    "Femme col rond S",
+    "Femme col rond M",
+    "Femme col rond L",
+    "Femme col rond XL",
+    "Femme col rond XXL",
+    "Femme col rond 3XL",
+    "Femme col rond 4XL",
+    "Femme col rond 5XL",
+    "Homme col V S",
+    "Homme col V M",
+    "Homme col V L",
+    "Homme col V XL",
+    "Homme col V XXL",
+    "Homme col V 3XL",
+    "Homme col rond XXS",
+    "Homme col rond XS",
+    "Homme col rond S",
+    "Homme col rond M",
+    "Homme col rond L",
+    "Homme col rond XL",
+    "Homme col rond XXL",
+    "Homme col rond 3XL",
+    "Homme col rond 4XL",
+    "Homme col rond 5XL",
 ]
 
 export const foodDefaultValue = "Aucune"
 
 type SetFunction = (
     tshirtSize: VolunteerParticipationDetails["tshirtSize"],
-    tshirtCount: VolunteerParticipationDetails["tshirtCount"],
-    adult: VolunteerParticipationDetails["adult"],
-    food: VolunteerParticipationDetails["food"]
+    adult: VolunteerParticipationDetails["adult"]
 ) => void
 
 export const useUserParticipationDetails = (): [
@@ -45,14 +72,12 @@ export const useUserParticipationDetails = (): [
     )
 
     const saveParticipationDetails: SetFunction = useCallback(
-        (tshirtSize, tshirtCount, adult, food) => {
+        (tshirtSize, adult) => {
             if (!userParticipationDetails) return
             save(jwtToken, 0, {
                 id: userParticipationDetails.id,
                 tshirtSize,
-                tshirtCount,
                 adult,
-                food,
             })
         },
         [userParticipationDetails, save, jwtToken]

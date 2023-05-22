@@ -1,7 +1,7 @@
 import { FC, memo, useCallback } from "react"
 import get from "lodash/get"
 import styles from "./styles.module.scss"
-import { foodDefaultValue, useUserParticipationDetails } from "../participationDetails.utils"
+import { useUserParticipationDetails } from "../participationDetails.utils"
 import { displayModal, MODAL_IDS } from "../../../store/ui"
 import useAction from "../../../utils/useAction"
 
@@ -13,8 +13,6 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     const [participationDetails] = useUserParticipationDetails()
     const adult = get(participationDetails, "adult", "")
     const tshirtSize = get(participationDetails, "tshirtSize", "")
-    const tshirtCount = get(participationDetails, "tshirtCount", "")
-    const food = get(participationDetails, "food", "")
     const execDisplayModal = useAction(displayModal)
     const onEdit = useCallback(
         () => execDisplayModal(MODAL_IDS.PARTICIPATIONDETAILS),
@@ -24,51 +22,28 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     return (
         <div className={styles.root}>
             <div className={styles.title}>Mes infos logistiques</div>
-            {tshirtCount === 0 && (
-                <div className={styles.line}>
-                    Je n'ai <b>aucun t-shirt</b> et{" "}
-                    {tshirtSize ? (
-                        <>
-                            je suis taillé·e <b>{tshirtSize}</b>
-                        </>
-                    ) : (
-                        <>
-                            ma taille est <span className={styles.lineEmpty}>non renseignées</span>
-                        </>
-                    )}
-                </div>
-            )}
-            {tshirtCount === 1 && (
-                <div className={styles.line}>
-                    J'ai <b>un seul t-shirt</b> et{" "}
-                    {tshirtSize ? (
-                        <>
-                            je suis taillé·e <b>{tshirtSize}</b>
-                        </>
-                    ) : (
-                        <>
-                            ma taille est <span className={styles.lineEmpty}>non renseignées</span>
-                        </>
-                    )}
-                </div>
-            )}
-            {tshirtCount === 2 && (
-                <div className={styles.line}>
-                    J'ai au moins <b>deux t-shirts</b>
-                </div>
-            )}
             {adult === 0 && (
                 <div className={styles.line}>
-                    Le 2 juillet 2022, je serai <b>mineur·e</b>
+                    Le 1er juillet 2023, je serai <b>mineur·e</b>
+                    <br />
+                    Attention les bénévoles mineurs doivent être dans la même équipe que leur
+                    responsable légal !
                 </div>
             )}
             {adult === 1 && (
                 <div className={styles.line}>
-                    Le 2 juillet 2022, je serai <b>majeur·e</b>
+                    Le 1er juillet 2023, je serai <b>majeur·e</b>
                 </div>
             )}
+
             <div className={styles.line}>
-                Préférence alimentaire : <b>{food || foodDefaultValue}</b>
+                {tshirtSize === "" && <>Je n'ai pas encore choisi de tee-shirt.</>}
+                {tshirtSize === "Aucun" && <>Je n'ai pas besoin de tee-shirt cette année.</>}
+                {tshirtSize !== "" && tshirtSize !== "Aucun" && (
+                    <>
+                        J'aimerai un teeshirt <b>{tshirtSize}</b>.
+                    </>
+                )}
             </div>
             <div className={styles.editButton}>
                 <button type="button" onClick={onEdit}>

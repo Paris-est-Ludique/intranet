@@ -7,14 +7,14 @@ import { AskWelcome } from "./AskWelcome"
 // import { AskRetex, fetchFor as fetchForRetex } from "./AskRetex"
 import { AskDiscord, fetchFor as fetchForDiscord } from "./AskDiscord"
 import { AskDayWishes, fetchFor as fetchForDayWishes } from "./AskDayWishes"
-// import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
-// import { AskMeals, fetchFor as fetchForMeals } from "./AskMeals"
+import { AskHosting, fetchFor as fetchForHosting } from "./AskHosting"
+import { AskMeals, fetchFor as fetchForMeals } from "./AskMeals"
 // import { AskPersonalInfo, fetchFor as fetchForPersonalInfo } from "./AskPersonalInfo"
 import { AskTeamWishes, fetchFor as fetchForTeamWishes } from "./AskTeamWishes"
-// import {
-//     AskParticipationDetails,
-//     fetchFor as fetchForParticipationDetails,
-// } from "./AskParticipationDetails"
+import {
+    AskParticipationDetails,
+    fetchFor as fetchForParticipationDetails,
+} from "./AskParticipationDetails"
 // import { AskPushNotif } from "./AskPushNotif"
 
 const Asks = (): JSX.Element | null => {
@@ -28,10 +28,10 @@ const Asks = (): JSX.Element | null => {
 
     AskDayWishes(asks, 10)
     AskTeamWishes(asks, 11)
-    // AskParticipationDetails(asks, 12)
-    // AskPersonalInfo(asks, 15)
-    // AskHosting(asks, 20)
-    // AskMeals(asks, 22)
+    AskMeals(asks, 15)
+    // AskPersonalInfo(asks, 16)
+    AskHosting(asks, 20)
+    AskParticipationDetails(asks, 22)
 
     // AskPushNotif(asks, 99)
 
@@ -42,6 +42,9 @@ const Asks = (): JSX.Element | null => {
                     <div className={styles.notificationsContent}>
                         <div className={styles.formLine}>
                             <label>
+                                Si tu veux changer la réponse à l'une des questions posées ici, va
+                                dans <a href="/profil">Mon profil</a> :)
+                                <br />
                                 Tu as fait le tour des dernières infos ou questions importantes,
                                 merci ! :)
                                 <br />
@@ -70,9 +73,9 @@ export const fetchFor = [
     // ...fetchForRetex,
     ...fetchForDiscord,
     ...fetchForDayWishes,
-    // ...fetchForHosting,
-    // ...fetchForMeals,
+    ...fetchForHosting,
+    ...fetchForMeals,
     ...fetchForTeamWishes,
-    // ...fetchForParticipationDetails,
+    ...fetchForParticipationDetails,
     // ...fetchForPersonalInfo,
 ]

@@ -61,3 +61,12 @@ export const answerLaterOnProfile = (
         Tu pourras y répondre plus tard sur la page <a href="/profil">Mon profil</a>.
     </>
 )
+
+export function answerLaterOnProfileBefore(textDate: string): JSX.Element {
+    return (
+        <>
+            Tu pourras y répondre plus tard sur la page <a href="/profil">Mon profil</a>.<br />
+            Il nous fait une réponse avant le {textDate}
+        </>
+    )
+}

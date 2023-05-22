@@ -16,18 +16,29 @@ export const mealDays: MealDay[] = [
     {
         name: "Samedi midi",
         options: [
-            { abbr: "V", title: "Sandwich végétarien" },
-            { abbr: "F", title: "Sandwich fromage" },
-            { abbr: "P", title: "Sandwich poulet" },
+            { abbr: "V", title: "Taboulé" },
+            { abbr: "F", title: "Quinoa, courgettes, fromage" },
+            { abbr: "P", title: "Riz à la Niçoise (thon)" },
+            { abbr: "", title: "Pas de repas" },
+        ],
+    },
+    {
+        name: "Samedi soir",
+        options: [
+            {
+                abbr: "V",
+                title: "Aubergines fondantes avec égrené végétal",
+            },
+            { abbr: "P", title: "Risotto poulet" },
             { abbr: "", title: "Pas de repas" },
         ],
     },
     {
         name: "Dimanche midi",
         options: [
-            { abbr: "V", title: "Sandwich végétarien" },
-            { abbr: "F", title: "Sandwich fromage" },
-            { abbr: "P", title: "Sandwich poulet" },
+            { abbr: "V", title: "Sandwich aux légumes" },
+            { abbr: "F", title: "Sandwich au fromage" },
+            { abbr: "P", title: "Sandwich au poulet" },
             { abbr: "", title: "Pas de repas" },
         ],
     },
@@ -36,15 +47,15 @@ export const mealDays: MealDay[] = [
         options: [
             {
                 abbr: "V",
-                title: "Lasagnes végétariennes accompagnées de ratatouille et haricots verts",
+                title: "Risotto végétarien",
             },
-            { abbr: "P", title: "Aiguillettes de poulet accompagnées de riz thaï" },
+            { abbr: "P", title: "Parmentier de canard" },
             { abbr: "", title: "Pas de repas" },
         ],
     },
 ]
 
-type SetFunction = (meals: VolunteerMeals["meals"]) => void
+type SetFunction = (meals: VolunteerMeals["meals"], food: VolunteerMeals["food"]) => void
 
 export const useUserMeals = (): [VolunteerMeals | undefined, SetFunction] => {
     const save = useAction(fetchVolunteerMealsSet)
@@ -55,11 +66,12 @@ export const useUserMeals = (): [VolunteerMeals | undefined, SetFunction] => {
     )
 
     const saveWishes: SetFunction = useCallback(
-        (meals) => {
+        (meals, food) => {
             if (!userWishes) return
             save(jwtToken, 0, {
                 id: userWishes.id,
                 meals,
+                food,
             })
         },
         [userWishes, save, jwtToken]

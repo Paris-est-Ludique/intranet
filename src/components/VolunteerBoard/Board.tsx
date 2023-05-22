@@ -1,21 +1,21 @@
 import { FC, memo } from "react"
 import DayWishes from "./DayWishes/DayWishes"
 import DayWishesFormModal from "./DayWishesForm/DayWishesFormModal"
-// import Hosting from "./Hosting/Hosting"
-// import HostingFormModal from "./HostingForm/HostingFormModal"
-// import Meals from "./Meals/Meals"
-// import MealsFormModal from "./MealsForm/MealsFormModal"
-// import ParticipationDetails from "./ParticipationDetails/ParticipationDetails"
-// import ParticipationDetailsFormModal from "./ParticipationDetailsForm/ParticipationDetailsFormModal"
+import Hosting from "./Hosting/Hosting"
+import HostingFormModal from "./HostingForm/HostingFormModal"
+import Meals from "./Meals/Meals"
+import MealsFormModal from "./MealsForm/MealsFormModal"
+import ParticipationDetails from "./ParticipationDetails/ParticipationDetails"
+import ParticipationDetailsFormModal from "./ParticipationDetailsForm/ParticipationDetailsFormModal"
 import TeamWishes from "./TeamWishes/TeamWishes"
 import TeamWishesFormModal from "./TeamWishesForm/TeamWishesFormModal"
 import VolunteerTeam from "./VolunteerTeam/VolunteerTeam"
 import withUserConnected from "../../utils/withUserConnected"
 import ContentTitle from "../ui/Content/ContentTitle"
 import { fetchFor as fetchForDayWishesForm } from "./DayWishesForm/DayWishesForm"
-// import { fetchFor as fetchForHostingForm } from "./HostingForm/HostingForm"
-// import { fetchFor as fetchForMealsForm } from "./MealsForm/MealsForm"
-// import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
+import { fetchFor as fetchForHostingForm } from "./HostingForm/HostingForm"
+import { fetchFor as fetchForMealsForm } from "./MealsForm/MealsForm"
+import { fetchFor as fetchForParticipationDetailsForm } from "./ParticipationDetailsForm/ParticipationDetailsForm"
 import { fetchFor as fetchForTeamWishesForm } from "./TeamWishesForm/TeamWishesForm"
 import { fetchFor as fetchForPersonalInfoForm } from "./PersonalInfoForm/PersonalInfoForm"
 import PersonalInfo from "./PersonalInfo/PersonalInfo"
@@ -42,15 +42,15 @@ const Board: FC = (): JSX.Element => (
             {retex && <RetexFormModal />} */}
         <DayWishes />
         <DayWishesFormModal />
-        {/* <ParticipationDetails />
-        <ParticipationDetailsFormModal /> */}
+        <ParticipationDetails />
+        <ParticipationDetailsFormModal />
+        <Hosting />
+        <HostingFormModal />
+        <Meals />
+        <MealsFormModal />
         <TeamWishes />
         <TeamWishesFormModal />
         <VolunteerTeam />
-        {/* <Hosting />
-        <HostingFormModal />
-        <Meals />
-        <MealsFormModal /> */}
     </>
 )
 //     )
@@ -63,8 +63,8 @@ export const fetchFor = [
     // ...fetchForRetexForm,
     // ...fetchForBrunchForm,
     ...fetchForDayWishesForm,
-    // ...fetchForHostingForm,
-    // ...fetchForMealsForm,
-    // ...fetchForParticipationDetailsForm,
+    ...fetchForHostingForm,
+    ...fetchForMealsForm,
+    ...fetchForParticipationDetailsForm,
     ...fetchForTeamWishesForm,
 ]

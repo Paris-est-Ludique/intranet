@@ -107,10 +107,12 @@ export default class ServiceAccessors<
             try {
                 const auth = { headers: { Authorization: `Bearer ${jwt}` } }
                 const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
-                const { data } = await axios.get(
-                    `${config.API_URL}/${this.elementName}${apiName}`,
-                    { ...fullAxiosConfig, params }
-                )
+                const rawData = await axios.get(`${config.API_URL}/${this.elementName}${apiName}`, {
+                    ...fullAxiosConfig,
+                    params,
+                })
+                console.log("rawData", rawData)
+                const { data } = rawData
                 if (data.error) {
                     throw Error(data.error)
                 }

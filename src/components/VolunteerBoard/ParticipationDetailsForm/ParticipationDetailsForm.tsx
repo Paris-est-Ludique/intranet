@@ -14,25 +14,15 @@ type Props = {
 
 const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => {
     const sizeRef = useRef<HTMLSelectElement | null>(null)
-    const dietRef = useRef<HTMLTextAreaElement | null>(null)
-    const [tshirtCountState, setTshirtCount] = useState<number>(0)
     const [adultState, setAdult] = useState<number>(0)
 
     const [participationDetails, saveParticipationDetails] = useUserParticipationDetails()
 
     const onSubmit = useCallback(() => {
         const tshirtSize = get(sizeRef, "current.value", "")
-        const food = get(dietRef, "current.value", "")
-        saveParticipationDetails(tshirtSize, tshirtCountState, adultState, food)
+        saveParticipationDetails(tshirtSize, adultState)
         if (afterSubmit) afterSubmit()
-    }, [tshirtCountState, adultState, saveParticipationDetails, afterSubmit])
-
-    const onTshirtCountChange = useCallback(
-        (value: number) => {
-            setTshirtCount(value)
-        },
-        [setTshirtCount]
-    )
+    }, [adultState, saveParticipationDetails, afterSubmit])
 
     const onAdultChange = useCallback(
         (value: number) => {
@@ -43,75 +33,19 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
 
     useEffect(() => {
         const tshirtSize = get(participationDetails, "tshirtSize", "")
-        const tshirtCount = get(participationDetails, "tshirtCount", "")
         const adult = get(participationDetails, "adult", "")
-        const food = get(participationDetails, "food", "")
 
         if (tshirtSize) set(sizeRef, "current.value", tshirtSize)
-        if (tshirtCount) setTshirtCount(tshirtCount)
         if (adult) setAdult(adult)
-        if (food) set(dietRef, "current.value", food)
-    }, [setTshirtCount, setAdult, participationDetails])
+    }, [setAdult, participationDetails])
 
     return (
         <div>
             <div className={styles.title}>Mes infos logistiques</div>
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <div className={styles.tshirtCountTitle}>Combien as-tu de t-shirts PeL ?</div>
-                </div>
-                <div className={styles.rightCol}>
-                    <label className={styles.tshirtCountLabel}>
-                        <input
-                            type="radio"
-                            name="tshirtCount"
-                            onChange={() => onTshirtCountChange(0)}
-                            checked={tshirtCountState === 0}
-                        />{" "}
-                        Aucun
-                    </label>
-                    <label className={styles.tshirtCountLabel}>
-                        <input
-                            type="radio"
-                            name="tshirtCount"
-                            onChange={() => onTshirtCountChange(1)}
-                            checked={tshirtCountState === 1}
-                        />{" "}
-                        Un seul
-                    </label>
-                    <label className={styles.tshirtCountLabel}>
-                        <input
-                            type="radio"
-                            name="tshirtCount"
-                            onChange={() => onTshirtCountChange(2)}
-                            checked={tshirtCountState === 2}
-                        />{" "}
-                        Au moins deux
-                    </label>
-                </div>
-            </div>
-            <div className={styles.inputWrapper}>
-                <div className={styles.leftCol}>
-                    <label htmlFor="tshirtSize" className={styles.tshirtSizesTitle}>
-                        Quelle est ta taille de t-shirt ?
-                    </label>
-                </div>
-                <div className={styles.rightCol}>
-                    <label className={styles.tshirtSizeLabel}>
-                        <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
-                            {tshirtSizes.map((size) => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
-                </div>
-            </div>
 
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
-                    <div className={styles.adultTitle}>Seras-tu majeur·e au 2 juillet 2022 ?</div>
+                    <div className={styles.adultTitle}>Seras-tu majeur·e au 1 juillet 2023 ?</div>
                 </div>
                 <div className={styles.rightCol}>
                     <label className={styles.adultLabel}>
@@ -134,10 +68,31 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
                     </label>
                 </div>
             </div>
-            <div className={styles.dietWrapper}>
-                <label htmlFor="diet">Préférence alimentaire ?</label>
-                <textarea id="diet" ref={dietRef} placeholder="végétarien ? halal ? ..." />
+
+            <div>
+                Cette année comme il y a de nouveaux tee-shirts avec un col en V, tous les bénévoles
+                peuvent en commander un !<br />
+                Autre nouveauté, il y a des tee-shirts taille enfant !
             </div>
+            <div className={styles.inputWrapper}>
+                <div className={styles.leftCol}>
+                    <label htmlFor="tshirtSize" className={styles.tshirtSizesTitle}>
+                        Que veux-tu comme tee-shirt ?
+                    </label>
+                </div>
+                <div className={styles.rightCol}>
+                    <label className={styles.tshirtSizeLabel}>
+                        <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
+                            {tshirtSizes.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                </div>
+            </div>
+
             <div className={styles.buttonWrapper}>
                 <FormButton onClick={onSubmit}>Enregistrer</FormButton>
                 {children === undefined && (

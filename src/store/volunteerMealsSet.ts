@@ -37,8 +37,7 @@ export const fetchVolunteerMealsSet = elementFetch(
     getRequesting,
     getSuccess,
     getFailure,
-    (error: Error) =>
-        toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`)
+    (error: Error) => toastError(`Erreur lors du chargement des choix des repas: ${error.message}`)
 )
 
 const shouldFetchVolunteerMealsSet = (state: AppState, id: number) =>

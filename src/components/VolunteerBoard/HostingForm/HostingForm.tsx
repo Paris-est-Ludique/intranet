@@ -1,9 +1,19 @@
 import { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import classnames from "classnames"
 import get from "lodash/get"
+import includes from "lodash/includes"
+import without from "lodash/without"
 import set from "lodash/set"
 import styles from "./styles.module.scss"
-import { useUserHosting } from "../hosting.utils"
+import {
+    useUserHosting,
+    nightList,
+    NightOption,
+    nightChoiceSelectionDefaultState,
+    NightChoices,
+    bedList,
+    hostLocations,
+} from "../hosting.utils"
 import FormButton from "../../Form/FormButton/FormButton"
 import { fetchVolunteerHostingSetIfNeed } from "../../../store/volunteerHostingSet"
 import IgnoreButton from "../../Form/IgnoreButton/IgnoreButton"
@@ -14,91 +24,522 @@ type Props = {
 }
 
 const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
-    const [needsHosting, setNeedsHosting] = useState(false)
+    const [hostingType, setHostingType] = useState("")
     const canHostCountRef = useRef<HTMLInputElement | null>(null)
-    const distanceRef = useRef<HTMLInputElement | null>(null)
-    const commentRef = useRef<HTMLTextAreaElement | null>(null)
+    const [nights, setNights] = useState(nightChoiceSelectionDefaultState)
+    const cohostVolunteerRef = useRef<HTMLInputElement | null>(null)
+    const petAllergiesRef = useRef<HTMLInputElement | null>(null)
+    const [backProblems, setBackProblems] = useState(false)
+    const [bedType, setBedType] = useState<string[]>([])
+    const [isolatedBed, setIsolatedBed] = useState(false)
+    const bedConfigurationRef = useRef<HTMLTextAreaElement | null>(null)
+    const hostAddressRef = useRef<HTMLTextAreaElement | null>(null)
+    const transportTypeRef = useRef<HTMLInputElement | null>(null)
+    const [festivalProximity, setFestivalProximity] = useState("")
+    const distanceToFestivalRef = useRef<HTMLInputElement | null>(null)
+    const [hostingAbsoluteNeed, setHostingAbsoluteNeed] = useState(false)
+    const hostingNeedReasonRef = useRef<HTMLTextAreaElement | null>(null)
     const [userWishes, saveWishes] = useUserHosting()
-
-    const onNeedsHostingChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setNeedsHosting(e.target.checked)
 
     useEffect(() => {
         if (!userWishes) return
-        setNeedsHosting(get(userWishes, "needsHosting", false))
+        setHostingType(get(userWishes, "hostingType", ""))
+        const hostingNights = get(userWishes, "hostingNights", "") as string
+        const newNights = hostingNights.split("").reduce(
+            (acc: NightChoices, abbr: string) => ({
+                ...acc,
+                [abbr]: true,
+            }),
+            {} as NightChoices
+        )
+        setNights(newNights)
+        setBedType(get(userWishes, "bedType", []))
+        setBackProblems(get(userWishes, "backProblems", false))
         set(canHostCountRef, "current.value", `${get(userWishes, "canHostCount", 0)}`)
-        set(distanceRef, "current.value", `${get(userWishes, "distanceToFestival", 0)}`)
-        set(commentRef, "current.value", get(userWishes, "hostingComment", ""))
-    }, [commentRef, userWishes])
+        set(cohostVolunteerRef, "current.value", get(userWishes, "cohostVolunteer", ""))
+        set(petAllergiesRef, "current.value", get(userWishes, "petAllergies", ""))
+        set(bedConfigurationRef, "current.value", get(userWishes, "bedConfiguration", ""))
+        set(hostAddressRef, "current.value", get(userWishes, "hostAddress", ""))
+        set(transportTypeRef, "current.value", get(userWishes, "transportType", ""))
+        setFestivalProximity(get(userWishes, "festivalProximity", ""))
+        set(distanceToFestivalRef, "current.value", get(userWishes, "distanceToFestival", ""))
+        set(hostingNeedReasonRef, "current.value", get(userWishes, "hostingNeedReason", ""))
+        setHostingAbsoluteNeed(get(userWishes, "hostingAbsoluteNeed", false))
+    }, [userWishes])
+
+    const onHostingTypeChange = useCallback((newHostingType: string) => {
+        setHostingType(newHostingType)
+    }, [])
+
+    const onBackProblemsChange = useCallback((newBackProblems: boolean) => {
+        setBackProblems(newBackProblems)
+    }, [])
+
+    const onNightClick = useCallback(
+        (changes: NightChoices) => {
+            setNights({
+                ...nights,
+                ...changes,
+            })
+        },
+        [nights, setNights]
+    )
+
+    function isNightUnselected(abbr: string): boolean {
+        return !nights[abbr] && !nights[abbr.toLowerCase()]
+    }
+    function isNightSelected(abbr: string): boolean {
+        return nights[abbr]
+    }
+
+    const onBedTypeChange = useCallback(
+        (bed: string) => {
+            if (includes(bedType, bed)) {
+                setBedType(without(bedType, bed))
+            } else {
+                setBedType([...bedType, bed])
+            }
+        },
+        [bedType]
+    )
+
+    const onIsolatedBedChange = useCallback((newIsolatedBed: boolean) => {
+        setIsolatedBed(newIsolatedBed)
+    }, [])
+
+    const onHostingAbsoluteNeedChange = useCallback((newHostingAbsoluteNeed: boolean) => {
+        setHostingAbsoluteNeed(newHostingAbsoluteNeed)
+    }, [])
+
+    const onFestivalProximityChange = useCallback((newFestivalProximity: string) => {
+        setFestivalProximity(newFestivalProximity)
+    }, [])
 
     const onChoiceSubmit = useCallback(() => {
         const canHostCount = +get(canHostCountRef, "current.value", "0")
-        const distanceToFestival = +get(distanceRef, "current.value", "0")
-        const hostingComment = get(commentRef, "current.value", "")
-        saveWishes(needsHosting, canHostCount, distanceToFestival, hostingComment)
+        const cohostVolunteer = get(cohostVolunteerRef, "current.value", "")
+        const bedConfiguration = get(bedConfigurationRef, "current.value", "")
+        const hostingNights = nightList.reduce((res, { abbr }) => {
+            if (nights[abbr]) {
+                res += abbr
+            }
+            if (nights[abbr.toLowerCase()]) {
+                res += abbr.toLowerCase()
+            }
+            return res
+        }, "")
+        const hostAddress = get(hostAddressRef, "current.value", "")
+        const petAllergies = get(petAllergiesRef, "current.value", "")
+        const transportType = get(transportTypeRef, "current.value", "")
+        const distanceToFestival = get(distanceToFestivalRef, "current.value", "")
+        const hostingNeedReason = get(hostingNeedReasonRef, "current.value", "")
+        saveWishes(
+            hostingType,
+            canHostCount,
+            cohostVolunteer,
+            backProblems,
+            hostingNights,
+            bedType,
+            isolatedBed,
+            bedConfiguration,
+            hostAddress,
+            petAllergies,
+            transportType,
+            festivalProximity,
+            distanceToFestival,
+            hostingNeedReason,
+            hostingAbsoluteNeed
+        )
         if (afterSubmit) afterSubmit()
-    }, [needsHosting, commentRef, saveWishes, afterSubmit])
+    }, [
+        saveWishes,
+        hostingType,
+        backProblems,
+        bedType,
+        isolatedBed,
+        festivalProximity,
+        hostingAbsoluteNeed,
+        afterSubmit,
+        nights,
+    ])
+
+    const getNightElement = (option: NightOption, maybeText: string): JSX.Element => (
+        <div className={classnames(styles.inputWrapper, styles.noBottomMargin)} key={option.abbr}>
+            <div className={styles.leftCol}>
+                <div className={styles.nightTitle}>{option.title}</div>
+            </div>
+            <div className={styles.rightCol}>
+                <label className={styles.nightLabel} key={`no${option.abbr}`}>
+                    <input
+                        type="radio"
+                        name={`no${option.abbr}`}
+                        onChange={() =>
+                            onNightClick({
+                                [option.abbr]: false,
+                                [option.abbr.toLowerCase()]: false,
+                            })
+                        }
+                        checked={isNightUnselected(option.abbr)}
+                    />{" "}
+                    Non
+                </label>
+                <label className={styles.nightLabelLong} key={option.abbr.toLowerCase()}>
+                    <input
+                        type="radio"
+                        name={option.abbr.toLowerCase()}
+                        onChange={() =>
+                            onNightClick({
+                                [option.abbr]: false,
+                                [option.abbr.toLowerCase()]: true,
+                            })
+                        }
+                        checked={isNightSelected(option.abbr.toLowerCase())}
+                    />
+                    {maybeText}
+                </label>
+                <label className={styles.nightLabel} key={option.abbr}>
+                    <input
+                        type="radio"
+                        name={option.abbr}
+                        onChange={() =>
+                            onNightClick({
+                                [option.abbr]: true,
+                                [option.abbr.toLowerCase()]: false,
+                            })
+                        }
+                        checked={isNightSelected(option.abbr)}
+                    />{" "}
+                    Oui
+                </label>
+            </div>
+        </div>
+    )
 
     return (
         <div>
             <div className={styles.title}>Mon hébergement</div>
-            <div className={classnames(styles.inputWrapper, styles.noBottomMargin)}>
-                <div className={styles.leftCol}>
-                    <div className={styles.needsHostingTitle}>
-                        Cela t'arrangerait-il d'avoir un hébergement proche du festival ?
-                    </div>
-                </div>
+
+            <div
+                className={classnames(
+                    styles.inputWrapper,
+                    styles.noBottomMargin,
+                    styles.hostingTypeForm
+                )}
+            >
                 <div className={styles.rightCol}>
-                    <label className={styles.needsHostingLabel}>
+                    <label className={styles.hostingTypeLabel}>
                         <input
-                            type="checkbox"
-                            value="oui"
-                            name="needsHosting"
-                            onChange={onNeedsHostingChange}
-                            checked={needsHosting}
+                            type="radio"
+                            name="can"
+                            onChange={() => onHostingTypeChange("can")}
+                            checked={hostingType === "can"}
                         />{" "}
-                        Oui
+                        Je peux héberger au moins un bénévole
+                    </label>
+                    <label className={styles.hostingTypeLabel}>
+                        <input
+                            type="radio"
+                            name="need"
+                            onChange={() => onHostingTypeChange("need")}
+                            checked={hostingType === "need"}
+                        />{" "}
+                        J'aurais besoin d'un hébergement de la part d'un bénévole proche du festival
+                    </label>
+                    <label className={styles.hostingTypeLabel}>
+                        <input
+                            type="radio"
+                            name="neither"
+                            onChange={() => onHostingTypeChange("")}
+                            checked={hostingType === ""}
+                        />{" "}
+                        Aucun des deux
                     </label>
                 </div>
             </div>
-            {needsHosting && (
-                <div className={classnames(styles.inputWrapper, styles.noBottomMargin)}>
-                    <div>
-                        Il nous serait utile de savoir à quelle temps de transport tu te trouves
-                        pour privilégier les bénévoles qui viennent de province à ceux qui viennent
-                        de l'autre bout de Paris.
-                    </div>
-                </div>
-            )}
-            <div className={styles.inputWrapper}>
+
+            <div
+                className={classnames([styles.inputWrapper, hostingType !== "can" && styles.hide])}
+            >
                 <div className={styles.leftCol}>
                     <div className={styles.canHostCountTitle}>
-                        Combien de bénévoles peux-tu héberger confortablement ?
+                        Combien de bénévoles peux-tu héberger ?
                     </div>
                 </div>
                 <div className={styles.rightCol}>
                     <input className={styles.canHostCountLabel} type="text" ref={canHostCountRef} />
                 </div>
             </div>
-            <div className={styles.inputWrapper}>
+
+            <div
+                className={classnames([styles.inputWrapper, hostingType !== "can" && styles.hide])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.petAllergiesTitle}>
+                        As-tu un animal de compagnie ? (Possibles allergies ou phobies) ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <input className={styles.petAllergiesLabel} type="text" ref={petAllergiesRef} />
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.noBottomMargin,
+                    hostingType !== "need" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.backProblemsTitle}>As-tu des problèmes de dos ?</div>
+                </div>
+                <div className={styles.rightCol}>
+                    <label className={styles.backProblemsLabel}>
+                        <input
+                            type="radio"
+                            name="backProblems"
+                            onChange={() => onBackProblemsChange(true)}
+                            checked={backProblems}
+                        />{" "}
+                        Oui
+                    </label>
+                    <label className={styles.backProblemsLabel}>
+                        <input
+                            type="radio"
+                            name="backProblems"
+                            onChange={() => onBackProblemsChange(false)}
+                            checked={!backProblems}
+                        />{" "}
+                        Non
+                    </label>
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    hostingType === "" || hostingType === "neither" ? styles.hide : null,
+                ])}
+            >
+                {nightList.map((nightOption) =>
+                    getNightElement(
+                        nightOption,
+                        hostingType === "need"
+                            ? " J'aimerai bien mais pas obligatoire"
+                            : " Je peux mais ça ne m'arrange pas trop"
+                    )
+                )}
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.noBottomMargin,
+                    hostingType !== "can" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.bedTypeTitle}>Le couchage que tu proposes est-il :</div>
+                </div>
+                <div className={styles.rightCol}>
+                    {bedList.map((bed) => (
+                        <label className={styles.bedTypeLabel} key={bed}>
+                            <input
+                                type="checkbox"
+                                value="oui"
+                                name={bed}
+                                onChange={() => onBedTypeChange(bed)}
+                                checked={includes(bedType, bed)}
+                            />{" "}
+                            {bed}
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.noBottomMargin,
+                    hostingType !== "can" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.isolatedBedTitle}>
+                        Le couchage est-il dans une pièce séparée ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <label className={styles.isolatedBedLabel}>
+                        <input
+                            type="radio"
+                            name="isolatedBed"
+                            onChange={() => onIsolatedBedChange(true)}
+                            checked={isolatedBed}
+                        />{" "}
+                        Oui
+                    </label>
+                    <label className={styles.isolatedBedLabel}>
+                        <input
+                            type="radio"
+                            name="isolatedBed"
+                            onChange={() => onIsolatedBedChange(false)}
+                            checked={!isolatedBed}
+                        />{" "}
+                        Non
+                    </label>
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.bedConfigurationWrapper,
+                    hostingType !== "can" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.bedConfigurationTitle}>
+                        Si tu peux héberger plusieurs bénévoles, quelle est la configuration des
+                        couchages proposés ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <textarea id="bedConfiguration-comment" ref={bedConfigurationRef} />
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.hostAddressWrapper,
+                    hostingType !== "can" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.hostAddressTitle}>
+                        Où habites-tu ? Au minium, quelle ville ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <textarea id="hostAddress" ref={hostAddressRef} />
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.noBottomMargin,
+                    hostingType !== "need" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.festivalProximityTitle}>Où habites-tu ?</div>
+                </div>
+                <div className={styles.rightCol}>
+                    {hostLocations.map((hostLocation) => (
+                        <label className={styles.festivalProximityLabel} key={hostLocation}>
+                            <input
+                                type="radio"
+                                name="festivalProximity"
+                                onChange={() => onFestivalProximityChange(hostLocation)}
+                                checked={hostLocation === festivalProximity}
+                            />{" "}
+                            {hostLocation}
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            <div
+                className={classnames([styles.inputWrapper, hostingType !== "can" && styles.hide])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.transportTypeTitle}>
+                        Par quel moyen de transport prévois-tu de venir avec le/les bénévole(s) ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <input
+                        className={styles.transportTypeLabel}
+                        type="text"
+                        ref={transportTypeRef}
+                    />
+                </div>
+            </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    (hostingType === "" ||
+                        hostingType === "neither" ||
+                        (hostingType === "need" &&
+                            (festivalProximity === "hors région parisienne" ||
+                                festivalProximity === ""))) &&
+                        styles.hide,
+                ])}
+            >
                 <div className={styles.leftCol}>
                     <div className={styles.distanceToFestivalTitle}>
-                        À combien de minutes de transport es-tu du festival ? (En voiture si tu es
-                        en voiture, à vélo si tu as des vélos, sinon en transport en commun.)
+                        A combien de temps habites-tu de la pelouse de Reuilly porte à porte ?
                     </div>
                 </div>
                 <div className={styles.rightCol}>
                     <input
                         className={styles.distanceToFestivalLabel}
                         type="text"
-                        ref={distanceRef}
+                        ref={distanceToFestivalRef}
                     />
                 </div>
             </div>
-            <div className={styles.hostingCommentWrapper}>
-                <label htmlFor="hosting-comment">Un commentaire, une précision ?</label>
-                <textarea id="hosting-comment" ref={commentRef} />
+
+            <div
+                className={classnames([
+                    styles.hostingNeedReasonWrapper,
+                    (hostingType !== "need" ||
+                        festivalProximity === "hors région parisienne" ||
+                        festivalProximity === "") &&
+                        styles.hide,
+                ])}
+            >
+                <label htmlFor="hostingNeedReason">Pourquoi as-tu besoin d'un hébergement ?</label>
+                <textarea id="hostingNeedReason" ref={hostingNeedReasonRef} />
             </div>
+
+            <div
+                className={classnames([
+                    styles.inputWrapper,
+                    styles.noBottomMargin,
+                    hostingType !== "need" && styles.hide,
+                ])}
+            >
+                <div className={styles.leftCol}>
+                    <div className={styles.hostingAbsoluteNeedTitle}>
+                        Pourras-tu venir au festival même si on ne te trouve pas d’hébergement
+                        bénévole ?
+                    </div>
+                </div>
+                <div className={styles.rightCol}>
+                    <label className={styles.hostingAbsoluteNeedLabel}>
+                        <input
+                            type="radio"
+                            name="hostingAbsoluteNeed"
+                            onChange={() => onHostingAbsoluteNeedChange(true)}
+                            checked={hostingAbsoluteNeed}
+                        />{" "}
+                        Oui
+                    </label>
+                    <label className={styles.hostingAbsoluteNeedLabel}>
+                        <input
+                            type="radio"
+                            name="hostingAbsoluteNeed"
+                            onChange={() => onHostingAbsoluteNeedChange(false)}
+                            checked={!hostingAbsoluteNeed}
+                        />{" "}
+                        Non
+                    </label>
+                </div>
+            </div>
+
             <div className={styles.buttonWrapper}>
                 <FormButton onClick={onChoiceSubmit}>Enregistrer</FormButton>
                 {children === undefined && (

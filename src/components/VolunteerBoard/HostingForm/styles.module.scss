@@ -15,6 +15,10 @@
     }
 }
 
+.hide {
+    display: none;
+}
+
 .noBottomMargin {
     margin-bottom: 0;
 }
@@ -28,82 +32,89 @@
     text-align: center;
 }
 
-.needsHostingTitle {
+.hostingTypeForm {
+    padding: 10px;
+    border: 1px solid #000;
+}
+
+.hostingTypeLabel {
+    text-align: left;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.canHostCountTitle,
+.backProblemsTitle,
+.bedTypeTitle,
+.nightTitle,
+.isolatedBedTitle,
+.bedConfigurationTitle,
+.hostAddressTitle,
+.petAllergiesTitle,
+.transportTypeTitle,
+.festivalProximityTitle,
+.distanceToFestivalTitle,
+.hostingAbsoluteNeedTitle {
     display: inline-block;
     width: 320px;
     margin-bottom: 10px;
 }
 
-.needsHostingLabel {
+.canHostCountLabel,
+.backProblemsLabel,
+.bedTypeLabel,
+.isolatedBedLabel,
+.bedConfigurationLabel,
+.festivalProximityLabel,
+.hostingAbsoluteNeedLabel {
     text-align: left;
     display: inline-block;
     margin-bottom: 10px;
     width: 80px;
 }
-
-.canHostCountTitle {
-    display: inline-block;
-    width: 320px;
-    margin-bottom: 10px;
-}
-
-.canHostCountLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
-    width: 80px;
-}
-
-.distanceToFestivalTitle {
-    display: inline-block;
-    width: 320px;
-    margin-bottom: 10px;
-}
-
+.petAllergiesLabel,
+.transportTypeLabel,
 .distanceToFestivalLabel {
     text-align: left;
     display: inline-block;
+    margin-left: 10px;
     margin-bottom: 10px;
-    width: 80px;
+    width: 180px;
 }
 
-.hostingTitle {
+.nightLabel {
+    text-align: left;
     display: inline-block;
-    width: 320px;
     margin-bottom: 10px;
+    width: 50px;
 }
-
-.hostingList {
-    @include clear-ul-style;
-
+.nightLabelLong {
+    text-align: left;
     display: inline-block;
-    width: 204px;
-    text-align: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    width: 180px;
 }
 
-.hostingItem {
-    display: inline-block;
-    margin: 3px;
-}
+.bedConfigurationWrapper,
+.hostAddressWrapper {
+    margin: 6px 0;
 
-.hostingButton {
-    margin: 0;
-    padding: 7px 2px 6px;
-    border: 0;
-    border-radius: 0;
-    width: 90px;
-    text-align: center;
-    color: $color-grey-dark;
-    background-color: $color-grey-light;
-    cursor: pointer;
-
-    &.active {
-        color: $color-yellow;
-        background-color: $color-black;
+    label {
+        display: block;
+        padding: 6px 0 2px 4px;
+    }
+    textarea {
+        width: 100%;
+        height: 60px;
+        padding: 5px;
+        border: 1px solid $color-grey-light;
+        background-color: $color-grey-lighter;
+        outline: 0;
     }
 }
 
-.hostingCommentWrapper {
+.hostingNeedReasonWrapper {
     margin: 6px 0 14px;
 
     label {
