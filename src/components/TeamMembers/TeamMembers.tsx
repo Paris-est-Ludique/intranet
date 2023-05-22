@@ -47,6 +47,7 @@ const DaysAvailability: FC<DaysAvailabilityProps> = ({ volunteer }): JSX.Element
                             : styles.unknown,
                         dayId === dayId.toUpperCase() ? styles.weekend : styles.week
                     )}
+                    key={dayId}
                 >
                     {hasWishes ? "" : "?"}
                 </td>
@@ -74,7 +75,7 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
                     <th>Bénévoles</th>
                     <>
                         {dayList.map((dayId) => (
-                            <th className={styles.dayTitle}>
+                            <th className={styles.dayTitle} key={`day${dayId}`}>
                                 {dayId.toUpperCase()} (
                                 {volunteers.filter(hasDay(dayId.toUpperCase())).length})
                             </th>
