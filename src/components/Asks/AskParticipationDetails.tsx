@@ -6,6 +6,7 @@ import ParticipationDetailsForm, {
     fetchFor as fetchForParticipationDetailsForm,
 } from "../VolunteerBoard/ParticipationDetailsForm/ParticipationDetailsForm"
 import { useUserParticipationDetails } from "../VolunteerBoard/participationDetails.utils"
+import { useUserDayWishes } from "../VolunteerBoard/daysWishes.utils"
 
 export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
     const { dispatch, jwtToken, volunteerAsks } = useAskTools()
@@ -19,9 +20,12 @@ export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
     }, [dispatch, id, jwtToken, volunteerAsks?.hiddenAsks])
 
     const [participationDetails] = useUserParticipationDetails()
+    const [userWishes] = useUserDayWishes()
+    const participation = get(userWishes, "active", "inconnu") as string
     const tshirtSize = get(participationDetails, "tshirtSize", "")
     const food = get(participationDetails, "food", "")
-    const needToShow = !tshirtSize || !food
+    const needToShow =
+        (participation === "oui" || participation === "peut-etre") && (!tshirtSize || !food)
 
     addAsk(
         asks,

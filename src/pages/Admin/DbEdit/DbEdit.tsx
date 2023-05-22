@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 
 import { AppThunk } from "../../../store"
 import { selectUserJwtToken } from "../../../store/auth"
-import { DbEdit, fetchForDbEdit } from "../../../components"
+import { DbEdit, fetchForDbEdit, LoginForm } from "../../../components"
 
 export type Props = RouteComponentProps
 
@@ -19,7 +19,7 @@ const DbEditPage: FC<Props> = (): JSX.Element => {
             </>
         )
     }
-    return <div>Besoin d'être identifié</div>
+    return <LoginForm loginNeeded />
 }
 
 // Fetch server-side data here

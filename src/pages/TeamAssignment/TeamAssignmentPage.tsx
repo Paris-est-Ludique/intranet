@@ -5,7 +5,7 @@ import { useSelector } from "react-redux"
 import { AppThunk } from "../../store"
 import { selectUserJwtToken } from "../../store/auth"
 import Page from "../../components/ui/Page/Page"
-import { TeamAssignment, fetchForTeamAssignment } from "../../components"
+import { TeamAssignment, fetchForTeamAssignment, LoginForm } from "../../components"
 import VolunteersWithTeamWishes from "../../components/TeamAssignment/VolunteersWithTeamWishes"
 
 export type Props = RouteComponentProps
@@ -26,7 +26,7 @@ const TeamAssignmentPage: FC<Props> = (): JSX.Element => {
             </>
         )
     }
-    return <div>Besoin d'être identifié</div>
+    return <LoginForm loginNeeded />
 }
 
 // Fetch server-side data here

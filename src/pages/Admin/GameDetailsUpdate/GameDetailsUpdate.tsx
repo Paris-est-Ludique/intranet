@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 
 import { AppThunk } from "../../../store"
 import { selectUserJwtToken } from "../../../store/auth"
-import { GameDetailsUpdate } from "../../../components"
+import { GameDetailsUpdate, LoginForm } from "../../../components"
 import { fetchGameDetailsUpdateIfNeed } from "../../../store/gameDetailsUpdate"
 
 export type Props = RouteComponentProps
@@ -20,7 +20,7 @@ const GameDetailsUpdatePage: FC<Props> = (): JSX.Element => {
             </>
         )
     }
-    return <div>Besoin d'être identifié</div>
+    return <LoginForm loginNeeded />
 }
 
 // Fetch server-side data here

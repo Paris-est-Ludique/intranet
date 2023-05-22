@@ -32,6 +32,18 @@ const volunteerLoginSlice = createSlice({
 export default volunteerLoginSlice.reducer
 export const { getRequesting, getSuccess, getFailure } = volunteerLoginSlice.actions
 
+export const fetchVolunteerLoginToRoot = elementFetch<
+    VolunteerLogin,
+    Parameters<typeof volunteerLogin>
+>(volunteerLogin, getRequesting, getSuccess, getFailure, undefined, (login: VolunteerLogin) => {
+    setJWT(login.jwt, login.id, login.roles)
+    // eslint-disable-next-line no-restricted-globals
+    if (location?.pathname) {
+        // eslint-disable-next-line no-restricted-globals
+        location.pathname = "/"
+    }
+})
+
 export const fetchVolunteerLogin = elementFetch<VolunteerLogin, Parameters<typeof volunteerLogin>>(
     volunteerLogin,
     getRequesting,

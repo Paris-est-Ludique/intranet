@@ -1,6 +1,14 @@
 @import "../../theme/variables";
 @import "../../theme/mixins";
 
+.loginPage {
+    @include page-wrapper-center;
+}
+
+.loginContent {
+    @include page-content-wrapper;
+}
+
 .loginIntro {
     margin-bottom: 10px;
 }

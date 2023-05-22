@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { AppThunk } from "../../store"
 import styles from "./styles.module.scss"
-import { KnowledgeBoxList, KnowledgeIntro, fetchForKnowledge } from "../../components"
+import { KnowledgeBoxList, KnowledgeIntro, LoginForm, fetchForKnowledge } from "../../components"
 import { selectUserJwtToken } from "../../store/auth"
 
 export type Props = RouteComponentProps
@@ -14,7 +14,7 @@ const KnowledgesPage: FC<Props> = (): JSX.Element => {
     const jwtToken = useSelector(selectUserJwtToken)
     if (jwtToken === undefined) return <p>Loading...</p>
     if (!jwtToken) {
-        return <div>Besoin d'être identifié</div>
+        return <LoginForm loginNeeded />
     }
     return (
         <div className={styles.knowledgesPage}>

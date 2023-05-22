@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 import { AppThunk } from "../../store"
 import styles from "./styles.module.scss"
-import { LoansIntro, Loans, fetchForLoans } from "../../components"
+import { LoansIntro, Loans, fetchForLoans, LoginForm } from "../../components"
 import { selectUserJwtToken } from "../../store/auth"
 
 export type Props = RouteComponentProps
@@ -14,7 +14,7 @@ const LoansPage: FC<Props> = (): JSX.Element => {
     const jwtToken = useSelector(selectUserJwtToken)
     if (jwtToken === undefined) return <p>Loading...</p>
     if (!jwtToken) {
-        return <div>Besoin d'être identifié</div>
+        return <LoginForm loginNeeded />
     }
     return (
         <div className={styles.loaningPage}>

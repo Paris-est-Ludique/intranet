@@ -2,11 +2,16 @@ import { memo, useCallback, useRef } from "react"
 import { get } from "lodash"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { AppState } from "../../store"
-import { fetchVolunteerLogin } from "../../store/volunteerLogin"
+import { fetchVolunteerLogin, fetchVolunteerLoginToRoot } from "../../store/volunteerLogin"
 import styles from "./styles.module.scss"
 import FormSubmit from "../Form/FormSubmit/FormSubmit"
 
-const LoginForm = (): JSX.Element => {
+interface Props {
+    redirectToRoot?: boolean
+    loginNeeded?: boolean
+}
+
+const LoginForm = ({ redirectToRoot, loginNeeded }: Props): JSX.Element => {
     const dispatch = useDispatch()
     const loginError = useSelector((state: AppState) => state.volunteerLogin.error, shallowEqual)
 
@@ -20,17 +25,19 @@ const LoginForm = (): JSX.Element => {
             const email = get(emailRef, "current.value", "")
             const password = get(passwordRef, "current.value", "")
 
-            dispatch(fetchVolunteerLogin({ email, password }))
+            dispatch(
+                (redirectToRoot ? fetchVolunteerLoginToRoot : fetchVolunteerLogin)({
+                    email,
+                    password,
+                })
+            )
             return false
         },
-        [dispatch]
+        [dispatch, redirectToRoot]
     )
 
-    return (
+    const loginForm = (
         <form>
-            <div className={styles.loginIntro} key="login-intro">
-                Si tu es bénévole ou que tu l'as déjà été, connecte-toi pour accéder à ton espace.
-            </div>
             <div className={styles.formLine} key="line-email">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="utilisateur" ref={emailRef} />
@@ -48,6 +55,38 @@ const LoginForm = (): JSX.Element => {
             </div>
         </form>
     )
+
+    return (
+        <>
+            {loginNeeded && (
+                <div className={styles.loginPage}>
+                    <div className={styles.loginContent}>
+                        <div className={styles.loginIntro}>
+                            Tu dois t'identifier pour accéder à cette page !
+                        </div>
+                        {loginForm}
+                    </div>
+                </div>
+            )}
+
+            {redirectToRoot && loginForm}
+
+            {!loginNeeded && !redirectToRoot && (
+                <>
+                    <div className={styles.loginIntro} key="login-intro">
+                        Si tu es bénévole ou que tu l'as déjà été, connecte-toi pour accéder à ton
+                        espace.
+                    </div>
+                    {loginForm}
+                </>
+            )}
+        </>
+    )
+}
+// Set default props
+LoginForm.defaultProps = {
+    redirectToRoot: undefined,
+    loginNeeded: undefined,
 }
 
 export default memo(LoginForm)

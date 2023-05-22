@@ -46,7 +46,7 @@ const Asks = (): JSX.Element | null => {
                                 dans <a href="/profil">Mon profil</a> :)
                                 <br />
                                 Tu as fait le tour des dernières infos ou questions importantes,
-                                merci ! :)
+                                merci !
                                 <br />
                                 Nous te préviendrons quand il y en aura de nouvelles.
                                 <br />

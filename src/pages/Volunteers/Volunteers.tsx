@@ -5,6 +5,7 @@ import { useSelector } from "react-redux"
 import { AppThunk } from "../../store"
 import { selectUserJwtToken } from "../../store/auth"
 import Page from "../../components/ui/Page/Page"
+import { LoginForm } from "../../components"
 import { fetchVolunteerListIfNeed } from "../../store/volunteerList"
 
 export type Props = RouteComponentProps
@@ -20,7 +21,7 @@ const BoardPage: FC<Props> = (): JSX.Element => {
             </Page>
         )
     }
-    return <div>Besoin d'être identifié</div>
+    return <LoginForm loginNeeded />
 }
 
 // Fetch server-side data here

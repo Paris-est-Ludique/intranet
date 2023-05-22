@@ -4,6 +4,7 @@ import { fetchVolunteerAsksSet } from "../../store/volunteerAsksSet"
 import { useAskTools, addAsk, answerLaterOnProfileBefore } from "./utils"
 import MealsForm, { fetchFor as fetchForMealsForm } from "../VolunteerBoard/MealsForm/MealsForm"
 import { useUserMeals } from "../VolunteerBoard/meals.utils"
+import { useUserDayWishes } from "../VolunteerBoard/daysWishes.utils"
 
 export function AskMeals(asks: JSX.Element[], id: number): void {
     const { dispatch, jwtToken, volunteerAsks } = useAskTools()
@@ -17,8 +18,11 @@ export function AskMeals(asks: JSX.Element[], id: number): void {
     }, [dispatch, id, jwtToken, volunteerAsks?.hiddenAsks])
 
     const [userMeals] = useUserMeals()
+    const [userWishes] = useUserDayWishes()
+    const participation = get(userWishes, "active", "inconnu") as string
     const meals = get(userMeals, "meals", [])
-    const needToShow = meals.length === 0
+    const needToShow =
+        (participation === "oui" || participation === "peut-etre") && meals.length === 0
 
     addAsk(
         asks,

@@ -256,7 +256,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         </dl>
     )
 
-    const cameAsVisitor = (
+    const alreadySignupForm = (
         <>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
@@ -294,11 +294,15 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                             Viens simplement t'identifier sur <a href="/">fo.parisestludique.fr</a>{" "}
                             ou en dessous ^^
                         </p>
-                        <LoginForm />
+                        <LoginForm redirectToRoot />
                     </dd>
                 </dl>
             )}
+        </>
+    )
 
+    const cameAsVisitor = (
+        <>
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
                     <div className={styles.multipleChoiceTitle}>
@@ -668,16 +672,21 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     )
 
     return (
-        <form>
+        <>
             {intro}
             {enableRegistering && commentQuestion}
-            {cameAsVisitor}
-            {meeting}
-            {pelMember}
-            {nameMobileEmail}
-            {!enableRegistering && commentQuestion}
-            {howToContact !== "Aucun" && submitButton}
-        </form>
+            {alreadySignupForm}
+            {!alreadySignup && (
+                <form>
+                    {cameAsVisitor}
+                    {meeting}
+                    {pelMember}
+                    {nameMobileEmail}
+                    {!enableRegistering && commentQuestion}
+                    {howToContact !== "Aucun" && submitButton}
+                </form>
+            )}
+        </>
     )
 }
 
