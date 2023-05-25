@@ -78,6 +78,7 @@ const MainMenu: FC = (): JSX.Element => {
                 {/* <MenuItem name="Emprunter" pathname="/emprunter" />
                 <MenuItem name="Emprunts" pathname="/emprunts" /> */}
                 <TeamMenuItem team={TEAM_JAV} name="Mes connaissances" pathname="/connaissances" />
+                <TeamMenuItem team={TEAM_JAV} name="Stats" pathname="/connaissancesStats" />
                 <RestrictMenuItem
                     role={ROLES.ASSIGNER}
                     name="Gestion équipes"
