@@ -48,7 +48,7 @@ export default [
                 loadData: loadKnowledgeData,
             },
             {
-                path: "/connaissancesStats",
+                path: "/stats",
                 component: AsyncKnowledgeStats,
                 loadData: loadKnowledgeStatsData,
             },

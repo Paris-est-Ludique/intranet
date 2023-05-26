@@ -28,7 +28,7 @@ interface RestrictMenuItemProps extends MenuItemProps {
 
 const RestrictMenuItem: FC<RestrictMenuItemProps> = ({ name, pathname, role }): JSX.Element => {
     const roles = useSelector(selectUserRoles)
-    return roles.includes(role) ? <MenuItem name={name} pathname={pathname} /> : <div />
+    return roles.includes(role) ? <MenuItem name={name} pathname={pathname} /> : <></>
 }
 
 interface TeamMenuItemProps extends MenuItemProps {
@@ -46,7 +46,7 @@ const TeamMenuItem: FC<TeamMenuItemProps> = ({ name, pathname, team }): JSX.Elem
         () => volunteers.find((volunteer) => volunteer.id === userId),
         [volunteers, userId]
     )
-    return user?.team === team ? <MenuItem name={name} pathname={pathname} /> : <div />
+    return user?.team === team ? <MenuItem name={name} pathname={pathname} /> : <></>
 }
 
 // Hardcoded value of the "Jeux à volonté" team
@@ -78,7 +78,7 @@ const MainMenu: FC = (): JSX.Element => {
                 {/* <MenuItem name="Emprunter" pathname="/emprunter" />
                 <MenuItem name="Emprunts" pathname="/emprunts" /> */}
                 <TeamMenuItem team={TEAM_JAV} name="Mes connaissances" pathname="/connaissances" />
-                <TeamMenuItem team={TEAM_JAV} name="Stats" pathname="/connaissancesStats" />
+                <TeamMenuItem team={TEAM_JAV} name="Stats" pathname="/stats" />
                 <RestrictMenuItem
                     role={ROLES.ASSIGNER}
                     name="Gestion équipes"
