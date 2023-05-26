@@ -16,6 +16,7 @@ import LoginForm from "./LoginForm"
 import KnowledgeBoxList, { fetchFor as fetchForKnowledge } from "./Knowledge/KnowledgeBoxList"
 import KnowledgeCard, { fetchFor as fetchForKnowledgeCard } from "./Knowledge/KnowledgeCard"
 import KnowledgeIntro from "./Knowledge/KnowledgeIntro"
+import KnowledgeStats from "./Knowledge/KnowledgeStats"
 import Asks, { fetchFor as fetchForAsks } from "./Asks"
 import ParticipationDetailsForm, {
     fetchFor as fetchForParticipationDetailsForm,
@@ -46,6 +47,7 @@ export {
     KnowledgeBoxList,
     fetchForKnowledge,
     KnowledgeIntro,
+    KnowledgeStats,
     Loading,
     LoaningIntro,
     Loaning,
