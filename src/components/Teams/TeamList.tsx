@@ -8,9 +8,11 @@ const TeamList: React.FC = (): JSX.Element | null => {
     const teams = useSelector(selectSortedTeams)
     if (!teams || teams.length === 0) return null
 
+    const shownTeams = teams.filter((team) => team?.status !== "inactive")
+
     return (
         <ul className={styles.teamList}>
-            {teams.map((team: any) => (
+            {shownTeams.map((team: any) => (
                 <TeamItem team={team} key={team.id} />
             ))}
         </ul>
