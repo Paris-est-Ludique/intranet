@@ -230,18 +230,18 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                     <label className={styles.hostingTypeLabel}>
                         <input
                             type="radio"
-                            name="can"
-                            onChange={() => onHostingTypeChange("can")}
-                            checked={hostingType === "can"}
+                            name="propose"
+                            onChange={() => onHostingTypeChange("propose")}
+                            checked={hostingType === "propose"}
                         />{" "}
                         Je peux héberger au moins un bénévole
                     </label>
                     <label className={styles.hostingTypeLabel}>
                         <input
                             type="radio"
-                            name="need"
-                            onChange={() => onHostingTypeChange("need")}
-                            checked={hostingType === "need"}
+                            name="cherche"
+                            onChange={() => onHostingTypeChange("cherche")}
+                            checked={hostingType === "cherche"}
                         />{" "}
                         J'aurais besoin d'un hébergement de la part d'un bénévole proche du festival
                     </label>
@@ -258,7 +258,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
             </div>
 
             <div
-                className={classnames([styles.inputWrapper, hostingType !== "can" && styles.hide])}
+                className={classnames([
+                    styles.inputWrapper,
+                    hostingType !== "propose" && styles.hide,
+                ])}
             >
                 <div className={styles.leftCol}>
                     <div className={styles.canHostCountTitle}>
@@ -271,7 +274,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
             </div>
 
             <div
-                className={classnames([styles.inputWrapper, hostingType !== "can" && styles.hide])}
+                className={classnames([
+                    styles.inputWrapper,
+                    hostingType !== "propose" && styles.hide,
+                ])}
             >
                 <div className={styles.leftCol}>
                     <div className={styles.petAllergiesTitle}>
@@ -287,7 +293,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.noBottomMargin,
-                    hostingType !== "need" && styles.hide,
+                    hostingType !== "cherche" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>
@@ -323,7 +329,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 {nightList.map((nightOption) =>
                     getNightElement(
                         nightOption,
-                        hostingType === "need"
+                        hostingType === "cherche"
                             ? " J'aimerai bien mais pas obligatoire"
                             : " Je peux mais ça ne m'arrange pas trop"
                     )
@@ -334,7 +340,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.noBottomMargin,
-                    hostingType !== "can" && styles.hide,
+                    hostingType !== "propose" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>
@@ -360,7 +366,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.noBottomMargin,
-                    hostingType !== "can" && styles.hide,
+                    hostingType !== "propose" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>
@@ -394,7 +400,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.bedConfigurationWrapper,
-                    hostingType !== "can" && styles.hide,
+                    hostingType !== "propose" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>
@@ -412,7 +418,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.hostAddressWrapper,
-                    hostingType !== "can" && styles.hide,
+                    hostingType !== "propose" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>
@@ -429,7 +435,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.noBottomMargin,
-                    hostingType !== "need" && styles.hide,
+                    hostingType !== "cherche" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>
@@ -451,7 +457,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
             </div>
 
             <div
-                className={classnames([styles.inputWrapper, hostingType !== "can" && styles.hide])}
+                className={classnames([
+                    styles.inputWrapper,
+                    hostingType !== "propose" && styles.hide,
+                ])}
             >
                 <div className={styles.leftCol}>
                     <div className={styles.transportTypeTitle}>
@@ -472,7 +481,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                     styles.inputWrapper,
                     (hostingType === "" ||
                         hostingType === "neither" ||
-                        (hostingType === "need" &&
+                        (hostingType === "cherche" &&
                             (festivalProximity === "hors région parisienne" ||
                                 festivalProximity === ""))) &&
                         styles.hide,
@@ -495,7 +504,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
             <div
                 className={classnames([
                     styles.hostingNeedReasonWrapper,
-                    (hostingType !== "need" ||
+                    (hostingType !== "cherche" ||
                         festivalProximity === "hors région parisienne" ||
                         festivalProximity === "") &&
                         styles.hide,
@@ -509,7 +518,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
                 className={classnames([
                     styles.inputWrapper,
                     styles.noBottomMargin,
-                    hostingType !== "need" && styles.hide,
+                    hostingType !== "cherche" && styles.hide,
                 ])}
             >
                 <div className={styles.leftCol}>

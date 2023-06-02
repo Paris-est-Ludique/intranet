@@ -20,13 +20,13 @@ const Hosting: FC = (): JSX.Element | null => {
                     Je ne peux héberger personnes que ça arrangerait.
                 </div>
             )}
-            {hostingType === "need" && (
+            {hostingType === "cherche" && (
                 <div className={styles.hostingLabel}>
                     J'ai précisé mon <b>besoin</b> d'un hébergement par un bénévole proche du
                     festival
                 </div>
             )}
-            {hostingType === "can" && (
+            {hostingType === "propose" && (
                 <div className={styles.hostingLabel}>
                     Je peux héberger <b>{canHostCount} bénévole(s)</b> !
                 </div>

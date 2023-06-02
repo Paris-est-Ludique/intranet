@@ -96,7 +96,7 @@ export class Volunteer implements VolunteerPartial {
 
     hostingNeedReason = ""
 
-    hostingAbsoluteNeed = true
+    hostingAbsoluteNeed = false
 
     meals: string[] = []
 

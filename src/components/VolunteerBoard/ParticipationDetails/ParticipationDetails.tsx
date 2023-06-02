@@ -9,6 +9,8 @@ type Props = {
     afterSubmit?: () => void | undefined
 }
 
+const allowEdit = false
+
 const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
     const [participationDetails] = useUserParticipationDetails()
     const adult = get(participationDetails, "adult", "")
@@ -46,9 +48,12 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
                 )}
             </div>
             <div className={styles.editButton}>
-                <button type="button" onClick={onEdit}>
-                    Modifier
-                </button>
+                {allowEdit && (
+                    <button type="button" onClick={onEdit}>
+                        Modifier
+                    </button>
+                )}
+                {!allowEdit && <>Commande de tee-shirts envoyée</>}
             </div>
         </div>
     )

@@ -41,17 +41,11 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
             <div className={styles.title}>Mon choix d'équipe</div>
             <div className={styles.intro}>
                 <p>
-                    Sélectionne la ou les équipes que tu aimerais rejoindre dans l'ordre de tes
-                    préférences.
+                    Sélectionne la ou les équipes que tu aimerais rejoindre. Ta préféré en premier.
+                    Mais ne sélectionne que des équipes que tu accepterais de rejoindre ! Quitte à
+                    n'en sélectionner qu'une.
                 </p>
-                <p>
-                    Tu seras affecté à une équipe pour les jours de festival prochainement et nous
-                    tiendrons compte de tes préférences dans la mesure du possible.
-                </p>
-                <p>
-                    Si tu es disponible pour aider en amont, même une autre équipe, n'hésite pas à
-                    le mettre en commentaire.
-                </p>
+                <p>Tu seras affecté à l'une d'elles prochainement et son référent te préviendra.</p>
                 <p>
                     Pour plus d'informations sur les équipes,{" "}
                     <a href="/equipes" target="_blank">
