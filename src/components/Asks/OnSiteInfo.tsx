@@ -9,6 +9,7 @@ import { Contact, VolunteerOnSiteInfo } from "../../services/volunteers"
 
 export function OnSiteInfo(): JSX.Element {
     const userOnSiteInfo: VolunteerOnSiteInfo | undefined = useSelector(selectVolunteerOnSiteInfo)
+    const teamId = get(userOnSiteInfo, "team", [])
     const referents = get(userOnSiteInfo, "referents", [])
     const members = get(userOnSiteInfo, "members", [])
     // const isReferent = get(userOnSiteInfo, "isReferent", false)
@@ -16,6 +17,7 @@ export function OnSiteInfo(): JSX.Element {
 
     const pincipalReferent = first(referents)
     const secondaryReferents = tail(referents)
+    const isCA = teamId === 13
 
     return (
         <div key="contacts">
@@ -45,10 +47,20 @@ export function OnSiteInfo(): JSX.Element {
                                     </div>
                                 </div>
                             )}
-                            <div>Ton contact à la Paillante : à définir...</div>
-                            <br />
-                            <div>Si un exposant à une question : à définir...</div>
-                            <br />
+                            {!isCA && (
+                                <div>
+                                    Ton contact à la Paillante : bientôt
+                                    <br />
+                                    <br />
+                                </div>
+                            )}
+                            {!isCA && (
+                                <div>
+                                    Si un exposant à une question : bientôt
+                                    <br />
+                                    <br />
+                                </div>
+                            )}
                             {CAPilots.length > 0 && (
                                 <div>
                                     Membre du CA si besoin :{" "}
@@ -63,11 +75,11 @@ export function OnSiteInfo(): JSX.Element {
                                     <br />
                                 </div>
                             )}
-                            Croix rouge présente sur le festival : tel prochainement
-                            <br />
+                            Croix rouge présente sur le festival : bientôt
                             {members.length > 0 && (
                                 <div>
-                                    Autre membres de l'équipe :{" "}
+                                    <br />
+                                    Autre membres de ton équipe :{" "}
                                     <div className={styles.contactList}>
                                         {members.map((contact) => (
                                             <div key={contact.firstname}>
