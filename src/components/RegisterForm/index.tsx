@@ -58,7 +58,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const festivalDateList = useSelector(selectMiscFestivalDateList)
     const meetingDateList = useSelector(selectMiscMeetingDateList)
 
-    const enableRegistering = true
+    const enableRegistering = false
     const hasMeetingDates = meetingDateList.length > 0
 
     useEffect(() => {
