@@ -18,6 +18,10 @@ export class Team {
     status = ""
 
     order = 0
+
+    referentFirstnames = ""
+
+    CAPilots = ""
 }
 
 export const translationTeam: { [k in keyof Team]: string } = {
@@ -31,6 +35,8 @@ export const translationTeam: { [k in keyof Team]: string } = {
     after: "après",
     status: "statut",
     order: "ordre",
+    referentFirstnames: "prénomsRéférents",
+    CAPilots: "pilotesAuCA",
 }
 
 export const elementName = "Team"

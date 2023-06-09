@@ -33,6 +33,7 @@ import volunteerTeamAssignSet from "./volunteerTeamAssignSet"
 import volunteerTeamWishesSet from "./volunteerTeamWishesSet"
 import wishAdd from "./wishAdd"
 import wishList from "./wishList"
+import volunteerOnSiteInfo from "./volunteerOnSiteInfo"
 
 // Use inferred return type for making correctly Redux types
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -61,6 +62,7 @@ export default (history: History) => ({
     volunteerLoanSet,
     volunteerLogin,
     volunteerKnowledgeSet,
+    volunteerOnSiteInfo,
     volunteerDetailedKnowledgeList,
     volunteerParticipationDetailsSet,
     volunteerPersonalInfoSet,

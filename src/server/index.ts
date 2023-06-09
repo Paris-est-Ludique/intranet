@@ -46,6 +46,7 @@ import {
     volunteerAddNew,
     volunteerDetailedKnowledgeList,
     volunteerLoanSet,
+    volunteerOnSiteInfo,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
 import config from "../config"
@@ -150,6 +151,7 @@ app.post("/VolunteerMealsSet", secure as RequestHandler, volunteerMealsSet)
 app.post("/VolunteerPersonalInfoSet", secure as RequestHandler, volunteerPersonalInfoSet)
 app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
 app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
+app.get("/VolunteerOnSiteInfo", secure as RequestHandler, volunteerOnSiteInfo)
 
 // Admin only
 app.post("/VolunteerAddNew", secure as RequestHandler, volunteerAddNew)

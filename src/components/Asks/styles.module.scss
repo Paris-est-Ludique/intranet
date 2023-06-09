@@ -21,11 +21,25 @@
     @include page-content-wrapper;
 }
 
+.title {
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
 .notifIntro {
     margin-bottom: 10px;
 }
 .notifCentered {
     text-align: center;
+}
+
+.contactList {
+    display: inline-block;
+    vertical-align: top;
+}
+.contactItem {
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .formLine {

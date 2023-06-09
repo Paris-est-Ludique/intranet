@@ -22,10 +22,13 @@ import {
     VolunteerDetailedKnowledge,
     VolunteerPersonalInfo,
     VolunteerLoan,
+    Contact,
 } from "../../services/volunteers"
+import { Team, TeamWithoutId, translationTeam } from "../../services/teams"
 import { canonicalEmail, canonicalMobile, trim, validMobile } from "../../utils/standardization"
 import { getJwt } from "../secure"
 import { getUniqueNickname } from "./tools"
+import { getSheet } from "./accessors"
 
 const expressAccessor = new ExpressAccessors<VolunteerWithoutId, Volunteer>(
     "Volunteers",
@@ -174,7 +177,9 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
         map(toTry, async ([p, save]) => bcrypt.compare(p, save.replace(/^\$2y/, "$2a")))
     )
 
-    if (!some(tries)) {
+    const noSuccessfulLogin = !some(tries)
+    const isDevException = __DEV__ && [1, 508].includes(volunteer.id) // Amélie and Tom E
+    if (noSuccessfulLogin && !isDevException) {
         throw Error("Mauvais mot de passe pour cet email")
     }
 
@@ -635,3 +640,81 @@ export const volunteerLoanSet = expressAccessor.set(async (list, body, id) => {
         } as VolunteerLoan,
     }
 })
+
+export const volunteerOnSiteInfo = expressAccessor.get(async (list, body, id) => {
+    const requestedId = +body[0] || id
+    if (requestedId !== id && requestedId !== 0) {
+        throw Error(`On ne peut acceder qu'à ses propres infos sur site`)
+    }
+    const volunteer = list.find((v) => v.id === requestedId)
+    if (!volunteer) {
+        throw Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
+    }
+
+    const teamSheet = await getSheet<TeamWithoutId, Team>("Teams", new Team(), translationTeam)
+    const teamList = await teamSheet.getList()
+    if (!teamList) {
+        throw Error("Unable to load teams")
+    }
+    const team = teamList.find((v) => v.id === volunteer.team)
+    const referentVolunteers: Volunteer[] = []
+    const memberVolunteers: Volunteer[] = []
+    const CAVolunteers: Volunteer[] = []
+    let isReferent = false
+    if (team) {
+        const referentFirstnames = team.referentFirstnames.split(/\s*(,|ou|et)\s*/)
+        referentFirstnames.forEach((firstname) => {
+            const referent = list.find(
+                (v) =>
+                    v.team === volunteer.team &&
+                    v.firstname === firstname &&
+                    v.roles.includes("référent")
+            )
+            if (referent) {
+                referentVolunteers.push(referent)
+                isReferent ||= referent.id === requestedId
+            }
+        })
+
+        memberVolunteers.push(
+            ...list.filter(
+                (v) =>
+                    v.team === volunteer.team &&
+                    !v.roles.includes("référent") &&
+                    v.id !== requestedId
+            )
+        )
+
+        const pilotFirstnames = team.CAPilots.split(/,\s+/)
+        pilotFirstnames.forEach((name) => {
+            addContactFromName(CAVolunteers, list, name)
+        })
+    }
+
+    const referents: Contact[] = volunteersToContacts(referentVolunteers)
+
+    const showMembers = isReferent || memberVolunteers.length <= 10
+    const members: Contact[] = showMembers ? volunteersToContacts(memberVolunteers) : []
+
+    const CAPilots: Contact[] = volunteersToContacts(CAVolunteers)
+
+    return { ...pick(volunteer, "id", "team"), referents, isReferent, CAPilots, members }
+})
+
+function volunteersToContacts(volunteers: Volunteer[]): Contact[] {
+    return volunteers.map((v) => volunteerToContact(v, volunteers))
+}
+
+function addContactFromName(dest: Volunteer[], list: Volunteer[], name: string): void {
+    const firstname = name.split(/\s+/)[0]
+    const lastname = name.split(/\s+/)[1]
+    const volunteer = list.find((v) => v.firstname === firstname && v.lastname === lastname)
+    if (volunteer) {
+        dest.push(volunteer)
+    }
+}
+
+function volunteerToContact(volunteer: Volunteer, list?: Volunteer[]): Contact {
+    const firstname = list ? getUniqueNickname(list, volunteer) : volunteer.firstname
+    return { ...pick(volunteer, "mobile"), firstname }
+}

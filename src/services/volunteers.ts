@@ -173,8 +173,8 @@ export const volunteerExample: Volunteer = {
     id: 1,
     firstname: "Aupeix",
     lastname: "Amélie",
-    email: "pakouille.lakouille@yahoo.fr",
-    mobile: "0675650392",
+    email: "bidonmail@yahoo.fr",
+    mobile: "0606060606",
     photo: "images/volunteers/$taille/amélie_aupeix.jpg",
     adult: 1,
     roles: [],
@@ -183,8 +183,8 @@ export const volunteerExample: Volunteer = {
     dayWishes: [],
     dayWishesComment: "",
     tshirtCount: 1,
-    tshirtSize: "Femme M",
-    food: "Végétarien",
+    tshirtSize: "Femme S",
+    food: "Crudivore",
     team: 2,
     teamWishes: [],
     teamWishesComment: "",
@@ -334,4 +334,17 @@ export interface VolunteerLoan {
     playable: Volunteer["playable"]
     giftable: Volunteer["giftable"]
     noOpinion: Volunteer["noOpinion"]
+}
+
+export type Contact = { firstname: string; mobile: string }
+export type VolunteerOnSiteInfoWithoutId = Omit<VolunteerOnSiteInfo, "id">
+export interface VolunteerOnSiteInfo {
+    id: Volunteer["id"]
+    team: Volunteer["team"]
+    isReferent: boolean
+    referentFirstnames: string
+    referents: Contact[]
+    CAPilots: Contact[]
+    members: Contact[]
+    orga: Contact[]
 }

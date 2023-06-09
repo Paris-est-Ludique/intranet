@@ -15,6 +15,8 @@ import {
     AskParticipationDetails,
     fetchFor as fetchForParticipationDetails,
 } from "./AskParticipationDetails"
+
+import { OnSiteInfo, fetchFor as fetchForOnSiteInfo } from "./OnSiteInfo"
 // import { AskPushNotif } from "./AskPushNotif"
 
 const Asks = (): JSX.Element | null => {
@@ -35,27 +37,10 @@ const Asks = (): JSX.Element | null => {
 
     // AskPushNotif(asks, 99)
 
+    const onSiteInfoElement = OnSiteInfo()
     if (_.isEmpty(asks)) {
-        asks.push(
-            <div key="pushNotifs">
-                <div className={styles.notificationsPage}>
-                    <div className={styles.notificationsContent}>
-                        <div className={styles.formLine}>
-                            <label>
-                                Si tu veux changer la réponse à l'une des questions posées ici, va
-                                dans <a href="/profil">Mon profil</a> :)
-                                <br />
-                                Tu as fait le tour des dernières infos ou questions importantes,
-                                merci !
-                                <br />
-                                Nous te préviendrons quand il y en aura de nouvelles.
-                                <br />
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+        asks.push(onSiteInfoElement)
+        asks.push(asksEnd())
     }
 
     if (volunteerAsks === undefined) {
@@ -65,10 +50,33 @@ const Asks = (): JSX.Element | null => {
     return <div>{asks.map<React.ReactNode>((t) => t).reduce((prev, curr) => [prev, curr])}</div>
 }
 
+function asksEnd(): JSX.Element {
+    return (
+        <div key="pushNotifs">
+            <div className={styles.notificationsPage}>
+                <div className={styles.notificationsContent}>
+                    <div className={styles.formLine}>
+                        <label>
+                            Si tu veux changer la réponse à l'une des questions posées ici, va dans{" "}
+                            <a href="/profil">Mon profil</a> :)
+                            <br />
+                            Tu as fait le tour des dernières infos ou questions importantes, merci !
+                            <br />
+                            Nous te préviendrons quand il y en aura de nouvelles.
+                            <br />
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export default memo(Asks)
 
 // Fetch server-side data here
 export const fetchFor = [
+    ...fetchForOnSiteInfo,
     // ...fetchForBrunch,
     // ...fetchForRetex,
     ...fetchForDiscord,
