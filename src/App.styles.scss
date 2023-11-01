@@ -1,6 +1,6 @@
-@import "../theme/variables";
-@import "../theme/mixins";
-@import "../theme/main";
+@import "@/assets/styles/variables";
+@import "@/assets/styles/mixins";
+@import "@/assets/styles/main";
 
 .cardPage {
     background-color: $color-white;
@@ -30,13 +30,13 @@
     left: 10px;
     width: 100px;
     height: 60px;
-    background: url("../app/img/logo-mini.png") no-repeat center center;
+    background: url("assets/img/logo-mini.png") no-repeat center center;
     background-size: cover;
 
     @include desktop {
         width: 181px;
         height: 118px;
-        background: url("../app/img/logo.png") no-repeat;
+        background: url("assets/img/logo.png") no-repeat;
     }
 }
 

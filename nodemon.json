@@ -1,3 +1,0 @@
-{
-    "watch": ["src/server", "webpack", "babel.config.js"]
-}

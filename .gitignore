@@ -1,5 +1,8 @@
 # Dependencies
 node_modules
+.yarn
+.vite
+.pnp.*
 
 # Sass compiled files
 *.module.css
