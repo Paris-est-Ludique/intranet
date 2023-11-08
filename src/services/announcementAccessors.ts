@@ -1,7 +1,8 @@
-import ServiceAccessors from "./accessors"
-import { elementName, Announcement, AnnouncementWithoutId } from "./announcement"
+import ServiceAccessors from './accessors'
+import type { Announcement, AnnouncementWithoutId } from './announcement'
+import { elementNameAnnouncement } from './announcement'
 
-const serviceAccessors = new ServiceAccessors<AnnouncementWithoutId, Announcement>(elementName)
+const serviceAccessors = new ServiceAccessors<AnnouncementWithoutId, Announcement>(elementNameAnnouncement)
 
 // export const announcementGet = serviceAccessors.get()
 // export const announcementAdd = serviceAccessors.add()

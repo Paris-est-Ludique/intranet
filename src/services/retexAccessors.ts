@@ -1,6 +1,7 @@
-import ServiceAccessors from "./accessors"
-import { elementName, Retex, RetexWithoutId } from "./retex"
+import ServiceAccessors from './accessors'
+import type { Retex, RetexWithoutId } from './retex'
+import { elementNameRetex } from './retex'
 
-const serviceAccessors = new ServiceAccessors<RetexWithoutId, Retex>(elementName)
+const serviceAccessors = new ServiceAccessors<RetexWithoutId, Retex>(elementNameRetex)
 
-export const retexSet = serviceAccessors.securedCustomPost<[Partial<Retex>]>("Set")
+export const retexSet = serviceAccessors.securedCustomPost<[Partial<Retex>]>('Set')

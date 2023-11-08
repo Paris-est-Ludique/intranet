@@ -1,72 +1,73 @@
-import _ from "lodash"
-import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
+import first from 'lodash/first'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementListFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk, EntitiesRequest } from '.'
 
-import { StateRequest, toastError, elementListFetch } from "./utils"
-import { MiscDiscordInvitation } from "../services/miscs"
-import { AppThunk, AppState, EntitiesRequest } from "."
-import { miscDiscordInvitation } from "../services/miscsAccessors"
+import type { MiscDiscordInvitation } from '@/services/miscs'
+import { miscDiscordInvitation } from '@/services/miscsAccessors'
 
-const miscAdapter = createEntityAdapter<MiscDiscordInvitation>()
+const miscDiscordAdapter = createEntityAdapter<MiscDiscordInvitation>()
 
-export const initialState = miscAdapter.getInitialState({
-    readyStatus: "idle",
+const initialState = miscDiscordAdapter.getInitialState({
+  readyStatus: 'idle',
 } as StateRequest)
 
 const miscDiscordInvitationSlice = createSlice({
-    name: "miscDiscordInvitation",
-    initialState,
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<MiscDiscordInvitation[]>) => {
-            state.readyStatus = "success"
-            miscAdapter.setAll(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+  name: 'miscDiscordInvitation',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<MiscDiscordInvitation[]>) => {
+      state.readyStatus = 'success'
+      miscDiscordAdapter.setAll(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default miscDiscordInvitationSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = miscDiscordInvitationSlice.actions
+export const {
+  reducer: miscDiscordInvitationReducer,
+  actions: miscDiscordInvitationActions,
+} = miscDiscordInvitationSlice
 
 export const fetchMiscDiscordInvitation = elementListFetch(
-    miscDiscordInvitation,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des données diverses: ${error.message}`)
+  miscDiscordInvitation,
+  miscDiscordInvitationActions,
+  (error: Error) => toastError(`Erreur lors du chargement des données diverses: ${error.message}`),
 )
 
-const shouldFetchMiscDiscordInvitation = (state: AppState) =>
-    state.miscDiscordInvitation.readyStatus !== "success"
-
-export const fetchMiscDiscordInvitationIfNeed = (): AppThunk => (dispatch, getState) => {
-    const { jwt } = getState().auth
-    if (shouldFetchMiscDiscordInvitation(getState()))
-        return dispatch(fetchMiscDiscordInvitation(jwt))
-
-    return null
+function selectShouldFetchMiscDiscordInvitation(state: AppState) {
+  return state.miscDiscordInvitation.readyStatus !== 'success'
 }
 
-export const refreshMiscDiscordInvitation =
-    (jwt: string): AppThunk =>
-    (dispatch) =>
-        dispatch(fetchMiscDiscordInvitation(jwt))
+export const fetchMiscDiscordInvitationIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  const { jwt } = getState().auth
+  if (selectShouldFetchMiscDiscordInvitation(getState())) {
+    dispatch(fetchMiscDiscordInvitation(jwt))
+  }
+}
 
-export const selectMiscDiscordInvitationState = (
-    state: AppState
-): EntitiesRequest<MiscDiscordInvitation> => state.miscDiscordInvitation
+export const refreshMiscDiscordInvitation: AppThunk = (jwt: string)=> (dispatch: AppDispatch) => dispatch(fetchMiscDiscordInvitation(jwt))
+
+export function selectMiscDiscordInvitationState(state: AppState): EntitiesRequest<MiscDiscordInvitation> {
+  return state.miscDiscordInvitation
+}
 
 export const selectMiscDiscordInvitation = createSelector(
-    selectMiscDiscordInvitationState,
-    ({ ids, entities, readyStatus }) => {
-        if (readyStatus !== "success") return ""
-        const id = _.first(ids)
-        if (id === undefined) return ""
-        return entities[id]?.discordInvitation || ""
-    }
+  selectMiscDiscordInvitationState,
+  ({ ids, entities, readyStatus }) => {
+    if (readyStatus !== 'success')
+      return ''
+    const id = first(ids)
+    if (id === undefined)
+      return ''
+    return entities[id]?.discordInvitation || ''
+  },
 )

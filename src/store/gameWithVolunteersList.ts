@@ -1,73 +1,78 @@
-import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
-import { sortedUniqBy, sortBy } from "lodash"
+import sortBy from 'lodash/sortBy'
+import sortedUniqBy from 'lodash/sortedUniqBy'
 
-import { StateRequest, toastError, elementListFetch, gameTitleOrder } from "./utils"
-import { GameWithVolunteers } from "../services/games"
-import { AppThunk, AppState, EntitiesRequest } from "."
-import { gameWithVolunteersListGet } from "../services/gamesAccessors"
+import { createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementListFetch, gameTitleOrder, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk, EntitiesRequest } from '.'
+import type { GameWithVolunteers } from '@/services/games'
+import { gameWithVolunteersListGet } from '@/services/gamesAccessors'
 
-const gameAdapter = createEntityAdapter<GameWithVolunteers>()
+const gameWithVolunteersAdapter = createEntityAdapter<GameWithVolunteers>()
 
-export const initialState = gameAdapter.getInitialState({
-    readyStatus: "idle",
+const initialState = gameWithVolunteersAdapter.getInitialState({
+  readyStatus: 'idle',
 } as StateRequest)
 
-const gameWithVolunteersList = createSlice({
-    name: "gameWithVolunteersList",
-    initialState,
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<GameWithVolunteers[]>) => {
-            state.readyStatus = "success"
-            gameAdapter.setAll(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+const gameWithVolunteersListSlice = createSlice({
+  name: 'gameWithVolunteersList',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<GameWithVolunteers[]>) => {
+      state.readyStatus = 'success'
+      gameWithVolunteersAdapter.setAll(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default gameWithVolunteersList.reducer
-export const { getRequesting, getSuccess, getFailure } = gameWithVolunteersList.actions
+export const {
+  reducer: gameWithVolunteersListReducer,
+  actions: gameWithVolunteersListActions,
+} = gameWithVolunteersListSlice
 
 export const fetchGameWithVolunteersList = elementListFetch(
-    gameWithVolunteersListGet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`)
+  gameWithVolunteersListGet,
+  gameWithVolunteersListActions,
+  (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`),
 )
 
-const shouldFetchGameWithVolunteersList = (state: AppState) =>
-    state.gameWithVolunteersList.readyStatus !== "success"
-
-export const fetchGameWithVolunteersListIfNeed = (): AppThunk => (dispatch, getState) => {
-    const { jwt } = getState().auth
-    if (shouldFetchGameWithVolunteersList(getState()))
-        return dispatch(fetchGameWithVolunteersList(jwt))
-
-    return null
+function selectShouldFetchGameWithVolunteersList(state: AppState) {
+  return state.gameWithVolunteersList.readyStatus !== 'success'
 }
 
-export const selectGameWithVolunteersListState = (
-    state: AppState
-): EntitiesRequest<GameWithVolunteers> => state.gameWithVolunteersList
+export const fetchGameWithVolunteersListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  const { jwt } = getState().auth
+
+  if (selectShouldFetchGameWithVolunteersList(getState())) {
+    dispatch(fetchGameWithVolunteersList(jwt))
+  }
+}
+
+export function selectGameWithVolunteersListState(state: AppState): EntitiesRequest<GameWithVolunteers> {
+  return state.gameWithVolunteersList
+}
 
 export const selectGameWithVolunteersList = createSelector(
-    selectGameWithVolunteersListState,
-    ({ ids, entities, readyStatus }) => {
-        if (readyStatus !== "success") return []
-        return ids.map((id) => entities[id])
-    }
+  selectGameWithVolunteersListState,
+  ({ ids, entities, readyStatus }) => {
+    if (readyStatus !== 'success')
+      return []
+    return ids.map(id => entities[id])
+  },
 )
 
 export const selectSortedUniqueGamesWithVolunteers = createSelector(
-    selectGameWithVolunteersList,
-    (games) => {
-        const gameWithVolunteers = games.filter((game) => game) as GameWithVolunteers[]
-        return sortedUniqBy(sortBy(gameWithVolunteers, gameTitleOrder), gameTitleOrder)
-    }
+  selectGameWithVolunteersList,
+  (games: []) => {
+    const gameWithVolunteers = games.filter(game => game) as GameWithVolunteers[]
+    return sortedUniqBy(sortBy(gameWithVolunteers, gameTitleOrder), gameTitleOrder)
+  },
 )

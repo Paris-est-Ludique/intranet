@@ -1,47 +1,52 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementListFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, toastError, elementListFetch } from "./utils"
-import { Wish } from "../services/wishes"
-import { AppThunk, AppState } from "."
-import { wishListGet } from "../services/wishesAccessors"
+import type { Wish } from '@/services/wishes'
+import { wishListGet } from '@/services/wishesAccessors'
 
 const wishAdapter = createEntityAdapter<Wish>()
+const initialState = wishAdapter.getInitialState({
+  readyStatus: 'idle',
+} as StateRequest)
 
-const wishList = createSlice({
-    name: "wishList",
-    initialState: wishAdapter.getInitialState({
-        readyStatus: "idle",
-    } as StateRequest),
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<Wish[]>) => {
-            state.readyStatus = "success"
-            wishAdapter.setAll(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+const wishListSlice = createSlice({
+  name: 'wishList',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<Wish[]>) => {
+      state.readyStatus = 'success'
+      wishAdapter.setAll(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default wishList.reducer
-export const { getRequesting, getSuccess, getFailure } = wishList.actions
+export const {
+  reducer: wishListReducer,
+  actions: wishListActions,
+} = wishListSlice
 
 export const fetchWishList = elementListFetch(
-    wishListGet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des envies: ${error.message}`)
+  wishListGet,
+  wishListActions,
+  (error: Error) => toastError(`Erreur lors du chargement des envies: ${error.message}`),
 )
 
-const shouldFetchWishList = (state: AppState) => state.wishList.readyStatus !== "success"
+export const selectShouldFetchWishList = (state: AppState) => state.wishList.readyStatus !== 'success'
 
-export const fetchWishListIfNeed = (): AppThunk => (dispatch, getState) => {
-    if (shouldFetchWishList(getState())) return dispatch(fetchWishList())
-
-    return null
-}
+export const fetchWishListIfNeed: AppThunk = () =>
+  (dispatch: AppDispatch, getState: () => AppState) => {
+    const shouldFetch = selectShouldFetchWishList(getState())
+    if (shouldFetch) {
+      dispatch(fetchWishList())
+    }
+  }

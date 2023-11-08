@@ -1,39 +1,41 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementFetch } from './utils'
 
-import { StateRequest, elementFetch } from "./utils"
-import { VolunteerForgot } from "../services/volunteers"
-import { volunteerForgot } from "../services/volunteersAccessors"
+import type { VolunteerForgot } from '@/services/volunteers'
+import { volunteerForgot } from '@/services/volunteersAccessors'
 
 type StateVolunteer = { entity?: VolunteerForgot } & StateRequest
 
-export const initialState: StateVolunteer = {
-    readyStatus: "idle",
+const initialState: StateVolunteer = {
+  readyStatus: 'idle',
 }
 
 const volunteerForgotSlice = createSlice({
-    name: "volunteerForgot",
-    initialState,
-    reducers: {
-        getRequesting: (_) => ({
-            readyStatus: "request",
-        }),
-        getSuccess: (_, { payload }: PayloadAction<VolunteerForgot>) => ({
-            readyStatus: "success",
-            entity: payload,
-        }),
-        getFailure: (_, { payload }: PayloadAction<string>) => ({
-            readyStatus: "failure",
-            error: payload,
-        }),
-    },
+  name: 'volunteerForgot',
+  initialState,
+  reducers: {
+    getRequesting: (_state: unknown) => ({
+      readyStatus: 'request',
+    }),
+    getSuccess: (_state: unknown, { payload }: PayloadAction<VolunteerForgot>) => ({
+      readyStatus: 'success',
+      entity: payload,
+    }),
+    getFailure: (_state: unknown, { payload }: PayloadAction<string>) => ({
+      readyStatus: 'failure',
+      error: payload,
+    }),
+  },
 })
 
-export default volunteerForgotSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerForgotSlice.actions
+export const {
+  reducer: volunteerForgotReducer,
+  actions: volunteerForgotActions,
+} = volunteerForgotSlice
 
 export const fetchVolunteerForgot = elementFetch(
-    volunteerForgot,
-    getRequesting,
-    getSuccess,
-    getFailure
+  volunteerForgot,
+  volunteerForgotActions,
 )

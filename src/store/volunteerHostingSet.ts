@@ -1,60 +1,61 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, toastError, elementFetch } from "./utils"
-import { VolunteerHosting } from "../services/volunteers"
-import { AppThunk, AppState } from "."
-import { volunteerHostingSet } from "../services/volunteersAccessors"
+import type { VolunteerHosting } from '@/services/volunteers'
+import { volunteerHostingSet } from '@/services/volunteersAccessors'
 
 type StateVolunteerHostingSet = { entity?: VolunteerHosting } & StateRequest
 
-export const initialState: StateVolunteerHostingSet = {
-    readyStatus: "idle",
+const initialState: StateVolunteerHostingSet = {
+  readyStatus: 'idle',
 }
 
 const volunteerHostingSetSlice = createSlice({
-    name: "volunteerHostingSet",
-    initialState,
-    reducers: {
-        getRequesting: (_) => ({
-            readyStatus: "request",
-        }),
-        getSuccess: (_, { payload }: PayloadAction<VolunteerHosting>) => ({
-            readyStatus: "success",
-            entity: payload,
-        }),
-        getFailure: (_, { payload }: PayloadAction<string>) => ({
-            readyStatus: "failure",
-            error: payload,
-        }),
-    },
+  name: 'volunteerHostingSet',
+  initialState,
+  reducers: {
+    getRequesting: () => ({
+      readyStatus: 'request',
+    }),
+    getSuccess: (_state, { payload }: PayloadAction<VolunteerHosting>) => ({
+      readyStatus: 'success',
+      entity: payload,
+    }),
+    getFailure: (_state, { payload }: PayloadAction<string>) => ({
+      readyStatus: 'failure',
+      error: payload,
+    }),
+  },
 })
 
-export default volunteerHostingSetSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerHostingSetSlice.actions
+export const {
+  reducer: volunteerHostingSetReducer,
+  actions: volunteerHostingSetActions,
+} = volunteerHostingSetSlice
 
 export const fetchVolunteerHostingSet = elementFetch(
-    volunteerHostingSet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) =>
-        toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`)
+  volunteerHostingSet,
+  volunteerHostingSetActions,
+  (error: Error) =>
+    toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`),
 )
 
-const shouldFetchVolunteerHostingSet = (state: AppState, id: number) =>
-    state.volunteerHostingSet?.readyStatus !== "success" ||
-    (state.volunteerHostingSet?.entity && state.volunteerHostingSet?.entity?.id !== id)
+function selectShouldFetchVolunteerHostingSet(state: AppState, id: number) {
+  return state.volunteerHostingSet?.readyStatus !== 'success'
+    || (state.volunteerHostingSet?.entity && state.volunteerHostingSet?.entity?.id !== id)
+}
 
-export const fetchVolunteerHostingSetIfNeed =
-    (id = 0, wishes: Partial<VolunteerHosting> = {}): AppThunk =>
-    (dispatch, getState) => {
-        let jwt = ""
+export const fetchVolunteerHostingSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerHosting> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+  let jwt = ''
 
-        if (!id) {
-            ;({ jwt, id } = getState().auth)
-        }
-        if (shouldFetchVolunteerHostingSet(getState(), id))
-            return dispatch(fetchVolunteerHostingSet(jwt, id, wishes))
+  if (!id) {
+    ;({ jwt, id } = getState().auth)
+  }
 
-        return null
-    }
+  if (selectShouldFetchVolunteerHostingSet(getState(), id)) {
+    dispatch(fetchVolunteerHostingSet(jwt, id, wishes))
+  }
+}

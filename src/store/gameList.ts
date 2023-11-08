@@ -1,49 +1,54 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementListFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, toastError, elementListFetch } from "./utils"
-import { Game } from "../services/games"
-import { AppThunk, AppState } from "."
-import { gameListGet } from "../services/gamesAccessors"
+import type { Game } from '@/services/games'
+import { gameListGet } from '@/services/gamesAccessors'
 
 const gameAdapter = createEntityAdapter<Game>()
 
-export const initialState = gameAdapter.getInitialState({
-    readyStatus: "idle",
+const initialState = gameAdapter.getInitialState({
+  readyStatus: 'idle',
 } as StateRequest)
 
-const gameList = createSlice({
-    name: "gameList",
-    initialState,
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<Game[]>) => {
-            state.readyStatus = "success"
-            gameAdapter.setAll(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+const gameListSlice = createSlice({
+  name: 'gameList',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<Game[]>) => {
+      state.readyStatus = 'success'
+      gameAdapter.setAll(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default gameList.reducer
-export const { getRequesting, getSuccess, getFailure } = gameList.actions
+export const {
+  reducer: gameListReducer,
+  actions: gameListActions,
+} = gameListSlice
 
 export const fetchGameList = elementListFetch(
-    gameListGet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`)
+  gameListGet,
+  gameListActions,
+  (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`),
 )
 
-const shouldFetchGameList = (state: AppState) => state.gameList.readyStatus !== "success"
+const selectShouldFetchGameList = (state: AppState) => state.gameList.readyStatus !== 'success'
 
-export const fetchGameListIfNeed = (): AppThunk => (dispatch, getState) => {
-    if (shouldFetchGameList(getState())) return dispatch(fetchGameList())
-
-    return null
+export const fetchGameListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  if (selectShouldFetchGameList(getState())) {
+    dispatch(fetchGameList())
+  }
 }
+
+// only for test
+export const gameListInitialState = initialState

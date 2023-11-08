@@ -1,26 +1,21 @@
 export class Wish {
-    id = 0
-
-    domain = ""
-
-    wish = ""
-
-    details = ""
-
-    teams: string[] = []
-
-    addedDate = ""
+  id = 0
+  domain = ''
+  wish = ''
+  details = ''
+  teams: string[] = []
+  addedDate = ''
 }
 
 export const translationWish: { [k in keyof Wish]: string } = {
-    id: "id",
-    domain: "domaine",
-    wish: "wishes",
-    details: "precisions",
-    teams: "equipes",
-    addedDate: "dateAjout",
+  id: 'id',
+  domain: 'domaine',
+  wish: 'wishes',
+  details: 'precisions',
+  teams: 'equipes',
+  addedDate: 'dateAjout',
 }
 
-export const elementName = "Wish"
+export const elementNameWish = 'Wish'
 
-export type WishWithoutId = Omit<Wish, "id">
+export type WishWithoutId = Omit<Wish, 'id'>

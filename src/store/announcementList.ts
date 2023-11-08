@@ -1,51 +1,51 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import type { ActionsCreators, StateRequest } from './utils'
+import { elementListFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, toastError, elementListFetch } from "./utils"
-import { Announcement } from "../services/announcement"
-import { AppThunk, AppState } from "."
-import { announcementListGet } from "../services/announcementAccessors"
+import type { Announcement } from '@/services/announcement'
+import { announcementListGet } from '@/services/announcementAccessors'
 
 const announcementAdapter = createEntityAdapter<Announcement>()
 
-export const initialState = announcementAdapter.getInitialState({
-    readyStatus: "idle",
+const initialState = announcementAdapter.getInitialState({
+  readyStatus: 'idle',
 } as StateRequest)
 
-const announcementList = createSlice({
-    name: "announcementList",
-    initialState,
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<Announcement[]>) => {
-            state.readyStatus = "success"
-            announcementAdapter.setAll(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+export const announcementListSlice = createSlice({
+  name: 'announcementList',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<Announcement[]>) => {
+      state.readyStatus = 'success'
+      announcementAdapter.setAll(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default announcementList.reducer
-export const { getRequesting, getSuccess, getFailure } = announcementList.actions
+export const {
+  actions: announcementListActions,
+  reducer: announcementListReducer,
+} = announcementListSlice
 
 export const fetchAnnouncementList = elementListFetch(
-    announcementListGet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des announcements: ${error.message}`)
+  announcementListGet,
+  announcementListActions,
+  (error: Error) => toastError(`Erreur lors du chargement des announcements: ${error.message}`),
 )
 
-const shouldFetchAnnouncementList = (state: AppState) =>
-    state.announcementList.readyStatus !== "success"
+export const fetchAnnouncementListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  const { jwt } = getState().auth
 
-export const fetchAnnouncementListIfNeed = (): AppThunk => (dispatch, getState) => {
-    const { jwt } = getState().auth
-    if (shouldFetchAnnouncementList(getState())) return dispatch(fetchAnnouncementList(jwt))
-
-    return null
+  if (getState().announcementList.readyStatus !== 'success') {
+    dispatch(fetchAnnouncementList(jwt))
+  }
 }

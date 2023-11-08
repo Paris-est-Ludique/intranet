@@ -1,23 +1,23 @@
-import ServiceAccessors from "./accessors"
-import {
-    elementName,
-    Misc,
-    MiscWithoutId,
-    MiscDiscordInvitation,
-    MiscFestivalDate,
-    MiscMeetingDate,
-} from "./miscs"
+import ServiceAccessors from './accessors'
+import type {
+  Misc,
+  MiscDiscordInvitation,
+  MiscFestivalDate,
+  MiscMeetingDate,
+  MiscWithoutId,
+} from './miscs'
+import { elementNameMisc } from './miscs'
 
-const serviceAccessors = new ServiceAccessors<MiscWithoutId, Misc>(elementName)
+const serviceAccessors = new ServiceAccessors<MiscWithoutId, Misc>(elementNameMisc)
 
 export const miscDiscordInvitation = serviceAccessors.securedCustomGet<[], MiscDiscordInvitation>(
-    "DiscordInvitationGet"
+  'DiscordInvitationGet',
 )
 
 export const miscFestivalDateListGet = serviceAccessors.customGet<[], MiscFestivalDate>(
-    "FestivalDateListGet"
+  'FestivalDateListGet',
 )
 
 export const miscMeetingDateListGet = serviceAccessors.customGet<[], MiscMeetingDate>(
-    "MeetingDateListGet"
+  'MeetingDateListGet',
 )

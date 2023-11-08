@@ -1,65 +1,65 @@
-import { PayloadAction, createSlice, createSelector } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
+import type { ActionsCreators, StateRequest } from './utils'
+import { elementFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, toastError, elementFetch } from "./utils"
-import { VolunteerDiscordId } from "../services/volunteers"
-import { AppThunk, AppState } from "."
-import { volunteerDiscordIdGet } from "../services/volunteersAccessors"
+import type { VolunteerDiscordId } from '@/services/volunteers'
+import { volunteerDiscordIdGet } from '@/services/volunteersAccessors'
 
 type StateVolunteerDiscordId = { entity?: VolunteerDiscordId } & StateRequest
 
-export const initialState: StateVolunteerDiscordId = {
-    readyStatus: "idle",
+const initialState: StateVolunteerDiscordId = {
+  readyStatus: 'idle',
 }
 
-const volunteerDiscordId = createSlice({
-    name: "volunteerDiscordId",
-    initialState,
-    reducers: {
-        getRequesting: (_) => ({
-            readyStatus: "request",
-        }),
-        getSuccess: (_, { payload }: PayloadAction<VolunteerDiscordId>) => ({
-            readyStatus: "success",
-            entity: payload,
-        }),
-        getFailure: (_, { payload }: PayloadAction<string>) => ({
-            readyStatus: "failure",
-            error: payload,
-        }),
-    },
+const volunteerDiscordIdSlice = createSlice({
+  name: 'volunteerDiscordId',
+  initialState,
+  reducers: {
+    getRequesting: () => ({
+      readyStatus: 'request',
+    }),
+    getSuccess: (_state, { payload }: PayloadAction<VolunteerDiscordId>) => ({
+      readyStatus: 'success',
+      entity: payload,
+    }),
+    getFailure: (_state, { payload }: PayloadAction<string>) => ({
+      readyStatus: 'failure',
+      error: payload,
+    }),
+  },
 })
 
-export default volunteerDiscordId.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerDiscordId.actions
+export const {
+  reducer: volunteerDiscordIdReducer,
+  actions: volunteerDiscordIdActions,
+} = volunteerDiscordIdSlice
 
 export const fetchVolunteerDiscordId = elementFetch(
-    volunteerDiscordIdGet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) =>
-        toastError(`Erreur lors du chargement du discordId d'un bénévole: ${error.message}`)
+  volunteerDiscordIdGet,
+  volunteerDiscordIdActions,
+  (error: Error) =>
+    toastError(`Erreur lors du chargement du discordId d'un bénévole: ${error.message}`),
 )
 
-const shouldFetchVolunteerDiscordId = (state: AppState, id: number) =>
-    state.volunteerDiscordId.readyStatus !== "success" ||
-    (state.volunteerDiscordId.entity && state.volunteerDiscordId.entity.id !== id)
+function selectShouldFetchVolunteerDiscordId(state: AppState, id: number) {
+  return state.volunteerDiscordId.readyStatus !== 'success'
+    || (state.volunteerDiscordId.entity && state.volunteerDiscordId.entity.id !== id)
+}
 
-export const fetchVolunteerDiscordIdIfNeed =
-    (id = 0): AppThunk =>
-    (dispatch, getState) => {
-        let jwt = ""
+export const fetchVolunteerDiscordIdIfNeed: AppThunk = (id = 0) => (dispatch: AppDispatch, getState: () => AppState) => {
+  let jwt = ''
 
-        if (!id) {
-            ;({ jwt, id } = getState().auth)
-        }
-        if (shouldFetchVolunteerDiscordId(getState(), id))
-            return dispatch(fetchVolunteerDiscordId(jwt, id))
-
-        return null
-    }
+  if (!id) {
+    ;({ jwt, id } = getState().auth)
+  }
+  if (selectShouldFetchVolunteerDiscordId(getState(), id)) {
+    dispatch(fetchVolunteerDiscordId(jwt, id))
+  }
+}
 
 export const selectVolunteerDiscordId = createSelector(
-    (state: AppState) => state,
-    (state): string | undefined => state.volunteerDiscordId?.entity?.discordId
+  (state: AppState) => state,
+  (state: AppState): string | undefined => state.volunteerDiscordId?.entity?.discordId,
 )

@@ -1,65 +1,67 @@
-import { PayloadAction, createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementListFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk, EntitiesRequest } from '.'
 
-import { StateRequest, toastError, elementListFetch } from "./utils"
-import { MiscFestivalDate } from "../services/miscs"
-import { AppThunk, AppState, EntitiesRequest } from "."
-import { miscFestivalDateListGet } from "../services/miscsAccessors"
+import type { MiscFestivalDate } from '@/services/miscs'
+import { miscFestivalDateListGet } from '@/services/miscsAccessors'
 
-const miscAdapter = createEntityAdapter<MiscFestivalDate>()
+const miscFestivalDateAdapter = createEntityAdapter<MiscFestivalDate>()
 
-export const initialState = miscAdapter.getInitialState({
-    readyStatus: "idle",
+const initialState = miscFestivalDateAdapter.getInitialState({
+  readyStatus: 'idle',
 } as StateRequest)
 
-const miscFestivalDateList = createSlice({
-    name: "miscFestivalDateList",
-    initialState,
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<MiscFestivalDate[]>) => {
-            state.readyStatus = "success"
-            miscAdapter.setAll(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+const miscFestivalDateListSlice = createSlice({
+  name: 'miscFestivalDateList',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<MiscFestivalDate[]>) => {
+      state.readyStatus = 'success'
+      miscFestivalDateAdapter.setAll(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default miscFestivalDateList.reducer
-export const { getRequesting, getSuccess, getFailure } = miscFestivalDateList.actions
+export const {
+  reducer: miscFestivalDateListReducer,
+  actions: miscFestivalDateListActions,
+} = miscFestivalDateListSlice
 
 export const fetchMiscFestivalDateList = elementListFetch(
-    miscFestivalDateListGet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) => toastError(`Erreur lors du chargement des données diverses: ${error.message}`)
+  miscFestivalDateListGet,
+  miscFestivalDateListActions,
+  (error: Error) => toastError(`Erreur lors du chargement des données diverses: ${error.message}`),
 )
 
-const shouldFetchMiscFestivalDateList = (state: AppState) =>
-    state.miscFestivalDateList.readyStatus !== "success"
-
-export const fetchMiscFestivalDateListIfNeed = (): AppThunk => (dispatch, getState) => {
-    if (shouldFetchMiscFestivalDateList(getState())) return dispatch(fetchMiscFestivalDateList())
-
-    return null
+function selectShouldFetchMiscFestivalDateList(state: AppState) {
+  return state.miscFestivalDateList.readyStatus !== 'success'
 }
 
-export const refreshMiscFestivalDateList = (): AppThunk => (dispatch) =>
+export const fetchMiscFestivalDateListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  if (selectShouldFetchMiscFestivalDateList(getState()))
     dispatch(fetchMiscFestivalDateList())
+}
 
-export const selectMiscFestivalDateListState = (
-    state: AppState
-): EntitiesRequest<MiscFestivalDate> => state.miscFestivalDateList
+export const refreshMiscFestivalDateList: AppThunk = () => (dispatch: AppDispatch) => dispatch(fetchMiscFestivalDateList())
+
+export function selectMiscFestivalDateListState(state: AppState): EntitiesRequest<MiscFestivalDate> {
+  return state.miscFestivalDateList
+}
 
 export const selectMiscFestivalDateList = createSelector(
-    selectMiscFestivalDateListState,
-    ({ ids, entities, readyStatus }) => {
-        if (readyStatus !== "success") return []
-        return ids.map((id) => entities[id]) as MiscFestivalDate[]
-    }
+  selectMiscFestivalDateListState,
+  ({ ids, entities, readyStatus }) => {
+    if (readyStatus !== 'success')
+      return []
+    return ids.map(id => entities[id]) as MiscFestivalDate[]
+  },
 )

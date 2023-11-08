@@ -1,45 +1,49 @@
-import { PayloadAction, createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementAddFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, elementAddFetch, toastError } from "./utils"
-import { Volunteer } from "../services/volunteers"
-import { volunteerAddNew } from "../services/volunteersAccessors"
-import { AppThunk } from "."
+import type { Volunteer } from '@/services/volunteers'
+import { volunteerAddNew } from '@/services/volunteersAccessors'
 
 const volunteerAdapter = createEntityAdapter<Volunteer>()
+const initialState = volunteerAdapter.getInitialState({
+  readyStatus: 'idle',
+} as StateRequest)
 
 const volunteerAddNewSlice = createSlice({
-    name: "volunteerAddNew",
-    initialState: volunteerAdapter.getInitialState({
-        readyStatus: "idle",
-    } as StateRequest),
-    reducers: {
-        getRequesting: (state) => {
-            state.readyStatus = "request"
-        },
-        getSuccess: (state, { payload }: PayloadAction<Volunteer>) => {
-            state.readyStatus = "success"
-            volunteerAdapter.setOne(state, payload)
-        },
-        getFailure: (state, { payload }: PayloadAction<string>) => {
-            state.readyStatus = "failure"
-            state.error = payload
-        },
+  name: 'volunteerAddNew',
+  initialState,
+  reducers: {
+    getRequesting: (state) => {
+      state.readyStatus = 'request'
     },
+    getSuccess: (state, { payload }: PayloadAction<Volunteer>) => {
+      state.readyStatus = 'success'
+      volunteerAdapter.setOne(state, payload)
+    },
+    getFailure: (state, { payload }: PayloadAction<string>) => {
+      state.readyStatus = 'failure'
+      state.error = payload
+    },
+  },
 })
 
-export default volunteerAddNewSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerAddNewSlice.actions
+export const {
+  reducer: volunteerAddNewReducer,
+  actions: volunteerAddNewActions,
+} = volunteerAddNewSlice
 
 export const fetchVolunteerAddNew = elementAddFetch(
-    volunteerAddNew,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    () => toastError("Erreur d'ajout !"),
-    () => null
+  volunteerAddNew,
+  volunteerAddNewActions,
+  () => toastError('Erreur d\'ajout !'),
+  () => null,
 )
 
-export const fetchVolunteerAddNewIfNeed = (): AppThunk => (dispatch, getState) => {
-    const { jwt } = getState().auth
-    return dispatch(fetchVolunteerAddNew(jwt))
+export const fetchVolunteerAddNewIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  const { jwt } = getState().auth
+
+  dispatch(fetchVolunteerAddNew(jwt))
 }

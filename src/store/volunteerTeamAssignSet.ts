@@ -1,60 +1,62 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import type { StateRequest } from './utils'
+import { elementFetch, toastError } from './utils'
+import type { AppDispatch, AppState, AppThunk } from '.'
 
-import { StateRequest, toastError, elementFetch } from "./utils"
-import { VolunteerTeamAssign } from "../services/volunteers"
-import { AppThunk, AppState } from "."
-import { volunteerTeamAssignSet } from "../services/volunteersAccessors"
+import type { VolunteerTeamAssign } from '@/services/volunteers'
+import { volunteerTeamAssignSet } from '@/services/volunteersAccessors'
 
 type StateVolunteerTeamAssignSet = { entity?: VolunteerTeamAssign } & StateRequest
 
-export const initialState: StateVolunteerTeamAssignSet = {
-    readyStatus: "idle",
+const initialState: StateVolunteerTeamAssignSet = {
+  readyStatus: 'idle',
 }
 
 const volunteerTeamAssignSetSlice = createSlice({
-    name: "volunteerTeamAssignSet",
-    initialState,
-    reducers: {
-        getRequesting: (_) => ({
-            readyStatus: "request",
-        }),
-        getSuccess: (_, { payload }: PayloadAction<VolunteerTeamAssign>) => ({
-            readyStatus: "success",
-            entity: payload,
-        }),
-        getFailure: (_, { payload }: PayloadAction<string>) => ({
-            readyStatus: "failure",
-            error: payload,
-        }),
-    },
+  name: 'volunteerTeamAssignSet',
+  initialState,
+  reducers: {
+    getRequesting: () => ({
+      readyStatus: 'request',
+    }),
+    getSuccess: (_state, { payload }: PayloadAction<VolunteerTeamAssign>) => ({
+      readyStatus: 'success',
+      entity: payload,
+    }),
+    getFailure: (_state, { payload }: PayloadAction<string>) => ({
+      readyStatus: 'failure',
+      error: payload,
+    }),
+  },
 })
 
-export default volunteerTeamAssignSetSlice.reducer
-export const { getRequesting, getSuccess, getFailure } = volunteerTeamAssignSetSlice.actions
+export const {
+  reducer: volunteerTeamAssignSetReducer,
+  actions: volunteerTeamAssignSetActions,
+} = volunteerTeamAssignSetSlice
 
 export const fetchVolunteerTeamAssignSet = elementFetch(
-    volunteerTeamAssignSet,
-    getRequesting,
-    getSuccess,
-    getFailure,
-    (error: Error) =>
-        toastError(`Erreur lors du chargement des assignation d'équipe: ${error.message}`)
+  volunteerTeamAssignSet,
+  volunteerTeamAssignSetActions,
+  (error: Error) =>
+    toastError(`Erreur lors du chargement des assignation d'équipe: ${error.message}`),
 )
 
-const shouldFetchVolunteerTeamAssignSet = (state: AppState, id: number) =>
-    state.volunteerTeamAssignSet?.readyStatus !== "success" ||
-    (state.volunteerTeamAssignSet?.entity && state.volunteerTeamAssignSet?.entity?.id !== id)
+function selectShouldFetchVolunteerTeamAssignSet(state: AppState, id: number): boolean {
+  return state.volunteerTeamAssignSet?.readyStatus !== 'success'
+    || (state.volunteerTeamAssignSet?.entity && state.volunteerTeamAssignSet?.entity?.id !== id)
+}
 
-export const fetchVolunteerTeamAssignSetIfNeed =
-    (id = 0, wishes: Partial<VolunteerTeamAssign> = {}): AppThunk =>
-    (dispatch, getState) => {
-        let jwt = ""
+export const fetchVolunteerTeamAssignSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerTeamAssign> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+  let jwt = ''
 
-        if (!id) {
-            ;({ jwt, id } = getState().auth)
-        }
-        if (shouldFetchVolunteerTeamAssignSet(getState(), id))
-            return dispatch(fetchVolunteerTeamAssignSet(jwt, id, wishes))
+  if (!id) {
+    ;({ jwt, id } = getState().auth)
+  }
 
-        return null
-    }
+  const shouldFetch = selectShouldFetchVolunteerTeamAssignSet(getState(), id)
+  if (shouldFetch) {
+    dispatch(fetchVolunteerTeamAssignSet(jwt, id, wishes))
+  }
+}

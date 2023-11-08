@@ -1,26 +1,21 @@
 export class Announcement {
-    id = 0
-
-    created = new Date()
-
-    type = ""
-
-    title = ""
-
-    url = ""
-
-    informedWithNotif = false
+  id = 0
+  created = new Date()
+  type = ''
+  title = ''
+  url = ''
+  informedWithNotif = false
 }
 
 export const translationAnnouncement: { [k in keyof Announcement]: string } = {
-    id: "id",
-    created: "creation",
-    type: "type",
-    title: "titre",
-    url: "url",
-    informedWithNotif: "informéAvecUneNotif",
+  id: 'id',
+  created: 'creation',
+  type: 'type',
+  title: 'titre',
+  url: 'url',
+  informedWithNotif: 'informéAvecUneNotif',
 }
 
-export const elementName = "Announcement"
+export const elementNameAnnouncement = 'Announcement'
 
-export type AnnouncementWithoutId = Omit<Announcement, "id">
+export type AnnouncementWithoutId = Omit<Announcement, 'id'>
