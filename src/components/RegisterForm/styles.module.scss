@@ -1,5 +1,5 @@
-@import "../../theme/variables";
-@import "../../theme/mixins";
+@import "@/assets/styles/variables";
+@import "@/assets/styles/mixins";
 
 .registerIntro {
     dt {
@@ -154,10 +154,10 @@
 }
 
 .pelImg1 {
-    background: url("../../app/img/pel2016.jpg") no-repeat center center;
+    background: url("assets/img/pel2016.jpg") no-repeat center center;
 }
 .pelImg2 {
-    background: url("../../app/img/pel2017.jpg") no-repeat center center;
+    background: url("assets/img/pel2017.jpg") no-repeat center center;
 }
 .pelImg1,
 .pelImg2 {
@@ -187,7 +187,7 @@
     position: relative;
     width: calc(90vw);
     height: calc(40vw);
-    background: url("../../app/img/bene2019.jpg") no-repeat center center;
+    background: url("assets/img/bene2019.jpg") no-repeat center center;
     background-size: cover;
 
     @include desktop {
@@ -200,7 +200,7 @@
     position: relative;
     width: calc(90vw);
     height: calc(168vw);
-    background: url("../../app/img/plan2019.jpg") no-repeat center center;
+    background: url("assets/img/plan2019.jpg") no-repeat center center;
     background-size: cover;
 
     @include desktop {
@@ -213,7 +213,7 @@
     position: relative;
     width: calc(90vw);
     height: calc(18vw);
-    background: url("../../app/img/barnums.jpg") no-repeat center center;
+    background: url("assets/img/barnums.jpg") no-repeat center center;
     background-size: cover;
 
     @include desktop {

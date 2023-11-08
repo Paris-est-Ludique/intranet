@@ -1,16 +1,21 @@
-import loadable from "@loadable/component"
+import type { Props } from './TeamsPage'
+import { loadData } from './TeamsPage'
+import loadable from '@loadable/component'
 
-import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./TeamsPage"
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
+import Loading from '@/components/Loading/Loading'
 
-const Teams = loadable(() => import("./TeamsPage"), {
-    fallback: <Loading />,
+const Teams = loadable(() => import('./TeamsPage'), {
+  fallback: <Loading />,
 })
 
-export default (props: Props): JSX.Element => (
+function LazyTeams(props: Props): JSX.Element {
+  return (
     <ErrorBoundary>
-        <Teams {...props} />
+      <Teams {...props} />
     </ErrorBoundary>
-)
+  )
+}
 
+export default LazyTeams
 export { loadData }

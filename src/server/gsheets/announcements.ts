@@ -1,14 +1,16 @@
-import ExpressAccessors from "./expressAccessors"
+import ExpressAccessors from './expressAccessors'
+import type {
+  AnnouncementWithoutId,
+} from '@/services/announcement'
 import {
-    Announcement,
-    AnnouncementWithoutId,
-    translationAnnouncement,
-} from "../../services/announcement"
+  Announcement,
+  translationAnnouncement,
+} from '@/services/announcement'
 
 const expressAccessor = new ExpressAccessors<AnnouncementWithoutId, Announcement>(
-    "Announcements",
-    new Announcement(),
-    translationAnnouncement
+  'Announcements',
+  new Announcement(),
+  translationAnnouncement,
 )
 
 export const announcementListGet = expressAccessor.listGet()

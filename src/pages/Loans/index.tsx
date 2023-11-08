@@ -1,16 +1,21 @@
-import loadable from "@loadable/component"
+import type { Props } from './LoansPage'
+import { loadData } from './LoansPage'
+import loadable from '@loadable/component'
 
-import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./LoansPage"
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
+import Loading from '@/components/Loading/Loading'
 
-const Loans = loadable(() => import("./LoansPage"), {
-    fallback: <Loading />,
+const Loans = loadable(() => import('./LoansPage'), {
+  fallback: <Loading />,
 })
 
-export default (props: Props): JSX.Element => (
+function LazyLoans(props: Props): JSX.Element {
+  return (
     <ErrorBoundary>
-        <Loans {...props} />
+      <Loans {...props} />
     </ErrorBoundary>
-)
+  )
+}
 
+export default LazyLoans
 export { loadData }

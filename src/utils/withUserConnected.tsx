@@ -1,12 +1,9 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { isUserConnected } from "../store/auth"
+import type React from 'react'
+import { useSelector } from 'react-redux'
 
-function withUserConnected<T extends JSX.IntrinsicAttributes>(Component: React.ComponentType<T>) {
-    return (props: T): JSX.Element | null => {
-        const connected = useSelector(isUserConnected)
-        return connected ? <Component {...props} /> : null
-    }
+export default function withUserConnected<T extends JSX.IntrinsicAttributes>(Component: React.ComponentType<T>) {
+  return function isConnected(props: T): JSX.Element | null {
+    const connected = useSelector(isUserConnected)
+    return connected ? <Component {...props} /> : null
+  }
 }
-
-export default withUserConnected

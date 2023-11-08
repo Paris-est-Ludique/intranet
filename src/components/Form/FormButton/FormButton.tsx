@@ -1,32 +1,32 @@
-import { FC, ReactNode } from "react"
-import { toastError } from "../../../store/utils"
-import styles from "./styles.module.scss"
+import type { FC, ReactNode } from 'react'
+import styles from './styles.module.scss'
+import { toastError } from '@/store/utils'
 
-type Props = {
-    type?: "grey"
-    disabled?: boolean
-    children: ReactNode
-    onClick?: () => void
+interface Props {
+  type?: 'grey'
+  disabled?: boolean
+  children: ReactNode
+  onClick?: () => void
 }
 
 const FormButton: FC<Props> = ({ type, disabled, children, onClick }): JSX.Element => {
-    const onDisabledClick = () => toastError("Bouton désactivé")
+  const onDisabledClick = () => toastError('Bouton désactivé')
 
-    return (
-        <button
-            type="button"
-            className={type === "grey" || disabled ? styles.greyButton : styles.button}
-            onClick={disabled ? onDisabledClick : onClick}
-        >
-            {children}
-        </button>
-    )
+  return (
+    <button
+      type="button"
+      className={type === 'grey' || disabled ? styles.greyButton : styles.button}
+      onClick={disabled ? onDisabledClick : onClick}
+    >
+      {children}
+    </button>
+  )
 }
 
 FormButton.defaultProps = {
-    type: undefined,
-    disabled: false,
-    onClick: undefined,
+  type: undefined,
+  disabled: false,
+  onClick: undefined,
 }
 
 export default FormButton

@@ -1,16 +1,16 @@
-import { useDispatch } from "react-redux"
-import { useMemo } from "react"
+import { useMemo } from 'react'
+import { useDispatch } from 'react-redux'
 
-const useAction = (action: (...args: any[]) => any): any => {
-    const dispatch = useDispatch()
+function useAction(action: (...args: any[]) => any): any {
+  const dispatch = useDispatch()
 
-    return useMemo(
-        () =>
-            (...args: any[]) => {
-                dispatch(action(...args))
-            },
-        [dispatch, action]
-    )
+  return useMemo(
+    () =>
+      (...args: any[]) => {
+        dispatch(action(...args))
+      },
+    [dispatch, action],
+  )
 }
 
 export default useAction

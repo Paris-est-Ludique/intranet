@@ -1,29 +1,31 @@
-import { FC, memo } from "react"
-import { RouteComponentProps } from "react-router-dom"
-import { useSelector } from "react-redux"
+import type { FC } from 'react'
+import { memo } from 'react'
+import type { RouteComponentProps } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import { AppThunk } from "../../store"
-import { selectUserJwtToken } from "../../store/auth"
-import Page from "../../components/ui/Page/Page"
-import { Board, fetchForBoard, LoginForm } from "../../components"
+import type { AppThunk } from '@/store'
+import { selectUserJwtToken } from '@/store/auth'
+import Page from '@/components/ui/Page/Page'
+import Board, { fetchForBoard } from '@/components/VolunteerBoard/Board'
+import LoginForm from '@/components/LoginForm/LoginForm'
 
 export type Props = RouteComponentProps
 
 const BoardPage: FC<Props> = (): JSX.Element => {
-    const jwtToken = useSelector(selectUserJwtToken)
+  const jwtToken = useSelector(selectUserJwtToken)
 
-    if (jwtToken === undefined) return <p>Loading...</p>
-    if (jwtToken) {
-        return (
-            <Page>
-                <Board />
-            </Page>
-        )
-    }
-    return <LoginForm loginNeeded />
+  if (jwtToken === undefined)
+    return <p>Loading...</p>
+  if (jwtToken) {
+    return (
+      <Page>
+        <Board />
+      </Page>
+    )
+  }
+  return <LoginForm loginNeeded />
 }
 
-// Fetch server-side data here
 export const loadData = (): AppThunk[] => [...fetchForBoard.map((f) => f())]
 
 export default memo(BoardPage)

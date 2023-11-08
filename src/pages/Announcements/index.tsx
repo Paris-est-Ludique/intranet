@@ -1,16 +1,21 @@
-import loadable from "@loadable/component"
+import loadable from '@loadable/component'
+import type { Props } from './Announcements'
+import { loadData } from './Announcements'
 
-import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./Announcements"
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
+import Loading from '@/components/Loading/Loading'
 
-const Announcements = loadable(() => import("./Announcements"), {
-    fallback: <Loading />,
+const Announcements = loadable(() => import('./Announcements'), {
+  fallback: <Loading />,
 })
 
-export default (props: Props): JSX.Element => (
+function LazyAnnouncements(props: Props): JSX.Element {
+  return (
     <ErrorBoundary>
-        <Announcements {...props} />
+      <Announcements {...props} />
     </ErrorBoundary>
-)
+  )
+}
 
+export default LazyAnnouncements
 export { loadData }

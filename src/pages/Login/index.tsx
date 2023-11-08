@@ -1,14 +1,19 @@
-import loadable from "@loadable/component"
+import type { Props } from './LoginPage'
+import loadable from '@loadable/component'
 
-import { Loading, ErrorBoundary } from "../../components"
-import { Props } from "./LoginPage"
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
+import Loading from '@/components/Loading/Loading'
 
-const LoginPage = loadable(() => import("./LoginPage"), {
-    fallback: <Loading />,
+const LoginPage = loadable(() => import('./LoginPage'), {
+  fallback: <Loading />,
 })
 
-export default (props: Props): JSX.Element => (
+function LazyLogin(props: Props): JSX.Element {
+  return (
     <ErrorBoundary>
-        <LoginPage {...props} />
+      <LoginPage {...props} />
     </ErrorBoundary>
-)
+  )
+}
+
+export default LazyLogin

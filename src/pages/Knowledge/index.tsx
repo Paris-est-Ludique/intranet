@@ -1,16 +1,21 @@
-import loadable from "@loadable/component"
+import type { Props } from './KnowledgesPage'
+import { loadData } from './KnowledgesPage'
+import loadable from '@loadable/component'
 
-import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./KnowledgesPage"
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
+import Loading from '@/components/Loading/Loading'
 
-const Knowledges = loadable(() => import("./KnowledgesPage"), {
-    fallback: <Loading />,
+const KnowledgesPage = loadable(() => import('./KnowledgesPage'), {
+  fallback: <Loading />,
 })
 
-export default (props: Props): JSX.Element => (
+function LazyKnowledgesPage(props: Props): JSX.Element {
+  return (
     <ErrorBoundary>
-        <Knowledges {...props} />
+      <KnowledgesPage {...props} />
     </ErrorBoundary>
-)
+  )
+}
 
+export default LazyKnowledgesPage
 export { loadData }

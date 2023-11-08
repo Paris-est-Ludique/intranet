@@ -1,16 +1,21 @@
-import loadable from "@loadable/component"
+import type { Props } from './Register'
+import { loadData } from './Register'
+import loadable from '@loadable/component'
 
-import { Loading, ErrorBoundary } from "../../components"
-import { Props, loadData } from "./Register"
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
+import Loading from '@/components/Loading/Loading'
 
-const Register = loadable(() => import("./Register"), {
-    fallback: <Loading />,
+const Register = loadable(() => import('./Register'), {
+  fallback: <Loading />,
 })
 
-export default (props: Props): JSX.Element => (
+function LazyRegister(props: Props): JSX.Element {
+  return (
     <ErrorBoundary>
-        <Register {...props} />
+      <Register {...props} />
     </ErrorBoundary>
-)
+  )
+}
 
+export default LazyRegister
 export { loadData }

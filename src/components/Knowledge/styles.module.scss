@@ -1,5 +1,5 @@
-@import "../../theme/variables";
-@import "../../theme/mixins";
+@import "@/assets/styles/variables";
+@import "@/assets/styles/mixins";
 
 .showUnknownOnlyLabel {
     text-align: left;
@@ -52,7 +52,7 @@
     height: 30px;
     position: relative;
     display: inline-block;
-    background: url("../../app/img/poufpaf.png");
+    background: url("assets/img/poufpaf.png");
     background-size: contain;
     vertical-align: middle;
 }
@@ -206,7 +206,7 @@
 .numberOfPlayersImg {
     width: 6vw;
     height: 4vw;
-    background: url("../../app/img/knowledgeCards/nombre_joueurs-fiche.png") no-repeat center center;
+    background: url("assets/img/knowledgeCards/nombre_joueurs-fiche.png") no-repeat center center;
     background-size: cover;
 }
 .numberOfPlayers {
@@ -222,7 +222,7 @@
 .durationImg {
     width: 6vw;
     height: 4vw;
-    background: url("../../app/img/knowledgeCards/duree-fiche.png") no-repeat center center;
+    background: url("assets/img/knowledgeCards/duree-fiche.png") no-repeat center center;
     background-size: cover;
 }
 .duration {
@@ -243,13 +243,13 @@
     background-size: cover;
 }
 .verteImg {
-    background: url("../../app/img/knowledgeCards/jauge-verte.png") no-repeat center center;
+    background: url("assets/img/knowledgeCards/jauge-verte.png") no-repeat center center;
 }
 .orangeImg {
-    background: url("../../app/img/knowledgeCards/jauge-orange.png") no-repeat center center;
+    background: url("assets/img/knowledgeCards/jauge-orange.png") no-repeat center center;
 }
 .rougeImg {
-    background: url("../../app/img/knowledgeCards/jauge-rouge.png") no-repeat center center;
+    background: url("assets/img/knowledgeCards/jauge-rouge.png") no-repeat center center;
 }
 
 .type {
@@ -265,7 +265,7 @@
 .pppImg {
     width: 6vw;
     height: 3.4vw;
-    background: url("../../app/img/knowledgeCards/ppp-fiche-ko-trespetit.png") no-repeat center
+    background: url("assets/img/knowledgeCards/ppp-fiche-ko-trespetit.png") no-repeat center
         center;
     background-size: cover;
 }
