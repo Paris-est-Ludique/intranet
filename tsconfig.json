@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "jsx": "react-jsx",
+    "target": "ESNext",
+    "jsx": "preserve",
+    "jsxImportSource": "react",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "useDefineForClassFields": true,
+    "baseUrl": ".",
     "module": "ESNext",
-
-    /* Bundler mode */
-    "moduleResolution": "Bundler",
+    "moduleResolution": "Node",
     "paths": {
       "@": [
-        "./src/"
+        "./src"
       ],
       "@/*": [
         "./src/*"
@@ -18,10 +18,8 @@
     },
     "resolveJsonModule": true,
     "types": ["vite/client"],
-    "allowImportingTsExtensions": true,
-
+    "allowJs": true,
     "checkJs": true,
-    /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
@@ -29,18 +27,19 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": true,
-    /* Build */
     "outDir": "dist",
     "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "ts-node": {
-    "transpileOnly": true,
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  },
-  "include": ["src/**/*", "types/*", "server/index.ts", "node_modules/vite/types/*"]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "include": [
+    "src/**/*",
+    "node_modules/vite/types/*",
+    "prerender.ts",
+    "server.ts"
+  ]
 }

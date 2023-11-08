@@ -5,9 +5,9 @@ It is built on the top of [React](https://facebook.github.io/react), [Redux](htt
 
 ## Requirements
 
--   [yarn]() = 4.0.0
--   [node](https://nodejs.org/en) = ^20.5.0
--   [npm](https://www.npmjs.com) = ^10.0.0
+-   [yarn]() = 4.0.1
+-   [node](https://nodejs.org/en) = ^21.1.0
+-   [npm](https://www.npmjs.com) = ^10.2.0
 
 With Yarn 4 it's possible that you need to install the correct Editor's SDK.
 eq: `yarn dlx @yarnpkg/sdks vscode` <https://yarnpkg.com/getting-started/editor-sdks#vscode>
@@ -24,7 +24,7 @@ cd intranet
 **2. Install all of the dependencies:**
 
 ```sh
-npm install yarn
+corepack enable
 yarn
 ```
 
@@ -45,28 +45,6 @@ Edit files with one of these HTML/CSS/TypeScript editors:
 -   [Webstorm 2018.1](https://www.jetbrains.com/webstorm/download/)
 -   [Sublime Text](http://www.sublimetext.com/3) with [Typescript-Sublime-Plugin](https://github.com/Microsoft/Typescript-Sublime-plugin#installation)
 
-## Script Commands
-
-I use [cross-env](https://github.com/kentcdodds/cross-env) to set and use environment variables across platforms. All of the scripts are listed as following:
-
-| `yarn <script>`  | Description                                                                        |
-| ---------------- | ---------------------------------------------------------------------------------- |
-| `dev`            | Runs your app on the development server at `localhost:3000`. HMR will be enabled.  |
-| `dev:build`      | Bundles server-side files in development mode and put it to the `./dist/server`. |
-| `start`          | Runs your app on the production server only at `localhost:8088`.                   |
-| `build`          | Bundles both server-side and client-side files.                                    |
-| `build:server`   | Bundles server-side files in production mode and put it to the `./dist/server`.  |
-| `build:client`   | Bundles client-side files in production mode and put it to the `./dist/assets`.  |
-| `lint`           | Lints all `.tsx?`, `.jsx?` and `.scss` files.                                      |
-| `lint:code`      | Lints all `.tsx?` and `.jsx?` files (With `--fix` to auto fix eslint errors).      |
-| `lint:type`      | Runs type checking for `.tsx?` files.                                              |
-| `lint:style`     | Lints all `.scss` files (With `--fix` to auto fix stylelint errors).               |
-| `lint:format`    | Formats all files except the file list of `.prettierignore`.                       |
-| `test`           | Runs testing.                                                                      |
-| `test:watch`     | Runs an interactive test watcher.                                                  |
-| `test:cov`       | Runs testing with code coverage reports.                                           |
-| `test:update`    | Updates jest snapshot.                                                             |
-
 ## Contributors ✨
 
 Thanks goes to these people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -86,3 +64,17 @@ Thanks goes to these people ([emoji key](https://allcontributors.org/docs/en/emo
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+
+
+
+
+
+
+
+
+
+
+
+### TEMP
+--require ./.pnp.cjs --import ./.pnp.loader.mjs

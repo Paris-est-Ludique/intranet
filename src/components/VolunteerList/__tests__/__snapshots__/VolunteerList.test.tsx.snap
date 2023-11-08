@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<VolunteerList /> > renders 1`] = `
+<div>
+  <h4>
+    Volunteer List
+  </h4>
+  <ul>
+    <li>
+      <a
+        href="/Volunteer/1"
+      >
+        <b>
+          Aupeix
+        </b>
+         
+        Amélie
+      </a>
+    </li>
+  </ul>
+</div>
+`;

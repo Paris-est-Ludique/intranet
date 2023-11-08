@@ -4,10 +4,8 @@ node_modules
 .vite
 .pnp.*
 
-# Sass compiled files
-*.module.css
-*.css.map
-*.css
+# env and local files
+*.local
 
 # Testing
 coverage
@@ -21,12 +19,12 @@ public/*
 
 # Access
 access/*
+announces/*
 
 # Misc
 .DS_Store
 *.log
 .idea
-announces/*
 
 # VS Code stuff
 .vscode/settings.json

@@ -1,17 +1,17 @@
-import styles from './App.styles.scss?inline'
-
+import type { Route } from 'react-router-dom'
 import { useRoutes } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { ToastContainer } from 'react-toastify'
+import styles from './App.module.scss'
 
 import MainMenu from '@/components/Navigation/MainMenu'
 import LogoutButton from '@/components/LogoutButton/LogoutButton'
 
-// Import your global styles here
+import { routes } from '@/routes'
+
+// Global styles
 import 'normalize.css/normalize.css'
 import 'react-toastify/dist/ReactToastify.css'
-
-export const reactAppId = 'react-view'
 
 const helmetSettings = {
   htmlAttributes: { lang: 'en' },
@@ -26,9 +26,10 @@ const helmetSettings = {
   ],
 }
 
-export function App({ route, location }): JSX.Element {
-  if (location.pathname === '/fiches') {
-    return <div className={styles.cardPage}>{renderRoutes(route.routes)}</div>
+export function App({ route, location }: { route: Route; location: Location }): JSX.Element {
+  if (location?.pathname === '/fiches') {
+    // TODO use a better way to handle this
+    return <div className={styles.cardPage}>{useRoutes(route)}</div>
   }
 
   return (
@@ -43,7 +44,7 @@ export function App({ route, location }): JSX.Element {
         <div className={styles.logo} />
         <div>
           <h1 className={styles.siteName}>
-            <a href="/">{config.APP.title}</a>
+            <a href="/">{helmetSettings.title}</a>
           </h1>
           <div className={styles.siteDescription}>{helmetSettings.description}</div>
         </div>
@@ -56,7 +57,6 @@ export function App({ route, location }): JSX.Element {
       </header>
       {useRoutes(routes)}
       <ToastContainer />
-      <script>var browser = browser || chrome</script>
     </div>
   )
 }

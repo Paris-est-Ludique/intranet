@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<VolunteerInfo /> > renders 1`] = `
+<div>
+  <h4>
+    Volunteer Info
+  </h4>
+  <ul>
+    <li>
+      Prénom:
+      Aupeix
+    </li>
+    <li>
+      Nom:
+      Amélie
+    </li>
+  </ul>
+</div>
+`;

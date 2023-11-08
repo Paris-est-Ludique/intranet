@@ -8,8 +8,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// import Components from 'unplugin-react-components/vite'
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const test = {
@@ -29,7 +27,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    react(),
     AutoImport({
       dts: './src/auto-import.d.ts',
       defaultExportByFilename: false,
@@ -41,6 +38,7 @@ export default defineConfig({
         './src/components/**/*',
         './src/services/**/*',
         './src/store/**/*',
+        './src/utils/**/*',
       ],
       imports: [
         'react',
@@ -52,13 +50,10 @@ export default defineConfig({
         globalsPropValue: true,
       },
     }),
-    // Components({
-    //   dts: true,
-    // })
   ],
-  server: { port: 3000 },
   build: {
     minify: false,
   },
+  optimizeDeps: { exclude: ['fsevents'] },
   test,
 })

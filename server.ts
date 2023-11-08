@@ -2,34 +2,46 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
+import helmet from 'helmet'
+import compression from 'compression'
+import hpp from 'hpp'
+import serveStatic from 'serve-static'
+import cookieParser from 'cookie-parser'
+import { type ViteDevServer, createServer as createViteServer } from 'vite'
+import type { Request, Response } from 'express'
+
+import certbot from '@/server/certbot'
+import api from '@/server/api.js'
+import init from '@/server/init'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-const isTest = process.env.VITEST
-
-process.env.MY_CUSTOM_SECRET = 'API_KEY_qwertyuiop'
+const isTest = import.meta.env.VITEST
 
 export async function createServer(
-  root = process.cwd(),
-  isProd = process.env.NODE_ENV === 'production',
-  hmrPort,
-) {
-  const resolve = (p) => path.resolve(__dirname, p)
-
+  root: string | undefined = process.cwd(),
+  isProd: boolean = import.meta.env.NODE_ENV === 'production',
+  hmrPort?: number,
+): Promise<{ app: express.Express; vite: ViteDevServer | null }> {
+  const resolve = (p: string) => path.resolve(__dirname, p)
   const indexProd = isProd
     ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8')
     : ''
-
   const app = express()
 
-  /**
-   * @type {import('vite').ViteDevServer}
-   */
-  let vite
+  // Allow receiving big images
+  app.use(express.json({ limit: '200mb' }))
+  app.use(express.urlencoded({ limit: '200mb' }))
+  app.use(express.json())
+
+  app.use(cookieParser())
+  app.use(api())
+
+  let vite: ViteDevServer
+
   if (!isProd) {
-    vite = await (
-      await import('vite')
-    ).createServer({
+    // DEV mode
+
+    vite = await createViteServer({
       root,
       logLevel: isTest ? 'error' : 'info',
       server: {
@@ -45,24 +57,31 @@ export async function createServer(
         },
       },
       appType: 'custom',
+      optimizeDeps: { include: [] },
     })
+
     // use vite's connect instance as middleware
     app.use(vite.middlewares)
   }
   else {
-    app.use((await import('compression')).default())
-    app.use(
-      (await import('serve-static')).default(resolve('dist/client'), {
-        index: false,
-      }),
-    )
+    // PROD mode
+
+    app.use(certbot())
+    app.use(helmet({ contentSecurityPolicy: false }))
+    app.use(hpp())
+    app.use(compression())
+    app.use(serveStatic(resolve('dist/client'), {
+      index: false,
+    }))
   }
 
   app.use('*', async (req, res) => {
     try {
+      let template: string
+      let render: (request: Request, response: Response, context: object) => any
+
       const url = req.originalUrl
 
-      let template, render
       if (!isProd) {
         // always read fresh template in dev
         template = fs.readFileSync(resolve('index.html'), 'utf-8')
@@ -75,8 +94,8 @@ export async function createServer(
         render = (await import('./dist/server/entry-server.js')).render
       }
 
-      const context = {}
-      const appHtml = render(url, context)
+      const context: MyContext = {}
+      const appHtml = await render(req, res, context)
 
       if (context.url) {
         // Somewhere a `<Redirect>` was rendered
@@ -85,12 +104,12 @@ export async function createServer(
 
       const html = template.replace(`<!--app-html-->`, appHtml)
 
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+      return res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     }
-    catch (e) {
-      !isProd && vite.ssrFixStacktrace(e)
-      console.log(e.stack)
-      res.status(500).end(e.stack)
+    catch (e: any) {
+      vite?.ssrFixStacktrace(e)
+      console.error(e.stack)
+      return res.status(500).end(e.stack)
     }
   })
 
@@ -98,9 +117,12 @@ export async function createServer(
 }
 
 if (!isTest) {
+  const port = import.meta.env.PORT || 3001
   createServer().then(({ app }) =>
-    app.listen(5173, () => {
-      console.log('http://localhost:5173')
+    app.listen(port, () => {
+      console.log(`app running on: http://localhost:${port}`)
     }),
   )
+
+  init()
 }
