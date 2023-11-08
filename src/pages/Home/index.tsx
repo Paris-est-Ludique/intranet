@@ -1,13 +1,10 @@
-import loadable from '@loadable/component'
 import type { Props } from './Home'
 import { loadData } from './Home'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
-const HomePage = loadable(() => import('./Home'), {
-  fallback: <Loading />,
-})
+const HomePage = loadable(() => import('./Home'))
 
 function LazyHomePage(props: Props): JSX.Element {
   return (

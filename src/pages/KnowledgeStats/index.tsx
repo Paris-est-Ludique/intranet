@@ -1,13 +1,11 @@
 import type { Props } from './KnowledgeStatsPage'
 import { loadData } from './KnowledgeStatsPage'
-import loadable from '@loadable/component'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
 import Loading from '@/components/Loading/Loading'
 
-const KnowledgeStatsPage = loadable(() => import('./KnowledgeStatsPage'), {
-  fallback: <Loading />,
-})
+const KnowledgeStatsPage = loadable(() => import('./KnowledgeStatsPage'))
 
 function LazyKnowledgeStatsPage(props: Props): JSX.Element {
   return (

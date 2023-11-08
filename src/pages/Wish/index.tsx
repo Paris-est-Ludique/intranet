@@ -1,13 +1,10 @@
 import type { Props } from './Wish'
 import { loadData } from './Wish'
-import loadable from '@loadable/component'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
-const Wish = loadable(() => import('./Wish'), {
-  fallback: <Loading />,
-})
+const Wish = loadable(() => import('./Wish'))
 
 function LazyWishPage(props: Props): JSX.Element {
   return (

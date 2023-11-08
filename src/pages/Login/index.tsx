@@ -1,12 +1,9 @@
 import type { Props } from './LoginPage'
-import loadable from '@loadable/component'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
-const LoginPage = loadable(() => import('./LoginPage'), {
-  fallback: <Loading />,
-})
+const LoginPage = loadable(() => import('./LoginPage'))
 
 function LazyLogin(props: Props): JSX.Element {
   return (

@@ -1,5 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
+
+import { Writable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import helmet from 'helmet'
@@ -78,7 +80,7 @@ export async function createServer(
   app.use('*', async (req, res) => {
     try {
       let template: string
-      let render: (request: Request, response: Response, context: object) => any
+      let render: (request: Request, response: Response, context: object, stream: NodeJS.WritableStream) => any
 
       const url = req.originalUrl
 
@@ -95,16 +97,24 @@ export async function createServer(
       }
 
       const context: MyContext = {}
-      const appHtml = await render(req, res, context)
+      const templateSplit = template.split(`<!--app-html-->`)
+      const stream = new Writable({
+        write(chunk, _encoding, cb) {
+          res.write(chunk, cb)
+        },
+        final() {
+          res.end(templateSplit[1])
+        },
+      })
+
+      res.write(templateSplit[0])
+      await render(req, res, context, stream)
 
       if (context.url) {
         // Somewhere a `<Redirect>` was rendered
+        // TODO redirect can cause problems with node stream, need to check how to configure it
         return res.redirect(301, context.url)
       }
-
-      const html = template.replace(`<!--app-html-->`, appHtml)
-
-      return res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     }
     catch (e: any) {
       vite?.ssrFixStacktrace(e)

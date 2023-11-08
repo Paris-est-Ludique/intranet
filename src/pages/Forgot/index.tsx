@@ -1,12 +1,9 @@
 import type { Props } from './ForgotPage'
-import loadable from '@loadable/component'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
-const ForgotPage = loadable(() => import('./ForgotPage'), {
-  fallback: <Loading />,
-})
+const ForgotPage = loadable(() => import('./ForgotPage'))
 
 function LazyForgotPage(props: Props): JSX.Element {
   return (

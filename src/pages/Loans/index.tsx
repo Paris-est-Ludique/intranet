@@ -1,13 +1,10 @@
 import type { Props } from './LoansPage'
 import { loadData } from './LoansPage'
-import loadable from '@loadable/component'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
-const Loans = loadable(() => import('./LoansPage'), {
-  fallback: <Loading />,
-})
+const Loans = loadable(() => import('./LoansPage'))
 
 function LazyLoans(props: Props): JSX.Element {
   return (

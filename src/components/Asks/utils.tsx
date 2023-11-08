@@ -44,11 +44,7 @@ export function addAsk(
   asks.push(
     <div key={id}>
       <div className={styles.notificationsPage}>
-        <div
-          className={
-                        isNarrow ? styles.notificationsContentNarrow : styles.notificationsContent
-                    }
-        >
+        <div className={isNarrow ? styles.notificationsContentNarrow : styles.notificationsContent}>
           {children}
         </div>
       </div>

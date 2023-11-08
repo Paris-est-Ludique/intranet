@@ -1,13 +1,10 @@
 import type { Props } from './Volunteers'
 import { loadData } from './Volunteers'
-import loadable from '@loadable/component'
+import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
-const BoardPage = loadable(() => import('./Volunteers'), {
-  fallback: <Loading />,
-})
+const BoardPage = loadable(() => import('./Volunteers'))
 
 function LazyBoardPage(props: Props): JSX.Element {
   return (

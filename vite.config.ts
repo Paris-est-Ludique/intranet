@@ -27,6 +27,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    react(),
     AutoImport({
       dts: './src/auto-import.d.ts',
       defaultExportByFilename: false,
