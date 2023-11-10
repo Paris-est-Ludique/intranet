@@ -7,6 +7,8 @@ import type { UserConfig } from 'vitest/config'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import {browserslistToTargets} from 'lightningcss'
+import browserslist from 'browserslist'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -26,6 +28,18 @@ export default defineConfig({
       '@/': `${path.resolve(__dirname, './src')}/`,
     },
   },
+  css: {
+    transformer: 'lightningcss',
+    lightningcss: {
+      targets: browserslistToTargets(browserslist('>= 0.25%'))
+    }
+  },
+  build: {
+    cssMinify: 'lightningcss',
+    sourcemap: process.env.DEV === 'true' ? 'inline' : false,
+    cssCodeSplit: true,
+  },
+  optimizeDeps: { exclude: ['fsevents'] },
   plugins: [
     react(),
     AutoImport({
