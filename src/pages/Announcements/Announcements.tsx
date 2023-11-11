@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 import { memo } from 'react'
-import pick from 'lodash/pick'
 import orderBy from 'lodash/orderBy'
 import identity from 'lodash/identity'
 import type { RouteComponentProps } from 'react-router-dom'
@@ -29,11 +28,13 @@ const AnnouncementsPage: FC<Props> = (): JSX.Element => {
       return undefined
     }
 
-    const announcements = pick(state.announcementList, 'entities', 'ids')
+    const { ids, entities } = state.announcementList
 
-    if (announcements) {
-      prevAnnouncements = announcements
-      return announcements
+    if (entities && ids) {
+      prevAnnouncements = {
+        ids,
+        entities,
+      }
     }
 
     return prevAnnouncements

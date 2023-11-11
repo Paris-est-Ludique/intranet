@@ -16,6 +16,7 @@ interface MenuItemProps {
 const MenuItem: FC<MenuItemProps> = ({ name, pathname }): JSX.Element => {
   const router = useSelector(routerSelector)
   const isActive = (router as any)?.location?.pathname === pathname
+
   return (
     <li className={classnames(styles.mainMenuItem, isActive ? styles.active : null)}>
       <a href={pathname}>{name}</a>

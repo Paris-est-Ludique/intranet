@@ -8,6 +8,8 @@ export default async () => {
   const hasSendGridApiAccess = !!import.meta.env.SENDGRID_API_KEY
   const hasPushNotifAccess = !!import.meta.env.FORCE_ORANGE_PUBLIC_VAPID_KEY
 
+  addStatus(chalk.bgYellow(`hi ${import.meta.env.USERNAME} !`))
+
   if (hasSendGridApiAccess) {
     addStatus('Emailing:', chalk.green(`✅ online through SendGrid`))
   }

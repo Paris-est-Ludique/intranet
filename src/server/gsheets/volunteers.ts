@@ -1,14 +1,14 @@
 import path from 'node:path'
 import * as fs from 'node:fs'
+
 import assign from 'lodash/assign'
 import cloneDeep from 'lodash/cloneDeep'
 import map from 'lodash/map'
 import max from 'lodash/max'
 import omit from 'lodash/omit'
-import pick from 'lodash/pick'
 import some from 'lodash/some'
 
-// import { assign, cloneDeep, max, omit, pick } from "lodash"
+import { pick } from '@/utils'
 import sgMail from '@sendgrid/mail'
 import bcrypt from 'bcrypt'
 import { getJwt } from '../secure'
@@ -97,16 +97,20 @@ export const volunteerSet = expressAccessor.set(async (list, body, _id, roles) =
   }
 })
 
-export const volunteerDiscordId = expressAccessor.get(async (list, body, id) => {
-  const requestedId = +body[0] || id
-  if (requestedId !== id && requestedId !== 0) {
+export const volunteerDiscordId = expressAccessor.get(async (list, body, volunteerId) => {
+  const requestedId = +body[0] || volunteerId
+
+  if (requestedId !== volunteerId && requestedId !== 0) {
     throw new Error(`On ne peut acceder qu'à ses propres envies de jours`)
   }
+
   const volunteer = list.find(v => v.id === requestedId)
+
   if (!volunteer) {
     throw new Error(`Il n'y a aucun bénévole avec cet identifiant ${requestedId}`)
   }
-  return pick(volunteer, 'id', 'discordId')
+
+  return { ...pick(volunteer, 'id', 'discordId') }
 })
 
 export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
@@ -687,8 +691,8 @@ export const volunteerOnSiteInfo = expressAccessor.get(async (list, body, id) =>
       const referent = list.find(
         v =>
           v.team === volunteer.team
-                    && v.firstname === firstname
-                    && v.roles.includes('référent'),
+            && v.firstname === firstname
+            && v.roles.includes('référent'),
       )
       if (referent) {
         referentVolunteers.push(referent)
@@ -700,8 +704,8 @@ export const volunteerOnSiteInfo = expressAccessor.get(async (list, body, id) =>
       ...list.filter(
         v =>
           v.team === volunteer.team
-                    && !v.roles.includes('référent')
-                    && v.id !== requestedId,
+            && !v.roles.includes('référent')
+            && v.id !== requestedId,
       ),
     )
 

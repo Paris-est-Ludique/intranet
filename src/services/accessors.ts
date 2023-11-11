@@ -49,8 +49,8 @@ export default class ServiceAccessors<
     return async (): Promise<ElementListGetResponse> => {
       try {
         const { data } = await axios.get(
-                    `${API_URL}/${this.elementName}ListGet`,
-                    axiosConfig,
+          `${API_URL}/${this.elementName}ListGet`,
+          axiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)
@@ -76,8 +76,8 @@ export default class ServiceAccessors<
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
         const { data } = await axios.get(
-                    `${API_URL}/${this.elementName}ListGet`,
-                    fullAxiosConfig,
+          `${API_URL}/${this.elementName}ListGet`,
+          fullAxiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)
@@ -136,9 +136,9 @@ export default class ServiceAccessors<
     return async (volunteerWithoutId: ElementNoId): Promise<ElementGetResponse> => {
       try {
         const { data } = await axios.post(
-                    `${API_URL}/${this.elementName}Add`,
-                    volunteerWithoutId,
-                    axiosConfig,
+          `${API_URL}/${this.elementName}Add`,
+          volunteerWithoutId,
+          axiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)
@@ -162,9 +162,9 @@ export default class ServiceAccessors<
     return async (volunteer: Element): Promise<ElementGetResponse> => {
       try {
         const { data } = await axios.post(
-                    `${API_URL}/${this.elementName}Set`,
-                    volunteer,
-                    axiosConfig,
+          `${API_URL}/${this.elementName}Set`,
+          volunteer,
+          axiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)
@@ -188,8 +188,8 @@ export default class ServiceAccessors<
     return async (): Promise<ElementCountGetResponse> => {
       try {
         const { data } = await axios.get(
-                    `${API_URL}/${this.elementName}CountGet`,
-                    axiosConfig,
+          `${API_URL}/${this.elementName}CountGet`,
+          axiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)
@@ -215,8 +215,8 @@ export default class ServiceAccessors<
     return async (...params: InputElements): Promise<ElementGetResponse> => {
       try {
         const { data } = await axios.get(
-                    `${API_URL}/${this.elementName}${apiName}`,
-                    { ...axiosConfig, params },
+          `${API_URL}/${this.elementName}${apiName}`,
+          { ...axiosConfig, params },
         )
         if (data.error) {
           throw new Error(data.error)
@@ -242,9 +242,9 @@ export default class ServiceAccessors<
     return async (...params: InputElements): Promise<ElementGetResponse> => {
       try {
         const { data } = await axios.post(
-                    `${API_URL}/${this.elementName}${apiName}`,
-                    params,
-                    axiosConfig,
+          `${API_URL}/${this.elementName}${apiName}`,
+          params,
+          axiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)
@@ -275,8 +275,8 @@ export default class ServiceAccessors<
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
         const { data } = await axios.get(
-                    `${API_URL}/${this.elementName}${apiName}`,
-                    { ...fullAxiosConfig, params },
+          `${API_URL}/${this.elementName}${apiName}`,
+          { ...fullAxiosConfig, params },
         )
         if (data.error) {
           throw new Error(data.error)
@@ -307,9 +307,9 @@ export default class ServiceAccessors<
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
         const { data } = await axios.post(
-                    `${API_URL}/${this.elementName}${apiName}`,
-                    params,
-                    fullAxiosConfig,
+          `${API_URL}/${this.elementName}${apiName}`,
+          params,
+          fullAxiosConfig,
         )
         if (data.error) {
           throw new Error(data.error)

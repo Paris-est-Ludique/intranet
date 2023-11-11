@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
-import type { ActionsCreators, StateRequest } from './utils'
+import type { StateRequest } from './utils'
 import { elementFetch, toastError } from './utils'
 import type { AppDispatch, AppState, AppThunk } from '.'
 

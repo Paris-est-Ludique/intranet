@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
-
 import { Writable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
+import chalk from 'chalk'
 import express from 'express'
 import helmet from 'helmet'
 import compression from 'compression'
@@ -21,7 +21,7 @@ const isTest = import.meta.env.VITEST
 
 export async function createServer(
   root: string | undefined = process.cwd(),
-  isProd: boolean = import.meta.env.NODE_ENV === 'production',
+  isProd: boolean = import.meta.env.PROD,
   hmrPort?: number,
 ): Promise<{ app: express.Express; vite: ViteDevServer | null }> {
   const resolve = (p: string) => path.resolve(__dirname, p)
@@ -97,7 +97,7 @@ export async function createServer(
       }
 
       const context: MyContext = {}
-      const templateSplit = template.split(`<!--app-html-->`)
+      const templateSplit = template.split('<!--app-html-->')
       const stream = new Writable({
         write(chunk, _encoding, cb) {
           res.write(chunk, cb)
@@ -128,11 +128,12 @@ export async function createServer(
 
 if (!isTest) {
   const port = import.meta.env.PORT || 3001
-  createServer().then(({ app }) =>
-    app.listen(port, () => {
-      console.log(`app running on: http://localhost:${port}`)
-    }),
-  )
 
-  init()
+  createServer().then(({ app }) => {
+    return app.listen(port, () => {
+      init()
+      console.log('')
+      console.log('app running on:', chalk.underline(`http://localhost:${port}`))
+    })
+  })
 }

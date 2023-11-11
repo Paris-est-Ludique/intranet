@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import assign from 'lodash/assign'
-import pick from 'lodash/pick'
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
+import { pick } from '@/utils'
 import { SheetNames, loadLocalDb, saveLocalDb } from './localDb'
 
 export { SheetNames } from './localDb'
@@ -175,7 +175,7 @@ export class Sheet<
       (frenchProp: string) => (frenchElement as any)[frenchProp],
     ) as Element
 
-    const partialElement = pick(element, Object.keys(rawPartialElement))
+    const partialElement = pick(element, ...(Object.keys(rawPartialElement) as (keyof Element)[]))
 
     return partialElement
   }
@@ -245,7 +245,7 @@ export class Sheet<
 
       const elements = this._state as Element[]
 
-      this._type = _.pick(rows[0], Object.values(this.translation)) as Record<
+      this._type = pick(rows[0], ...Object.values(this.translation)) as Record<
         keyof Element,
         string
       >
@@ -304,22 +304,26 @@ export class Sheet<
     await tryNTimesVoidReturn(async () => {
       // Load sheet into an array of objects
       console.info(`dbLoadAsync on ${this.name} at ${new Date()}`)
+
       const rows = (await sheet.getRows()) as StringifiedElement[]
       const elements: Element[] = []
+
       if (!rows[0]) {
         throw new Error(`No column types defined in sheet ${this.name}`)
       }
-      const typeList = _.pick(rows[0], Object.values(this.translation)) as Record<
-            keyof Element,
-            string
-        >
+
+      const typeList = pick(rows[0], ...(Object.values(this.translation) as (keyof Element)[])) as Record<
+        keyof Element,
+        string
+      >
+
       this._type = typeList
       rows.shift()
       rows.forEach((row) => {
-        const stringifiedElement = _.pick(row, Object.values(this.translation)) as Record<
-                keyof Element,
-                string
-            >
+        const stringifiedElement = pick(row, ...(Object.values(this.translation) as (keyof Element)[])) as Record<
+          keyof Element,
+          string
+        >
         const frenchData: any = this.parseElement(stringifiedElement, typeList)
         if (frenchData !== undefined) {
           const englishElement = _.mapValues(
