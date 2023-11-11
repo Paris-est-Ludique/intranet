@@ -57,13 +57,10 @@ export const foodDefaultValue = 'Aucune'
 
 type SetFunction = (
   tshirtSize: VolunteerParticipationDetails['tshirtSize'],
-  adult: VolunteerParticipationDetails['adult']
+  adult: VolunteerParticipationDetails['adult'],
 ) => void
 
-export function useUserParticipationDetails(): [
-  VolunteerParticipationDetails | undefined,
-  SetFunction,
-] {
+export function useUserParticipationDetails(): [VolunteerParticipationDetails | undefined, SetFunction] {
   const save = useAction(fetchVolunteerParticipationDetailsSet)
   const jwtToken = useSelector(selectUserJwtToken)
   const userParticipationDetails = useSelector(
@@ -73,8 +70,9 @@ export function useUserParticipationDetails(): [
 
   const saveParticipationDetails: SetFunction = useCallback(
     (tshirtSize, adult) => {
-      if (!userParticipationDetails)
+      if (!userParticipationDetails) {
         return
+      }
       save(jwtToken, 0, {
         id: userParticipationDetails.id,
         tshirtSize,

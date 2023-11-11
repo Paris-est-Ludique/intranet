@@ -32,10 +32,7 @@ const volunteerSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerSetReducer,
-  actions: volunteerSetActions,
-} = volunteerSetSlice
+export const { reducer: volunteerSetReducer, actions: volunteerSetActions } = volunteerSetSlice
 
 export const fetchVolunteerSet = elementFetch(
   volunteerSet,
@@ -44,10 +41,12 @@ export const fetchVolunteerSet = elementFetch(
   () => toastSuccess('Bénévole modifié !'),
 )
 
-export const fetchVolunteerSetIfNeed: AppThunk = (newPartialVolunteer: Partial<Volunteer>) => (dispatch: AppDispatch, getState: () => AppState) => {
-  const { jwt } = getState().auth
-  dispatch(fetchVolunteerSet(jwt, newPartialVolunteer))
-}
+export const fetchVolunteerSetIfNeed: AppThunk
+  = (newPartialVolunteer: Partial<Volunteer>) => (dispatch: AppDispatch, getState: () => AppState) => {
+    const { jwt } = getState().auth
+
+    dispatch(fetchVolunteerSet(jwt, newPartialVolunteer))
+  }
 
 export const selectVolunteerSet = createSelector(
   (state: AppState) => state,

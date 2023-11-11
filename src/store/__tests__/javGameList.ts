@@ -42,7 +42,12 @@ describe('gameList reducer', () => {
   })
 
   it('should handle success correctly', () => {
-    expect(gameListReducer(undefined, { type: gameListActions.getSuccess.type, payload: mockData })).toEqual({
+    expect(
+      gameListReducer(undefined, {
+        type: gameListActions.getSuccess.type,
+        payload: mockData,
+      }),
+    ).toEqual({
       ...gameListInitialState,
       readyStatus: 'success',
       ids: map(mockData, 'id'),
@@ -51,7 +56,12 @@ describe('gameList reducer', () => {
   })
 
   it('should handle failure correctly', () => {
-    expect(gameListReducer(undefined, { type: gameListActions.getFailure.type, payload: mockError })).toEqual({
+    expect(
+      gameListReducer(undefined, {
+        type: gameListActions.getFailure.type,
+        payload: mockError,
+      }),
+    ).toEqual({
       ...gameListInitialState,
       readyStatus: 'failure',
       error: mockError,

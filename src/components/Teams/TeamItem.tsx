@@ -9,6 +9,7 @@ interface Props {
 
 const TeamItem: React.FC<Props> = ({ team }): JSX.Element => {
   const { name, description } = team
+
   return (
     <li className={styles.teamItem}>
       <div className={styles.teamName}>{name}</div>

@@ -10,6 +10,7 @@ export default function () {
     const resolvedPath: string = path.resolve(`../certbot/.well-known/acme-challenge/${filename}`)
 
     response.setHeader('Content-Type', 'text/html')
+
     return response.sendFile(resolvedPath)
   })
 

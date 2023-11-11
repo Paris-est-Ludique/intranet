@@ -15,8 +15,9 @@ export function useBrunch(): [Retex | undefined, SetFunction] {
 
   const saveBrunch: SetFunction = useCallback(
     (id, question1) => {
-      if (!retex)
+      if (!retex) {
         return
+      }
       save(jwtToken, { id, question1 })
     },
     [retex, save, jwtToken],

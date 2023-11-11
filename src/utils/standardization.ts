@@ -2,12 +2,14 @@ export function canonicalEmail(email: string): string {
   email = email.replace(/^\s+|\s+$/g, '').replace(/\+[^@]+/, '') // Remove +pel in pierre+pel@gmail.com
   if (/@gmail.com$/.test(email)) {
     let domain = email.replace(/^.*@/, '')
+
     domain = domain.replace(/^googlemail%.com$/, 'gmail.com')
     email = email
       .replace(/\./g, '')
       .replace(/^[^@]+/, match => match.toLowerCase())
       .replace(/@.*$/, `@${domain}`)
   }
+
   return email.toLowerCase()
 }
 
@@ -18,26 +20,28 @@ export function validEmail(email: string): boolean {
 }
 
 export function validMobile(mobile: string): boolean {
-  return (
-    /^\(?\+?[-0-9. ()]+$/.test(trim(mobile))
-        && trim(mobile).replace(/[^0-9]+/g, '').length >= 10
-  )
+  return /^\(?\+?[-0-9. ()]+$/.test(trim(mobile)) && trim(mobile).replace(/[^0-9]+/g, '').length >= 10
 }
 
 export function canonicalMobile(mobile: string): string {
   if (!validMobile(mobile)) {
     return ''
   }
+
   let clean = trim(mobile).replace(/[-. ()+]/g, '')
+
   if (clean.length === 11) {
     clean = clean.replace(/^33/, '0')
   }
+
   if (clean.length < 10) {
     return ''
   }
+
   if (clean.length === 10) {
     return clean.replace(/([0-9]{2})/g, '$1 ').replace(/ $/, '')
   }
+
   return clean
 }
 
@@ -62,18 +66,20 @@ export function canonicalLastname(lastname: string): string {
 }
 
 export function doCleanVolunteer<
-    Element extends { firstname: string; lastname: string; email: string; mobile: string },
+  Element extends {
+    firstname: string
+    lastname: string
+    email: string
+    mobile: string
+  },
 >(vol: Element): void {
   if (!validMobile(vol.mobile)) {
     vol.mobile = ''
-  }
-  else {
+  } else {
     vol.mobile = canonicalMobile(vol.mobile)
   }
 
   vol.firstname = canonicalFirstname(vol.firstname)
-
   vol.lastname = canonicalLastname(vol.lastname)
-
   vol.email = canonicalEmail(vol.email)
 }

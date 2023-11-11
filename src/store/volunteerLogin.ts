@@ -31,15 +31,10 @@ const volunteerLoginSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerLoginReducer,
-  actions: volunteerLoginActions,
-} = volunteerLoginSlice
+export const { reducer: volunteerLoginReducer, actions: volunteerLoginActions } = volunteerLoginSlice
 
-export const fetchVolunteerLoginToRoot = elementFetch<
-  VolunteerLogin,
-  Parameters<typeof volunteerLogin>
->(volunteerLogin,
+export const fetchVolunteerLoginToRoot = elementFetch<VolunteerLogin, Parameters<typeof volunteerLogin>>(
+  volunteerLogin,
   volunteerLoginActions,
   undefined,
   (login: VolunteerLogin) => {

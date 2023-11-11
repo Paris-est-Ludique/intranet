@@ -1,11 +1,6 @@
 import ExpressAccessors from './expressAccessors'
-import type {
-  DiscordRoleWithoutId,
-} from '@/services/discordRoles'
-import {
-  DiscordRole,
-  translationDiscordRoles,
-} from '@/services/discordRoles'
+import type { DiscordRoleWithoutId } from '@/services/discordRoles'
+import { DiscordRole, translationDiscordRoles } from '@/services/discordRoles'
 
 const expressAccessor = new ExpressAccessors<DiscordRoleWithoutId, DiscordRole>(
   'DiscordRoles',

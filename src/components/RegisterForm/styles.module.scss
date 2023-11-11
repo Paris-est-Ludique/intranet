@@ -1,227 +1,227 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .registerIntro {
-    dt {
-        font-weight: bold;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    dd {
-        margin-bottom: 30px;
-    }
-    p {
-        margin-block-start: 0.3em;
-        margin-block-end: 0.3em;
-    }
+  dt {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  dd {
+    margin-bottom: 30px;
+  }
+  p {
+    margin-block-start: 0.3em;
+    margin-block-end: 0.3em;
+  }
 }
 
 .lightTitle {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .inputWrapper {
-    padding: 5px 0;
-    margin: 10px 0;
+  padding: 5px 0;
+  margin: 10px 0;
 
-    @include desktop {
-        display: flex;
-    }
+  @include desktop {
+    display: flex;
+  }
 
-    input[type="text"] {
-        min-width: 175px;
-        border: 1px solid $color-grey-medium;
-        outline: 0;
-    }
+  input[type='text'] {
+    min-width: 175px;
+    border: 1px solid $color-grey-medium;
+    outline: 0;
+  }
 }
 
 .leftCol {
-    flex: 0 0 240px;
+  flex: 0 0 240px;
 }
 .leftColTiny {
-    flex: 0 0 120px;
+  flex: 0 0 120px;
 }
 
 .rightCol,
 .rightColLefter {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 .rightCol {
-    text-align: center;
+  text-align: center;
 }
 .rightColLefter {
-    text-align: left;
+  text-align: left;
 }
 
 .rightColContainer {
-    display: inline-block;
-    width: 300px;
-    text-align: left;
+  display: inline-block;
+  width: 300px;
+  text-align: left;
 }
 
 .multipleChoiceTitle {
-    display: inline-block;
-    width: 240px;
-    margin-bottom: 10px;
+  display: inline-block;
+  width: 240px;
+  margin-bottom: 10px;
 }
 
 .longAnswerLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
-    width: 300px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 300px;
 }
 
 .shortAnswerLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
-    width: 100px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 100px;
 }
 
 .buttonWrapper {
-    margin-bottom: 10px;
-    text-align: center;
+  margin-bottom: 10px;
+  text-align: center;
 
-    [disabled="true"] {
-        background-color: #333333c0;
-        color: #cccccce7;
-    }
+  [disabled='true'] {
+    background-color: #333333c0;
+    color: #cccccce7;
+  }
 }
 
 .commentWrapper {
-    width: 100%;
-    margin: 0 0 14px;
+  width: 100%;
+  margin: 0 0 14px;
 
-    textarea {
-        width: 100%;
-        height: 120px;
-        padding: 5px;
-        border: 1px solid $color-grey-light;
-        background-color: $color-grey-lighter;
-        outline: 0;
-    }
+  textarea {
+    width: 100%;
+    height: 120px;
+    padding: 5px;
+    border: 1px solid $color-grey-light;
+    background-color: $color-grey-lighter;
+    outline: 0;
+  }
 }
 
 .formReactions {
-    margin-top: 3px;
-    padding: 5px 0;
-    text-align: center;
+  margin-top: 3px;
+  padding: 5px 0;
+  text-align: center;
 
-    .sending {
-        color: rgb(0, 0, 255);
-    }
-    .success {
-        color: rgb(0, 133, 0);
-    }
-    .error {
-        color: rgb(255, 0, 0);
-    }
+  .sending {
+    color: rgb(0, 0, 255);
+  }
+  .success {
+    color: rgb(0, 133, 0);
+  }
+  .error {
+    color: rgb(255, 0, 0);
+  }
 }
 
 .imgTransitionReset {
-    left: calc(90vw);
-    transition: none;
-    @include desktop {
-        left: 552px;
-    }
+  left: calc(90vw);
+  transition: none;
+  @include desktop {
+    left: 552px;
+  }
 }
 .imgTransitionAbouToShow {
-    left: calc(90vw);
-    transition: left ease-in-out 1000ms;
-    @include desktop {
-        left: 552px;
-    }
+  left: calc(90vw);
+  transition: left ease-in-out 1000ms;
+  @include desktop {
+    left: 552px;
+  }
 }
 .imgTransitionShow {
-    left: 0;
-    transition: left ease-in-out 1000ms;
+  left: 0;
+  transition: left ease-in-out 1000ms;
 }
 .imgTransitionDoHide {
-    left: calc(-90vw);
-    transition: left ease-in-out 1000ms;
-    @include desktop {
-        left: -552px;
-    }
+  left: calc(-90vw);
+  transition: left ease-in-out 1000ms;
+  @include desktop {
+    left: -552px;
+  }
 }
 .imgTransitionHidden {
-    left: calc(-90vw);
-    transition: none;
-    @include desktop {
-        left: -552px;
-    }
+  left: calc(-90vw);
+  transition: none;
+  @include desktop {
+    left: -552px;
+  }
 }
 
 .pelImg1 {
-    background: url("assets/img/pel2016.jpg") no-repeat center center;
+  background: url('assets/img/pel2016.jpg') no-repeat center center;
 }
 .pelImg2 {
-    background: url("assets/img/pel2017.jpg") no-repeat center center;
+  background: url('assets/img/pel2017.jpg') no-repeat center center;
 }
 .pelImg1,
 .pelImg2 {
-    position: absolute;
-    width: calc(90vw);
-    height: calc(60vw);
-    background-size: cover;
+  position: absolute;
+  width: calc(90vw);
+  height: calc(60vw);
+  background-size: cover;
 
-    @include desktop {
-        width: 552px;
-        height: 368px;
-    }
+  @include desktop {
+    width: 552px;
+    height: 368px;
+  }
 }
 .pelImg {
-    position: relative;
-    width: calc(90vw);
-    height: calc(60vw);
-    overflow: hidden;
+  position: relative;
+  width: calc(90vw);
+  height: calc(60vw);
+  overflow: hidden;
 
-    @include desktop {
-        width: 552px;
-        height: 368px;
-    }
+  @include desktop {
+    width: 552px;
+    height: 368px;
+  }
 }
 
 .beneImg {
-    position: relative;
-    width: calc(90vw);
-    height: calc(40vw);
-    background: url("assets/img/bene2019.jpg") no-repeat center center;
-    background-size: cover;
+  position: relative;
+  width: calc(90vw);
+  height: calc(40vw);
+  background: url('assets/img/bene2019.jpg') no-repeat center center;
+  background-size: cover;
 
-    @include desktop {
-        width: 552px;
-        height: 249px;
-    }
+  @include desktop {
+    width: 552px;
+    height: 249px;
+  }
 }
 
 .planImg {
-    position: relative;
-    width: calc(90vw);
-    height: calc(168vw);
-    background: url("assets/img/plan2019.jpg") no-repeat center center;
-    background-size: cover;
+  position: relative;
+  width: calc(90vw);
+  height: calc(168vw);
+  background: url('assets/img/plan2019.jpg') no-repeat center center;
+  background-size: cover;
 
-    @include desktop {
-        width: 552px;
-        height: 1028px;
-    }
+  @include desktop {
+    width: 552px;
+    height: 1028px;
+  }
 }
 
 .barnumsImg {
-    position: relative;
-    width: calc(90vw);
-    height: calc(18vw);
-    background: url("assets/img/barnums.jpg") no-repeat center center;
-    background-size: cover;
+  position: relative;
+  width: calc(90vw);
+  height: calc(18vw);
+  background: url('assets/img/barnums.jpg') no-repeat center center;
+  background-size: cover;
 
-    @include desktop {
-        width: 552px;
-        height: 112px;
-    }
+  @include desktop {
+    width: 552px;
+    height: 112px;
+  }
 }
 
 .hidden {
-    display: none;
+  display: none;
 }

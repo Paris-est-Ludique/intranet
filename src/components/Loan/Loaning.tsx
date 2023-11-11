@@ -12,18 +12,19 @@ const Loaning: React.FC = (): JSX.Element | null => {
   const [volunteerLoan, saveVolunteerLoan] = useVolunteerLoan()
   const [showUnknownOnly, setShowUnknownOnly] = useState(false)
 
-  const onShowUnknownOnly = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setShowUnknownOnly(e.target.checked)
-  if (!detailedBoxes || detailedBoxes.length === 0)
+  const onShowUnknownOnly = (e: React.ChangeEvent<HTMLInputElement>) => setShowUnknownOnly(e.target.checked)
+
+  if (!detailedBoxes || detailedBoxes.length === 0) {
     return null
+  }
   const boxesToShow = detailedBoxes.filter(
     box =>
       !showUnknownOnly
-            || !volunteerLoan
-            || (!volunteerLoan.loanable.includes(box.gameId)
-                && !volunteerLoan.playable.includes(box.gameId)
-                && !volunteerLoan.giftable.includes(box.gameId)
-                && !volunteerLoan.noOpinion.includes(box.gameId)),
+      || !volunteerLoan
+      || (!volunteerLoan.loanable.includes(box.gameId)
+        && !volunteerLoan.playable.includes(box.gameId)
+        && !volunteerLoan.giftable.includes(box.gameId)
+        && !volunteerLoan.noOpinion.includes(box.gameId)),
   )
 
   return (

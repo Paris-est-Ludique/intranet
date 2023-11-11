@@ -13,10 +13,7 @@ export function useTeamAssign(): [VolunteerTeamAssign | undefined, SetFunction] 
   const save = useAction(fetchVolunteerTeamAssignSet)
   const refreshVolunteers = useAction(refreshVolunteerList)
   const jwtToken = useSelector(selectUserJwtToken)
-  const teamSet = useSelector(
-    (state: AppState) => state.volunteerTeamAssignSet?.entity,
-    shallowEqual,
-  )
+  const teamSet = useSelector((state: AppState) => state.volunteerTeamAssignSet?.entity, shallowEqual)
 
   const saveWishes: SetFunction = useCallback(
     async (id, team) => {

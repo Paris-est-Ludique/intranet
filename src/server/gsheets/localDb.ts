@@ -27,6 +27,7 @@ export class SheetNames {
 
 type States = { [sheetName in keyof SheetNames]?: object[] | undefined }
 let states: States = {}
+
 type Types = { [sheetName in keyof SheetNames]?: object | undefined }
 let types: Types = {}
 
@@ -39,27 +40,28 @@ export async function saveLocalDb(
   types[name] = type
   const toSave = { states, types }
   const jsonDB = IS_DEV ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
+
   await fs.writeFile(DB_PATH, jsonDB)
 
   toSave.states = anonimizedDb(toSave.states)
   const jsonAnonimizedDB = IS_DEV ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
+
   await fs.writeFile(ANONYMIZED_DB_PATH, jsonAnonimizedDB)
 }
 
-export async function loadLocalDb(
-  name: keyof SheetNames,
-): Promise<{ state: object[]; type: object }> {
+export async function loadLocalDb(name: keyof SheetNames): Promise<{ state: object[]; type: object }> {
   if (isEmpty(states)) {
     let stringifiedDb
+
     try {
       stringifiedDb = await fs.readFile(DB_TO_LOAD_PATH)
-    }
-    catch {
+    } catch {
       console.error(`No local database save found in ${DB_TO_LOAD_PATH}`)
       process.exit()
     }
     if (stringifiedDb) {
       const db = JSON.parse(stringifiedDb.toString())
+
       states = db.states
       types = db.types
     }
@@ -69,6 +71,7 @@ export async function loadLocalDb(
     console.error(`Sheet ${name} couldn't be found in localDb`)
     process.exit()
   }
+
   return {
     state: states[name] as Element[],
     type: types[name] as Record<keyof Element, string>,
@@ -255,31 +258,32 @@ function anonimizedDb(_s: States): States {
   const s = cloneDeep(_s)
 
   if (s.Volunteers) {
-    (s.Volunteers as Volunteer[]).forEach((v) => {
+    ;(s.Volunteers as Volunteer[]).forEach(v => {
       anonimizedNameEmailMobile(v)
       if (!idADev(v)) {
         v.photo = `${v.firstname}_${v.lastname}.jpg`.toLowerCase()
       }
+
       anonimizedPasswords(v)
       anonimizedNotifs(v)
     })
   }
 
   if (s.Postulants) {
-    (s.Postulants as Postulant[]).forEach((v) => {
+    ;(s.Postulants as Postulant[]).forEach(v => {
       anonimizedNameEmailMobile(v)
       v.comment = v.id % 3 === 0 ? 'Bonjour, j\'adore l\'initiative!' : ''
     })
   }
 
   if (s.Retex) {
-    (s.Retex as Retex[]).forEach((r) => {
+    ;(s.Retex as Retex[]).forEach(r => {
       assign(r, new Retex(), { id: r.id, dayWishes: r.dayWishes })
     })
   }
 
   if (s.Miscs) {
-    (s.Miscs as Misc[]).forEach((r) => {
+    ;(s.Miscs as Misc[]).forEach(r => {
       assign(r, new Retex(), {
         id: r.id,
         date: r.date,
@@ -310,9 +314,7 @@ function anonimizedNameEmailMobile(v: Volunteer | Postulant): void {
   v.email = `${v.firstname}.${v.lastname}.${v.id}@${fakeEmailDomain}`.toLowerCase()
 
   const mobileStart = v.mobile.match(/^\+?[0-9][0-9]/)
-  const mobileEnd = [1, 2, 3, 4]
-    .map(n => `${numberToRand(v.id + n) % 10}${numberToRand(v.id + n + 10) % 10}`)
-    .join(' ')
+  const mobileEnd = [1, 2, 3, 4].map(n => `${numberToRand(v.id + n) % 10}${numberToRand(v.id + n + 10) % 10}`).join(' ')
 
   v.mobile = v.mobile ? `${(mobileStart || ['06'])[0]} ${mobileEnd}` : ''
 }
@@ -320,6 +322,7 @@ function anonimizedNameEmailMobile(v: Volunteer | Postulant): void {
 function anonimizedPasswords(v: Volunteer): void {
   if (idADev(v)) {
     v.password1 = '$2b$10$CMv7lEQKWM7XEJtumt0qsOw4dPANs6lT6dI2N27XmJP0Jm4rscmq.'
+
     return
   }
 
@@ -336,13 +339,12 @@ function anonimizedNotifs(v: Volunteer): void {
 
   if (v.id % 13 === 0) {
     v.acceptsNotifs = 'oui'
-  }
-  else if (v.id % 251 === 0) {
+  } else if (v.id % 251 === 0) {
     v.acceptsNotifs = 'non'
   }
 
   v.pushNotifSubscription
-        = v.id % 13 === 0
+    = v.id % 13 === 0
       ? '{"endpoint":"https://fcm.googleapis.com/fcm/send/f-EAfakedfakedU:APA91fakedfakedzIk-DEglfakedfaked9ugI--ljtfakedfakedfakedfakedfakedfakedP3t-ggU7Afakedfakedfakedkai","expirationTime":null,"keys":{"p256dh":"BEZOJSfakedfakedfakedfakedfakedfakedfakedfakedfakedfakedgYs-cafakedw","auth":"GlMfakedfakedFRg"}}'
       : ''
 }

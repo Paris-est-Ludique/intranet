@@ -32,35 +32,36 @@ const volunteerOnSiteInfoSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerOnSiteInfoReducer,
-  actions: volunteerOnSiteInfoActions,
-} = volunteerOnSiteInfoSlice
+export const { reducer: volunteerOnSiteInfoReducer, actions: volunteerOnSiteInfoActions } = volunteerOnSiteInfoSlice
 
 export const fetchVolunteerOnSiteInfo = elementFetch(
   volunteerOnSiteInfoGet,
   volunteerOnSiteInfoActions,
-  (error: Error) =>
-    toastError(`Erreur lors du chargement des infos sur site d'un bénévole: ${error.message}`),
+  (error: Error) => toastError(`Erreur lors du chargement des infos sur site d'un bénévole: ${error.message}`),
 )
 
 function selectShouldFetchVolunteerOnSiteInfo(state: AppState, id: number) {
-  return state.volunteerOnSiteInfo.readyStatus !== 'success'
+  return (
+    state.volunteerOnSiteInfo.readyStatus !== 'success'
     || (state.volunteerOnSiteInfo.entity && state.volunteerOnSiteInfo.entity.id !== id)
+  )
 }
 
-export const fetchVolunteerOnSiteInfoIfNeed: AppThunk = (id = 0) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerOnSiteInfoIfNeed: AppThunk
+  = (id = 0) =>
+    (dispatch: AppDispatch, getState: () => AppState) => {
+      let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+      if (!id) {
+        ;({ jwt, id } = getState().auth)
+      }
 
-  const shouldFetch = selectShouldFetchVolunteerOnSiteInfo(getState(), id)
-  if (shouldFetch) {
-    dispatch(fetchVolunteerOnSiteInfo(jwt, id))
-  }
-}
+      const shouldFetch = selectShouldFetchVolunteerOnSiteInfo(getState(), id)
+
+      if (shouldFetch) {
+        dispatch(fetchVolunteerOnSiteInfo(jwt, id))
+      }
+    }
 
 export const selectVolunteerOnSiteInfo = createSelector(
   (state: AppState) => state,

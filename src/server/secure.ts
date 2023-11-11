@@ -8,6 +8,7 @@ export function secure(request: AuthorizedRequest, response: Response, next: Nex
     response.status(408).json({
       error: 'Server still loading',
     })
+
     return
   }
 
@@ -21,6 +22,7 @@ export function secure(request: AuthorizedRequest, response: Response, next: Nex
       response.status(200).json({
         error: 'Accès interdit sans identification',
       })
+
       return
     }
     response.locals.jwt = decoded
@@ -30,5 +32,6 @@ export function secure(request: AuthorizedRequest, response: Response, next: Nex
 
 export async function getJwt(id: number, roles: string[]): Promise<string> {
   const token = jwt.sign({ id, roles }, import.meta.env.JWT_SECRET)
+
   return token
 }

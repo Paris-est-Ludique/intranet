@@ -32,33 +32,30 @@ const volunteerDiscordIdSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerDiscordIdReducer,
-  actions: volunteerDiscordIdActions,
-} = volunteerDiscordIdSlice
+export const { reducer: volunteerDiscordIdReducer, actions: volunteerDiscordIdActions } = volunteerDiscordIdSlice
 
-export const fetchVolunteerDiscordId = elementFetch(
-  volunteerDiscordIdGet,
-  volunteerDiscordIdActions,
-  (error: Error) =>
-    toastError(`Erreur lors du chargement du discordId d'un bénévole: ${error.message}`),
-)
+export const fetchVolunteerDiscordId = elementFetch(volunteerDiscordIdGet, volunteerDiscordIdActions, (error: Error) =>
+  toastError(`Erreur lors du chargement du discordId d'un bénévole: ${error.message}`))
 
 function selectShouldFetchVolunteerDiscordId(state: AppState, id: number) {
-  return state.volunteerDiscordId.readyStatus !== 'success'
+  return (
+    state.volunteerDiscordId.readyStatus !== 'success'
     || (state.volunteerDiscordId.entity && state.volunteerDiscordId.entity.id !== id)
+  )
 }
 
-export const fetchVolunteerDiscordIdIfNeed: AppThunk = (id = 0) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerDiscordIdIfNeed: AppThunk
+  = (id = 0) =>
+    (dispatch: AppDispatch, getState: () => AppState) => {
+      let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
-  if (selectShouldFetchVolunteerDiscordId(getState(), id)) {
-    dispatch(fetchVolunteerDiscordId(jwt, id))
-  }
-}
+      if (!id) {
+        ;({ jwt, id } = getState().auth)
+      }
+      if (selectShouldFetchVolunteerDiscordId(getState(), id)) {
+        dispatch(fetchVolunteerDiscordId(jwt, id))
+      }
+    }
 
 export const selectVolunteerDiscordId = createSelector(
   (state: AppState) => state,

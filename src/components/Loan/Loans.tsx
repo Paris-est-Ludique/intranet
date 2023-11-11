@@ -13,6 +13,7 @@ const Loans: React.FC = (): JSX.Element | null => {
   const gameWithLoans: GameWithVolunteers[] = useSelector(selectSortedUniqueGamesWithVolunteers)
 
   const loanGames = gameWithLoans.filter(game => game.toLoan)
+
   // const giftGames = gameWithLoans.filter(game => !game.toLoan)
 
   return (
@@ -21,7 +22,10 @@ const Loans: React.FC = (): JSX.Element | null => {
       {loanGames.length > 0 && (
         <ul className={styles.boxList}>
           {loanGames.map(game => (
-            <GamesWithVolunteersItem gameWithLoans={game} key={game.id} />
+            <GamesWithVolunteersItem
+              gameWithLoans={game}
+              key={game.id}
+            />
           ))}
         </ul>
       )}

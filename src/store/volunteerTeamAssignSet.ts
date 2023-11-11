@@ -8,7 +8,9 @@ import { toastError } from '@/utils/toast'
 import type { VolunteerTeamAssign } from '@/services/volunteers'
 import { volunteerTeamAssignSet } from '@/services/volunteersAccessors'
 
-type StateVolunteerTeamAssignSet = { entity?: VolunteerTeamAssign } & StateRequest
+type StateVolunteerTeamAssignSet = {
+  entity?: VolunteerTeamAssign
+} & StateRequest
 
 const initialState: StateVolunteerTeamAssignSet = {
   readyStatus: 'idle',
@@ -32,32 +34,33 @@ const volunteerTeamAssignSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerTeamAssignSetReducer,
-  actions: volunteerTeamAssignSetActions,
-} = volunteerTeamAssignSetSlice
+export const { reducer: volunteerTeamAssignSetReducer, actions: volunteerTeamAssignSetActions }
+  = volunteerTeamAssignSetSlice
 
 export const fetchVolunteerTeamAssignSet = elementFetch(
   volunteerTeamAssignSet,
   volunteerTeamAssignSetActions,
-  (error: Error) =>
-    toastError(`Erreur lors du chargement des assignation d'équipe: ${error.message}`),
+  (error: Error) => toastError(`Erreur lors du chargement des assignation d'équipe: ${error.message}`),
 )
 
 function selectShouldFetchVolunteerTeamAssignSet(state: AppState, id: number): boolean {
-  return state.volunteerTeamAssignSet?.readyStatus !== 'success'
+  return (
+    state.volunteerTeamAssignSet?.readyStatus !== 'success'
     || (state.volunteerTeamAssignSet?.entity && state.volunteerTeamAssignSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerTeamAssignSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerTeamAssign> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerTeamAssignSetIfNeed: AppThunk
+  = (id = 0, wishes: Partial<VolunteerTeamAssign> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  const shouldFetch = selectShouldFetchVolunteerTeamAssignSet(getState(), id)
-  if (shouldFetch) {
-    dispatch(fetchVolunteerTeamAssignSet(jwt, id, wishes))
+    const shouldFetch = selectShouldFetchVolunteerTeamAssignSet(getState(), id)
+
+    if (shouldFetch) {
+      dispatch(fetchVolunteerTeamAssignSet(jwt, id, wishes))
+    }
   }
-}

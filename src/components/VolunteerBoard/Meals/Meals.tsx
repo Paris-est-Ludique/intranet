@@ -20,8 +20,12 @@ const Meals: FC = (): JSX.Element | null => {
 
   function getMealElement(i: number): JSX.Element {
     const mealChoice = mealChoices[i]
+
     return (
-      <div className={styles.mealsLabel} key={mealDays[i].name}>
+      <div
+        className={styles.mealsLabel}
+        key={mealDays[i].name}
+      >
         {mealDays[i].name}
         ,
         {mealChoice.title}
@@ -40,7 +44,10 @@ const Meals: FC = (): JSX.Element | null => {
           </>
           )
         : (
-          <div className={styles.mealsLabel} key="Samedi">
+          <div
+            className={styles.mealsLabel}
+            key="Samedi"
+          >
             Non bénévole le samedi
           </div>
           )}
@@ -53,13 +60,22 @@ const Meals: FC = (): JSX.Element | null => {
           </>
           )
         : (
-          <div className={styles.mealsLabel} key="Dimanche">
+          <div
+            className={styles.mealsLabel}
+            key="Dimanche"
+          >
             Non bénévole le dimanche
           </div>
           )}
 
-      <div className={styles.editButton} key="edit">
-        <button type="button" onClick={onEdit}>
+      <div
+        className={styles.editButton}
+        key="edit"
+      >
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

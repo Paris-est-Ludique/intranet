@@ -12,36 +12,31 @@ export default async () => {
 
   if (hasSendGridApiAccess) {
     addStatus('Emailing:', chalk.green(`✅ online through SendGrid`))
-  }
-  else {
+  } else {
     addStatus('Emailing:', chalk.blue(`🚧 offline, simulated`))
   }
 
   if (hasPushNotifAccess) {
     addStatus('Push notif:', chalk.green(`✅ online with a Vapid key`))
-  }
-  else {
+  } else {
     addStatus('Push notif:', chalk.blue(`🚧 offline, simulated`))
   }
 
   if (hasGSheetsAccess) {
     addStatus('Database:', chalk.green(`✅ online from Google Sheet`))
-  }
-  else {
+  } else {
     addStatus('Database:', chalk.blue(`🚧 offline, simulated from local db file`))
   }
 
   if (hasDiscordAccess) {
     addStatus('Discord bot:', chalk.green(`✅ online through discord.js`))
-  }
-  else {
+  } else {
     addStatus('Discord bot:', chalk.blue(`🚧 no creds, disabled`))
   }
 
   if (hasSecret) {
     addStatus('JWT secret:', chalk.green(`✅ prod private one from file`))
-  }
-  else {
+  } else {
     addStatus('JWT secret:', chalk.blue(`🚧 dev public fake one from config`))
   }
 }

@@ -22,8 +22,7 @@ export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
   const participation = get(userWishes, 'active', 'inconnu') as string
   const tshirtSize = get(participationDetails, 'tshirtSize', '')
   const food = get(participationDetails, 'food', '')
-  const needToShow
-        = (participation === 'oui' || participation === 'peut-etre') && (!tshirtSize || !food)
+  const needToShow = (participation === 'oui' || participation === 'peut-etre') && (!tshirtSize || !food)
 
   addAsk(
     asks,
@@ -31,9 +30,7 @@ export function AskParticipationDetails(asks: JSX.Element[], id: number): void {
     volunteerAsks,
     false,
     needToShow,
-    <ParticipationDetailsForm afterSubmit={onSubmit}>
-      {answerLaterOnProfile}
-    </ParticipationDetailsForm>,
+    <ParticipationDetailsForm afterSubmit={onSubmit}>{answerLaterOnProfile}</ParticipationDetailsForm>,
   )
 }
 

@@ -14,8 +14,9 @@ export type Props = RouteComponentProps
 const GameDetailsUpdatePage: FC<Props> = (): JSX.Element => {
   const jwtToken = useSelector(selectUserJwtToken)
 
-  if (jwtToken === undefined)
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
   if (jwtToken) {
     return (
       <>
@@ -23,9 +24,12 @@ const GameDetailsUpdatePage: FC<Props> = (): JSX.Element => {
       </>
     )
   }
+
   return <LoginForm loginNeeded />
 }
 
-export const loadData = (): AppThunk[] => [...[fetchGameDetailsUpdateIfNeed].map((f) => f())]
+export function loadData(): AppThunk[] {
+  return [...[fetchGameDetailsUpdateIfNeed].map(f => f())]
+}
 
 export default memo(GameDetailsUpdatePage)

@@ -1,111 +1,111 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .mainMenu {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
+  @include mobile {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -260px;
+    width: 250px;
+    padding-top: 40px;
+    background-color: $color-white;
+    box-shadow: 0 0 8px $color-grey-dark;
+    transition: right 0.6s ease;
+    z-index: 10;
+  }
+
+  &.opened {
     @include mobile {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        right: -260px;
-        width: 250px;
-        padding-top: 40px;
-        background-color: $color-white;
-        box-shadow: 0 0 8px $color-grey-dark;
-        transition: right 0.6s ease;
-        z-index: 10;
+      right: 0;
     }
-
-    &.opened {
-        @include mobile {
-            right: 0;
-        }
-    }
+  }
 }
 
 .close {
-    display: none;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 26px;
-    color: $color-grey-medium;
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 26px;
+  color: $color-grey-medium;
 
-    @include mobile {
-        display: block;
-    }
+  @include mobile {
+    display: block;
+  }
 }
 
 .burger {
-    display: none;
+  display: none;
 
-    @include mobile {
-        @include vertical-center();
+  @include mobile {
+    @include vertical-center();
 
-        display: block;
-        position: absolute;
-        right: 10px;
-        width: 30px;
-        height: 30px;
-        text-align: center;
-        font-size: 22px;
-        color: $color-black;
-        background-color: $color-white;
-        border-radius: 4px;
-        box-shadow: 1px 1px 2px $color-black;
-    }
+    display: block;
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 22px;
+    color: $color-black;
+    background-color: $color-white;
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px $color-black;
+  }
 }
 
 .mainMenuItem {
-    display: inline-block;
-    margin: 0 6px;
+  display: inline-block;
+  margin: 0 6px;
+
+  @include mobile {
+    display: block;
+    border-bottom: 1px solid $color-grey-light;
+
+    &:first-child {
+      border-top: 1px solid $color-grey-light;
+    }
+  }
+
+  @include desktop {
+    margin: 0;
+    padding: 7px 6px 6px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    cursor: pointer;
+    color: $color-grey-dark;
+    border: solid $color-black;
+    border-width: 1px 1px 0;
+    background-color: $color-grey-light;
+
+    &:not(.active) a:hover {
+      color: $color-white;
+    }
+  }
+
+  &.active {
+    color: $color-yellow;
+    background-color: $color-black;
+  }
+
+  a {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
 
     @include mobile {
-        display: block;
-        border-bottom: 1px solid $color-grey-light;
-
-        &:first-child {
-            border-top: 1px solid $color-grey-light;
-        }
+      display: block;
+      padding: 10px 15px;
     }
-
-    @include desktop {
-        margin: 0;
-        padding: 7px 6px 6px;
-        border-radius: 10px 10px 0 0;
-        text-align: center;
-        cursor: pointer;
-        color: $color-grey-dark;
-        border: solid $color-black;
-        border-width: 1px 1px 0;
-        background-color: $color-grey-light;
-
-        &:not(.active) a:hover {
-            color: $color-white;
-        }
-    }
-
-    &.active {
-        color: $color-yellow;
-        background-color: $color-black;
-    }
-
-    a {
-        font-size: 0.9em;
-        font-weight: bold;
-        text-decoration: none;
-        color: inherit;
-
-        @include mobile {
-            display: block;
-            padding: 10px 15px;
-        }
-    }
+  }
 }

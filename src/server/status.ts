@@ -5,8 +5,7 @@ export function addStatus(...messageParams: string[]): void {
   messages.push(messageParams)
   if (messages.length === _messageCount) {
     showStatus()
-  }
-  else if (messages.length > _messageCount) {
+  } else if (messages.length > _messageCount) {
     console.error(...messageParams)
   }
 }

@@ -48,10 +48,7 @@ function baseConfig(env) {
           './src/store/**/*',
           './src/utils/**/*',
         ],
-        imports: [
-          'react',
-          'react-router',
-        ],
+        imports: ['react', 'react-router'],
         eslintrc: {
           enabled: true,
           filepath: './.eslintrc-auto-import.json',
@@ -87,6 +84,7 @@ export function clientConfig(env: Record<string, string>) {
 }
 
 // https://vitejs.dev/config/
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname, '')
 

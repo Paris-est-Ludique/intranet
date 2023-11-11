@@ -6,7 +6,10 @@ import { fetchVolunteerMealsSet } from '@/store/volunteerMealsSet'
 import useAction from '@/utils/useAction'
 import type { VolunteerMeals } from '@/services/volunteers'
 
-export interface MealOption { abbr: string; title: string }
+export interface MealOption {
+  abbr: string
+  title: string
+}
 export interface MealDay {
   name: string
   options: MealOption[]
@@ -60,15 +63,13 @@ type SetFunction = (meals: VolunteerMeals['meals'], food: VolunteerMeals['food']
 export function useUserMeals(): [VolunteerMeals | undefined, SetFunction] {
   const save = useAction(fetchVolunteerMealsSet)
   const jwtToken = useSelector(selectUserJwtToken)
-  const userWishes = useSelector(
-    (state: AppState) => state.volunteerMealsSet?.entity,
-    shallowEqual,
-  )
+  const userWishes = useSelector((state: AppState) => state.volunteerMealsSet?.entity, shallowEqual)
 
   const saveWishes: SetFunction = useCallback(
     (meals, food) => {
-      if (!userWishes)
+      if (!userWishes) {
         return
+      }
       save(jwtToken, 0, {
         id: userWishes.id,
         meals,

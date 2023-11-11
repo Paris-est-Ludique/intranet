@@ -17,7 +17,7 @@ const wishListSlice = createSlice({
   name: 'wishList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Wish[]>) => {
@@ -31,23 +31,19 @@ const wishListSlice = createSlice({
   },
 })
 
-export const {
-  reducer: wishListReducer,
-  actions: wishListActions,
-} = wishListSlice
+export const { reducer: wishListReducer, actions: wishListActions } = wishListSlice
 
-export const fetchWishList = elementListFetch(
-  wishListGet,
-  wishListActions,
-  (error: Error) => toastError(`Erreur lors du chargement des envies: ${error.message}`),
-)
+export const fetchWishList = elementListFetch(wishListGet, wishListActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des envies: ${error.message}`))
 
-export const selectShouldFetchWishList = (state: AppState) => state.wishList.readyStatus !== 'success'
+export function selectShouldFetchWishList(state: AppState) {
+  return state.wishList.readyStatus !== 'success'
+}
 
-export const fetchWishListIfNeed: AppThunk = () =>
-  (dispatch: AppDispatch, getState: () => AppState) => {
-    const shouldFetch = selectShouldFetchWishList(getState())
-    if (shouldFetch) {
-      dispatch(fetchWishList())
-    }
+export const fetchWishListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
+  const shouldFetch = selectShouldFetchWishList(getState())
+
+  if (shouldFetch) {
+    dispatch(fetchWishList())
   }
+}

@@ -35,18 +35,14 @@ export const boxListSlice = createSlice({
   },
 })
 
-export const {
-  actions: boxListActions,
-  reducer: boxListReducer,
-} = boxListSlice
+export const { actions: boxListActions, reducer: boxListReducer } = boxListSlice
 
-export const fetchBoxList = elementListFetch(
-  detailedBoxListGet,
-  boxListActions,
-  (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`),
-)
+export const fetchBoxList = elementListFetch(detailedBoxListGet, boxListActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`))
 
-const selectShouldFetchBoxList = (state: AppState) => state.boxList.readyStatus !== 'success'
+function selectShouldFetchBoxList(state: AppState) {
+  return state.boxList.readyStatus !== 'success'
+}
 
 export const fetchBoxListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
   if (selectShouldFetchBoxList(getState())) {
@@ -54,19 +50,21 @@ export const fetchBoxListIfNeed: AppThunk = () => (dispatch: AppDispatch, getSta
   }
 }
 
-export const selectBoxListState = (state: AppState): EntitiesRequest<DetailedBox> => state.boxList
+export function selectBoxListState(state: AppState): EntitiesRequest<DetailedBox> {
+  return state.boxList
+}
 
-export const selectBoxList = createSelector(
-  selectBoxListState,
-  ({ ids, entities, readyStatus }) => {
-    if (readyStatus !== 'success')
-      return []
-    return ids.map(id => entities[id])
-  },
-)
+export const selectBoxList = createSelector(selectBoxListState, ({ ids, entities, readyStatus }) => {
+  if (readyStatus !== 'success') {
+    return []
+  }
+
+  return ids.map(id => entities[id])
+})
 
 export const selectSortedUniqueDetailedBoxes = createSelector(selectBoxList, (boxes: []) => {
   const validBoxes = boxes.filter(box => box) as DetailedBox[]
+
   return sortedUniqBy(sortBy(validBoxes, gameTitleOrder), gameTitleOrder)
 })
 

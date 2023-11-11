@@ -21,8 +21,7 @@ export function AskMeals(asks: JSX.Element[], id: number): void {
   const [userWishes] = useUserDayWishes()
   const participation = get(userWishes, 'active', 'inconnu') as string
   const meals = get(userMeals, 'meals', [])
-  const needToShow
-        = (participation === 'oui' || participation === 'peut-etre') && meals.length === 0
+  const needToShow = (participation === 'oui' || participation === 'peut-etre') && meals.length === 0
 
   addAsk(
     asks,

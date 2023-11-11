@@ -1,9 +1,9 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .registerPage {
-    @include page-wrapper-center;
+  @include page-wrapper-center;
 }
 
 .registerContent {
-    @include page-content-wrapper(600px);
+  @include page-content-wrapper(600px);
 }

@@ -14,15 +14,23 @@ const LogoutButton: FC = (): JSX.Element | null => {
     unsetJWT()
 
     location?.reload()
+
     return false
   }, [])
 
-  if (!connected)
+  if (!connected) {
     return null
+  }
 
   return (
-    <div key="logout" className={styles.logoutButton}>
-      <button type="button" onClick={onClick}>
+    <div
+      key="logout"
+      className={styles.logoutButton}
+    >
+      <button
+        type="button"
+        onClick={onClick}
+      >
         Se déconnecter
       </button>
     </div>

@@ -18,7 +18,7 @@ const volunteerListSlice = createSlice({
   name: 'volunteerList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Volunteer[]>) => {
@@ -32,45 +32,45 @@ const volunteerListSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerListReducer,
-  actions: volunteerListActions,
-} = volunteerListSlice
+export const { reducer: volunteerListReducer, actions: volunteerListActions } = volunteerListSlice
 
-export const fetchVolunteerList = elementListFetch(
-  volunteerListGet,
-  volunteerListActions,
-  (error: Error) => toastError(`Erreur lors du chargement des bénévoles: ${error.message}`),
-)
+export const fetchVolunteerList = elementListFetch(volunteerListGet, volunteerListActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des bénévoles: ${error.message}`))
 
-const selectShouldFetchVolunteerList = (state: AppState) => state.volunteerList.readyStatus !== 'success'
-
-export const fetchVolunteerListIfNeed: AppThunk = (id = 0) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
-
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
-
-  if (selectShouldFetchVolunteerList(getState())) {
-    dispatch(fetchVolunteerList(jwt))
-  }
+function selectShouldFetchVolunteerList(state: AppState) {
+  return state.volunteerList.readyStatus !== 'success'
 }
 
-export const refreshVolunteerList: AppThunk = (jwt: string) => (dispatch: AppDispatch) => dispatch(fetchVolunteerList(jwt))
+export const fetchVolunteerListIfNeed: AppThunk
+  = (id = 0) =>
+    (dispatch: AppDispatch, getState: () => AppState) => {
+      let jwt = ''
+
+      if (!id) {
+        ;({ jwt, id } = getState().auth)
+      }
+
+      if (selectShouldFetchVolunteerList(getState())) {
+        dispatch(fetchVolunteerList(jwt))
+      }
+    }
+
+export const refreshVolunteerList: AppThunk = (jwt: string) => (dispatch: AppDispatch) =>
+  dispatch(fetchVolunteerList(jwt))
 
 export const selectVolunteerListState: EntitiesRequest<Volunteer> = (state: AppState) => state.volunteerList
 
-export const selectVolunteerList = createSelector(
-  selectVolunteerListState,
-  ({ ids, entities, readyStatus }) => {
-    if (readyStatus !== 'success')
-      return []
-    return ids.map((id: EntityId) => entities[id]) as Volunteer[]
-  },
-)
+export const selectVolunteerList = createSelector(selectVolunteerListState, ({ ids, entities, readyStatus }) => {
+  if (readyStatus !== 'success') {
+    return []
+  }
 
-const fullName = (volunteer: Volunteer) => `${volunteer.firstname} ${volunteer.lastname}`
+  return ids.map((id: EntityId) => entities[id]) as Volunteer[]
+})
+
+function fullName(volunteer: Volunteer) {
+  return `${volunteer.firstname} ${volunteer.lastname}`
+}
 
 export const selectVolunteerListAlphaSorted = createSelector(selectVolunteerList, volunteer =>
   [...volunteer].sort((vA, vB) => fullName(vA).localeCompare(fullName(vB))))

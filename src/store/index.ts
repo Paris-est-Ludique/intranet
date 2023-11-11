@@ -7,14 +7,13 @@ import { createReduxHistoryContext } from 'redux-first-history'
 
 import type { StateRequest } from '@/utils/elements'
 
-const {
-  createReduxHistory,
-  routerMiddleware,
-  routerReducer,
-} = createReduxHistoryContext({ history: IS_SSR ? createMemoryHistory() : createBrowserHistory() })
+const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
+  history: IS_SSR ? createMemoryHistory() : createBrowserHistory(),
+})
 
 export const store = configureStore({
   // preloadedState: initialState,
+
   reducer: combineReducers({
     announcementList: announcementListReducer,
     auth: authReducer,

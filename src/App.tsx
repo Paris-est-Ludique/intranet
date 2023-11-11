@@ -10,6 +10,7 @@ import LogoutButton from '@/components/LogoutButton/LogoutButton'
 import { routes } from '@/routes'
 
 // Global styles
+
 import 'normalize.css/normalize.css'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -29,6 +30,7 @@ const helmetSettings = {
 export function App({ route, location }: { route: Route; location: Location }): JSX.Element {
   if (location?.pathname === '/fiches') {
     // TODO use a better way to handle this
+
     return <div className={styles.cardPage}>{useRoutes(route)}</div>
   }
 

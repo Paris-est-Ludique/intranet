@@ -1,23 +1,23 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .homePage {
-    @include page-wrapper-center;
+  @include page-wrapper-center;
 }
 
 .notificationsContent {
-    @include page-content-wrapper;
+  @include page-content-wrapper;
 }
 
 .loginContent {
-    @include page-content-wrapper;
+  @include page-content-wrapper;
 }
 
 .preRegisterContent {
-    @include page-content-wrapper;
+  @include page-content-wrapper;
 }
 
 .navigationLink {
-    @include page-content-wrapper;
+  @include page-content-wrapper;
 
-    text-align: center;
+  text-align: center;
 }

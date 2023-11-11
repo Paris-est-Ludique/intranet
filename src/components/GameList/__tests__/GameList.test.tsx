@@ -32,8 +32,7 @@ describe('<List />', () => {
           duration: 45,
           type: 'Ambiance',
           poufpaf: '0-9-2/6-qui-prend-6-nimmt',
-          bggPhoto:
-                        'https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg',
+          bggPhoto: 'https://cf.geekdo-images.com/thumb/img/lzczxR5cw7an7tRWeHdOrRtLyes=/fit-in/200x150/pic772547.jpg',
           bggId: 432,
           ean: '3421272101313',
         },

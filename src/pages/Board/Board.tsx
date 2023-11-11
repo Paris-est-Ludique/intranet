@@ -14,8 +14,9 @@ export type Props = RouteComponentProps
 const BoardPage: FC<Props> = (): JSX.Element => {
   const jwtToken = useSelector(selectUserJwtToken)
 
-  if (jwtToken === undefined)
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
   if (jwtToken) {
     return (
       <Page>
@@ -23,9 +24,10 @@ const BoardPage: FC<Props> = (): JSX.Element => {
       </Page>
     )
   }
+
   return <LoginForm loginNeeded />
 }
 
-export const loadData = (): AppThunk[] => [...fetchForBoard.map((f) => f())]
+export const loadData = (): AppThunk[] => [...fetchForBoard.map(f => f())]
 
 export default memo(BoardPage)

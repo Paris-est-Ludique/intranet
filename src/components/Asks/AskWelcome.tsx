@@ -27,9 +27,12 @@ export function AskWelcome(asks: JSX.Element[], id: number): void {
       {volunteerAsks?.firstname}
       {' '}
       !
-      <div className={styles.notifIntro} key="login-intro">
-        Ici tu seras notifié(e) des nouvelles importantes et des questions pour lesquelles
-        il nous faudrait absolument ta réponse.
+      <div
+        className={styles.notifIntro}
+        key="login-intro"
+      >
+        Ici tu seras notifié(e) des nouvelles importantes et des questions pour lesquelles il nous faudrait absolument
+        ta réponse.
         <div className={styles.formButtons}>
           <FormButton onClick={onSubmit}>Ok, continuer</FormButton>
         </div>

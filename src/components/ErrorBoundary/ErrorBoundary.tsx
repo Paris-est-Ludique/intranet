@@ -18,6 +18,7 @@ class ErrorBoundary extends PureComponent<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: { componentStack: string }): void {
     // Catch errors in any components below and re-render with error message
+
     this.setState({ error, errorInfo })
 
     // You can also log error messages to an error reporting service here
@@ -28,6 +29,7 @@ class ErrorBoundary extends PureComponent<Props, State> {
     const { errorInfo, error } = this.state
 
     // If there's an error, render error path
+
     return errorInfo
       ? (
         <div data-testid="error-view">

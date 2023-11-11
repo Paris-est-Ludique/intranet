@@ -15,7 +15,7 @@ type SetFunction = (
   question6: Retex['question6'],
   question7: Retex['question7'],
   question8: Retex['question8'],
-  question9: Retex['question9']
+  question9: Retex['question9'],
 ) => void
 
 export function useRetex(): [Retex | undefined, SetFunction] {
@@ -24,19 +24,10 @@ export function useRetex(): [Retex | undefined, SetFunction] {
   const retex = useSelector((state: AppState) => state.retexSet?.entity, shallowEqual)
 
   const saveRetex: SetFunction = useCallback(
-    (
-      id,
-      question2,
-      question3,
-      question4,
-      question5,
-      question6,
-      question7,
-      question8,
-      question9,
-    ) => {
-      if (!retex)
+    (id, question2, question3, question4, question5, question6, question7, question8, question9) => {
+      if (!retex) {
         return
+      }
       save(jwtToken, {
         id,
         question2,

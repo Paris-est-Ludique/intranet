@@ -7,7 +7,12 @@ interface Props {
 }
 
 const FormSubmit: FC<Props> = ({ children, onClick }): JSX.Element => (
-  <button type="button" className={styles.button} onClick={onClick} onTouchStart={onClick}>
+  <button
+    type="button"
+    className={styles.button}
+    onClick={onClick}
+    onTouchStart={onClick}
+  >
     {children}
   </button>
 )

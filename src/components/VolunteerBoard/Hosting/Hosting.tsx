@@ -17,9 +17,7 @@ const Hosting: FC = (): JSX.Element | null => {
     <div className={styles.hosting}>
       <div className={styles.title}>Mon hébergement</div>
       {(hostingType === '' || hostingType === 'neither') && (
-        <div className={styles.hostingLabel}>
-          Je ne peux héberger personnes que ça arrangerait.
-        </div>
+        <div className={styles.hostingLabel}>Je ne peux héberger personnes que ça arrangerait.</div>
       )}
       {hostingType === 'cherche' && (
         <div className={styles.hostingLabel}>
@@ -27,8 +25,7 @@ const Hosting: FC = (): JSX.Element | null => {
           {' '}
           <b>besoin</b>
           {' '}
-          d'un hébergement par un bénévole proche du
-          festival
+          d'un hébergement par un bénévole proche du festival
         </div>
       )}
       {hostingType === 'propose' && (
@@ -46,7 +43,10 @@ const Hosting: FC = (): JSX.Element | null => {
       )}
 
       <div className={styles.editButton}>
-        <button type="button" onClick={onEdit}>
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

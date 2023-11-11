@@ -1,9 +1,9 @@
 ---
 name: "\U0001F41B Bug Report"
 about: Create a report to help us improve
-title: ""
-labels: ""
-assignees: ""
+title: ''
+labels: ''
+assignees: ''
 ---
 
 # Bug Report
@@ -30,11 +30,11 @@ Add screenshots to help explain your problem.
 
 ## Your Environment
 
--   Device: [e.g. MacBook Pro, iPhone12]
--   OS: [e.g. macOS, iOS, Windows]
--   Browser: [e.g. Chrome, Safari]
--   Node version: [e.g. v16.0.0]
--   App version: [e.g. v1.0.0]
+- Device: [e.g. MacBook Pro, iPhone12]
+- OS: [e.g. macOS, iOS, Windows]
+- Browser: [e.g. Chrome, Safari]
+- Node version: [e.g. v16.0.0]
+- App version: [e.g. v1.0.0]
 
 ## Additional Information
 

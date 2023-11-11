@@ -12,6 +12,7 @@ export type Props = RouteComponentProps
 
 const RegisterPage: FC<Props> = (): JSX.Element => {
   const dispatch = useDispatch()
+
   return (
     <div className={styles.registerPage}>
       <div className={styles.registerContent}>
@@ -22,6 +23,8 @@ const RegisterPage: FC<Props> = (): JSX.Element => {
   )
 }
 
-export const loadData = (): AppThunk[] => [...fetchForRegisterForm.map((f) => f())]
+export function loadData(): AppThunk[] {
+  return [...fetchForRegisterForm.map(f => f())]
+}
 
 export default memo(RegisterPage)

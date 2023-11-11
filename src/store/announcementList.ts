@@ -18,7 +18,7 @@ export const announcementListSlice = createSlice({
   name: 'announcementList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Announcement[]>) => {
@@ -32,16 +32,10 @@ export const announcementListSlice = createSlice({
   },
 })
 
-export const {
-  actions: announcementListActions,
-  reducer: announcementListReducer,
-} = announcementListSlice
+export const { actions: announcementListActions, reducer: announcementListReducer } = announcementListSlice
 
-export const fetchAnnouncementList = elementListFetch(
-  announcementListGet,
-  announcementListActions,
-  (error: Error) => toastError(`Erreur lors du chargement des announcements: ${error.message}`),
-)
+export const fetchAnnouncementList = elementListFetch(announcementListGet, announcementListActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des announcements: ${error.message}`))
 
 export const fetchAnnouncementListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
   const { jwt } = getState().auth

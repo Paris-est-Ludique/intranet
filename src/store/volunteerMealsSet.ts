@@ -32,30 +32,27 @@ const volunteerMealsSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerMealsSetReducer,
-  actions: volunteerMealsSetActions,
-} = volunteerMealsSetSlice
+export const { reducer: volunteerMealsSetReducer, actions: volunteerMealsSetActions } = volunteerMealsSetSlice
 
-export const fetchVolunteerMealsSet = elementFetch(
-  volunteerMealsSet,
-  volunteerMealsSetActions,
-  (error: Error) => toastError(`Erreur lors du chargement des choix des repas: ${error.message}`),
-)
+export const fetchVolunteerMealsSet = elementFetch(volunteerMealsSet, volunteerMealsSetActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des choix des repas: ${error.message}`))
 
 function selectShouldFetchVolunteerMealsSet(state: AppState, id: number) {
-  return state.volunteerMealsSet?.readyStatus !== 'success'
+  return (
+    state.volunteerMealsSet?.readyStatus !== 'success'
     || (state.volunteerMealsSet?.entity && state.volunteerMealsSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerMealsSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerMeals> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerMealsSetIfNeed: AppThunk
+  = (id = 0, wishes: Partial<VolunteerMeals> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  if (selectShouldFetchVolunteerMealsSet(getState(), id)) {
-    dispatch(fetchVolunteerMealsSet(jwt, id, wishes))
+    if (selectShouldFetchVolunteerMealsSet(getState(), id)) {
+      dispatch(fetchVolunteerMealsSet(jwt, id, wishes))
+    }
   }
-}

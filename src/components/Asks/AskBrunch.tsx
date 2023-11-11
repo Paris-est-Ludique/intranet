@@ -29,8 +29,7 @@ export default function AskBrunch(asks: JSX.Element[], id: number): void {
     needToShow,
     <>
       <BrunchForm afterSubmit={onSubmit}>{answerLaterOnProfile}</BrunchForm>
-      Nous avons besoin d'une réponse avant le jeudi 15 soir minuit pour commander les repas !
-      ^^
+      Nous avons besoin d'une réponse avant le jeudi 15 soir minuit pour commander les repas ! ^^
     </>,
   )
 }

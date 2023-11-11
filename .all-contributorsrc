@@ -1,7 +1,5 @@
 {
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "imageSize": 100,
   "commit": false,
   "contributors": [
@@ -10,12 +8,8 @@
       "name": "Pierre",
       "avatar_url": "https://avatars1.githubusercontent.com/u/16210249?v=4",
       "profile": "https://coplay.org",
-      "contributions": [
-        "code",
-        "doc",
-        "maintenance"
-      ]
-    },
+      "contributions": ["code", "doc", "maintenance"]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "intranet",

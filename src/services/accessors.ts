@@ -7,10 +7,7 @@ export type ElementTranslation<Element> = { [k in keyof Element]: string }
 
 const API_URL = import.meta.env.VITE_API_URL
 
-export default class ServiceAccessors<
-  ElementNoId extends object,
-  Element extends ElementNoId & ElementWithId,
-> {
+export default class ServiceAccessors<ElementNoId extends object, Element extends ElementNoId & ElementWithId> {
   constructor(readonly elementName: string) {}
 
   get(): (id: number) => Promise<{
@@ -21,18 +18,20 @@ export default class ServiceAccessors<
       data?: Element
       error?: Error
     }
+
     return async (id: number): Promise<ElementGetResponse> => {
       try {
         const { data } = await axios.get(`${API_URL}/${this.elementName}Get`, {
           ...axiosConfig,
           params: { id },
         })
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -46,18 +45,17 @@ export default class ServiceAccessors<
       data?: Element[]
       error?: Error
     }
+
     return async (): Promise<ElementListGetResponse> => {
       try {
-        const { data } = await axios.get(
-          `${API_URL}/${this.elementName}ListGet`,
-          axiosConfig,
-        )
+        const { data } = await axios.get(`${API_URL}/${this.elementName}ListGet`, axiosConfig)
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -71,21 +69,19 @@ export default class ServiceAccessors<
       data?: Element[]
       error?: Error
     }
+
     return async (jwt: string): Promise<ElementListGetResponse> => {
       try {
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
+        const { data } = await axios.get(`${API_URL}/${this.elementName}ListGet`, fullAxiosConfig)
 
-        const { data } = await axios.get(
-          `${API_URL}/${this.elementName}ListGet`,
-          fullAxiosConfig,
-        )
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -104,6 +100,7 @@ export default class ServiceAccessors<
       data?: any
       error?: Error
     }
+
     return async (jwt: string, ...params: InputElements): Promise<ElementGetResponse> => {
       try {
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
@@ -119,8 +116,7 @@ export default class ServiceAccessors<
         }
 
         return { data } as { data: OutputType }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -134,19 +130,17 @@ export default class ServiceAccessors<
       data?: Element
       error?: Error
     }
+
     return async (volunteerWithoutId: ElementNoId): Promise<ElementGetResponse> => {
       try {
-        const { data } = await axios.post(
-          `${API_URL}/${this.elementName}Add`,
-          volunteerWithoutId,
-          axiosConfig,
-        )
+        const { data } = await axios.post(`${API_URL}/${this.elementName}Add`, volunteerWithoutId, axiosConfig)
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -160,19 +154,17 @@ export default class ServiceAccessors<
       data?: Element
       error?: Error
     }
+
     return async (volunteer: Element): Promise<ElementGetResponse> => {
       try {
-        const { data } = await axios.post(
-          `${API_URL}/${this.elementName}Set`,
-          volunteer,
-          axiosConfig,
-        )
+        const { data } = await axios.post(`${API_URL}/${this.elementName}Set`, volunteer, axiosConfig)
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -186,18 +178,17 @@ export default class ServiceAccessors<
       data?: number
       error?: Error
     }
+
     return async (): Promise<ElementCountGetResponse> => {
       try {
-        const { data } = await axios.get(
-          `${API_URL}/${this.elementName}CountGet`,
-          axiosConfig,
-        )
+        const { data } = await axios.get(`${API_URL}/${this.elementName}CountGet`, axiosConfig)
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -213,18 +204,17 @@ export default class ServiceAccessors<
       data?: any
       error?: Error
     }
+
     return async (...params: InputElements): Promise<ElementGetResponse> => {
       try {
-        const { data } = await axios.get(
-          `${API_URL}/${this.elementName}${apiName}`,
-          { ...axiosConfig, params },
-        )
+        const { data } = await axios.get(`${API_URL}/${this.elementName}${apiName}`, { ...axiosConfig, params })
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data } as { data: OutputType }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -240,19 +230,17 @@ export default class ServiceAccessors<
       data?: any
       error?: Error
     }
+
     return async (...params: InputElements): Promise<ElementGetResponse> => {
       try {
-        const { data } = await axios.post(
-          `${API_URL}/${this.elementName}${apiName}`,
-          params,
-          axiosConfig,
-        )
+        const { data } = await axios.post(`${API_URL}/${this.elementName}${apiName}`, params, axiosConfig)
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -271,20 +259,19 @@ export default class ServiceAccessors<
       data?: any
       error?: Error
     }
+
     return async (jwt: string, ...params: InputElements): Promise<ElementGetResponse> => {
       try {
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
-        const { data } = await axios.get(
-          `${API_URL}/${this.elementName}${apiName}`,
-          { ...fullAxiosConfig, params },
-        )
+        const { data } = await axios.get(`${API_URL}/${this.elementName}${apiName}`, { ...fullAxiosConfig, params })
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data } as { data: OutputType }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }
@@ -303,21 +290,19 @@ export default class ServiceAccessors<
       data?: any
       error?: Error
     }
+
     return async (jwt: string, ...params: InputElements): Promise<ElementGetResponse> => {
       try {
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
-        const { data } = await axios.post(
-          `${API_URL}/${this.elementName}${apiName}`,
-          params,
-          fullAxiosConfig,
-        )
+        const { data } = await axios.post(`${API_URL}/${this.elementName}${apiName}`, params, fullAxiosConfig)
+
         if (data.error) {
           throw new Error(data.error)
         }
+
         return { data }
-      }
-      catch (error) {
+      } catch (error) {
         return { error: error as Error }
       }
     }

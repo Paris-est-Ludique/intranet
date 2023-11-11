@@ -1,9 +1,4 @@
-import type {
-  Action,
-  ActionCreatorWithPayload,
-  ActionCreatorWithoutPayload,
-  ThunkDispatch,
-} from '@reduxjs/toolkit'
+import type { Action, ActionCreatorWithPayload, ActionCreatorWithoutPayload, ThunkDispatch } from '@reduxjs/toolkit'
 import type { AppState, AppThunk } from '@/store'
 
 export interface StateRequest {
@@ -35,8 +30,7 @@ export function elementFetch<Element, ServiceInput extends Array<any>>(
       if (error) {
         dispatch(actions.getFailure(error.message))
         errorMessage?.(error)
-      }
-      else {
+      } else {
         dispatch(actions.getSuccess(data as Element))
         successMessage?.(data as Element, dispatch)
       }
@@ -53,7 +47,7 @@ export function elementAddFetch<Element, ServiceInput extends Array<any>>(
   successMessage?: () => void,
 ): (...idArgs: ServiceInput) => AppThunk {
   return (...idArgs: ServiceInput): AppThunk =>
-    async (dispatch) => {
+    async dispatch => {
       dispatch(actions.getRequesting())
 
       const { error, data } = await elementAddService(...idArgs)
@@ -61,8 +55,7 @@ export function elementAddFetch<Element, ServiceInput extends Array<any>>(
       if (error) {
         dispatch(actions.getFailure(error.message))
         errorMessage?.(error)
-      }
-      else {
+      } else {
         dispatch(actions.getSuccess(data as Element))
         successMessage?.()
       }
@@ -79,7 +72,7 @@ export function elementListFetch<Element, ServiceInput extends Array<any>>(
   successMessage?: () => void,
 ): (...idArgs: ServiceInput) => AppThunk {
   return (...idArgs: ServiceInput): AppThunk =>
-    async (dispatch) => {
+    async dispatch => {
       dispatch(actions.getRequesting())
 
       const { error, data } = await elementListService(...idArgs)
@@ -87,8 +80,7 @@ export function elementListFetch<Element, ServiceInput extends Array<any>>(
       if (error) {
         dispatch(actions.getFailure(error.message))
         errorMessage?.(error)
-      }
-      else {
+      } else {
         dispatch(actions.getSuccess(data as Element[]))
         successMessage?.()
       }
@@ -104,7 +96,7 @@ export function elementValueFetch<Element>(
   errorMessage?: (error: Error) => void,
   successMessage?: () => void,
 ): () => AppThunk {
-  return (): AppThunk => async (dispatch) => {
+  return (): AppThunk => async dispatch => {
     dispatch(actions.getRequesting())
 
     const { error, data } = await elementListService()
@@ -112,8 +104,7 @@ export function elementValueFetch<Element>(
     if (error) {
       dispatch(actions.getFailure(error.message))
       errorMessage?.(error)
-    }
-    else {
+    } else {
       dispatch(actions.getSuccess(data as Element))
       successMessage?.()
     }

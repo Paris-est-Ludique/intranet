@@ -14,24 +14,24 @@ import WishAdd from '@/components/WishAdd/WishAdd'
 
 export type Props = RouteComponentProps
 
-function useList<Entity>(
-  stateToProp: (state: AppState) => EntitiesRequest<Entity>,
-  fetchDataIfNeed: () => AppThunk,
-) {
+function useList<Entity>(stateToProp: (state: AppState) => EntitiesRequest<Entity>, fetchDataIfNeed: () => AppThunk) {
   const dispatch = useDispatch()
   const { readyStatus, ids } = useSelector(stateToProp, shallowEqual)
 
   // Fetch client-side data here
+
   useEffect(() => {
     dispatch(fetchDataIfNeed())
   }, [dispatch])
 
   const ListLoadingMessage = () => {
-    if (!readyStatus || readyStatus === 'idle' || readyStatus === 'request')
+    if (!readyStatus || readyStatus === 'idle' || readyStatus === 'request') {
       return <p>Loading...</p>
+    }
 
-    if (readyStatus === 'failure')
+    if (readyStatus === 'failure') {
       return <p>Oops, Failed to load list!</p>
+    }
 
     return <GameList ids={ids} />
   }
@@ -41,6 +41,7 @@ function useList<Entity>(
 
 const Wish: FC<Props> = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>()
+
   return (
     <div className={styles.wish}>
       <Helmet title="Wish" />
@@ -54,6 +55,8 @@ const Wish: FC<Props> = (): JSX.Element => {
   )
 }
 
-export const loadData = (): AppThunk[] => [fetchWishListIfNeed(), fetchGameListIfNeed()]
+export function loadData(): AppThunk[] {
+  return [fetchWishListIfNeed(), fetchGameListIfNeed()]
+}
 
 export default memo(Wish)

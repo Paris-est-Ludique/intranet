@@ -21,8 +21,7 @@ export function AskDayWishes(asks: JSX.Element[], id: number): void {
   const participation = get(userWishes, 'active', 'inconnu') as string
   const newSelection = get(userWishes, 'dayWishes', []) as string[]
   const comment = get(userWishes, 'dayWishesComment', '') as string
-  const needToShow
-        = charter === false || participation === 'inconnu' || (newSelection.length === 0 && !comment)
+  const needToShow = charter === false || participation === 'inconnu' || (newSelection.length === 0 && !comment)
 
   addAsk(
     asks,

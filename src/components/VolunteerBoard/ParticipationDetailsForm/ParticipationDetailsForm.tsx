@@ -21,9 +21,11 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
 
   const onSubmit = useCallback(() => {
     const tshirtSize = get(sizeRef, 'current.value', '')
+
     saveParticipationDetails(tshirtSize, adultState)
-    if (afterSubmit)
+    if (afterSubmit) {
       afterSubmit()
+    }
   }, [adultState, saveParticipationDetails, afterSubmit])
 
   const onAdultChange = useCallback(
@@ -37,10 +39,12 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
     const tshirtSize = get(participationDetails, 'tshirtSize', '')
     const adult = get(participationDetails, 'adult', '')
 
-    if (tshirtSize)
+    if (tshirtSize) {
       set(sizeRef, 'current.value', tshirtSize)
-    if (adult)
+    }
+    if (adult) {
       setAdult(adult)
+    }
   }, [setAdult, participationDetails])
 
   return (
@@ -76,22 +80,31 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
       </div>
 
       <div>
-        Cette année comme il y a de nouveaux tee-shirts avec un col en V, tous les bénévoles
-        peuvent en commander un !
+        Cette année comme il y a de nouveaux tee-shirts avec un col en V, tous les bénévoles peuvent en commander un !
         <br />
         Autre nouveauté, il y a des tee-shirts taille enfant !
       </div>
       <div className={styles.inputWrapper}>
         <div className={styles.leftCol}>
-          <label htmlFor="tshirtSize" className={styles.tshirtSizesTitle}>
+          <label
+            htmlFor="tshirtSize"
+            className={styles.tshirtSizesTitle}
+          >
             Que veux-tu comme tee-shirt ?
           </label>
         </div>
         <div className={styles.rightCol}>
           <label className={styles.tshirtSizeLabel}>
-            <select id="tshirtSize" ref={sizeRef} className={styles.tshirtCountSelect}>
-              {tshirtSizes.map((size) => (
-                <option key={size} value={size}>
+            <select
+              id="tshirtSize"
+              ref={sizeRef}
+              className={styles.tshirtCountSelect}
+            >
+              {tshirtSizes.map(size => (
+                <option
+                  key={size}
+                  value={size}
+                >
                   {size}
                 </option>
               ))}
@@ -105,7 +118,10 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -114,7 +130,10 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

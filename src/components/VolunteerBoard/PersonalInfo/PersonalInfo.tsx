@@ -27,12 +27,13 @@ const PersonalInfo: FC = (): JSX.Element | null => {
         <div className={styles.personalInfoLabel}>Ta photo est bien renseignée merci !</div>
       )}
 
-      {!/^[0-9]/.test(photo || '') && (
-        <div className={styles.personalInfoLabel}>Il faudrait renseigner ta photo !</div>
-      )}
+      {!/^[0-9]/.test(photo || '') && <div className={styles.personalInfoLabel}>Il faudrait renseigner ta photo !</div>}
 
       <div className={styles.editButton}>
-        <button type="button" onClick={onEdit}>
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

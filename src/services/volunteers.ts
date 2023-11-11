@@ -173,7 +173,7 @@ export const volunteerExample: Volunteer = {
 }
 
 export const emailRegexp
-    = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
+  = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 
 export const passwordMinLength = 4
 
@@ -286,7 +286,10 @@ export interface VolunteerLoan {
   noOpinion: Volunteer['noOpinion']
 }
 
-export interface Contact { firstname: string; mobile: string }
+export interface Contact {
+  firstname: string
+  mobile: string
+}
 export type VolunteerOnSiteInfoWithoutId = Omit<VolunteerOnSiteInfo, 'id'>
 export interface VolunteerOnSiteInfo {
   id: Volunteer['id']

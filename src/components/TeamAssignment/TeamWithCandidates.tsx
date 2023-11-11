@@ -10,8 +10,13 @@ import { selectVolunteerListAlphaSorted } from '@/store/volunteerList'
 import { selectTeamList } from '@/store/teamList'
 import type { Volunteer } from '@/services/volunteers'
 
-interface NamedWishes { id: number; name: string }
-type VolunteerWithTeamWishesNames = Omit<Volunteer, 'teamWishes'> & { teamWishes: NamedWishes[] }
+interface NamedWishes {
+  id: number
+  name: string
+}
+type VolunteerWithTeamWishesNames = Omit<Volunteer, 'teamWishes'> & {
+  teamWishes: NamedWishes[]
+}
 const selectTeamsWithVolunteersCandidates = createSelector(
   selectVolunteerListAlphaSorted,
   selectTeamList,
@@ -22,25 +27,23 @@ const selectTeamsWithVolunteersCandidates = createSelector(
         volunteer =>
           ({
             ...volunteer,
-            teamWishes: volunteer.teamWishes.map((wishId) => {
+            teamWishes: volunteer.teamWishes.map(wishId => {
               const matchingTeam = teams.find((team: any) => wishId === team?.id)
+
               return {
                 id: matchingTeam?.id,
                 name: matchingTeam?.name,
               }
             }),
-          } as VolunteerWithTeamWishesNames),
+          }) as VolunteerWithTeamWishesNames,
       )
+
     return {
       id,
       name,
       volunteersWithoutTeam: volunteersSelection.filter(volunteer => !volunteer.team),
-      volunteersWithCurrentTeam: volunteersSelection.filter(
-        volunteer => volunteer.team === id,
-      ),
-      volunteersWithOtherTeam: volunteersSelection.filter(
-        volunteer => volunteer.team && volunteer.team !== id,
-      ),
+      volunteersWithCurrentTeam: volunteersSelection.filter(volunteer => volunteer.team === id),
+      volunteersWithOtherTeam: volunteersSelection.filter(volunteer => volunteer.team && volunteer.team !== id),
     }
   }),
 )
@@ -52,13 +55,7 @@ interface PropsDaysDisplay {
 const DaysDisplay: FC<PropsDaysDisplay> = ({ dayWishes }): JSX.Element => (
   <span className={styles.daysDisplay}>
     {dayWishes.map(day =>
-      day === 'S' || day === 'D'
-        ? (
-          <strong key={day}>{day}</strong>
-          )
-        : (
-          <span key={day}>{day}</span>
-          ),
+      day === 'S' || day === 'D' ? <strong key={day}>{day}</strong> : <span key={day}>{day}</span>,
     )}
   </span>
 )
@@ -68,10 +65,7 @@ interface TeamWithCandidatesVolunteerProps {
   teamId: number
 }
 
-const TeamWithCandidatesVolunteer: FC<TeamWithCandidatesVolunteerProps> = ({
-  teamId,
-  volunteer,
-}): JSX.Element => {
+const TeamWithCandidatesVolunteer: FC<TeamWithCandidatesVolunteerProps> = ({ teamId, volunteer }): JSX.Element => {
   const { id, lastname, firstname, teamWishes, dayWishes, team } = volunteer
   const [, saveTeam] = useTeamAssign()
 
@@ -96,16 +90,13 @@ const TeamWithCandidatesVolunteer: FC<TeamWithCandidatesVolunteerProps> = ({
       {teamWishes.map((teamWish: any) => {
         const active = teamWish.id === team
         const current = teamWish.id === teamId
+
         return (
           <button
             key={teamWish.id}
             type="button"
             onClick={() => onTeamSelected(id, teamWish.id)}
-            className={classnames(
-              styles.teamWishButton,
-              current && styles.teamCurrent,
-              active && styles.teamActive,
-            )}
+            className={classnames(styles.teamWishButton, current && styles.teamCurrent, active && styles.teamActive)}
           >
             {teamWish.name}
           </button>
@@ -123,8 +114,9 @@ const TeamWithCandidates: FC<TeamWithCandidatesProps> = ({ teamId }): JSX.Elemen
   const teams = useSelector(selectTeamsWithVolunteersCandidates)
   const currentTeam = teams.find(t => t.id === teamId)
 
-  if (!currentTeam)
+  if (!currentTeam) {
     return <div />
+  }
 
   return (
     <div>

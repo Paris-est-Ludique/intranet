@@ -1,52 +1,52 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 .day {
-    text-align: center;
-    min-width: 10%;
+  text-align: center;
+  min-width: 10%;
 
-    &.weekend {
-        background-color: $color-red;
-    }
-    &.weekend.unknown {
-        background-color: $color-grey-medium;
-    }
-    &.weekend.available {
-        background-color: $color-green;
-    }
-    &.week {
-        background-color: $color-red-light;
-    }
-    &.week.unknown {
-        background-color: $color-grey-light;
-    }
-    &.week.available {
-        background-color: $color-green-light;
-    }
+  &.weekend {
+    background-color: $color-red;
+  }
+  &.weekend.unknown {
+    background-color: $color-grey-medium;
+  }
+  &.weekend.available {
+    background-color: $color-green;
+  }
+  &.week {
+    background-color: $color-red-light;
+  }
+  &.week.unknown {
+    background-color: $color-grey-light;
+  }
+  &.week.available {
+    background-color: $color-green-light;
+  }
 }
 
 .teamMembers {
-    @include mobile {
-        width: 100%;
-    }
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .volunteerName {
-    text-align: left;
-    word-wrap: break-word;
+  text-align: left;
+  word-wrap: break-word;
 }
 
 .extendedVolunteerName {
-    @include mobile {
-        width: 100%;
-        max-width: 0;
-    }
+  @include mobile {
+    width: 100%;
+    max-width: 0;
+  }
 }
 
 .email {
-    font-size: smaller;
+  font-size: smaller;
 }
 
 .hiddenText {
-    font-size: 1px;
-    width: 0.1px;
+  font-size: 1px;
+  width: 0.1px;
 }

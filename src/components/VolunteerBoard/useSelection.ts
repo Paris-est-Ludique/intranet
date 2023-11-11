@@ -23,17 +23,19 @@ function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'set': {
       const values = action.payload
+
       return { selection: values }
     }
     case 'toggle': {
       const value = action.payload
       const index = state.selection.findIndex(item => item === value)
+
       if (index !== -1) {
         state.selection.splice(index, 1)
-      }
-      else {
+      } else {
         state.selection.push(value)
       }
+
       return {
         selection: [...state.selection],
       }
@@ -66,7 +68,12 @@ function useSelection(): selectionHook {
   )
 
   return useMemo(
-    () => ({ selection: state.selection, setSelection, toggleToSelection, isInSelection }),
+    () => ({
+      selection: state.selection,
+      setSelection,
+      toggleToSelection,
+      isInSelection,
+    }),
     [state.selection, setSelection, toggleToSelection, isInSelection],
   )
 }

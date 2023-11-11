@@ -16,7 +16,7 @@ const wishAddSlice = createSlice({
   name: 'wishAdd',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Wish>) => {
@@ -30,10 +30,7 @@ const wishAddSlice = createSlice({
   },
 })
 
-export const {
-  reducer: wishAddReducer,
-  actions: wishAddActions,
-} = wishAddSlice
+export const { reducer: wishAddReducer, actions: wishAddActions } = wishAddSlice
 
 export const fetchWishAdd = elementAddFetch(
   wishAdd,

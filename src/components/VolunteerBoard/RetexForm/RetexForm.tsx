@@ -38,6 +38,7 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
     if (!retex) {
       return
     }
+
     const question2 = get(question2Ref, 'current.value', '')
     const question3 = get(question3Ref, 'current.value', '')
     const question4 = get(question4Ref, 'current.value', '')
@@ -46,33 +47,22 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
     const question7 = get(question7Ref, 'current.value', '')
     const question8 = get(question8Ref, 'current.value', '')
     const question9 = get(question9Ref, 'current.value', '')
-    saveRetex(
-      retex.id,
-      question2,
-      question3,
-      question4,
-      question5,
-      question6,
-      question7,
-      question8,
-      question9,
-    )
-    if (afterSubmit)
+
+    saveRetex(retex.id, question2, question3, question4, question5, question6, question7, question8, question9)
+    if (afterSubmit) {
       afterSubmit()
+    }
   }, [afterSubmit, retex, saveRetex])
 
   const preAnswer = useCallback(
-    (ref: React.MutableRefObject<HTMLTextAreaElement | null>) =>
-      (e: React.MouseEvent<HTMLButtonElement>) => {
-        const answer = e.currentTarget.textContent
-        const currentAnswer = get(ref, 'current.value', '')
-        const newAnswer = `${currentAnswer}${currentAnswer ? '\n' : ''}${answer.replace(
-                    /_+$/,
-                    '',
-                )}`
-        set(ref, 'current.value', newAnswer)
-        ref?.current?.focus()
-      },
+    (ref: React.MutableRefObject<HTMLTextAreaElement | null>) => (e: React.MouseEvent<HTMLButtonElement>) => {
+      const answer = e.currentTarget.textContent
+      const currentAnswer = get(ref, 'current.value', '')
+      const newAnswer = `${currentAnswer}${currentAnswer ? '\n' : ''}${answer.replace(/_+$/, '')}`
+
+      set(ref, 'current.value', newAnswer)
+      ref?.current?.focus()
+    },
     [],
   )
 
@@ -86,22 +76,30 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
     const question8 = get(retex, 'question8', '')
     const question9 = get(retex, 'question9', '')
 
-    if (question2)
+    if (question2) {
       set(question2Ref, 'current.value', question2)
-    if (question3)
+    }
+    if (question3) {
       set(question3Ref, 'current.value', question3)
-    if (question4)
+    }
+    if (question4) {
       set(question4Ref, 'current.value', question4)
-    if (question5)
+    }
+    if (question5) {
       set(question5Ref, 'current.value', question5)
-    if (question6)
+    }
+    if (question6) {
       set(question6Ref, 'current.value', question6)
-    if (question7)
+    }
+    if (question7) {
       set(question7Ref, 'current.value', question7)
-    if (question8)
+    }
+    if (question8) {
       set(question8Ref, 'current.value', question8)
-    if (question9)
+    }
+    if (question9) {
       set(question9Ref, 'current.value', question9)
+    }
   }, [retex])
 
   return (
@@ -111,17 +109,16 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
       <div className={styles.questionWrapper}>
         On aimerait savoir comment s'est passé ton festival !
         <br />
-        L'orga lira tes réponses et répondra à son tour à tes questions soit
-        individuellement, soit dans la prochaine gazette. Puis toutes les réponses seront
-        anonymisées et une synthèse sera diffusée dans la gazette.
+        L'orga lira tes réponses et répondra à son tour à tes questions soit individuellement, soit dans la prochaine
+        gazette. Puis toutes les réponses seront anonymisées et une synthèse sera diffusée dans la gazette.
         <br />
         Tu peux répondre par 3 mots ou 3 pages, on a tous vécu le festival différemment !
       </div>
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question2">
-          As-tu un avis positif/négatif ou une recommandation au sujet des repas, des WC,
-          de tes besoins en tee-shirt, chapeau, eau, bière, crème solaire ?
+          As-tu un avis positif/négatif ou une recommandation au sujet des repas, des WC, de tes besoins en tee-shirt,
+          chapeau, eau, bière, crème solaire ?
         </label>
         <div className={styles.preAnswerWrapper}>
           <button
@@ -146,14 +143,17 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
             J’ai eu un problème concernant __
           </button>
         </div>
-        <textarea id="question2" ref={question2Ref} placeholder="..." />
+        <textarea
+          id="question2"
+          ref={question2Ref}
+          placeholder="..."
+        />
       </div>
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question3">
-          As-tu, comme prévu et en accord avec ton équipe, pris du temps pour profiter des
-          espaces visiteurs du festival, des badges inter-équipes, des crêpes/glaces à
-          l’espace bénévole ?
+          As-tu, comme prévu et en accord avec ton équipe, pris du temps pour profiter des espaces visiteurs du
+          festival, des badges inter-équipes, des crêpes/glaces à l’espace bénévole ?
         </label>
         <div className={styles.preAnswerWrapper}>
           <button
@@ -178,14 +178,17 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
             Il y avait des crêpes ?
           </button>
         </div>
-        <textarea id="question3" ref={question3Ref} placeholder="..." />
+        <textarea
+          id="question3"
+          ref={question3Ref}
+          placeholder="..."
+        />
       </div>
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question4">
-          Gestion du stress, de la fatigue : as-tu fait des pauses (à notre espace sieste,
-          à l’espace Shiatsu) ? T’es-tu senti épuisé lors du festival, après, et sais-tu
-          pourquoi ?
+          Gestion du stress, de la fatigue : as-tu fait des pauses (à notre espace sieste, à l’espace Shiatsu) ? T’es-tu
+          senti épuisé lors du festival, après, et sais-tu pourquoi ?
         </label>
         <div className={styles.preAnswerWrapper}>
           <button
@@ -210,7 +213,11 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
             Il y avait des massages gratuits ?
           </button>
         </div>
-        <textarea id="question4" ref={question4Ref} placeholder="..." />
+        <textarea
+          id="question4"
+          ref={question4Ref}
+          placeholder="..."
+        />
       </div>
 
       {weekDays.length > 0 && (
@@ -220,8 +227,7 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
               ? `Comment se sont passés les ${weekDays.join(', ')} ?`
               : `Comment s'est passé le ${weekDays.join(', ')} ?`}
             {' '}
-            As-tu eu assez d’infos, te sentais-tu utile ? Y compris au sein de ton
-            équipe ?
+            As-tu eu assez d’infos, te sentais-tu utile ? Y compris au sein de ton équipe ?
           </label>
           <div className={styles.preAnswerWrapper}>
             <button
@@ -246,15 +252,18 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
               Je manquais d’infos.
             </button>
           </div>
-          <textarea id="question5" ref={question5Ref} placeholder="..." />
+          <textarea
+            id="question5"
+            ref={question5Ref}
+            placeholder="..."
+          />
         </div>
       )}
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question6">
-          As-tu trouvé ton compte vis-à-vis des raisons qui t'ont poussées à être bénévole
-          (faire découvrir sa passion, se rendre utile, découvrir l’envers du décor,
-          sympathiser, apprendre, simplement kiffer, etc) ?
+          As-tu trouvé ton compte vis-à-vis des raisons qui t'ont poussées à être bénévole (faire découvrir sa passion,
+          se rendre utile, découvrir l’envers du décor, sympathiser, apprendre, simplement kiffer, etc) ?
         </label>
         <div className={styles.preAnswerWrapper}>
           <button
@@ -279,13 +288,17 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
             Il m’a manqué __
           </button>
         </div>
-        <textarea id="question6" ref={question6Ref} placeholder="..." />
+        <textarea
+          id="question6"
+          ref={question6Ref}
+          placeholder="..."
+        />
       </div>
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question7">
-          Si d’autres bénévoles sont partants pour te soutenir, que mettrais-tu en œuvre
-          autrement ou mieux pour la prochaine édition du festival ?
+          Si d’autres bénévoles sont partants pour te soutenir, que mettrais-tu en œuvre autrement ou mieux pour la
+          prochaine édition du festival ?
         </label>
         <div className={styles.preAnswerWrapper}>
           <button
@@ -310,13 +323,17 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
             Je manque de temps.
           </button>
         </div>
-        <textarea id="question7" ref={question7Ref} placeholder="..." />
+        <textarea
+          id="question7"
+          ref={question7Ref}
+          placeholder="..."
+        />
       </div>
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question8">
-          Envisages-tu d’être bénévole pour PeL 2023 ? Dans la même équipe, ou tu aurais
-          envie d’en changer ? Libre à toi d’expliquer ou non pourquoi.
+          Envisages-tu d’être bénévole pour PeL 2023 ? Dans la même équipe, ou tu aurais envie d’en changer ? Libre à
+          toi d’expliquer ou non pourquoi.
         </label>
         <div className={styles.preAnswerWrapper}>
           <button
@@ -341,15 +358,23 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
             Hélas non.
           </button>
         </div>
-        <textarea id="question8" ref={question8Ref} placeholder="..." />
+        <textarea
+          id="question8"
+          ref={question8Ref}
+          placeholder="..."
+        />
       </div>
 
       <div className={styles.questionWrapper}>
         <label htmlFor="question9">
-          As-tu un conseil, une remarque, une idée non couverte par les précédentes
-          questions ? Laisse ton imagination déborder ^^
+          As-tu un conseil, une remarque, une idée non couverte par les précédentes questions ? Laisse ton imagination
+          déborder ^^
         </label>
-        <textarea id="question9" ref={question9Ref} placeholder="..." />
+        <textarea
+          id="question9"
+          ref={question9Ref}
+          placeholder="..."
+        />
       </div>
 
       <div className={styles.buttonWrapper}>
@@ -357,7 +382,10 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -366,7 +394,10 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

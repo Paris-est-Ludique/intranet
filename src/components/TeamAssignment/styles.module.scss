@@ -1,64 +1,64 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .title {
-    padding-bottom: 10px;
-    font-weight: bold;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
 
 .teamList {
-    margin: 0 0 20px;
-    padding: 0;
+  margin: 0 0 20px;
+  padding: 0;
 }
 
 .teamListItem {
-    display: inline-block;
-    margin: 2px;
-    text-align: center;
-    background-color: #ccc;
+  display: inline-block;
+  margin: 2px;
+  text-align: center;
+  background-color: #ccc;
 
-    button {
-        padding: 4px 10px;
-    }
+  button {
+    padding: 4px 10px;
+  }
 }
 
 .teamHeaderName {
-    margin-bottom: 20px;
-    font-weight: bold;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .teamActive {
-    color: $color-orange;
+  color: $color-orange;
 }
 
 .teamWishButton {
-    margin: 0 2px;
-    padding: 2px;
-    color: $color-grey-dark;
+  margin: 0 2px;
+  padding: 2px;
+  color: $color-grey-dark;
 
-    &.teamCurrent {
-        color: $color-black;
-    }
+  &.teamCurrent {
+    color: $color-black;
+  }
 
-    &.teamActive {
-        font-weight: bold;
-        color: $color-orange;
-    }
+  &.teamActive {
+    font-weight: bold;
+    color: $color-orange;
+  }
 
-    &:hover {
-        background-color: #fb0;
-    }
+  &:hover {
+    background-color: #fb0;
+  }
 }
 
 .volunteerName {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .daysDisplay {
-    font-weight: normal;
-    color: $color-grey-medium;
+  font-weight: normal;
+  color: $color-grey-medium;
 
-    strong {
-        color: $color-green;
-    }
+  strong {
+    color: $color-green;
+  }
 }

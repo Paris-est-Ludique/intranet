@@ -1,311 +1,311 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .showCheckboxLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .boxList {
-    padding: 0;
-    list-style: none;
+  padding: 0;
+  list-style: none;
 }
 
 .boxItem {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .photoContainer {
-    height: 50px;
-    width: 73px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 73px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 .photo {
-    height: 50px;
-    max-width: 73px;
-    position: absolute;
-    left: 0;
+  height: 50px;
+  max-width: 73px;
+  position: absolute;
+  left: 0;
 }
 
 .a371 {
-    background: url("assets/img/gameImages/371.png") no-repeat;
+  background: url('assets/img/gameImages/371.png') no-repeat;
 }
 .a888 {
-    background: url("assets/img/gameImages/888.jpg") no-repeat;
+  background: url('assets/img/gameImages/888.jpg') no-repeat;
 }
 .a918 {
-    background: url("assets/img/gameImages/918.jpg") no-repeat;
+  background: url('assets/img/gameImages/918.jpg') no-repeat;
 }
 .a992 {
-    background: url("assets/img/gameImages/992.jpg") no-repeat;
+  background: url('assets/img/gameImages/992.jpg') no-repeat;
 }
 .a993 {
-    background: url("assets/img/gameImages/993.jpg") no-repeat;
+  background: url('assets/img/gameImages/993.jpg') no-repeat;
 }
 .a994 {
-    background: url("assets/img/gameImages/994.png") no-repeat;
+  background: url('assets/img/gameImages/994.png') no-repeat;
 }
 .a995 {
-    background: url("assets/img/gameImages/995.jpg") no-repeat;
+  background: url('assets/img/gameImages/995.jpg') no-repeat;
 }
 .a996 {
-    background: url("assets/img/gameImages/996.png") no-repeat;
+  background: url('assets/img/gameImages/996.png') no-repeat;
 }
 .a997 {
-    background: url("assets/img/gameImages/997.jpg") no-repeat;
+  background: url('assets/img/gameImages/997.jpg') no-repeat;
 }
 .a998 {
-    background: url("assets/img/gameImages/998.jpg") no-repeat;
+  background: url('assets/img/gameImages/998.jpg') no-repeat;
 }
 .a999 {
-    background: url("assets/img/gameImages/999.png") no-repeat;
+  background: url('assets/img/gameImages/999.png') no-repeat;
 }
 .a1000 {
-    background: url("assets/img/gameImages/1000.jpg") no-repeat;
+  background: url('assets/img/gameImages/1000.jpg') no-repeat;
 }
 .a1001 {
-    background: url("assets/img/gameImages/1001.png") no-repeat;
+  background: url('assets/img/gameImages/1001.png') no-repeat;
 }
 .a1002 {
-    background: url("assets/img/gameImages/1002.jpg") no-repeat;
+  background: url('assets/img/gameImages/1002.jpg') no-repeat;
 }
 .a1003 {
-    background: url("assets/img/gameImages/1003.jpg") no-repeat;
+  background: url('assets/img/gameImages/1003.jpg') no-repeat;
 }
 .a1004 {
-    background: url("assets/img/gameImages/1004.png") no-repeat;
+  background: url('assets/img/gameImages/1004.png') no-repeat;
 }
 .a1005 {
-    background: url("assets/img/gameImages/1005.png") no-repeat;
+  background: url('assets/img/gameImages/1005.png') no-repeat;
 }
 .a1007 {
-    background: url("assets/img/gameImages/1007.png") no-repeat;
+  background: url('assets/img/gameImages/1007.png') no-repeat;
 }
 .a1008 {
-    background: url("assets/img/gameImages/1008.png") no-repeat;
+  background: url('assets/img/gameImages/1008.png') no-repeat;
 }
 .a1009 {
-    background: url("assets/img/gameImages/1009.png") no-repeat;
+  background: url('assets/img/gameImages/1009.png') no-repeat;
 }
 .a1010 {
-    background: url("assets/img/gameImages/1010.jpg") no-repeat;
+  background: url('assets/img/gameImages/1010.jpg') no-repeat;
 }
 .a1011 {
-    background: url("assets/img/gameImages/1011.jpg") no-repeat;
+  background: url('assets/img/gameImages/1011.jpg') no-repeat;
 }
 .a1012 {
-    background: url("assets/img/gameImages/1012.jpg") no-repeat;
+  background: url('assets/img/gameImages/1012.jpg') no-repeat;
 }
 .a1013 {
-    background: url("assets/img/gameImages/1013.jpg") no-repeat;
+  background: url('assets/img/gameImages/1013.jpg') no-repeat;
 }
 .a1014 {
-    background: url("assets/img/gameImages/1014.jpg") no-repeat;
+  background: url('assets/img/gameImages/1014.jpg') no-repeat;
 }
 .a1015 {
-    background: url("assets/img/gameImages/1015.jpg") no-repeat;
+  background: url('assets/img/gameImages/1015.jpg') no-repeat;
 }
 .a1016 {
-    background: url("assets/img/gameImages/1016.jpg") no-repeat;
+  background: url('assets/img/gameImages/1016.jpg') no-repeat;
 }
 .a1017 {
-    background: url("assets/img/gameImages/1017.jpg") no-repeat;
+  background: url('assets/img/gameImages/1017.jpg') no-repeat;
 }
 .a1018 {
-    background: url("assets/img/gameImages/1018.jpg") no-repeat;
+  background: url('assets/img/gameImages/1018.jpg') no-repeat;
 }
 .a1019 {
-    background: url("assets/img/gameImages/1019.jpg") no-repeat;
+  background: url('assets/img/gameImages/1019.jpg') no-repeat;
 }
 .a1020 {
-    background: url("assets/img/gameImages/1020.jpg") no-repeat;
+  background: url('assets/img/gameImages/1020.jpg') no-repeat;
 }
 .a1021 {
-    background: url("assets/img/gameImages/1021.jpg") no-repeat;
+  background: url('assets/img/gameImages/1021.jpg') no-repeat;
 }
 .a1022 {
-    background: url("assets/img/gameImages/1022.jpg") no-repeat;
+  background: url('assets/img/gameImages/1022.jpg') no-repeat;
 }
 .a1023 {
-    background: url("assets/img/gameImages/1023.jpg") no-repeat;
+  background: url('assets/img/gameImages/1023.jpg') no-repeat;
 }
 .a1024 {
-    background: url("assets/img/gameImages/1024.jpg") no-repeat;
+  background: url('assets/img/gameImages/1024.jpg') no-repeat;
 }
 .a1025 {
-    background: url("assets/img/gameImages/1025.jpg") no-repeat;
+  background: url('assets/img/gameImages/1025.jpg') no-repeat;
 }
 .a1026 {
-    background: url("assets/img/gameImages/1026.jpg") no-repeat;
+  background: url('assets/img/gameImages/1026.jpg') no-repeat;
 }
 .a1027 {
-    background: url("assets/img/gameImages/1027.jpg") no-repeat;
+  background: url('assets/img/gameImages/1027.jpg') no-repeat;
 }
 .a1028 {
-    background: url("assets/img/gameImages/1028.jpg") no-repeat;
+  background: url('assets/img/gameImages/1028.jpg') no-repeat;
 }
 .a1029 {
-    background: url("assets/img/gameImages/1029.jpeg") no-repeat;
+  background: url('assets/img/gameImages/1029.jpeg') no-repeat;
 }
 .a1030 {
-    background: url("assets/img/gameImages/1030.jpeg") no-repeat;
+  background: url('assets/img/gameImages/1030.jpeg') no-repeat;
 }
 .a1031 {
-    background: url("assets/img/gameImages/1031.jpg") no-repeat;
+  background: url('assets/img/gameImages/1031.jpg') no-repeat;
 }
 .a1032 {
-    background: url("assets/img/gameImages/1032.png") no-repeat;
+  background: url('assets/img/gameImages/1032.png') no-repeat;
 }
 
 .alternateBox {
-    vertical-align: middle;
-    display: inline-block;
-    width: inherit;
-    height: inherit;
-    background-size: contain;
+  vertical-align: middle;
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+  background-size: contain;
 }
 
 .titleContainer {
-    height: 50px;
-    width: 198px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 198px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 .shorterTitle {
-    width: 168px;
+  width: 168px;
 }
 .title {
-    height: 50px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+  height: 50px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .poufpaf {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    display: inline-block;
-    background: url("assets/img/poufpaf.png");
-    background-size: contain;
-    vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  display: inline-block;
+  background: url('assets/img/poufpaf.png');
+  background-size: contain;
+  vertical-align: middle;
 }
 
 .noPoufpaf {
-    display: none;
+  display: none;
 }
 
 .boxCount {
-    height: 50px;
-    width: 73px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 73px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .volunteerList {
-    height: 50px;
-    width: 198px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 198px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .loanList {
-    @include clear-ul-style;
+  @include clear-ul-style;
 
-    width: 266px;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
+  width: 266px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .loanItem {
-    display: inline-block;
-    margin: 3px;
+  display: inline-block;
+  margin: 3px;
 }
 
 .loanButton {
-    margin: 0;
-    padding: 4px 0 3px;
-    border: 0;
-    border-radius: 0;
-    width: 60px;
-    text-align: center;
-    color: $color-grey-medium;
-    cursor: pointer;
+  margin: 0;
+  padding: 4px 0 3px;
+  border: 0;
+  border-radius: 0;
+  width: 60px;
+  text-align: center;
+  color: $color-grey-medium;
+  cursor: pointer;
 
-    &.active {
-        color: $color-yellow;
-    }
+  &.active {
+    color: $color-yellow;
+  }
 }
 
 .loanCheckbox {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .loanCheckboxImg {
-    vertical-align: middle;
-    display: inline-block;
-    width: 2em;
-    height: 1.4em;
+  vertical-align: middle;
+  display: inline-block;
+  width: 2em;
+  height: 1.4em;
 }
 
 .loanThings {
-    position: relative;
+  position: relative;
 }
 
 .loanThings .loanable {
-    background-color: $color-loanable;
-    &.active {
-        background-color: $color-active-loanable;
-    }
+  background-color: $color-loanable;
+  &.active {
+    background-color: $color-active-loanable;
+  }
 }
 .loanableCheckbox {
-    background: url("assets/img/loanable.svg") no-repeat center center;
-    background-size: contain;
+  background: url('assets/img/loanable.svg') no-repeat center center;
+  background-size: contain;
 }
 
 .loanThings .playable {
-    background-color: $color-playable;
+  background-color: $color-playable;
 
-    &.active {
-        background-color: $color-active-playable;
-    }
+  &.active {
+    background-color: $color-active-playable;
+  }
 }
 .playableCheckbox {
-    background: url("assets/img/playable.svg") no-repeat center center;
-    background-size: contain;
+  background: url('assets/img/playable.svg') no-repeat center center;
+  background-size: contain;
 }
 
 .loanThings .giftable {
-    background-color: $color-giftable;
+  background-color: $color-giftable;
 
-    &.active {
-        background-color: $color-active-giftable;
-    }
+  &.active {
+    background-color: $color-active-giftable;
+  }
 }
 .giftableCheckbox {
-    background: url("assets/img/giftable.svg") no-repeat center center;
-    background-size: contain;
+  background: url('assets/img/giftable.svg') no-repeat center center;
+  background-size: contain;
 }
 
 .loanThings .noOpinion {
-    background-color: $color-no-opinion;
+  background-color: $color-no-opinion;
 
-    &.active {
-        background-color: $color-active-no-opinion;
-    }
+  &.active {
+    background-color: $color-active-no-opinion;
+  }
 }
 .noOpinionCheckbox {
-    background: url("assets/img/noOpinion.svg") no-repeat center center;
-    background-size: contain;
+  background: url('assets/img/noOpinion.svg') no-repeat center center;
+  background-size: contain;
 }

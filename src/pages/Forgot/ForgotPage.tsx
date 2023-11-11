@@ -13,10 +13,7 @@ export type Props = RouteComponentProps
 const ForgotPage: React.FC<Props> = (): JSX.Element => {
   const dispatch = useDispatch()
   const forgotError = useSelector((state: AppState) => state.volunteerForgot.error, shallowEqual)
-  const forgotMessage = useSelector(
-    (state: AppState) => state.volunteerForgot.entity?.message,
-    shallowEqual,
-  )
+  const forgotMessage = useSelector((state: AppState) => state.volunteerForgot.entity?.message, shallowEqual)
 
   return (
     <div className={styles.forgotPage}>

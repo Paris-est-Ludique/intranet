@@ -1,36 +1,36 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .root {
-    @include inner-content-wrapper();
+  @include inner-content-wrapper();
 
-    position: relative;
-    padding-right: 90px;
+  position: relative;
+  padding-right: 90px;
 }
 
 .title {
-    padding-bottom: 10px;
-    font-weight: bold;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
 
 .line {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .lineEmpty {
-    color: $color-red;
-    font-style: italic;
+  color: $color-red;
+  font-style: italic;
 }
 
 .editButton {
-    @include vertical-center();
+  @include vertical-center();
 
-    position: absolute;
-    right: 20px;
+  position: absolute;
+  right: 20px;
 
-    button {
-        color: $color-green;
-        font-weight: bold;
-        cursor: pointer;
-    }
+  button {
+    color: $color-green;
+    font-weight: bold;
+    cursor: pointer;
+  }
 }

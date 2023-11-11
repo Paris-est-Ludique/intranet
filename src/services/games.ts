@@ -8,6 +8,7 @@ export class Game {
   playersMax = 0
   duration = 0
   type: 'Ambiance' | 'Famille' | 'Expert' | 'Rapide' | 'Jeux à deux' | 'Enfants' | '' = ''
+
   poufpaf = ''
   ean = ''
   bggPhoto = ''

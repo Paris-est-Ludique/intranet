@@ -1,8 +1,8 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .button {
-    @include form-button;
+  @include form-button;
 }
 .greyButton {
-    @include form-grey-button;
+  @include form-grey-button;
 }

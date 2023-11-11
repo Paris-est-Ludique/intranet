@@ -7,17 +7,16 @@ import { AskWelcome } from './AskWelcome'
 
 // import { AskBrunch, fetchForBrunch } from "./AskBrunch"
 // import { AskRetex, fetchForRetex } from "./AskRetex"
+
 import { AskDiscord, fetchForAskDiscord } from './AskDiscord'
 import { AskDayWishes, fetchForAskDayWishes } from './AskDayWishes'
 import { AskHosting, fetchForAskHosting } from './AskHosting'
 import { AskMeals, fetchForAskMeals } from './AskMeals'
 
 // import { AskPersonalInfo, fetchForPersonalInfo } from "./AskPersonalInfo"
+
 import { AskTeamWishes, fetchForAskTeamWishes } from './AskTeamWishes'
-import {
-  AskParticipationDetails,
-  fetchForAskParticipationDetails,
-} from './AskParticipationDetails'
+import { AskParticipationDetails, fetchForAskParticipationDetails } from './AskParticipationDetails'
 
 import { OnSiteInfo, fetchForOnSiteInfo } from './OnSiteInfo'
 
@@ -28,20 +27,25 @@ function Asks(): JSX.Element | null {
   const asks: JSX.Element[] = []
 
   AskWelcome(asks, 1)
+
   // AskBrunch(asks, 2)
   // AskRetex(asks, 3)
+
   AskDiscord(asks, 5)
 
   AskDayWishes(asks, 10)
   AskTeamWishes(asks, 11)
   AskMeals(asks, 15)
+
   // AskPersonalInfo(asks, 16)
+
   AskHosting(asks, 20)
   AskParticipationDetails(asks, 22)
 
   // AskPushNotif(asks, 99)
 
   const onSiteInfoElement = OnSiteInfo()
+
   if (isEmpty(asks)) {
     asks.push(onSiteInfoElement)
     asks.push(asksEnd())
@@ -83,13 +87,16 @@ export default memo(Asks)
 
 export const fetchForAsks = [
   ...fetchForOnSiteInfo,
+
   // ...fetchForBrunch,
   // ...fetchForRetex,
+
   ...fetchForAskDiscord,
   ...fetchForAskDayWishes,
   ...fetchForAskHosting,
   ...fetchForAskMeals,
   ...fetchForAskTeamWishes,
   ...fetchForAskParticipationDetails,
+
   // ...fetchForPersonalInfo,
 ]

@@ -1,9 +1,9 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .teamsPage {
-    @include page-wrapper-center;
+  @include page-wrapper-center;
 }
 
 .teamsContent {
-    @include page-content-wrapper(700px);
+  @include page-content-wrapper(700px);
 }

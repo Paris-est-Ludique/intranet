@@ -18,7 +18,7 @@ const gameListSlice = createSlice({
   name: 'gameList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Game[]>) => {
@@ -32,18 +32,14 @@ const gameListSlice = createSlice({
   },
 })
 
-export const {
-  reducer: gameListReducer,
-  actions: gameListActions,
-} = gameListSlice
+export const { reducer: gameListReducer, actions: gameListActions } = gameListSlice
 
-export const fetchGameList = elementListFetch(
-  gameListGet,
-  gameListActions,
-  (error: Error) => toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`),
-)
+export const fetchGameList = elementListFetch(gameListGet, gameListActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`))
 
-const selectShouldFetchGameList = (state: AppState) => state.gameList.readyStatus !== 'success'
+function selectShouldFetchGameList(state: AppState) {
+  return state.gameList.readyStatus !== 'success'
+}
 
 export const fetchGameListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
   if (selectShouldFetchGameList(getState())) {
@@ -52,4 +48,5 @@ export const fetchGameListIfNeed: AppThunk = () => (dispatch: AppDispatch, getSt
 }
 
 // only for test
+
 export const gameListInitialState = initialState

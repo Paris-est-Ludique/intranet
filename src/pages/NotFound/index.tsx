@@ -9,8 +9,9 @@ function NotFound({ staticContext }: Props) {
   // We have to check if staticContext exists
   // because it will be undefined if rendered through a BrowserRoute
   /* istanbul ignore next */
-  if (staticContext)
+  if (staticContext) {
     staticContext.statusCode = 404
+  }
 
   return (
     <div className={styles.notFoundPage}>

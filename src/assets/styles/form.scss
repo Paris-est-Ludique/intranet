@@ -1,17 +1,17 @@
-@import "./variables";
+@import './variables';
 
 button {
-    background: none;
-    border: 0;
-    cursor: pointer;
+  background: none;
+  border: 0;
+  cursor: pointer;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="number"],
-input[type="email"],
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='email'],
 select {
-    padding: 4px 6px;
-    border: 1px solid $color-grey-medium;
-    border-radius: 4px;
+  padding: 4px 6px;
+  border: 1px solid $color-grey-medium;
+  border-radius: 4px;
 }

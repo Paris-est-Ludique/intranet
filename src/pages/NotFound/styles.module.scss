@@ -1,9 +1,9 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .notFoundPage {
-    @include page-wrapper-center;
+  @include page-wrapper-center;
 }
 
 .notFoundContent {
-    @include page-content-wrapper;
+  @include page-content-wrapper;
 }

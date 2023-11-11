@@ -8,6 +8,7 @@ import AsyncKnowledge, { loadData as loadKnowledgeData } from '@/pages/Knowledge
 import AsyncKnowledgeStats, { loadData as loadKnowledgeStatsData } from '@/pages/KnowledgeStats'
 
 // import AsyncLoans, { loadData as loadLoansData } from "@/pages/Loans"
+
 import AsyncLoaning, { loadData as loadLoaningData } from '@/pages/Loaning'
 import AsyncKnowledgeCards, { loadData as loadCardKnowledgeData } from '@/pages/KnowledgeCards'
 import AsyncTeams, { loadData as loadTeamsData } from '@/pages/Teams'
@@ -45,11 +46,13 @@ export const routes = [
     element: <AsyncKnowledgeStats />,
     loadData: loadKnowledgeStatsData,
   },
+
   // {
   //     path: "/emprunts",
   //     element: AsyncLoans,
   //     loadData: loadLoansData,
   // },
+
   {
     path: '/emprunter',
     element: <AsyncLoaning />,

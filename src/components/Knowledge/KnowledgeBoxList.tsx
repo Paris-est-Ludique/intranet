@@ -4,30 +4,27 @@ import { useSelector } from 'react-redux'
 import styles from './styles.module.scss'
 import BoxItem from './BoxItem'
 import { fetchBoxListIfNeed, selectSortedUniqueDetailedBoxes } from '@/store/boxList'
-import {
-  fetchVolunteerKnowledgeSetIfNeed,
-  useVolunteerKnowledge,
-} from '@/store/volunteerKnowledgeSet'
+import { fetchVolunteerKnowledgeSetIfNeed, useVolunteerKnowledge } from '@/store/volunteerKnowledgeSet'
 
 const KnowledgeBoxList: React.FC = (): JSX.Element | null => {
   const detailedBoxes = useSelector(selectSortedUniqueDetailedBoxes)
   const [volunteerKnowledge, saveVolunteerKnowledge] = useVolunteerKnowledge()
   const [showUnknownOnly, setShowUnknownOnly] = useState(false)
 
-  const onShowUnknownOnly = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setShowUnknownOnly(e.target.checked)
+  const onShowUnknownOnly = (e: React.ChangeEvent<HTMLInputElement>) => setShowUnknownOnly(e.target.checked)
 
-  if (!detailedBoxes || detailedBoxes.length === 0)
+  if (!detailedBoxes || detailedBoxes.length === 0) {
     return null
+  }
 
   const boxesToShow = detailedBoxes.filter(
     box =>
       !box
-            || !showUnknownOnly
-            || !volunteerKnowledge
-            || (!volunteerKnowledge.ok.includes(box.gameId)
-                && !volunteerKnowledge.bof.includes(box.gameId)
-                && !volunteerKnowledge.niet.includes(box.gameId)),
+      || !showUnknownOnly
+      || !volunteerKnowledge
+      || (!volunteerKnowledge.ok.includes(box.gameId)
+        && !volunteerKnowledge.bof.includes(box.gameId)
+        && !volunteerKnowledge.niet.includes(box.gameId)),
   )
 
   return (

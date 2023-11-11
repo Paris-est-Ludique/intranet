@@ -13,16 +13,13 @@ const uiSlice = createSlice({
     displayModal: (state, action: PayloadAction<string>) => {
       state.modalId = action.payload
     },
-    hideModal: (state) => {
+    hideModal: state => {
       state.modalId = ''
     },
   },
 })
 
-export const {
-  actions: uiActions,
-  reducer: uiReducer,
-} = uiSlice
+export const { actions: uiActions, reducer: uiReducer } = uiSlice
 
 export const { displayModal, hideModal } = uiActions
 

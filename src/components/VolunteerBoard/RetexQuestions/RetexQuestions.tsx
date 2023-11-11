@@ -25,22 +25,20 @@ const RetexQuestions: FC<Props> = (): JSX.Element | null => {
   const onEdit = useCallback(() => execDisplayModal(MODAL_IDS.RETEX), [execDisplayModal])
   const weekDays = `,${dayWishes}`.replace(/,S|,D/g, '').replace(/^,/, '')
   const answeredQuestionCount
-        = (question2 ? 1 : 0)
-        + (question3 ? 1 : 0)
-        + (question4 ? 1 : 0)
-        + (question5 ? 1 : 0)
-        + (question6 ? 1 : 0)
-        + (question7 ? 1 : 0)
-        + (question8 ? 1 : 0)
+    = (question2 ? 1 : 0)
+    + (question3 ? 1 : 0)
+    + (question4 ? 1 : 0)
+    + (question5 ? 1 : 0)
+    + (question6 ? 1 : 0)
+    + (question7 ? 1 : 0)
+    + (question8 ? 1 : 0)
   const expectedAnswerCount = weekDays ? 7 : 6
 
   return (
     <div className={styles.root}>
       <div className={styles.title}>Retour sur PeL 2022</div>
       <div className={styles.line}>
-        <span
-          className={answeredQuestionCount < expectedAnswerCount ? styles.lineEmpty : ''}
-        >
+        <span className={answeredQuestionCount < expectedAnswerCount ? styles.lineEmpty : ''}>
           {answeredQuestionCount}
           {' '}
           réponses
@@ -52,7 +50,10 @@ const RetexQuestions: FC<Props> = (): JSX.Element | null => {
         {answeredQuestionCount >= expectedAnswerCount && <> !</>}
       </div>
       <div className={styles.editButton}>
-        <button type="button" onClick={onEdit}>
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

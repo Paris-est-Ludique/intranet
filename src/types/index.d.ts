@@ -5,34 +5,32 @@ declare const __LOCAL__: boolean
 declare const __REGISTER_DISCORD_COMMANDS__: boolean
 declare const __TEST__: boolean
 
-declare module "*.svg"
-declare module "*.gif"
-declare module "*.png"
-declare module "*.jpg"
-declare module "*.jpeg"
-declare module "*.webp"
-declare module "*.css"
-declare module "*.scss"
+declare module '*.svg'
+declare module '*.gif'
+declare module '*.png'
+declare module '*.jpg'
+declare module '*.jpeg'
+declare module '*.webp'
+declare module '*.css'
+declare module '*.scss'
 
 declare namespace NodeJS {
-    interface Global {
-        __CLIENT__: boolean
-        __SERVER__: boolean
-        __DEV__: boolean
-        __LOCAL__: boolean
-        __REGISTER_DISCORD_COMMANDS__: boolean
-        __TEST__: boolean
-        $RefreshReg$: () => void
-        $RefreshSig$$: () => void
-    }
+  interface Global {
+    __CLIENT__: boolean
+    __SERVER__: boolean
+    __DEV__: boolean
+    __LOCAL__: boolean
+    __REGISTER_DISCORD_COMMANDS__: boolean
+    __TEST__: boolean
+    $RefreshReg$: () => void
+    $RefreshSig$$: () => void
+  }
 
-    interface ProcessEnv {
-        SENDGRID_API_KEY?: string
-        FORCE_ORANGE_PUBLIC_VAPID_KEY?: string
-        FORCE_ORANGE_PRIVATE_VAPID_KEY?: string
-    }
+  interface Process {
+    readonly env: ImportMetaEnv
+  }
 }
 
 interface Window {
-    __INITIAL_STATE__: Record<string, unknown>
+  __INITIAL_STATE__: Record<string, unknown>
 }

@@ -23,6 +23,7 @@ function ForgotForm({ dispatch, error, message }: Props): JSX.Element {
       const email = get(emailRef, 'current.value', '')
 
       dispatch(fetchVolunteerForgot({ email }))
+
       return false
     },
     [dispatch],
@@ -30,12 +31,23 @@ function ForgotForm({ dispatch, error, message }: Props): JSX.Element {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className={styles.forgotIntro} key="forgot-intro">
+      <div
+        className={styles.forgotIntro}
+        key="forgot-intro"
+      >
         Nous allons te renvoyer un mot de passe à l&apos;adresse suivante.
       </div>
-      <div className={styles.formLine} key="line-email">
+      <div
+        className={styles.formLine}
+        key="line-email"
+      >
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="utilisateur" ref={emailRef} />
+        <input
+          type="email"
+          id="email"
+          name="utilisateur"
+          ref={emailRef}
+        />
       </div>
       <div className={styles.formButtons}>
         <FormSubmit onClick={onSubmit}>Envoyer</FormSubmit>

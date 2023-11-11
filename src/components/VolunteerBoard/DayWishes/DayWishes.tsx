@@ -18,11 +18,7 @@ const DayWishes: FC = (): JSX.Element | null => {
   return (
     <div className={styles.dayWishes}>
       <div className={styles.title}>Mon engagement</div>
-      {!charter && (
-        <div className={styles.lineEmpty}>
-          Je n'ai pas encore accepté la charte du bénévole :(
-        </div>
-      )}
+      {!charter && <div className={styles.lineEmpty}>Je n'ai pas encore accepté la charte du bénévole :(</div>}
 
       {participation === 'non' && (
         <div className={styles.participationLabel}>
@@ -57,8 +53,7 @@ const DayWishes: FC = (): JSX.Element | null => {
           {' '}
           <b className={styles.yesParticipation}>participerai</b>
           {' '}
-          à PeL 2023 ! Sans y
-          être pendant le weekend.
+          à PeL 2023 ! Sans y être pendant le weekend.
         </div>
       )}
       {participation === 'inconnu' && (
@@ -83,7 +78,10 @@ const DayWishes: FC = (): JSX.Element | null => {
         </div>
       )}
       <div className={styles.editButton}>
-        <button type="button" onClick={onEdit}>
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

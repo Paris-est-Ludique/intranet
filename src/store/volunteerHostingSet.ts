@@ -32,31 +32,27 @@ const volunteerHostingSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerHostingSetReducer,
-  actions: volunteerHostingSetActions,
-} = volunteerHostingSetSlice
+export const { reducer: volunteerHostingSetReducer, actions: volunteerHostingSetActions } = volunteerHostingSetSlice
 
-export const fetchVolunteerHostingSet = elementFetch(
-  volunteerHostingSet,
-  volunteerHostingSetActions,
-  (error: Error) =>
-    toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`),
-)
+export const fetchVolunteerHostingSet = elementFetch(volunteerHostingSet, volunteerHostingSetActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`))
 
 function selectShouldFetchVolunteerHostingSet(state: AppState, id: number) {
-  return state.volunteerHostingSet?.readyStatus !== 'success'
+  return (
+    state.volunteerHostingSet?.readyStatus !== 'success'
     || (state.volunteerHostingSet?.entity && state.volunteerHostingSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerHostingSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerHosting> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerHostingSetIfNeed: AppThunk
+  = (id = 0, wishes: Partial<VolunteerHosting> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  if (selectShouldFetchVolunteerHostingSet(getState(), id)) {
-    dispatch(fetchVolunteerHostingSet(jwt, id, wishes))
+    if (selectShouldFetchVolunteerHostingSet(getState(), id)) {
+      dispatch(fetchVolunteerHostingSet(jwt, id, wishes))
+    }
   }
-}

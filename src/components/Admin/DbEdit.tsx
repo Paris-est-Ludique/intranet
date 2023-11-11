@@ -17,11 +17,14 @@ const DbEdit: FC = (): JSX.Element => {
   const volunteers: Volunteer[] = useSelector(selectVolunteerList)
   const saveVolunteer = useAction(fetchVolunteerSetIfNeed)
   const addVolunteer = useAction(fetchVolunteerAddNewIfNeed)
+
   if (!volunteers) {
     return <>No member found</>
   }
+
   const nextId = (max<number>(volunteers.map(v => v.id)) || 0) + 1
   const nextVolunteer = new Volunteer()
+
   nextVolunteer.id = nextId
 
   return (

@@ -1,23 +1,16 @@
 import isEmpty from 'lodash/isEmpty'
 import classnames from 'classnames'
 import { memo, useEffect, useState } from 'react'
-import styles from './styles.module.scss'
 import { shallowEqual, useSelector } from 'react-redux'
-import type {} from 'redux-thunk/extend-redux'
 import { toast } from 'react-toastify'
+import styles from './styles.module.scss'
 
 import { fetchPostulantAdd } from '@/store/postulantAdd'
 import type { AppDispatch, AppState } from '@/store'
 import { validEmail } from '@/utils/standardization'
 import { toastError } from '@/utils/toast'
-import {
-  fetchMiscFestivalDateListIfNeed,
-  selectMiscFestivalDateList,
-} from '@/store/miscFestivalDateList'
-import {
-  fetchMiscMeetingDateListIfNeed,
-  selectMiscMeetingDateList,
-} from '@/store/miscMeetingDateList'
+import { fetchMiscFestivalDateListIfNeed, selectMiscFestivalDateList } from '@/store/miscFestivalDateList'
+import { fetchMiscMeetingDateListIfNeed, selectMiscMeetingDateList } from '@/store/miscMeetingDateList'
 
 import FormButton from '@/components/Form/FormButton/FormButton'
 import LoginForm from '@/components/LoginForm/LoginForm'
@@ -42,6 +35,7 @@ const animations = [
   [styles.imgTransitionShow, styles.imgTransitionReset],
   [styles.imgTransitionShow, styles.imgTransitionAbouToShow],
 ]
+
 function RegisterForm({ dispatch }: Props): JSX.Element {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
@@ -66,6 +60,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
     const timer = setInterval(() => {
       setChangingBackground((changingBackground + 1) % animations.length)
     }, 60000 / animations.length)
+
     return () => clearInterval(timer)
   }, [changingBackground, setChangingBackground])
   const transitionClass = (i: number) => animations[changingBackground][i - 1]
@@ -73,6 +68,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
   const onSubmit = () => {
     if (!validEmail(email)) {
       toastError('Cet email est invalid ><')
+
       return
     }
     if (!firstname || !lastname || !email || !mobile || sending) {
@@ -85,6 +81,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         draggable: true,
         progress: undefined,
       })
+
       return
     }
 
@@ -102,6 +99,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         comment,
       }),
     )
+
     // dispatch(
     //     fetchVolunteerPartialAdd({
     //         firstname,
@@ -128,10 +126,12 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
   let sendSuccess
   let sendError
   let sendingElement
+
   if (!postulantError && !isEmpty(postulant)) {
     if (sending) {
       setSending(false)
     }
+
     sendSuccess = (
       <span className={styles.success}>
         Formulaire envoyé !
@@ -139,20 +139,19 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         Tu as reçu un email de confirmation, peut-être dans tes spams.
       </span>
     )
-  }
-  else if (postulantError && isEmpty(postulant)) {
+  } else if (postulantError && isEmpty(postulant)) {
     if (sending) {
       setSending(false)
     }
+
     sendError = <span className={styles.error}>{postulantError}</span>
-  }
-  else if (volunteerError && isEmpty(volunteer)) {
+  } else if (volunteerError && isEmpty(volunteer)) {
     if (sending) {
       setSending(false)
     }
+
     sendError = <span className={styles.error}>{volunteerError}</span>
-  }
-  else if (sending) {
+  } else if (sending) {
     sendingElement = (
       <span className={styles.sending}>
         Envoi en cours...
@@ -173,8 +172,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
           {' '}
           <b>jeux de société modernes</b>
           {' '}
-          sous toutes
-          leurs formes.
+          sous toutes leurs formes.
           {festivalFullDate && ` Les ${festivalFullDate} !`}
         </p>
         <p>
@@ -182,18 +180,20 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
           {' '}
           <b>18 000</b>
           {' '}
-          visiteurs qui sont venus sous 300 chapiteaux et 2
-          000 tables.
+          visiteurs qui sont venus sous 300 chapiteaux et 2 000 tables.
         </p>
         <p>
           Les 2 jours que durent le festival sont entièrement dédiés à ce que le public
           {' '}
           <b>JOUE</b>
-          , que ce soit sur les stands d&apos;éditeurs, d&apos;associations,
-          d&apos;animateurs bénévoles, du coin des petits joueurs, de l&apos;espace
-          tournois, ou de l&apos;espace prototypes.
+          , que ce soit sur les
+          stands d&apos;éditeurs, d&apos;associations, d&apos;animateurs bénévoles, du coin des petits joueurs, de
+          l&apos;espace tournois, ou de l&apos;espace prototypes.
         </p>
-        <div id="pelImg" className={styles.pelImg}>
+        <div
+          id="pelImg"
+          className={styles.pelImg}
+        >
           <div className={classnames(styles.pelImg1, transitionClass(1))}> </div>
           <div className={classnames(styles.pelImg2, transitionClass(2))}> </div>
         </div>
@@ -204,70 +204,63 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
           L&apos;organisation du festival est
           {' '}
           <b>entièrement gérée par nous</b>
-          , les
-          bénévoles. À aucun moment ça ne ressemble à du travail : nous faisons tout pour
-          passer
+          , les bénévoles. À aucun moment ça ne
+          ressemble à du travail : nous faisons tout pour passer
           <b>un aussi bon moment que les visiteurs</b>
           {' '}
           :)
         </p>
         <p>
-          D&apos;ailleurs, un soir par mois nous nous réunissons pour un apéro ludique où
-          discuter de l&apos;organisation ! On joue autant que les visiteurs, mais sur
-          toute l&apos;année ^^
+          D&apos;ailleurs, un soir par mois nous nous réunissons pour un apéro ludique où discuter de
+          l&apos;organisation ! On joue autant que les visiteurs, mais sur toute l&apos;année ^^
         </p>
         <p>
           Pendant le festival de 2022, nous étions
           {' '}
           <b>196 bénévoles</b>
           {' '}
-          organisés en
-          équipes qui chouchoutent les visiteurs en les accueillant, en s&apos;assurant
-          que tout se passe bien, ou encore en expliquant des règles de jeux.
+          organisés en équipes qui chouchoutent les
+          visiteurs en les accueillant, en s&apos;assurant que tout se passe bien, ou encore en expliquant des règles de
+          jeux.
         </p>
         <p>
-          Une équipe est même dédiée au bien être des bénévoles en leur servant à boire et
-          à manger dans un espace à part où faire des pauses régulières. Et puis nous
-          hébergeons ceux d&apos;entre nous qui habitent loin de Paris. Le confort avant
-          tout !
+          Une équipe est même dédiée au bien être des bénévoles en leur servant à boire et à manger dans un espace à
+          part où faire des pauses régulières. Et puis nous hébergeons ceux d&apos;entre nous qui habitent loin de
+          Paris. Le confort avant tout !
         </p>
         <p>
           La majorité d'entre nous sommes bénévoles les
           {' '}
           <b>samedi et dimanche</b>
-          , mais
-          certains bénévoles ne sont pas disponibles les deux jours. On leur demande alors
-          d'aider à la mise en place mercredi, jeudi ou vendredi, ou au rangement le
-          lundi, à la place d'un des jours du weekend. Bref, chacun participe comme il
-          peut mais
+          , mais certains bénévoles ne sont pas
+          disponibles les deux jours. On leur demande alors d'aider à la mise en place mercredi, jeudi ou vendredi, ou
+          au rangement le lundi, à la place d'un des jours du weekend. Bref, chacun participe comme il peut mais
           <b>deux jours minimum</b>
           {' '}
           !
         </p>
         <p>
-          Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en
-          dînant avec les exposants présents sur le festival. Le dimanche rebelote juste
-          entre bénévoles.
+          Le samedi soir quand les visiteurs sont partis, nous prolongeons la fête en dînant avec les exposants présents
+          sur le festival. Le dimanche rebelote juste entre bénévoles.
         </p>
         <div className={styles.beneImg}> </div>
       </dd>
 
       {!enableRegistering && (
         <dt>
-          L'inscription est clôturée pour l'édition 2023, mais si l'expérience te tente,
-          remplis le formulaire suivant pour devenir bénévole à PeL 2024 !
+          L'inscription est clôturée pour l'édition 2023, mais si l'expérience te tente, remplis le formulaire suivant
+          pour devenir bénévole à PeL 2024 !
           <br />
-          Dès septembre on se rencontrera sur Paris en petits groupes pour discuter du
-          festival, du bénévolat et surtout faire connaissance :)
+          Dès septembre on se rencontrera sur Paris en petits groupes pour discuter du festival, du bénévolat et surtout
+          faire connaissance :)
           <br />
         </dt>
       )}
 
       {enableRegistering && (
         <dt>
-          Si tu as envie de donner le sourire à des milliers de gens, remplis le
-          formulaire suivant pour rencontrer une poignée d'entre nous dans un bar/resto
-          près de Châtelet, avant de te décider ou non à devenir bénévole :)
+          Si tu as envie de donner le sourire à des milliers de gens, remplis le formulaire suivant pour rencontrer une
+          poignée d'entre nous dans un bar/resto près de Châtelet, avant de te décider ou non à devenir bénévole :)
           <br />
         </dt>
       )}
@@ -293,21 +286,19 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
     <>
       <div className={styles.inputWrapper}>
         <div className={styles.leftCol}>
-          <div className={styles.multipleChoiceTitle}>
-            As-tu déjà été bénévole à Paris est Ludique (PeL) ?
-          </div>
+          <div className={styles.multipleChoiceTitle}>As-tu déjà été bénévole à Paris est Ludique (PeL) ?</div>
         </div>
         <div className={styles.rightCol}>
           <div className={styles.rightColContainer}>
             {['Oui', 'Non'].map(option => (
-              <label className={styles.shortAnswerLabel} key={option}>
+              <label
+                className={styles.shortAnswerLabel}
+                key={option}
+              >
                 <input
                   type="radio"
                   name="alreadySignup"
-                  onChange={sendBooleanRadioboxDispatch(
-                    setAlreadySignup,
-                    option === 'Oui',
-                  )}
+                  onChange={sendBooleanRadioboxDispatch(setAlreadySignup, option === 'Oui')}
                   checked={alreadySignup === (option === 'Oui')}
                 />
                 {' '}
@@ -319,10 +310,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
       </div>
       {alreadySignup && (
         <dl className={styles.registerIntro}>
-          <dt>
-            Dans ce cas tu n'as pas besoin de t'inscrire ici, tu as déjà un compte sur
-            Force Orange !
-          </dt>
+          <dt>Dans ce cas tu n'as pas besoin de t'inscrire ici, tu as déjà un compte sur Force Orange !</dt>
           <dd>
             <p>
               Viens simplement t'identifier sur
@@ -342,21 +330,19 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
     <>
       <div className={styles.inputWrapper}>
         <div className={styles.leftCol}>
-          <div className={styles.multipleChoiceTitle}>
-            Es-tu déjà venu à PeL en tant que visiteur ?
-          </div>
+          <div className={styles.multipleChoiceTitle}>Es-tu déjà venu à PeL en tant que visiteur ?</div>
         </div>
         <div className={styles.rightCol}>
           <div className={styles.rightColContainer}>
             {['Oui', 'Non'].map(option => (
-              <label className={styles.shortAnswerLabel} key={option}>
+              <label
+                className={styles.shortAnswerLabel}
+                key={option}
+              >
                 <input
                   type="radio"
                   name="alreadyCame"
-                  onChange={sendBooleanRadioboxDispatch(
-                    setAlreadyCame,
-                    option === 'Oui',
-                  )}
+                  onChange={sendBooleanRadioboxDispatch(setAlreadyCame, option === 'Oui')}
                   checked={alreadyCame === (option === 'Oui')}
                 />
                 {' '}
@@ -381,21 +367,18 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
               >
                 "pelouse" de Reuilly
               </a>
-              . En voici le plan de 2019, quand il s'étendait sur 2 hectares pour
-              accueillir 16 000 visiteurs. La plupart des rectangles colorés que tu
-              vois dessus sont d'énormes barnums, ou agglomérats de tonnelles.
+              . En voici le plan de 2019, quand il s'étendait sur 2 hectares pour accueillir 16 000 visiteurs. La
+              plupart des rectangles colorés que tu vois dessus sont d'énormes barnums, ou agglomérats de tonnelles.
             </p>
             <div className={styles.barnumsImg}> </div>
             <div className={styles.planImg}> </div>
             <p>
-              Les espaces jeux bleu, violet, gris, ou marron sont installés et animés
-              par des éditeurs professionnels. Des pros gèrent les zones de
-              restauration rouges. Tout le reste est tenu par des associations ou des
+              Les espaces jeux bleu, violet, gris, ou marron sont installés et animés par des éditeurs professionnels.
+              Des pros gèrent les zones de restauration rouges. Tout le reste est tenu par des associations ou des
               bénévoles du festival.
             </p>
             <p>
-              Après l'édition de 2019, on a fait cette petite vidéo qui donne une
-              bonne impression de l'ambiance :
+              Après l'édition de 2019, on a fait cette petite vidéo qui donne une bonne impression de l'ambiance :
               {' '}
               <a
                 href="https://www.youtube.com/watch?v=eVuQaERb7EU"
@@ -414,9 +397,8 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
               >
                 Road N Troll
               </a>
-              ) ont fait cette présentation plus en détail des différentes zones en
-              2018. J'ai coupé les présentations de jeux mais tout le reste est encore
-              d'actualité :
+              ) ont fait cette présentation plus en détail des différentes zones en 2018. J'ai coupé les présentations
+              de jeux mais tout le reste est encore d'actualité :
               {' '}
               <a
                 href="https://www.youtube.com/watch?v=jSCHWqjHJIQ"
@@ -438,9 +420,9 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         <dt>Faisons connaissance !</dt>
         <dd>
           <p>
-            On organise des rencontres entre de nouvelles personnes comme toi, et des
-            bénévoles suffisamment expérimentés pour te parler en détail du festival et
-            répondre à toutes tes questions liées au bénévolat ou au festival.
+            On organise des rencontres entre de nouvelles personnes comme toi, et des bénévoles suffisamment
+            expérimentés pour te parler en détail du festival et répondre à toutes tes questions liées au bénévolat ou
+            au festival.
           </p>
           <p>
             Ces rencontres ont lieu à 19h dans un bar/resto calme à Châtelet, le
@@ -463,9 +445,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         ? (
           <div className={styles.inputWrapper}>
             <div className={styles.leftCol}>
-              <div className={styles.multipleChoiceTitle}>
-                À quelle date pourrais-tu venir ?
-              </div>
+              <div className={styles.multipleChoiceTitle}>À quelle date pourrais-tu venir ?</div>
             </div>
             <div className={styles.rightCol}>
               <div className={styles.rightColContainer}>
@@ -476,7 +456,10 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
                   })),
                   { value: '', desc: 'Aucune date possible' },
                 ].map(option => (
-                  <label className={styles.longAnswerLabel} key={option.value}>
+                  <label
+                    className={styles.longAnswerLabel}
+                    key={option.value}
+                  >
                     <input
                       type="radio"
                       name="firstMeeting"
@@ -507,7 +490,10 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
                 { value: '', desc: 'Rencontre sur Paris' },
                 { value: 'visio', desc: 'Plutôt en visio' },
               ].map(option => (
-                <label className={styles.longAnswerLabel} key={option.value}>
+                <label
+                  className={styles.longAnswerLabel}
+                  key={option.value}
+                >
                   <input
                     type="radio"
                     name="firstMeeting"
@@ -529,23 +515,18 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
           <dd>
             <p>
               {!hasMeetingDates && firstMeeting === '' && (
-                <>
-                  Top ! On te propose très vite des dates, ou à défaut, une visio
-                  :)
-                </>
+                <>Top ! On te propose très vite des dates, ou à défaut, une visio :)</>
               )}
               {firstMeeting === 'visio' && (
                 <>
-                  Top ! On te recontacte très vite avec des dates pour une visio
-                  avec 2 bénévoles et 2-3 autres personnes intéréssées comme toi
-                  :)
+                  Top ! On te recontacte très vite avec des dates pour une visio avec 2 bénévoles et 2-3 autres
+                  personnes intéréssées comme toi :)
                 </>
               )}
               {hasMeetingDates && firstMeeting !== '' && (
                 <>
-                  Top ! On fait en sorte qu'il y ait assez de bénévoles
-                  expérimentés pour les nombreux curieux comme toi, donc pour ne
-                  pas gâcher leur temps on compte sur ta présence :)
+                  Top ! On fait en sorte qu'il y ait assez de bénévoles expérimentés pour les nombreux curieux comme
+                  toi, donc pour ne pas gâcher leur temps on compte sur ta présence :)
                 </>
               )}
             </p>
@@ -556,10 +537,7 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
       )}
 
       <div
-        className={classnames(
-          styles.inputWrapper,
-          !(firstMeeting === '' || firstMeeting === 'visio') && styles.hidden,
-        )}
+        className={classnames(styles.inputWrapper, !(firstMeeting === '' || firstMeeting === 'visio') && styles.hidden)}
       >
         <div className={styles.commentWrapper}>
           <textarea
@@ -567,16 +545,14 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
             id="commentFirstMeeting"
             className={styles.inputWrapper}
             placeholder={
-                            (hasMeetingDates && firstMeeting === ''
-                              ? 'Mince. Quelles dates t\'arrangeraient ? Ou si c\'est plus simple, quels jours sont à éviter ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?'
-                              : '')
-                            + (!hasMeetingDates && firstMeeting === ''
-                              ? 'As-tu des contraintes horaires les lundis ? Les mardis ?'
-                              : '')
-                            + (firstMeeting === 'visio'
-                              ? 'As-tu des contraites en terme de jours de la semaine ? D\'horaire ?'
-                              : '')
-                        }
+              (hasMeetingDates && firstMeeting === ''
+                ? 'Mince. Quelles dates t\'arrangeraient ? Ou si c\'est plus simple, quels jours sont à éviter ? Est-ce trop loin de chez toi ? Préfères-tu nous rencontrer en visio ?'
+                : '')
+              + (!hasMeetingDates && firstMeeting === ''
+                ? 'As-tu des contraintes horaires les lundis ? Les mardis ?'
+                : '')
+              + (firstMeeting === 'visio' ? 'As-tu des contraites en terme de jours de la semaine ? D\'horaire ?' : '')
+            }
             value={commentFirstMeeting}
             onChange={sendTextareaDispatch(setCommentFirstMeeting)}
           />
@@ -591,15 +567,13 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         <dt>Association Paris est Ludique</dt>
         <dd>
           <p>
-            Légalement il faut que le festival soit organisé par une structure, et c'est
-            l'association
+            Légalement il faut que le festival soit organisé par une structure, et c'est l'association
             {' '}
             <i>Paris est Ludique !</i>
             {' '}
-            qui s'en charge. Pour avoir un
-            droit de regard dessus, devenir bénévole à cette édition implique
-            automatiquement d'en devenir membre jusqu'à septembre prochain. Ça n'engage
-            à rien et c'est gratuit !
+            qui s'en charge. Pour avoir un droit de regard dessus, devenir bénévole à cette
+            édition implique automatiquement d'en devenir membre jusqu'à septembre prochain. Ça n'engage à rien et c'est
+            gratuit !
           </p>
         </dd>
       </dl>
@@ -670,14 +644,16 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
       <div className={styles.inputWrapper}>
         <div className={styles.leftCol}>
           <div className={styles.multipleChoiceTitle}>
-            Par quel moyen fiable et rapide préfères-tu être contacté si on en a besoin
-            ?
+            Par quel moyen fiable et rapide préfères-tu être contacté si on en a besoin ?
           </div>
         </div>
         <div className={styles.rightCol}>
           <div className={styles.rightColContainer}>
             {['WhatsApp', 'Signal', 'SMS', 'Email', 'Aucun'].map(option => (
-              <label className={styles.shortAnswerLabel} key={option}>
+              <label
+                className={styles.shortAnswerLabel}
+                key={option}
+              >
                 <input
                   type="radio"
                   name="howToContact"
@@ -696,12 +672,12 @@ function RegisterForm({ dispatch }: Props): JSX.Element {
         <dl className={styles.registerIntro}>
           <dd>
             <p>
-              Aïe ça va poser problème, je suis désolé. Il faut qu'on puisse te
-              contacter par l'un des moyens de communication proposés.
+              Aïe ça va poser problème, je suis désolé. Il faut qu'on puisse te contacter par l'un des moyens de
+              communication proposés.
             </p>
             <p>
-              Tu en connais un suffisamment répandu et meilleur que ceux proposés ?
-              Parle-nous en à benevoles@parisestludique.fr !!
+              Tu en connais un suffisamment répandu et meilleur que ceux proposés ? Parle-nous en à
+              benevoles@parisestludique.fr !!
             </p>
           </dd>
         </dl>

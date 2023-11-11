@@ -15,22 +15,22 @@ function useUserTeam() {
   const teams = useSelector(selectTeamList)
 
   useEffect(() => {
-    if (userId)
+    if (userId) {
       fetch()
+    }
   }, [userId, fetch])
 
-  const user = useMemo(
-    () => volunteers.find(volunteer => volunteer.id === userId),
-    [volunteers, userId],
-  )
+  const user = useMemo(() => volunteers.find(volunteer => volunteer.id === userId), [volunteers, userId])
 
   return useMemo(() => teams.find(t => t?.id === user?.team), [user, teams])
 }
 
 const VolunteerTeam: FC = (): JSX.Element => {
   const team = useUserTeam()
-  if (!team)
+
+  if (!team) {
     return <div />
+  }
 
   return (
     <div className={styles.root}>

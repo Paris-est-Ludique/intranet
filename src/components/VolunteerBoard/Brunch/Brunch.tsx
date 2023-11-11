@@ -44,7 +44,10 @@ const Brunch: FC<Props> = (): JSX.Element | null => {
         )}
       </div>
       <div className={styles.editButton}>
-        <button type="button" onClick={onEdit}>
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

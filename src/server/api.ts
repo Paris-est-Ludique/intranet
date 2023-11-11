@@ -35,17 +35,14 @@ import {
   volunteerTeamWishesSet,
 } from '@/server/gsheets/volunteers'
 import { wishAdd, wishListGet } from '@/server/gsheets/wishes'
-import {
-  miscDiscordInvitation,
-  miscFestivalDateListGet,
-  miscMeetingDateListGet,
-} from '@/server/gsheets/miscs'
+import { miscDiscordInvitation, miscFestivalDateListGet, miscMeetingDateListGet } from '@/server/gsheets/miscs'
 import { retexSet } from '@/server/gsheets/retex'
 import { notificationsSubscribe } from '@/server/notifications'
 
 // import { /* discordRegisterCommands, */ discordBot, hasDiscordAccess } from "./discordBot"
 
 // Google Sheets API
+
 function defaultController(): Router {
   const router = Router()
 
@@ -59,7 +56,9 @@ function defaultController(): Router {
   router.get('/WishListGet', wishListGet)
   router.post('/WishAdd', wishAdd)
   router.post('/PostulantAdd', postulantAdd)
+
   // Disabling registration router.post("/VolunteerPartialAdd", volunteerPartialAdd)
+
   router.post('/VolunteerLogin', volunteerLogin)
   router.post('/VolunteerForgot', volunteerForgot)
 
@@ -67,8 +66,10 @@ function defaultController(): Router {
 }
 
 // Secured APIs
+
 function securedController(): Router {
   const router = Router()
+
   router.get('/AnnouncementListGet', secure as RequestHandler, announcementListGet)
   router.get('/GameWithVolunteersListGet', secure as RequestHandler, gameWithVolunteersListGet)
   router.get('/MiscDiscordInvitationGet', secure as RequestHandler, miscDiscordInvitation)
@@ -78,17 +79,9 @@ function securedController(): Router {
   router.get('/VolunteerDiscordId', secure as RequestHandler, volunteerDiscordId)
   router.post('/VolunteerAsksSet', secure as RequestHandler, volunteerAsksSet)
   router.post('/VolunteerKnowledgeSet', secure as RequestHandler, volunteerKnowledgeSet)
-  router.post(
-    '/VolunteerDetailedKnowledgeListGet',
-    secure as RequestHandler,
-    volunteerDetailedKnowledgeList,
-  )
+  router.post('/VolunteerDetailedKnowledgeListGet', secure as RequestHandler, volunteerDetailedKnowledgeList)
   router.post('/VolunteerLoanSet', secure as RequestHandler, volunteerLoanSet)
-  router.post(
-    '/VolunteerParticipationDetailsSet',
-    secure as RequestHandler,
-    volunteerParticipationDetailsSet,
-  )
+  router.post('/VolunteerParticipationDetailsSet', secure as RequestHandler, volunteerParticipationDetailsSet)
   router.post('/VolunteerDayWishesSet', secure as RequestHandler, volunteerDayWishesSet)
   router.post('/VolunteerHostingSet', secure as RequestHandler, volunteerHostingSet)
   router.post('/VolunteerMealsSet', secure as RequestHandler, volunteerMealsSet)
@@ -98,10 +91,12 @@ function securedController(): Router {
   router.get('/VolunteerOnSiteInfo', secure as RequestHandler, volunteerOnSiteInfo)
 
   // Admin only
+
   router.post('/VolunteerAddNew', secure as RequestHandler, volunteerAddNew)
   router.post('/VolunteerSet', secure as RequestHandler, volunteerSet)
 
   // Push notification subscription
+
   router.post('/notifications/subscribe', notificationsSubscribe)
 
   return router
@@ -109,16 +104,14 @@ function securedController(): Router {
 
 function dbDownloadController(): Router {
   // Anonymized DB download
+
   const router = Router()
 
   router.get(
     '/OUpere3yzML8da8abw5Tyeef2P0LJOetmdDHfKZC0T2CU/dbAnonymized.json',
-    async (
-      _request: Request,
-      response: Response,
-      _next: NextFunction,
-    ): Promise<void> => {
+    async (_request: Request, response: Response, _next: NextFunction): Promise<void> => {
       const file = path.resolve(`access/dbAnonymized.json`)
+
       response.download(file)
     },
   )
@@ -129,11 +122,7 @@ function dbDownloadController(): Router {
 export default (): Router => {
   const router = Router()
 
-  router.use('/api', [
-    defaultController(),
-    securedController(),
-    dbDownloadController(),
-  ])
+  router.use('/api', [defaultController(), securedController(), dbDownloadController()])
 
   return router
 }

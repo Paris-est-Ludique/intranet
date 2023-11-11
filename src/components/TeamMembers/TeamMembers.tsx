@@ -28,7 +28,9 @@ const selectVolunteersWithTeam = createSelector(
       })),
 )
 
-const hasDay = (day: string) => (volunteer: Volunteer) => volunteer.dayWishes.includes(day)
+function hasDay(day: string) {
+  return (volunteer: Volunteer) => volunteer.dayWishes.includes(day)
+}
 
 interface DaysAvailabilityProps {
   volunteer: Volunteer
@@ -36,15 +38,14 @@ interface DaysAvailabilityProps {
 
 const DaysAvailability: FC<DaysAvailabilityProps> = ({ volunteer }): JSX.Element => {
   const hasWishes = volunteer.dayWishes.length > 0
+
   return (
     <>
       {dayList.map(dayId => (
         <td
           className={classnames(
             styles.day,
-            hasWishes
-              ? hasDay(dayId.toUpperCase())(volunteer) && styles.available
-              : styles.unknown,
+            hasWishes ? hasDay(dayId.toUpperCase())(volunteer) && styles.available : styles.unknown,
             dayId === dayId.toUpperCase() ? styles.weekend : styles.week,
           )}
           key={dayId}
@@ -61,13 +62,12 @@ interface Props {
 }
 
 const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
-  const volunteers = useSelector(selectVolunteersWithTeam).filter(
-    volunteer => volunteer?.teamObject?.id === teamId,
-  )
+  const volunteers = useSelector(selectVolunteersWithTeam).filter(volunteer => volunteer?.teamObject?.id === teamId)
   const roles = useSelector(selectUserRoles)
 
-  if (volunteers.length === 0)
+  if (volunteers.length === 0) {
     return <div />
+  }
 
   return (
     <table className={styles.teamMembers}>
@@ -76,7 +76,10 @@ const TeamMembers: FC<Props> = ({ teamId }): JSX.Element => {
           <th>Bénévoles</th>
           <>
             {dayList.map(dayId => (
-              <th className={styles.dayTitle} key={`day${dayId}`}>
+              <th
+                className={styles.dayTitle}
+                key={`day${dayId}`}
+              >
                 {dayId.toUpperCase()}
                 {' '}
                 (

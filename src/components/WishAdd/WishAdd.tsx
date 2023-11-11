@@ -19,12 +19,9 @@ function WishAdd({ dispatch }: Props) {
 
   const onDomainChanged = (e: React.ChangeEvent<HTMLInputElement>) => setDomain(e.target.value)
   const onWishChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setWish(e.target.value)
-  const onDetailsChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setDetails(e.target.value)
-  const onTeamsChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTeams(e.target.value.split(/, ?/))
-  const onAddedDateChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setAddedDate(e.target.value)
+  const onDetailsChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setDetails(e.target.value)
+  const onTeamsChanged = (e: React.ChangeEvent<HTMLInputElement>) => setTeams(e.target.value.split(/, ?/))
+  const onAddedDateChanged = (e: React.ChangeEvent<HTMLInputElement>) => setAddedDate(e.target.value)
 
   const onSavePostClicked = () => {
     if (domain && wish) {
@@ -43,8 +40,7 @@ function WishAdd({ dispatch }: Props) {
       setDetails('')
       setTeams([''])
       setAddedDate('')
-    }
-    else {
+    } else {
       toast.warning('Il faut au moins préciser un domaine et l\'envie', {
         position: 'top-center',
         autoClose: 6000,
@@ -56,6 +52,7 @@ function WishAdd({ dispatch }: Props) {
       })
     }
   }
+
   return (
     <section className={styles.WishList}>
       <h2>Ajouter une nouvelle wish</h2>
@@ -72,7 +69,12 @@ function WishAdd({ dispatch }: Props) {
         </label>
         <label htmlFor="postWish">
           Envies:
-          <textarea id="postWish" name="postWish" value={wish} onChange={onWishChanged} />
+          <textarea
+            id="postWish"
+            name="postWish"
+            value={wish}
+            onChange={onWishChanged}
+          />
         </label>
         <label htmlFor="postDetails">
           Precisions:
@@ -103,7 +105,10 @@ function WishAdd({ dispatch }: Props) {
             onChange={onAddedDateChanged}
           />
         </label>
-        <button type="button" onClick={onSavePostClicked}>
+        <button
+          type="button"
+          onClick={onSavePostClicked}
+        >
           Save Post
         </button>
       </form>

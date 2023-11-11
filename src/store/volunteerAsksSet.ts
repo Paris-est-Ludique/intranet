@@ -32,30 +32,27 @@ const volunteerAsksSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerAsksSetReducer,
-  actions: volunteerAsksSetActions,
-} = volunteerAsksSetSlice
+export const { reducer: volunteerAsksSetReducer, actions: volunteerAsksSetActions } = volunteerAsksSetSlice
 
-export const fetchVolunteerAsksSet = elementFetch(
-  volunteerAsksSet,
-  volunteerAsksSetActions,
-  (error: Error) => toastError(`Erreur lors du chargement des notifications: ${error.message}`),
-)
+export const fetchVolunteerAsksSet = elementFetch(volunteerAsksSet, volunteerAsksSetActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des notifications: ${error.message}`))
 
 function selectShouldFetchVolunteerAsksSet(state: AppState, id: number) {
-  return state.volunteerAsksSet?.readyStatus !== 'success'
+  return (
+    state.volunteerAsksSet?.readyStatus !== 'success'
     || (state.volunteerAsksSet?.entity && state.volunteerAsksSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerAsksSetIfNeed: AppThunk = (id = 0, notif: Partial<VolunteerAsks> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerAsksSetIfNeed: AppThunk
+  = (id = 0, notif: Partial<VolunteerAsks> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  if (selectShouldFetchVolunteerAsksSet(getState(), id)) {
-    dispatch(fetchVolunteerAsksSet(jwt, id, notif))
+    if (selectShouldFetchVolunteerAsksSet(getState(), id)) {
+      dispatch(fetchVolunteerAsksSet(jwt, id, notif))
+    }
   }
-}

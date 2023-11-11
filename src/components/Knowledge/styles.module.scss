@@ -1,301 +1,300 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .showUnknownOnlyLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .boxList {
-    padding: 0;
-    list-style: none;
+  padding: 0;
+  list-style: none;
 }
 
 .boxItem {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .photoContainer {
-    height: 50px;
-    width: 73px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 73px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 .photo {
-    height: 50px;
-    max-width: 73px;
-    position: absolute;
-    left: 0;
+  height: 50px;
+  max-width: 73px;
+  position: absolute;
+  left: 0;
 }
 
 .titleContainer {
-    height: 50px;
-    width: 198px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 198px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 .shorterTitle {
-    width: 168px;
+  width: 168px;
 }
 .title {
-    height: 50px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+  height: 50px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .poufpaf {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    display: inline-block;
-    background: url("assets/img/poufpaf.png");
-    background-size: contain;
-    vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  display: inline-block;
+  background: url('assets/img/poufpaf.png');
+  background-size: contain;
+  vertical-align: middle;
 }
 
 .noPoufpaf {
-    display: none;
+  display: none;
 }
 
 .knowledgeList {
-    @include clear-ul-style;
+  @include clear-ul-style;
 
-    width: 266px;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
+  width: 266px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .knowledgeItem {
-    display: inline-block;
-    margin: 3px;
+  display: inline-block;
+  margin: 3px;
 }
 
 .knowledgeButton {
-    margin: 0;
-    padding: 7px 2px 6px;
-    border: 0;
-    border-radius: 0;
-    width: 60px;
-    text-align: center;
-    color: $color-grey-medium;
-    cursor: pointer;
+  margin: 0;
+  padding: 7px 2px 6px;
+  border: 0;
+  border-radius: 0;
+  width: 60px;
+  text-align: center;
+  color: $color-grey-medium;
+  cursor: pointer;
 
-    &.active {
-        color: $color-yellow;
-    }
+  &.active {
+    color: $color-yellow;
+  }
 }
 
 .unknown {
-    background-color: $color-unknown;
+  background-color: $color-unknown;
 
-    &.active {
-        background-color: $color-active-unknown;
-    }
+  &.active {
+    background-color: $color-active-unknown;
+  }
 }
 
 .ok {
-    background-color: $color-ok;
+  background-color: $color-ok;
 
-    &.active {
-        background-color: $color-active-ok;
-    }
+  &.active {
+    background-color: $color-active-ok;
+  }
 }
 
 .bof {
-    background-color: $color-bof;
+  background-color: $color-bof;
 
-    &.active {
-        background-color: $color-active-bof;
-    }
+  &.active {
+    background-color: $color-active-bof;
+  }
 }
 
 .niet {
-    background-color: $color-niet;
+  background-color: $color-niet;
 
-    &.active {
-        background-color: $color-active-niet;
-    }
+  &.active {
+    background-color: $color-active-niet;
+  }
 }
 
 /* Cards */
 
 .card {
-    display: inline-block;
-    vertical-align: top;
-    width: 48vw;
-    margin: 1vw;
-    break-inside: avoid;
-    border: $color-black solid 0.1vw;
+  display: inline-block;
+  vertical-align: top;
+  width: 48vw;
+  margin: 1vw;
+  break-inside: avoid;
+  border: $color-black solid 0.1vw;
 }
 
 .header {
-    color: $color-white;
-    background-color: #e18502;
-    text-align: center;
-    font-size: 2.5vw;
-    line-height: 5vw;
-    font-family: $font-pel;
+  color: $color-white;
+  background-color: #e18502;
+  text-align: center;
+  font-size: 2.5vw;
+  line-height: 5vw;
+  font-family: $font-pel;
 }
 .imageContainer {
-    padding: 1vw;
+  padding: 1vw;
 }
 
 .benevolesContainer {
-    width: 100%;
+  width: 100%;
 }
 .tableBenevoles {
-    width: 100%;
-    vertical-align: top;
-    padding-top: 1vw;
+  width: 100%;
+  vertical-align: top;
+  padding-top: 1vw;
 }
 .gameImage {
-    width: 10vw;
+  width: 10vw;
 }
 
 .okHeader,
 .bofHeader {
-    text-align: center;
-    width: 100%;
-    font-size: 1.8vw;
-    font-weight: bold;
+  text-align: center;
+  width: 100%;
+  font-size: 1.8vw;
+  font-weight: bold;
 }
 .okHeader {
-    background-color: #9dba5d;
+  background-color: #9dba5d;
 }
 .listOk {
-    text-align: center;
+  text-align: center;
 }
 .listOk td {
-    padding-top: 15px;
-    padding-bottom: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 .bofHeader {
-    background-color: #cb9902;
+  background-color: #cb9902;
 }
 .listBof {
-    text-align: center;
+  text-align: center;
 }
 .listBof td {
-    padding-top: 15px;
-    padding-bottom: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .nicknameContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-content: center;
-    gap: 0.5vw;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-content: center;
+  gap: 0.5vw;
 }
 .nickname {
-    flex: 1 1 auto;
-    white-space: nowrap;
+  flex: 1 1 auto;
+  white-space: nowrap;
 }
 
 .numberOfPlayersImgContainer {
-    width: 6.3vw;
+  width: 6.3vw;
 }
 
 .numberOfPlayersImg {
-    width: 6vw;
-    height: 4vw;
-    background: url("assets/img/knowledgeCards/nombre_joueurs-fiche.png") no-repeat center center;
-    background-size: cover;
+  width: 6vw;
+  height: 4vw;
+  background: url('assets/img/knowledgeCards/nombre_joueurs-fiche.png') no-repeat center center;
+  background-size: cover;
 }
 .numberOfPlayers {
-    font-family: $font-pel;
-    font-size: 1.6vw;
-    white-space: nowrap;
+  font-family: $font-pel;
+  font-size: 1.6vw;
+  white-space: nowrap;
 }
 
 .durationImgContainer {
-    width: 6.1vw;
-    padding-left: 1vw;
+  width: 6.1vw;
+  padding-left: 1vw;
 }
 .durationImg {
-    width: 6vw;
-    height: 4vw;
-    background: url("assets/img/knowledgeCards/duree-fiche.png") no-repeat center center;
-    background-size: cover;
+  width: 6vw;
+  height: 4vw;
+  background: url('assets/img/knowledgeCards/duree-fiche.png') no-repeat center center;
+  background-size: cover;
 }
 .duration {
-    font-family: $font-pel;
-    font-size: 1.6vw;
-    white-space: nowrap;
+  font-family: $font-pel;
+  font-size: 1.6vw;
+  white-space: nowrap;
 }
 
 .typeImgContainer {
-    width: 6.2vw;
-    padding-left: 1.1vw;
+  width: 6.2vw;
+  padding-left: 1.1vw;
 }
 .verteImg,
 .orangeImg,
 .rougeImg {
-    width: 6vw;
-    height: 6vw;
-    background-size: cover;
+  width: 6vw;
+  height: 6vw;
+  background-size: cover;
 }
 .verteImg {
-    background: url("assets/img/knowledgeCards/jauge-verte.png") no-repeat center center;
+  background: url('assets/img/knowledgeCards/jauge-verte.png') no-repeat center center;
 }
 .orangeImg {
-    background: url("assets/img/knowledgeCards/jauge-orange.png") no-repeat center center;
+  background: url('assets/img/knowledgeCards/jauge-orange.png') no-repeat center center;
 }
 .rougeImg {
-    background: url("assets/img/knowledgeCards/jauge-rouge.png") no-repeat center center;
+  background: url('assets/img/knowledgeCards/jauge-rouge.png') no-repeat center center;
 }
 
 .type {
-    font-family: $font-pel;
-    font-size: 1.6vw;
-    white-space: nowrap;
+  font-family: $font-pel;
+  font-size: 1.6vw;
+  white-space: nowrap;
 }
 
 .pppImgContainer {
-    width: 6vw;
-    padding-left: 0.7vw;
+  width: 6vw;
+  padding-left: 0.7vw;
 }
 .pppImg {
-    width: 6vw;
-    height: 3.4vw;
-    background: url("assets/img/knowledgeCards/ppp-fiche-ko-trespetit.png") no-repeat center
-        center;
-    background-size: cover;
+  width: 6vw;
+  height: 3.4vw;
+  background: url('assets/img/knowledgeCards/ppp-fiche-ko-trespetit.png') no-repeat center center;
+  background-size: cover;
 }
 
 .oneDayOnly {
-    color: $color-red;
+  color: $color-red;
 }
 
 .footer {
-    height: 3vw;
-    font-family: $font-pel;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-content: center;
-    background-color: #96b397;
-    font-style: oblique;
+  height: 3vw;
+  font-family: $font-pel;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: center;
+  background-color: #96b397;
+  font-style: oblique;
 }
 
 .year {
-    flex: 0 1 auto;
-    align-self: center;
-    margin-left: 1vw;
-    font-size: 1vw;
+  flex: 0 1 auto;
+  align-self: center;
+  margin-left: 1vw;
+  font-size: 1vw;
 }
 
 .container {
-    flex: 0 1 auto;
-    align-self: center;
-    margin-right: 1vw;
-    font-size: 1.5vw;
+  flex: 0 1 auto;
+  align-self: center;
+  margin-right: 1vw;
+  font-size: 1.5vw;
 }

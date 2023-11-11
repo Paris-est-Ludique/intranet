@@ -1,108 +1,108 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .title {
-    padding: 4px;
-    font-weight: bold;
-    text-align: center;
+  padding: 4px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .intro {
-    padding: 15px 0;
+  padding: 15px 0;
 
-    p {
-        margin: 0;
-        padding: 4px 0;
-    }
+  p {
+    margin: 0;
+    padding: 4px 0;
+  }
 }
 
 .formArea {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
-    @include desktop {
-        display: flex;
-    }
+  @include desktop {
+    display: flex;
+  }
 }
 
 .leftCol {
-    flex: 0 0 240px;
-    margin-right: 20px;
+  flex: 0 0 240px;
+  margin-right: 20px;
 }
 
 .rightCol {
-    width: 280px;
-    text-align: center;
+  width: 280px;
+  text-align: center;
 }
 
 .choiceList {
-    margin: 5px 0 15px;
-    padding: 0 0 0 30px;
+  margin: 5px 0 15px;
+  padding: 0 0 0 30px;
 }
 
 .teamList {
-    @include clear-ul-style;
+  @include clear-ul-style;
 
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .teamItem {
-    flex: 0 0 50%;
-    position: relative;
-    box-sizing: border-box;
-    padding: 2px;
+  flex: 0 0 50%;
+  position: relative;
+  box-sizing: border-box;
+  padding: 2px;
 }
 
 .teamButton {
-    display: block;
-    padding: 4px 6px;
-    color: $color-grey-medium;
-    border-radius: 0;
-    width: 100%;
-    text-align: left;
-    background-color: $color-grey-lighter;
+  display: block;
+  padding: 4px 6px;
+  color: $color-grey-medium;
+  border-radius: 0;
+  width: 100%;
+  text-align: left;
+  background-color: $color-grey-lighter;
 
-    .active & {
-        background-color: $color-black;
-        color: $color-yellow;
-    }
+  .active & {
+    background-color: $color-black;
+    color: $color-yellow;
+  }
 }
 
 .extendButton {
-    position: absolute;
-    top: 2px;
-    right: 4px;
-    padding: 2px;
-    background: none;
-    color: $color-grey-dark;
-    border-radius: 0;
-    font-size: 0.9em;
-    font-weight: normal;
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  padding: 2px;
+  background: none;
+  color: $color-grey-dark;
+  border-radius: 0;
+  font-size: 0.9em;
+  font-weight: normal;
 
-    .active & {
-        color: $color-grey-light;
-    }
+  .active & {
+    color: $color-grey-light;
+  }
 }
 
 .commentWrapper {
-    margin: 6px 0;
+  margin: 6px 0;
 
-    label {
-        display: block;
-        padding: 6px 0 2px 4px;
-    }
-    textarea {
-        width: 100%;
-        height: 60px;
-        padding: 5px;
-        border: 1px solid $color-grey-light;
-        background-color: $color-grey-lighter;
-        outline: 0;
-    }
+  label {
+    display: block;
+    padding: 6px 0 2px 4px;
+  }
+  textarea {
+    width: 100%;
+    height: 60px;
+    padding: 5px;
+    border: 1px solid $color-grey-light;
+    background-color: $color-grey-lighter;
+    outline: 0;
+  }
 }
 
 .buttonWrapper {
-    margin-bottom: 10px;
-    text-align: center;
+  margin-bottom: 10px;
+  text-align: center;
 }

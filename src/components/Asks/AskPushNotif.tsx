@@ -14,33 +14,34 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
   const [acceptsNotifs, setAcceptsNotifs] = useState('')
 
   const mounted = useRef(false)
+
   useEffect(() => {
     if (mounted.current) {
       return
     }
+
     mounted.current = true
 
     if (navigator?.serviceWorker) {
       if (volunteerAsks?.acceptsNotifs === 'oui') {
         navigator.serviceWorker.ready.then(registration =>
-          registration.pushManager.getSubscription().then((existedSubscription) => {
+          registration.pushManager.getSubscription().then(existedSubscription => {
             const doesAcceptNotifs
-                            = isEqual(
-                              JSON.parse(JSON.stringify(existedSubscription)),
-                              JSON.parse(volunteerAsks?.pushNotifSubscription),
-                            ) && volunteerAsks?.acceptsNotifs === 'oui'
+              = isEqual(
+                JSON.parse(JSON.stringify(existedSubscription)),
+                JSON.parse(volunteerAsks?.pushNotifSubscription),
+              ) && volunteerAsks?.acceptsNotifs === 'oui'
+
             setAcceptsNotifs(doesAcceptNotifs ? 'oui' : 'non')
           }),
         )
-      }
-      else {
+      } else {
         setAcceptsNotifs('non')
       }
     }
   }, [])
 
-  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setAcceptsNotifs(e.target.value)
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => setAcceptsNotifs(e.target.value)
 
   const onSubmit = useCallback(async (): Promise<void> => {
     const isSsr = useIsSsr()
@@ -60,20 +61,20 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
           acceptsNotifs: 'non',
         }),
       )
+
       return
     }
 
     const registration = await navigator.serviceWorker.ready
 
     if (!registration.pushManager) {
-      toastError(
-        'Il y a un problème avec le push manager. Il faudrait utiliser un navigateur plus récent !',
-      )
+      toastError('Il y a un problème avec le push manager. Il faudrait utiliser un navigateur plus récent !')
       dispatch(
         fetchVolunteerAsksSet(jwtToken, 0, {
           hiddenAsks: [...(volunteerAsks?.hiddenAsks || []), id],
         }),
       )
+
       return
     }
 
@@ -83,6 +84,7 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
       if (!base64String) {
         return ''
       }
+
       const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
       const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
       const rawData = atob(base64)
@@ -91,6 +93,7 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
       for (let i = 0; i < rawData.length; i += 1) {
         outputArray[i] = rawData.charCodeAt(i)
       }
+
       return outputArray
     }
 
@@ -103,22 +106,20 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
 
       if (existedSubscription === null) {
         // No subscription detected, make a request
+
         try {
           const newSubscription = await registration.pushManager.subscribe({
             applicationServerKey: convertedVapidKey,
             userVisibleOnly: true,
           })
+
           // New subscription added
+
           if (
             volunteerAsks?.acceptsNotifs === 'oui'
-                        && !subscriptionEqualsSave(
-                          newSubscription,
-                          volunteerAsks?.pushNotifSubscription,
-                        )
+            && !subscriptionEqualsSave(newSubscription, volunteerAsks?.pushNotifSubscription)
           ) {
-            toastSuccess(
-              'Un autre navigateur était notifié, mais c\'est maintenant celui-ci qui le sera.',
-            )
+            toastSuccess('Un autre navigateur était notifié, mais c\'est maintenant celui-ci qui le sera.')
           }
 
           dispatch(
@@ -128,33 +129,26 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
               hiddenAsks: [...(volunteerAsks?.hiddenAsks || []), id],
             }),
           )
-        }
-        catch (_e) {
+        } catch (_e) {
           if (Notification.permission !== 'granted') {
             toastError(
               'Mince tu as bloqué les notifications pour le site des bénévoles ! En haut juste à gauche de la barre d\'adresse, il y a une icone de cadenas ou de message barré sur lequel cliquer pour annuler ce blocage.',
               false,
             )
-          }
-          else {
+          } else {
             toastError(
               'Il y a eu une erreur avec l\'enregistrement avec le Service Worker. Il faudrait utiliser un navigateur plus récent !',
             )
           }
         }
-      }
-      else {
+      } else {
         // Existed subscription detected
+
         if (
           volunteerAsks?.acceptsNotifs === 'oui'
-                    && !subscriptionEqualsSave(
-                      existedSubscription,
-                      volunteerAsks?.pushNotifSubscription,
-                    )
+          && !subscriptionEqualsSave(existedSubscription, volunteerAsks?.pushNotifSubscription)
         ) {
-          toastSuccess(
-            'Un autre navigateur était notifié, mais c\'est maintenant celui-ci qui le sera.',
-          )
+          toastSuccess('Un autre navigateur était notifié, mais c\'est maintenant celui-ci qui le sera.')
         }
 
         dispatch(
@@ -165,8 +159,7 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
           }),
         )
       }
-    }
-    catch (_e) {
+    } catch (_e) {
       toastError(
         'Il y a eu une erreur avec l\'enregistrement avec le Service Worker. Il faudrait utiliser un navigateur plus récent !',
       )
@@ -185,11 +178,11 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
     if (!save) {
       return !toCheck
     }
+
     return isEqual(JSON.parse(JSON.stringify(toCheck)), JSON.parse(save))
   }
 
-  const needToShow
-        = volunteerAsks?.acceptsNotifs !== 'oui' && volunteerAsks?.acceptsNotifs !== 'non'
+  const needToShow = volunteerAsks?.acceptsNotifs !== 'oui' && volunteerAsks?.acceptsNotifs !== 'non'
 
   addAsk(
     asks,
@@ -199,12 +192,10 @@ export function AskPushNotif(asks: JSX.Element[], id: number): void {
     needToShow,
     <div className={styles.formLine}>
       <label>
-        Acceptes-tu de recevoir une alerte dans ton navigateur quand on en aura
-        d&apos;autres à t'afficher ici ?
+        Acceptes-tu de recevoir une alerte dans ton navigateur quand on en aura d&apos;autres à t'afficher ici ?
         <br />
         <span className={styles.sousMessage}>
-          (Ça nous simplifierait la vie, on a des soucis à contacter les bénévoles par
-          email.)
+          (Ça nous simplifierait la vie, on a des soucis à contacter les bénévoles par email.)
         </span>
         <label>
           <input

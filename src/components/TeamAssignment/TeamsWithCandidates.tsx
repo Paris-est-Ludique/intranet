@@ -14,8 +14,14 @@ const TeamsWithCandidates: FC = (): JSX.Element => {
       <div>Cliquez sur l'équipe à gérer :</div>
       <ul className={styles.teamList}>
         {teams.map((team: any) => (
-          <li key={team.id} className={styles.teamListItem}>
-            <button type="button" onClick={() => setCurrentTeam(team.id)}>
+          <li
+            key={team.id}
+            className={styles.teamListItem}
+          >
+            <button
+              type="button"
+              onClick={() => setCurrentTeam(team.id)}
+            >
               {team.name}
             </button>
           </li>

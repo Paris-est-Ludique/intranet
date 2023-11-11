@@ -30,7 +30,17 @@ interface RestrictMenuItemProps extends MenuItemProps {
 
 const RestrictMenuItem: FC<RestrictMenuItemProps> = ({ name, pathname, role }): JSX.Element => {
   const roles = useSelector(selectUserRoles)
-  return roles.includes(role) ? <MenuItem name={name} pathname={pathname} /> : <></>
+
+  return roles.includes(role)
+    ? (
+      <MenuItem
+        name={name}
+        pathname={pathname}
+      />
+      )
+    : (
+      <></>
+      )
 }
 
 interface TeamMenuItemProps extends MenuItemProps {
@@ -40,19 +50,29 @@ interface TeamMenuItemProps extends MenuItemProps {
 const TeamMenuItem: FC<TeamMenuItemProps> = ({ name, pathname, team }): JSX.Element => {
   const fetch = useAction(fetchVolunteerListIfNeed)
   const userId = useSelector(selectUserId)
+
   useEffect(() => {
-    if (userId)
+    if (userId) {
       fetch()
+    }
   }, [userId, fetch])
   const volunteers = useSelector(selectVolunteerList)
-  const user = useMemo(
-    () => volunteers.find(volunteer => volunteer.id === userId),
-    [volunteers, userId],
-  )
-  return user?.team === team ? <MenuItem name={name} pathname={pathname} /> : <></>
+  const user = useMemo(() => volunteers.find(volunteer => volunteer.id === userId), [volunteers, userId])
+
+  return user?.team === team
+    ? (
+      <MenuItem
+        name={name}
+        pathname={pathname}
+      />
+      )
+    : (
+      <></>
+      )
 }
 
 // Hardcoded value of the "Jeux à volonté" team
+
 const TEAM_JAV = 2
 
 const MainMenu: FC = (): JSX.Element => {
@@ -67,28 +87,54 @@ const MainMenu: FC = (): JSX.Element => {
     setOpened(false)
   }, [setOpened])
 
-  if (!connected)
+  if (!connected) {
     return <div />
+  }
 
   return (
     <nav>
-      <button type="button" className={styles.burger} onClick={onOpen}>
+      <button
+        type="button"
+        className={styles.burger}
+        onClick={onOpen}
+      >
         ☰
       </button>
       <ul className={classnames(styles.mainMenu, opened && styles.opened)}>
-        <MenuItem name="Questions" pathname="/" />
-        <MenuItem name="Annonces" pathname="/annonces" />
-        <MenuItem name="Mon profil" pathname="/profil" />
+        <MenuItem
+          name="Questions"
+          pathname="/"
+        />
+        <MenuItem
+          name="Annonces"
+          pathname="/annonces"
+        />
+        <MenuItem
+          name="Mon profil"
+          pathname="/profil"
+        />
         {/* <MenuItem name="Emprunter" pathname="/emprunter" />
                 <MenuItem name="Emprunts" pathname="/emprunts" /> */}
-        <TeamMenuItem team={TEAM_JAV} name="Mes connaissances" pathname="/connaissances" />
-        <TeamMenuItem team={TEAM_JAV} name="Stats" pathname="/stats" />
+        <TeamMenuItem
+          team={TEAM_JAV}
+          name="Mes connaissances"
+          pathname="/connaissances"
+        />
+        <TeamMenuItem
+          team={TEAM_JAV}
+          name="Stats"
+          pathname="/stats"
+        />
         <RestrictMenuItem
           role={ROLES.ASSIGNER}
           name="Gestion équipes"
           pathname="/team-assign"
         />
-        <button type="button" className={styles.close} onClick={onClose}>
+        <button
+          type="button"
+          className={styles.close}
+          onClick={onClose}
+        >
           ×
         </button>
       </ul>

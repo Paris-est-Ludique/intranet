@@ -1,87 +1,87 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
-@import "@/assets/styles/main";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
+@import '@/assets/styles/main';
 
 .cardPage {
-    background-color: $color-white;
-    // overflow: auto;
-    display: table;
-    width: 100vw;
+  background-color: $color-white;
+  // overflow: auto;
+  display: table;
+  width: 100vw;
 }
 
 .header {
-    position: relative;
-    margin: 10px 0 20px;
-    padding: 4px 0 4px 125px;
-    background-color: $color-white;
-    border-top: $border-large;
-    border-bottom: $border-large;
-    height: 52px;
+  position: relative;
+  margin: 10px 0 20px;
+  padding: 4px 0 4px 125px;
+  background-color: $color-white;
+  border-top: $border-large;
+  border-bottom: $border-large;
+  height: 52px;
 
-    @include desktop {
-        margin: 20px 0 35px;
-        padding: 10px 0 10px 220px;
-    }
+  @include desktop {
+    margin: 20px 0 35px;
+    padding: 10px 0 10px 220px;
+  }
 }
 
 .logo {
-    position: absolute;
-    top: -10px;
-    left: 10px;
-    width: 100px;
-    height: 60px;
-    background: url("assets/img/logo-mini.png") no-repeat center center;
-    background-size: cover;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  width: 100px;
+  height: 60px;
+  background: url('assets/img/logo-mini.png') no-repeat center center;
+  background-size: cover;
 
-    @include desktop {
-        width: 181px;
-        height: 118px;
-        background: url("assets/img/logo.png") no-repeat;
-    }
+  @include desktop {
+    width: 181px;
+    height: 118px;
+    background: url('assets/img/logo.png') no-repeat;
+  }
 }
 
 .siteName {
-    margin: 0;
-    padding: 0;
-    font-family: $font-pel;
-    font-size: 1.8em;
+  margin: 0;
+  padding: 0;
+  font-family: $font-pel;
+  font-size: 1.8em;
 
-    @include desktop {
-        font-size: 2em;
-    }
+  @include desktop {
+    font-size: 2em;
+  }
 
-    a {
-        font-weight: 400;
-        text-decoration: none;
-        color: $color-orange;
-        text-shadow: 2px 2px 2px $color-black;
-    }
+  a {
+    font-weight: 400;
+    text-decoration: none;
+    color: $color-orange;
+    text-shadow: 2px 2px 2px $color-black;
+  }
 }
 
 .siteDescription {
-    font-size: 14px;
-    color: #555;
+  font-size: 14px;
+  color: #555;
 }
 
 .menuWrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
 
-    @include desktop {
-        top: auto;
-        bottom: 0;
-        left: 420px;
-        right: 10px;
-        text-align: center;
-    }
+  @include desktop {
+    top: auto;
+    bottom: 0;
+    left: 420px;
+    right: 10px;
+    text-align: center;
+  }
 }
 
 .logoutWrapper {
-    position: absolute;
-    bottom: -22px;
-    right: 10px;
-    padding: 0;
-    background: none;
+  position: absolute;
+  bottom: -22px;
+  right: 10px;
+  padding: 0;
+  background: none;
 }

@@ -31,6 +31,7 @@ function LoginForm({ redirectToRoot, loginNeeded }: Props): JSX.Element {
           password,
         }),
       )
+
       return false
     },
     [dispatch, redirectToRoot],
@@ -38,13 +39,29 @@ function LoginForm({ redirectToRoot, loginNeeded }: Props): JSX.Element {
 
   const loginForm = (
     <form>
-      <div className={styles.formLine} key="line-email">
+      <div
+        className={styles.formLine}
+        key="line-email"
+      >
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="utilisateur" ref={emailRef} />
+        <input
+          type="email"
+          id="email"
+          name="utilisateur"
+          ref={emailRef}
+        />
       </div>
-      <div className={styles.formLine} key="line-password">
+      <div
+        className={styles.formLine}
+        key="line-password"
+      >
         <label htmlFor="password">Mot de passe</label>
-        <input type="password" id="password" name="motdepasse" ref={passwordRef} />
+        <input
+          type="password"
+          id="password"
+          name="motdepasse"
+          ref={passwordRef}
+        />
       </div>
       <div className={styles.formButtons}>
         <FormSubmit onClick={onSubmit}>Connexion</FormSubmit>
@@ -61,9 +78,7 @@ function LoginForm({ redirectToRoot, loginNeeded }: Props): JSX.Element {
       {loginNeeded && (
         <div className={styles.loginPage}>
           <div className={styles.loginContent}>
-            <div className={styles.loginIntro}>
-              Tu dois t'identifier pour accéder à cette page !
-            </div>
+            <div className={styles.loginIntro}>Tu dois t'identifier pour accéder à cette page !</div>
             {loginForm}
           </div>
         </div>
@@ -73,9 +88,11 @@ function LoginForm({ redirectToRoot, loginNeeded }: Props): JSX.Element {
 
       {!loginNeeded && !redirectToRoot && (
         <>
-          <div className={styles.loginIntro} key="login-intro">
-            Si tu es bénévole ou que tu l'as déjà été, connecte-toi pour accéder à ton
-            espace.
+          <div
+            className={styles.loginIntro}
+            key="login-intro"
+          >
+            Si tu es bénévole ou que tu l'as déjà été, connecte-toi pour accéder à ton espace.
           </div>
           {loginForm}
         </>
@@ -83,7 +100,9 @@ function LoginForm({ redirectToRoot, loginNeeded }: Props): JSX.Element {
     </>
   )
 }
+
 // Set default props
+
 LoginForm.defaultProps = {
   redirectToRoot: undefined,
   loginNeeded: undefined,

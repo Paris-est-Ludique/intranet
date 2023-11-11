@@ -32,22 +32,17 @@ const retexSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: retexSetReducer,
-  actions: retexSetActions,
-} = retexSetSlice
+export const { reducer: retexSetReducer, actions: retexSetActions } = retexSetSlice
 
-export const fetchRetexSet = elementFetch(
-  retexSet,
-  retexSetActions,
-  (error: Error) => toastError(`Erreur lors de la modification d'un retex: ${error.message}`),
-)
+export const fetchRetexSet = elementFetch(retexSet, retexSetActions, (error: Error) =>
+  toastError(`Erreur lors de la modification d'un retex: ${error.message}`))
 
-export const fetchRetexSetIfNeed: AppThunk = (newPartialRetex?: Partial<Retex>) => (dispatch: AppDispatch, getState: () => AppState) => {
-  const { jwt, id } = getState().auth
+export const fetchRetexSetIfNeed: AppThunk
+  = (newPartialRetex?: Partial<Retex>) => (dispatch: AppDispatch, getState: () => AppState) => {
+    const { jwt, id } = getState().auth
 
-  dispatch(fetchRetexSet(jwt, newPartialRetex || { id }))
-}
+    dispatch(fetchRetexSet(jwt, newPartialRetex || { id }))
+  }
 
 export const selectRetexSet = createSelector(
   (state: AppState) => state,

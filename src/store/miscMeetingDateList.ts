@@ -18,7 +18,7 @@ const miscMeetingDateListSlice = createSlice({
   name: 'miscMeetingDateList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<MiscMeetingDate[]>) => {
@@ -32,10 +32,7 @@ const miscMeetingDateListSlice = createSlice({
   },
 })
 
-export const {
-  reducer: miscMeetingDateListReducer,
-  actions: miscMeetingDateListActions,
-} = miscMeetingDateListSlice
+export const { reducer: miscMeetingDateListReducer, actions: miscMeetingDateListActions } = miscMeetingDateListSlice
 
 export const fetchMiscMeetingDateList = elementListFetch(
   miscMeetingDateListGet,
@@ -53,7 +50,8 @@ export const fetchMiscMeetingDateListIfNeed: AppThunk = () => (dispatch: AppDisp
   }
 }
 
-export const refreshMiscMeetingDateList: AppThunk = () => (dispatch: AppDispatch) => dispatch(fetchMiscMeetingDateList())
+export const refreshMiscMeetingDateList: AppThunk = () => (dispatch: AppDispatch) =>
+  dispatch(fetchMiscMeetingDateList())
 
 export function selectMiscMeetingDateListState(state: AppState): EntitiesRequest<MiscMeetingDate> {
   return state.miscMeetingDateList
@@ -62,8 +60,10 @@ export function selectMiscMeetingDateListState(state: AppState): EntitiesRequest
 export const selectMiscMeetingDateList = createSelector(
   selectMiscMeetingDateListState,
   ({ ids, entities, readyStatus }) => {
-    if (readyStatus !== 'success')
+    if (readyStatus !== 'success') {
       return []
+    }
+
     return ids.map(id => entities[id]) as MiscMeetingDate[]
   },
 )

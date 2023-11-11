@@ -17,10 +17,7 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
   const adult = get(participationDetails, 'adult', '')
   const tshirtSize = get(participationDetails, 'tshirtSize', '')
   const execDisplayModal = useAction(displayModal)
-  const onEdit = useCallback(
-    () => execDisplayModal(MODAL_IDS.PARTICIPATIONDETAILS),
-    [execDisplayModal],
-  )
+  const onEdit = useCallback(() => execDisplayModal(MODAL_IDS.PARTICIPATIONDETAILS), [execDisplayModal])
 
   return (
     <div className={styles.root}>
@@ -31,8 +28,7 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
           {' '}
           <b>mineur·e</b>
           <br />
-          Attention les bénévoles mineurs doivent être dans la même équipe que leur
-          responsable légal !
+          Attention les bénévoles mineurs doivent être dans la même équipe que leur responsable légal !
         </div>
       )}
       {adult === 1 && (
@@ -57,7 +53,10 @@ const ParticipationDetails: FC<Props> = (): JSX.Element | null => {
       </div>
       <div className={styles.editButton}>
         {allowEdit && (
-          <button type="button" onClick={onEdit}>
+          <button
+            type="button"
+            onClick={onEdit}
+          >
             Modifier
           </button>
         )}

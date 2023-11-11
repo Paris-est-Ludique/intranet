@@ -25,12 +25,11 @@ export async function createServer(
   hmrPort?: number,
 ): Promise<{ app: express.Express; vite: ViteDevServer | null }> {
   const resolve = (p: string) => path.resolve(__dirname, p)
-  const indexProd = isProd
-    ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8')
-    : ''
+  const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : ''
   const app = express()
 
   // Allow receiving big images
+
   app.use(express.json({ limit: '200mb' }))
   app.use(express.urlencoded({ limit: '200mb' }))
   app.use(express.json())
@@ -51,6 +50,7 @@ export async function createServer(
         watch: {
           // During tests we edit the files too fast and sometimes chokidar
           // misses change events, so enforce polling for consistency
+
           usePolling: true,
           interval: 100,
         },
@@ -63,18 +63,20 @@ export async function createServer(
     })
 
     // use vite's connect instance as middleware
+
     app.use(vite.middlewares)
-  }
-  else {
+  } else {
     // PROD mode
 
     app.use(certbot())
     app.use(helmet({ contentSecurityPolicy: false }))
     app.use(hpp())
     app.use(compression())
-    app.use(serveStatic(resolve('dist/client'), {
-      index: false,
-    }))
+    app.use(
+      serveStatic(resolve('dist/client'), {
+        index: false,
+      }),
+    )
   }
 
   app.use('*', async (req, res) => {
@@ -86,13 +88,15 @@ export async function createServer(
 
       if (!isProd) {
         // always read fresh template in dev
+
         template = fs.readFileSync(resolve('index.html'), 'utf-8')
         template = await vite.transformIndexHtml(url, template)
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
-      }
-      else {
+      } else {
         template = indexProd
+
         // @ts-expect-error missing file
+
         render = (await import('./dist/server/entry-server.js')).render
       }
 
@@ -113,12 +117,13 @@ export async function createServer(
       if (context.url) {
         // Somewhere a `<Redirect>` was rendered
         // TODO redirect can cause problems with node stream, need to check how to configure it
+
         return res.redirect(301, context.url)
       }
-    }
-    catch (e: any) {
+    } catch (e: any) {
       vite?.ssrFixStacktrace(e)
       console.error(e.stack)
+
       return res.status(500).end(e.stack)
     }
   })

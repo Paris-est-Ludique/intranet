@@ -13,8 +13,9 @@ export type Props = RouteComponentProps
 const EditPage: FC<Props> = (): JSX.Element => {
   const jwtToken = useSelector(selectUserJwtToken)
 
-  if (jwtToken === undefined)
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
 
   if (jwtToken) {
     return (
@@ -27,6 +28,6 @@ const EditPage: FC<Props> = (): JSX.Element => {
   return <LoginForm loginNeeded />
 }
 
-export const loadData = (): AppThunk[] => [...fetchForDbEdit.map((f) => f())]
+export const loadData = (): AppThunk[] => [...fetchForDbEdit.map(f => f())]
 
 export default memo(EditPage)

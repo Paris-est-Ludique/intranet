@@ -8,21 +8,19 @@ import type { VolunteerTeamWishes } from '@/services/volunteers'
 
 type SetFunction = (
   teamWishes: VolunteerTeamWishes['teamWishes'],
-  teamWishesComment: VolunteerTeamWishes['teamWishesComment']
+  teamWishesComment: VolunteerTeamWishes['teamWishesComment'],
 ) => void
 
 export function useUserTeamWishes(): [VolunteerTeamWishes | undefined, SetFunction] {
   const save = useAction(fetchVolunteerTeamWishesSet)
   const jwtToken = useSelector(selectUserJwtToken)
-  const userTeamWishes = useSelector(
-    (state: AppState) => state.volunteerTeamWishesSet?.entity,
-    shallowEqual,
-  )
+  const userTeamWishes = useSelector((state: AppState) => state.volunteerTeamWishesSet?.entity, shallowEqual)
 
   const saveTeamWishes: SetFunction = useCallback(
     (teamWishes, teamWishesComment) => {
-      if (!userTeamWishes)
+      if (!userTeamWishes) {
         return
+      }
       save(jwtToken, 0, {
         id: userTeamWishes.id,
         teamWishes,

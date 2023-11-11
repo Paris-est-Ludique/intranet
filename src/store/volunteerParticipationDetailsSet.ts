@@ -34,33 +34,33 @@ const volunteerParticipationDetailsSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerParticipationDetailsSetReducer,
-  actions: volunteerParticipationDetailsSetActions,
-} = volunteerParticipationDetailsSetSlice
+export const { reducer: volunteerParticipationDetailsSetReducer, actions: volunteerParticipationDetailsSetActions }
+  = volunteerParticipationDetailsSetSlice
 
 export const fetchVolunteerParticipationDetailsSet = elementFetch(
   volunteerParticipationDetailsSet,
   volunteerParticipationDetailsSetActions,
-  (error: Error) =>
-    toastError(`Erreur lors du chargement des détails de participation: ${error.message}`),
+  (error: Error) => toastError(`Erreur lors du chargement des détails de participation: ${error.message}`),
 )
 
 function selectShouldFetchVolunteerParticipationDetailsSet(state: AppState, id: number) {
-  return state.volunteerParticipationDetailsSet?.readyStatus !== 'success'
-    || (state.volunteerParticipationDetailsSet?.entity
-        && state.volunteerParticipationDetailsSet?.entity?.id !== id)
+  return (
+    state.volunteerParticipationDetailsSet?.readyStatus !== 'success'
+    || (state.volunteerParticipationDetailsSet?.entity && state.volunteerParticipationDetailsSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerParticipationDetailsSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerParticipationDetails> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerParticipationDetailsSetIfNeed: AppThunk
+  = (id = 0, wishes: Partial<VolunteerParticipationDetails> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  const shouldFetch = selectShouldFetchVolunteerParticipationDetailsSet(getState(), id)
-  if (shouldFetch) {
-    dispatch(fetchVolunteerParticipationDetailsSet(jwt, id, wishes))
+    const shouldFetch = selectShouldFetchVolunteerParticipationDetailsSet(getState(), id)
+
+    if (shouldFetch) {
+      dispatch(fetchVolunteerParticipationDetailsSet(jwt, id, wishes))
+    }
   }
-}

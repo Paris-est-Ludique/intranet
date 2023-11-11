@@ -25,16 +25,21 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
     if (!retex) {
       return
     }
+
     const question1 = +get(question1Ref, 'current.value', question1Default)
+
     saveBrunch(retex.id, question1)
-    if (afterSubmit)
+    if (afterSubmit) {
       afterSubmit()
+    }
   }, [afterSubmit, retex, saveBrunch])
 
   const onBrunchPresenceChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const presence = e.target.value
+
     setBrunchPresence(presence)
     const guestCountDefault = { 'oui': 1, 'non': 0, 'peut-etre': -1 }[presence]
+
     set(question1Ref, 'current.value', `${guestCountDefault}`)
   }, [])
 
@@ -45,11 +50,9 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
 
     if (question1 >= 1) {
       setBrunchPresence('oui')
-    }
-    else if (question1 === 0) {
+    } else if (question1 === 0) {
       setBrunchPresence('non')
-    }
-    else {
+    } else {
       setBrunchPresence('peut-etre')
     }
   }, [setBrunchPresence, retex])
@@ -60,8 +63,8 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
       <div className={styles.inputWrapper}>
         <div className={styles.leftCol}>
           <div className={styles.brunchTitle}>
-            Viendras-tu au brunch samedi 1er octobre ? Le boulodrome (19 route des
-            fortifications) nous sera réservé de 10h à 18h.
+            Viendras-tu au brunch samedi 1er octobre ? Le boulodrome (19 route des fortifications) nous sera réservé de
+            10h à 18h.
           </div>
         </div>
         <div className={styles.rightCol}>
@@ -101,22 +104,20 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
         </div>
       </div>
 
-      <div
-        className={classnames(
-          styles.inputWrapper,
-          brunchPresence === 'oui' ? null : styles.invisible,
-        )}
-      >
+      <div className={classnames(styles.inputWrapper, brunchPresence === 'oui' ? null : styles.invisible)}>
         <div className={styles.leftCol}>
           <div className={styles.guestCountTitle}>
-            À combien viendras-tu ? Le brunch est pour les bénévoles ayant participé à
-            la dernière édition (y compris ceux empêchés à la dernière minute), ainsi
-            qu'aux éventuels +1 conjoints et enfants. Mais pas les amis, pour lesquels
-            d'autres rdv seront proposés au cours de l'année.
+            À combien viendras-tu ? Le brunch est pour les bénévoles ayant participé à la dernière édition (y compris
+            ceux empêchés à la dernière minute), ainsi qu'aux éventuels +1 conjoints et enfants. Mais pas les amis, pour
+            lesquels d'autres rdv seront proposés au cours de l'année.
           </div>
         </div>
         <div className={styles.rightCol}>
-          <input className={styles.guestCountLabel} type="text" ref={question1Ref} />
+          <input
+            className={styles.guestCountLabel}
+            type="text"
+            ref={question1Ref}
+          />
         </div>
       </div>
 
@@ -125,7 +126,10 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -134,7 +138,10 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

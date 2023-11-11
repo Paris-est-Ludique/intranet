@@ -16,12 +16,14 @@ export type Props = RouteComponentProps
 const HomePage: FC<Props> = (): JSX.Element => {
   const jwtToken = useSelector(selectUserJwtToken)
 
-  if (jwtToken === undefined)
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
 
   if (jwtToken) {
     return <Asks />
   }
+
   return (
     <div>
       <div className={styles.homePage}>
@@ -40,10 +42,7 @@ const HomePage: FC<Props> = (): JSX.Element => {
 }
 
 export function loadData(): AppThunk[] {
-  return [
-    fetchVolunteerAsksSetIfNeed(),
-    ...fetchForAsks.map(f => f()),
-  ]
+  return [fetchVolunteerAsksSetIfNeed(), ...fetchForAsks.map(f => f())]
 }
 
 export default memo(HomePage)

@@ -19,7 +19,7 @@ const teamListSlice = createSlice({
   name: 'teamList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Team[]>) => {
@@ -33,18 +33,14 @@ const teamListSlice = createSlice({
   },
 })
 
-export const {
-  reducer: teamListReducer,
-  actions: teamListActions,
-} = teamListSlice
+export const { reducer: teamListReducer, actions: teamListActions } = teamListSlice
 
-export const fetchTeamList = elementListFetch(
-  teamListGet,
-  teamListActions,
-  (error: Error) => toastError(`Erreur lors du chargement des équipes: ${error.message}`),
-)
+export const fetchTeamList = elementListFetch(teamListGet, teamListActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des équipes: ${error.message}`))
 
-const selectShouldFetchTeamList = (state: AppState) => state.teamList.readyStatus !== 'success'
+function selectShouldFetchTeamList(state: AppState) {
+  return state.teamList.readyStatus !== 'success'
+}
 
 export const fetchTeamListIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
   if (selectShouldFetchTeamList(getState())) {
@@ -52,21 +48,20 @@ export const fetchTeamListIfNeed: AppThunk = () => (dispatch: AppDispatch, getSt
   }
 }
 
-export const selectTeamListState = (state: AppState): EntitiesRequest<Team> => state.teamList
+export function selectTeamListState(state: AppState): EntitiesRequest<Team> {
+  return state.teamList
+}
 
-export const selectTeamList = createSelector(
-  selectTeamListState,
-  ({ ids, entities, readyStatus }) => {
-    if (readyStatus !== 'success')
-      return []
-    return ids.map(id => entities[id])
-  },
-)
+export const selectTeamList = createSelector(selectTeamListState, ({ ids, entities, readyStatus }) => {
+  if (readyStatus !== 'success') {
+    return []
+  }
+
+  return ids.map(id => entities[id])
+})
 
 export const selectSortedTeams = createSelector(selectTeamList, teams =>
   [...teams].sort((a, b) => get(a, 'order', 0) - get(b, 'order', 0)))
 
 export const selectSortedActiveTeams = createSelector(selectTeamList, teams =>
-  [...teams.filter(team => get(team, 'status') === 'active')].sort(
-    (a, b) => get(a, 'order', 0) - get(b, 'order', 0),
-  ))
+  [...teams.filter(team => get(team, 'status') === 'active')].sort((a, b) => get(a, 'order', 0) - get(b, 'order', 0)))

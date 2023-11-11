@@ -8,7 +8,9 @@ import { toastError } from '@/utils/toast'
 import type { VolunteerDayWishes } from '@/services/volunteers'
 import { volunteerDayWishesSet } from '@/services/volunteersAccessors'
 
-type StateVolunteerDayWishesSet = { entity?: VolunteerDayWishes } & StateRequest
+type StateVolunteerDayWishesSet = {
+  entity?: VolunteerDayWishes
+} & StateRequest
 
 const initialState: StateVolunteerDayWishesSet = {
   readyStatus: 'idle',
@@ -32,31 +34,31 @@ const volunteerDayWishesSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerDayWishesSetReducer,
-  actions: volunteerDayWishesSetActions,
-} = volunteerDayWishesSetSlice
+export const { reducer: volunteerDayWishesSetReducer, actions: volunteerDayWishesSetActions }
+  = volunteerDayWishesSetSlice
 
 export const fetchVolunteerDayWishesSet = elementFetch(
   volunteerDayWishesSet,
   volunteerDayWishesSetActions,
-  (error: Error) =>
-    toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`),
+  (error: Error) => toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`),
 )
 
 function selectShouldFetchVolunteerDayWishesSet(state: AppState, id: number) {
-  return state.volunteerDayWishesSet?.readyStatus !== 'success'
+  return (
+    state.volunteerDayWishesSet?.readyStatus !== 'success'
     || (state.volunteerDayWishesSet?.entity && state.volunteerDayWishesSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerDayWishesSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerDayWishes> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerDayWishesSetIfNeed: AppThunk
+  = (id = 0, wishes: Partial<VolunteerDayWishes> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  if (selectShouldFetchVolunteerDayWishesSet(getState(), id)) {
-    dispatch(fetchVolunteerDayWishesSet(jwt, id, wishes))
+    if (selectShouldFetchVolunteerDayWishesSet(getState(), id)) {
+      dispatch(fetchVolunteerDayWishesSet(jwt, id, wishes))
+    }
   }
-}

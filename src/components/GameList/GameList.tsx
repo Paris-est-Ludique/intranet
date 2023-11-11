@@ -13,12 +13,14 @@ interface Props {
 
 function GameList({ ids }: Props) {
   const { entities: jeux } = useSelector((state: AppState) => state.gameList, shallowEqual)
+
   return (
     <div className={styles.GameList}>
       <h4>Jeux JAV</h4>
       <ul>
-        {ids.map((id) => {
+        {ids.map(id => {
           const jeu = jeux[id]
+
           if (!jeu) {
             return (
               <li key={id}>
@@ -30,6 +32,7 @@ function GameList({ ids }: Props) {
             )
           }
           const { title, bggId } = jeu
+
           return (
             <li key={id}>
               {title}

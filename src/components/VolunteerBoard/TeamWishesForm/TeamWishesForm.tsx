@@ -24,8 +24,9 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
   const [userWishes, saveWishes] = useUserTeamWishes()
 
   useEffect(() => {
-    if (!userWishes)
+    if (!userWishes) {
       return
+    }
     setSelection(...get(userWishes, 'teamWishes', []))
     set(commentRef, 'current.value', get(userWishes, 'teamWishesComment', ''))
   }, [userWishes, setSelection])
@@ -34,9 +35,11 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
 
   const onSubmit = useCallback(() => {
     const teamWishesComment = get(commentRef, 'current.value', '')
+
     saveWishes(selection as number[], teamWishesComment)
-    if (afterSubmit)
+    if (afterSubmit) {
       afterSubmit()
+    }
   }, [selection, saveWishes, afterSubmit])
 
   return (
@@ -44,15 +47,17 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
       <div className={styles.title}>Mon choix d'équipe</div>
       <div className={styles.intro}>
         <p>
-          Sélectionne la ou les équipes que tu aimerais rejoindre. Ta préféré en premier.
-          Mais ne sélectionne que des équipes que tu accepterais de rejoindre ! Quitte à
-          n'en sélectionner qu'une.
+          Sélectionne la ou les équipes que tu aimerais rejoindre. Ta préféré en premier. Mais ne sélectionne que des
+          équipes que tu accepterais de rejoindre ! Quitte à n'en sélectionner qu'une.
         </p>
         <p>Tu seras affecté à l'une d'elles prochainement et son référent te préviendra.</p>
         <p>
           Pour plus d'informations sur les équipes,
           {' '}
-          <a href="/equipes" target="_blank">
+          <a
+            href="/equipes"
+            target="_blank"
+          >
             clique ici
           </a>
           .
@@ -62,16 +67,22 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
         <div className={styles.leftCol}>
           <div>Mon choix :</div>
           <ol className={styles.choiceList}>
-            {selection.map((item) => {
+            {selection.map(item => {
               const team = teams.find((t: any) => t.id === item)
-              if (!team)
+
+              if (!team) {
                 return null
+              }
+
               return <li key={team.id}>{team.name}</li>
             })}
           </ol>
           <div className={styles.commentWrapper}>
             <label htmlFor="team-choice-comment">Un commentaire, une précision ?</label>
-            <textarea id="team-choice-comment" ref={commentRef} />
+            <textarea
+              id="team-choice-comment"
+              ref={commentRef}
+            />
           </div>
         </div>
         <div className={styles.rightCol}>
@@ -79,10 +90,7 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
             {teams.map((team: any) => (
               <li
                 key={team.id}
-                className={classnames(
-                  styles.teamItem,
-                  isInSelection(team.id) && styles.active,
-                )}
+                className={classnames(styles.teamItem, isInSelection(team.id) && styles.active)}
               >
                 <button
                   type="button"
@@ -101,7 +109,10 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -110,7 +121,10 @@ const TeamWishesForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | nul
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

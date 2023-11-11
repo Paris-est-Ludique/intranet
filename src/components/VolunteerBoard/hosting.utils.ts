@@ -21,16 +21,13 @@ type SetFunction = (
   festivalProximity: VolunteerHosting['festivalProximity'],
   distanceToFestival: VolunteerHosting['distanceToFestival'],
   hostingNeedReason: VolunteerHosting['hostingNeedReason'],
-  hostingAbsoluteNeed: VolunteerHosting['hostingAbsoluteNeed']
+  hostingAbsoluteNeed: VolunteerHosting['hostingAbsoluteNeed'],
 ) => void
 
 export function useUserHosting(): [VolunteerHosting | undefined, SetFunction] {
   const save = useAction(fetchVolunteerHostingSet)
   const jwtToken = useSelector(selectUserJwtToken)
-  const userWishes = useSelector(
-    (state: AppState) => state.volunteerHostingSet?.entity,
-    shallowEqual,
-  )
+  const userWishes = useSelector((state: AppState) => state.volunteerHostingSet?.entity, shallowEqual)
 
   const saveWishes: SetFunction = useCallback(
     (
@@ -50,8 +47,9 @@ export function useUserHosting(): [VolunteerHosting | undefined, SetFunction] {
       hostingNeedReason,
       hostingAbsoluteNeed,
     ) => {
-      if (!userWishes)
+      if (!userWishes) {
         return
+      }
       save(jwtToken, 0, {
         id: userWishes.id,
         hostingType,
@@ -86,13 +84,12 @@ export const bedList: string[] = [
 ]
 
 type HostLocation = 'Paris' | 'région parisienne' | 'hors région parisienne' | ''
-export const hostLocations: HostLocation[] = [
-  'Paris',
-  'région parisienne',
-  'hors région parisienne',
-]
+export const hostLocations: HostLocation[] = ['Paris', 'région parisienne', 'hors région parisienne']
 
-export interface NightOption { abbr: string; title: string }
+export interface NightOption {
+  abbr: string
+  title: string
+}
 
 export const nightList: NightOption[] = [
   {
@@ -125,8 +122,12 @@ export interface NightChoices {
   [key: string]: boolean
 }
 
-export const nightChoiceSelectionDefaultState = nightList.reduce((state, { abbr }) => {
-  state[abbr] = false
-  state[abbr.toLowerCase()] = false
-  return state
-}, <NightChoices>{})
+export const nightChoiceSelectionDefaultState = nightList.reduce(
+  (state, { abbr }) => {
+    state[abbr] = false
+    state[abbr.toLowerCase()] = false
+
+    return state
+  },
+  <NightChoices>{},
+)

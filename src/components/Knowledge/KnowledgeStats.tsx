@@ -55,8 +55,7 @@ function wiseVolunteersNumber(
   wiseness: 'ok' | 'bof',
 ): number {
   return volunteersKnowledge.filter(
-    v =>
-      v[wiseness].includes(gameId) && (v.dayWishes.includes('S') || v.dayWishes.includes('D')),
+    v => v[wiseness].includes(gameId) && (v.dayWishes.includes('S') || v.dayWishes.includes('D')),
   ).length
 }
 

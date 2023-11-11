@@ -8,7 +8,9 @@ import { toastError } from '@/utils/toast'
 import type { VolunteerTeamWishes } from '@/services/volunteers'
 import { volunteerTeamWishesSet } from '@/services/volunteersAccessors'
 
-type StateVolunteerTeamWishesSet = { entity?: VolunteerTeamWishes } & StateRequest
+type StateVolunteerTeamWishesSet = {
+  entity?: VolunteerTeamWishes
+} & StateRequest
 
 const initialState: StateVolunteerTeamWishesSet = {
   readyStatus: 'idle',
@@ -32,10 +34,8 @@ const volunteerTeamWishesSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerTeamWishesSetReducer,
-  actions: volunteerTeamWishesSetActions,
-} = volunteerTeamWishesSetSlice
+export const { reducer: volunteerTeamWishesSetReducer, actions: volunteerTeamWishesSetActions }
+  = volunteerTeamWishesSetSlice
 
 export const fetchVolunteerTeamWishesSet = elementFetch(
   volunteerTeamWishesSet,
@@ -44,20 +44,23 @@ export const fetchVolunteerTeamWishesSet = elementFetch(
 )
 
 function selectShouldFetchVolunteerTeamWishesSet(state: AppState, id: number): boolean {
-  return state.volunteerTeamWishesSet?.readyStatus !== 'success'
+  return (
+    state.volunteerTeamWishesSet?.readyStatus !== 'success'
     || (state.volunteerTeamWishesSet?.entity && state.volunteerTeamWishesSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerTeamWishesSetIfNeed: AppThunk = (id = 0, wishes: Partial<VolunteerTeamWishes> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerTeamWishesSetIfNeed: AppThunk
+  = (id = 0, wishes: Partial<VolunteerTeamWishes> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
+
+    const shouldFetch = selectShouldFetchVolunteerTeamWishesSet(getState(), id)
+
+    if (shouldFetch) {
+      dispatch(fetchVolunteerTeamWishesSet(jwt, id, wishes))
+    }
   }
-
-  const shouldFetch = selectShouldFetchVolunteerTeamWishesSet(getState(), id)
-
-  if (shouldFetch) {
-    dispatch(fetchVolunteerTeamWishesSet(jwt, id, wishes))
-  }
-}

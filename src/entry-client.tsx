@@ -5,10 +5,10 @@ import { App } from './App'
 import { history, store } from '@/store'
 
 const { jwt, id, roles } = getJWT()
+
 if (jwt && id && roles) {
   store.dispatch(authSetCurrentUser({ jwt, id, roles }))
-}
-else {
+} else {
   store.dispatch(authLogoutUser())
 }
 

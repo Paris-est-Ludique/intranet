@@ -4,9 +4,9 @@ import classnames from 'classnames'
 import set from 'lodash/set'
 import get from 'lodash/get'
 import { useUserPersonalInfo } from '../personalInfo.utils'
-import FormButton from '../../Form/FormButton/FormButton'
-import IgnoreButton from '../../Form/IgnoreButton/IgnoreButton'
 import styles from './styles.module.scss'
+import FormButton from '@/components/Form/FormButton/FormButton'
+import IgnoreButton from '@/components/Form/IgnoreButton/IgnoreButton'
 import { fetchVolunteerPersonalInfoSetIfNeed } from '@/store/volunteerPersonalInfoSet'
 
 interface Props {
@@ -22,8 +22,9 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
   const [userWishes, saveWishes] = useUserPersonalInfo()
 
   useEffect(() => {
-    if (!userWishes)
+    if (!userWishes) {
       return
+    }
     set(firstnameRef, 'current.value', get(userWishes, 'firstname', ''))
     set(lastnameRef, 'current.value', get(userWishes, 'lastname', ''))
     setPhoto(get(userWishes, 'photo', ''))
@@ -33,22 +34,28 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
     const firstname = get(firstnameRef, 'current.value', '')
     const lastname = get(lastnameRef, 'current.value', '')
     const reader = new FileReader()
-    reader.onload = async (event) => {
+
+    reader.onload = async event => {
       const photoData = event?.target?.result as string
+
       if (!photoData) {
         throw new Error('Ce n\'est pas une photo valide')
       }
+
       saveWishes(firstname, lastname, photoData)
-      if (afterSubmit)
+
+      if (afterSubmit) {
         afterSubmit()
+      }
     }
+
     if (selectedImage) {
       reader.readAsDataURL(selectedImage)
-    }
-    else {
+    } else {
       saveWishes(firstname, lastname, undefined)
-      if (afterSubmit)
+      if (afterSubmit) {
         afterSubmit()
+      }
     }
   }, [selectedImage, saveWishes, afterSubmit])
 
@@ -61,7 +68,11 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
           <div className={styles.firstnameTitle}>Prénom :</div>
         </div>
         <div className={styles.rightCol}>
-          <input className={styles.firstnameLabel} type="text" ref={firstnameRef} />
+          <input
+            className={styles.firstnameLabel}
+            type="text"
+            ref={firstnameRef}
+          />
         </div>
       </div>
 
@@ -70,21 +81,27 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
           <div className={styles.lastnameTitle}>Nom :</div>
         </div>
         <div className={styles.rightCol}>
-          <input className={styles.lastnameLabel} type="text" ref={lastnameRef} />
+          <input
+            className={styles.lastnameLabel}
+            type="text"
+            ref={lastnameRef}
+          />
         </div>
       </div>
 
       <div className={classnames(styles.inputWrapper, styles.noBottomMargin)}>
         <div className={styles.leftCol}>
-          <div className={styles.photoTitle}>
-            Ta photo de profil pour le trombinoscope de l'association :
-          </div>
+          <div className={styles.photoTitle}>Ta photo de profil pour le trombinoscope de l'association :</div>
         </div>
         <div className={styles.rightCol}>
           <label className={styles.photoLabel}>
             {/^[0-9]/.test(photo || '') && !selectedImage && (
               <div>
-                <img alt="actuelle" width="100px" src={`/photos/${photo}`} />
+                <img
+                  alt="actuelle"
+                  width="100px"
+                  src={`/photos/${photo}`}
+                />
               </div>
             )}
             {selectedImage && (
@@ -101,7 +118,7 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
             <input
               type="file"
               name="myImage"
-              onChange={(event) => {
+              onChange={event => {
                 setSelectedImage(event?.target?.files?.[0] || null)
               }}
             />
@@ -111,10 +128,9 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
 
       <div className={styles.inputWrapper}>
         <div>
-          En tant que bénévole pour le festival, tu es automatiquement membre adhérent de
-          l'association Paris est Ludique ! pour avoir droit de regard sur son
-          fonctionnement. Aucune cotisation n'est demandée et aucun engagement autre
-          qu'être bénévole pendant le festival n'est nécessaire. Les statuts sont
+          En tant que bénévole pour le festival, tu es automatiquement membre adhérent de l'association Paris est
+          Ludique ! pour avoir droit de regard sur son fonctionnement. Aucune cotisation n'est demandée et aucun
+          engagement autre qu'être bénévole pendant le festival n'est nécessaire. Les statuts sont
           {' '}
           <a
             href="https://drive.google.com/file/d/1KJIJxZmDdJ_PBKJSh_W3yrHLzH0-awsE/view?usp=sharing"
@@ -132,7 +148,10 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -141,7 +160,10 @@ const PersonalInfoForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => 
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

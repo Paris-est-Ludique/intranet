@@ -3,7 +3,6 @@ import styles from './styles.module.scss'
 import type { Announcement } from '@/services/announcement'
 
 interface Props {
-
   announcement: Announcement
 }
 
@@ -39,9 +38,18 @@ function AnnouncementLink({ announcement }: Props): JSX.Element | null {
         viewBox="0 0 32 32"
         className={styles.report}
       >
-        <path d="M10 18h8v2h-8z" fill="currentColor" />
-        <path d="M10 13h12v2H10z" fill="currentColor" />
-        <path d="M10 23h5v2h-5z" fill="currentColor" />
+        <path
+          d="M10 18h8v2h-8z"
+          fill="currentColor"
+        />
+        <path
+          d="M10 13h12v2H10z"
+          fill="currentColor"
+        />
+        <path
+          d="M10 23h5v2h-5z"
+          fill="currentColor"
+        />
         <path
           d="M25 5h-3V4a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v1H7a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zM12 4h8v4h-8zm13 24H7V7h3v3h12V7h3z"
           fill="currentColor"
@@ -56,7 +64,10 @@ function AnnouncementLink({ announcement }: Props): JSX.Element | null {
   }[type]
 
   return (
-    <div key={id} className={styles.announcementLink}>
+    <div
+      key={id}
+      className={styles.announcementLink}
+    >
       {icon}
       {' '}
       {typeName}

@@ -23,13 +23,13 @@ export function unsetJWT(): void {
 }
 
 export function getHeadersJWT(cookie = ''): VolunteerLogin {
-  const cookies = cookie
-    .split(';')
-    .reduce((res: { [cookieName: string]: string }, el: string) => {
-      const [k, v] = el.split('=')
-      res[k.trim()] = v
-      return res
-    }, {})
+  const cookies = cookie.split(';').reduce((res: { [cookieName: string]: string }, el: string) => {
+    const [k, v] = el.split('=')
+
+    res[k.trim()] = v
+
+    return res
+  }, {})
 
   return {
     jwt: cookies.jwt,

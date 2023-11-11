@@ -7,15 +7,20 @@ import { selectSortedTeams } from '@/store/teamList'
 
 const TeamList: React.FC = (): JSX.Element | null => {
   const teams = useSelector(selectSortedTeams)
-  if (!teams || teams.length === 0)
+
+  if (!teams || teams.length === 0) {
     return null
+  }
 
   const shownTeams = teams.filter(team => team?.status !== 'inactive')
 
   return (
     <ul className={styles.teamList}>
       {shownTeams.map((team: any) => (
-        <TeamItem team={team} key={team.id} />
+        <TeamItem
+          team={team}
+          key={team.id}
+        />
       ))}
     </ul>
   )

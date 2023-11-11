@@ -37,47 +37,42 @@ const volunteerLoanSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerLoanSetReducer,
-  actions: volunteerLoanSetActions,
-} = volunteerLoanSetSlice
+export const { reducer: volunteerLoanSetReducer, actions: volunteerLoanSetActions } = volunteerLoanSetSlice
 
-export const fetchVolunteerLoanSet = elementFetch(
-  volunteerLoanSet,
-  volunteerLoanSetActions,
-  (error: Error) => toastError(`Erreur lors du chargement des emprunts: ${error.message}`),
-)
+export const fetchVolunteerLoanSet = elementFetch(volunteerLoanSet, volunteerLoanSetActions, (error: Error) =>
+  toastError(`Erreur lors du chargement des emprunts: ${error.message}`))
 
 function selectShouldFetchVolunteerLoanSet(state: AppState, id: number) {
-  return state.volunteerLoanSet?.readyStatus !== 'success'
+  return (
+    state.volunteerLoanSet?.readyStatus !== 'success'
     || (state.volunteerLoanSet?.entity && state.volunteerLoanSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerLoanSetIfNeed: AppThunk = (id = 0, loan: Partial<VolunteerLoan> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerLoanSetIfNeed: AppThunk
+  = (id = 0, loan: Partial<VolunteerLoan> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
+
+    if (selectShouldFetchVolunteerLoanSet(getState(), id)) {
+      return dispatch(fetchVolunteerLoanSet(jwt, id, loan))
+    }
+
+    return null
   }
-
-  if (selectShouldFetchVolunteerLoanSet(getState(), id))
-    return dispatch(fetchVolunteerLoanSet(jwt, id, loan))
-
-  return null
-}
 
 type SetFunction = (newVolunteerLoan: VolunteerLoan) => void
 
 export function useVolunteerLoan(): [VolunteerLoan | undefined, SetFunction] {
   const save = useAction(fetchVolunteerLoanSet)
   const jwtToken = useSelector(selectUserJwtToken)
-  const volunteerLoan = useSelector(
-    (state: AppState) => state.volunteerLoanSet?.entity,
-    shallowEqual,
-  )
+  const volunteerLoan = useSelector((state: AppState) => state.volunteerLoanSet?.entity, shallowEqual)
 
   const saveVolunteerLoan: SetFunction = useCallback(
-    (newVolunteerLoan) => {
+    newVolunteerLoan => {
       save(jwtToken, 0, newVolunteerLoan)
     },
     [save, jwtToken],

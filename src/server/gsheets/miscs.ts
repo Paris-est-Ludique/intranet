@@ -1,58 +1,47 @@
 import ExpressAccessors from './expressAccessors'
-import type {
-  MiscDiscordInvitation,
-  MiscFestivalDate,
-  MiscMeetingDate,
-  MiscWithoutId,
-} from '@/services/miscs'
-import {
-  Misc,
-  translationMisc,
-} from '@/services/miscs'
+import type { MiscDiscordInvitation, MiscFestivalDate, MiscMeetingDate, MiscWithoutId } from '@/services/miscs'
+import { Misc, translationMisc } from '@/services/miscs'
 
-const expressAccessor = new ExpressAccessors<MiscWithoutId, Misc>(
-  'Miscs',
-  new Misc(),
-  translationMisc,
-)
+const expressAccessor = new ExpressAccessors<MiscWithoutId, Misc>('Miscs', new Misc(), translationMisc)
 
 export const miscDiscordInvitation = expressAccessor.get(async (list, _body, id) => {
   if (id <= 0) {
     throw new Error(`L'accès est réservé aux utilisateurs identifiés`)
   }
+
   return list
-    .filter((misc) => !!misc.discordInvitation)
+    .filter(misc => !!misc.discordInvitation)
     .map(
-      (misc) =>
+      misc =>
         ({
           id: misc.id,
           discordInvitation: misc.discordInvitation,
-        } as MiscDiscordInvitation),
+        }) as MiscDiscordInvitation,
     )
 })
 
-export const miscFestivalDateListGet = expressAccessor.get(async (list) =>
+export const miscFestivalDateListGet = expressAccessor.get(async list =>
   list
-    .filter((misc) => !!misc.date)
+    .filter(misc => !!misc.date)
     .map(
-      (misc) =>
+      misc =>
         ({
           id: misc.id,
           date: misc.date,
-        } as MiscFestivalDate),
+        }) as MiscFestivalDate,
     ),
 )
 
-export const miscMeetingDateListGet = expressAccessor.get(async (list) =>
+export const miscMeetingDateListGet = expressAccessor.get(async list =>
   list
-    .filter((misc) => !!misc.meetingId)
+    .filter(misc => !!misc.meetingId)
     .map(
-      (misc) =>
+      misc =>
         ({
           id: misc.id,
           meetingId: misc.meetingId,
           meetingTitle: misc.meetingTitle,
           meetingUrl: misc.meetingUrl,
-        } as MiscMeetingDate),
+        }) as MiscMeetingDate,
     ),
 )

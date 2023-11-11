@@ -1,39 +1,39 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .title {
-    padding-bottom: 10px;
-    font-weight: bold;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
 
 .list {
-    padding: 0;
-    list-style: none;
+  padding: 0;
+  list-style: none;
 }
 
 .item {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .formButtons {
-    margin-top: 10px;
-    padding: 5px 0;
-    text-align: center;
+  margin-top: 10px;
+  padding: 5px 0;
+  text-align: center;
 }
 
 .inputContainer {
-    display: inline-block;
+  display: inline-block;
 }
 
 .stringInput {
-    width: 5em;
+  width: 5em;
 }
 .numberInput {
-    width: 3em;
+  width: 3em;
 }
 .booleanInput {
-    width: 1.5em;
+  width: 1.5em;
 }
 .inputDesc {
-    font-size: small;
+  font-size: small;
 }

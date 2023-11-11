@@ -17,7 +17,7 @@ const volunteerAddNewSlice = createSlice({
   name: 'volunteerAddNew',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Volunteer>) => {
@@ -31,10 +31,7 @@ const volunteerAddNewSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerAddNewReducer,
-  actions: volunteerAddNewActions,
-} = volunteerAddNewSlice
+export const { reducer: volunteerAddNewReducer, actions: volunteerAddNewActions } = volunteerAddNewSlice
 
 export const fetchVolunteerAddNew = elementAddFetch(
   volunteerAddNew,

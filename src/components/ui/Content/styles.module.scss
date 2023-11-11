@@ -1,13 +1,13 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .title {
-    margin: 15px 10px;
-    padding: 0;
-    font-weight: 600;
-    font-size: 1.1em;
-    text-align: center;
+  margin: 15px 10px;
+  padding: 0;
+  font-weight: 600;
+  font-size: 1.1em;
+  text-align: center;
 }
 
 .content {
-    @include inner-content-wrapper;
+  @include inner-content-wrapper;
 }

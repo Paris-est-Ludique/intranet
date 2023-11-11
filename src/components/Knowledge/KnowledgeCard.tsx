@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import styles from './styles.module.scss'
 
 // import styles from "./styles.module.scss"
+
 import { fetchBoxListIfNeed, selectContainerSortedDetailedBoxes } from '@/store/boxList'
 import {
   fetchVolunteerDetailedKnowledgeListIfNeed,
@@ -21,9 +22,7 @@ const KnowledgeCard: React.FC = (): JSX.Element | null => {
 
 function boxElement(box: DetailedBox, volunteerDetailedKnowledgeList: VolunteerDetailedKnowledge[]): JSX.Element {
   const playerCount: string
-        = box.playersMin === box.playersMax
-          ? `${box.playersMin}`
-          : `${box.playersMin} à ${box.playersMax}`
+    = box.playersMin === box.playersMax ? `${box.playersMin}` : `${box.playersMin} à ${box.playersMax}`
 
   const typeStyle = {
     '': null,
@@ -44,7 +43,10 @@ function boxElement(box: DetailedBox, volunteerDetailedKnowledgeList: VolunteerD
   const some = someOk || someBof
 
   return (
-    <div key={box.id} className={styles.card}>
+    <div
+      key={box.id}
+      className={styles.card}
+    >
       <header className={styles.header}>{box.title}</header>
       <div className={styles.showUnknownOnlyLabeldetail}>
         <div className={styles.masteryContainer}>
@@ -68,18 +70,8 @@ function boxElement(box: DetailedBox, volunteerDetailedKnowledgeList: VolunteerD
                         <td>
                           <div className={styles.nicknameContainer}>
                             {okVolunteers}
-                            {!some && (
-                              <>
-                                Désolé aucun bénévole n'y a joué, il
-                                va falloir lire la règle.
-                              </>
-                            )}
-                            {!someOk && someBof && (
-                              <>
-                                Aucun bénévole ne maîtrise les
-                                règles de ce jeu.
-                              </>
-                            )}
+                            {!some && <>Désolé aucun bénévole n'y a joué, il va falloir lire la règle.</>}
+                            {!someOk && someBof && <>Aucun bénévole ne maîtrise les règles de ce jeu.</>}
                           </div>
                         </td>
                       </tr>
@@ -91,9 +83,7 @@ function boxElement(box: DetailedBox, volunteerDetailedKnowledgeList: VolunteerD
                       {someBof && (
                         <tr className={styles.listBof}>
                           <td>
-                            <div className={styles.nicknameContainer}>
-                              {bofVolunteers}
-                            </div>
+                            <div className={styles.nicknameContainer}>{bofVolunteers}</div>
                           </td>
                         </tr>
                       )}
@@ -149,21 +139,16 @@ function wiseVolunteers(
   wiseness: 'ok' | 'bof',
 ): JSX.Element[] {
   return volunteersKnowledge
-    .filter(
-      v =>
-        v[wiseness].includes(gameId)
-                && (v.dayWishes.includes('S') || v.dayWishes.includes('D')),
-    )
+    .filter(v => v[wiseness].includes(gameId) && (v.dayWishes.includes('S') || v.dayWishes.includes('D')))
     .map(v => (
-      <div key={v.id} className={styles.nickname}>
+      <div
+        key={v.id}
+        className={styles.nickname}
+      >
         <b>{v.nickname.charAt(0).toUpperCase()}</b>
         {v.nickname.substring(1)}
-        {v.dayWishes.includes('S') && !v.dayWishes.includes('D') && (
-          <span className={styles.oneDayOnly}>(sam.)</span>
-        )}
-        {!v.dayWishes.includes('S') && v.dayWishes.includes('D') && (
-          <span className={styles.oneDayOnly}>(dim.)</span>
-        )}
+        {v.dayWishes.includes('S') && !v.dayWishes.includes('D') && <span className={styles.oneDayOnly}>(sam.)</span>}
+        {!v.dayWishes.includes('S') && v.dayWishes.includes('D') && <span className={styles.oneDayOnly}>(dim.)</span>}
       </div>
     ))
 }

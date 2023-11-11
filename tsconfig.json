@@ -9,12 +9,8 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
-      "@": [
-        "./src"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
+      "@": ["./src"],
+      "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "types": ["vite/client"],
@@ -36,10 +32,5 @@
     "skipLibCheck": true
   },
   "references": [{ "path": "./tsconfig.node.json" }],
-  "include": [
-    "src/**/*",
-    "node_modules/vite/types/*",
-    "prerender.ts",
-    "server.ts"
-  ]
+  "include": ["src/**/*", "node_modules/vite/types/*", "prerender.ts", "server.ts"]
 }

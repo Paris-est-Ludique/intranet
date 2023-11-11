@@ -19,12 +19,16 @@ export function useAskTools(): AskTools {
   const jwtToken = useSelector(selectUserJwtToken)
   const volunteerAsks = useSelector((state: AppState) => {
     const vAsks = state.volunteerAsksSet?.entity
+
     if (vAsks) {
       prevVolunteerAsks = vAsks
+
       return vAsks
     }
+
     return prevVolunteerAsks
   }, shallowEqual)
+
   return { dispatch, jwtToken, volunteerAsks }
 }
 
@@ -37,6 +41,7 @@ export function addAsk(
   children: JSX.Element | undefined,
 ): void {
   const hidden = volunteerAsks?.hiddenAsks || []
+
   if (hidden.includes(id) || !isEmpty(asks) || !needToShow) {
     return
   }
@@ -44,9 +49,7 @@ export function addAsk(
   asks.push(
     <div key={id}>
       <div className={styles.notificationsPage}>
-        <div className={isNarrow ? styles.notificationsContentNarrow : styles.notificationsContent}>
-          {children}
-        </div>
+        <div className={isNarrow ? styles.notificationsContentNarrow : styles.notificationsContent}>{children}</div>
       </div>
     </div>,
   )

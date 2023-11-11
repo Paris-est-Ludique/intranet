@@ -7,11 +7,10 @@ import thunk from 'redux-thunk'
 export default (obj = {}): Record<string, any> => {
   const store = configurecreateMockStore([thunk])(obj)
   const originalDispatch = store.dispatch
+
   store.dispatch = vi.fn(originalDispatch)
 
-  const ProviderWithStore = ({ children }: { children: ReactNode }) => (
-    <Provider store={store}>{children}</Provider>
-  )
+  const ProviderWithStore = ({ children }: { children: ReactNode }) => <Provider store={store}>{children}</Provider>
 
   return { ...store, ProviderWithStore }
 }

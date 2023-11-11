@@ -5,17 +5,8 @@ import get from 'lodash/get'
 import includes from 'lodash/includes'
 import without from 'lodash/without'
 import set from 'lodash/set'
-import type {
-  NightChoices,
-  NightOption,
-} from '../hosting.utils'
-import {
-  bedList,
-  hostLocations,
-  nightChoiceSelectionDefaultState,
-  nightList,
-  useUserHosting,
-} from '../hosting.utils'
+import type { NightChoices, NightOption } from '../hosting.utils'
+import { bedList, hostLocations, nightChoiceSelectionDefaultState, nightList, useUserHosting } from '../hosting.utils'
 import FormButton from '../../Form/FormButton/FormButton'
 import IgnoreButton from '../../Form/IgnoreButton/IgnoreButton'
 import styles from './styles.module.scss'
@@ -45,8 +36,9 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
   const [userWishes, saveWishes] = useUserHosting()
 
   useEffect(() => {
-    if (!userWishes)
+    if (!userWishes) {
       return
+    }
     setHostingType(get(userWishes, 'hostingType', ''))
     const hostingNights = get(userWishes, 'hostingNights', '') as string
     const newNights = hostingNights.split('').reduce(
@@ -56,6 +48,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       }),
       {} as NightChoices,
     )
+
     setNights(newNights)
     setBedType(get(userWishes, 'bedType', []))
     setBackProblems(get(userWishes, 'backProblems', false))
@@ -100,8 +93,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     (bed: string) => {
       if (includes(bedType, bed)) {
         setBedType(without(bedType, bed))
-      }
-      else {
+      } else {
         setBedType([...bedType, bed])
       }
     },
@@ -128,9 +120,11 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       if (nights[abbr]) {
         res += abbr
       }
+
       if (nights[abbr.toLowerCase()]) {
         res += abbr.toLowerCase()
       }
+
       return res
     }, '')
     const hostAddress = get(hostAddressRef, 'current.value', '')
@@ -138,6 +132,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     const transportType = get(transportTypeRef, 'current.value', '')
     const distanceToFestival = get(distanceToFestivalRef, 'current.value', '')
     const hostingNeedReason = get(hostingNeedReasonRef, 'current.value', '')
+
     saveWishes(
       hostingType,
       canHostCount,
@@ -155,8 +150,9 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       hostingNeedReason,
       hostingAbsoluteNeed,
     )
-    if (afterSubmit)
+    if (afterSubmit) {
       afterSubmit()
+    }
   }, [
     saveWishes,
     hostingType,
@@ -170,12 +166,18 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
   ])
 
   const getNightElement = (option: NightOption, maybeText: string): JSX.Element => (
-    <div className={classnames(styles.inputWrapper, styles.noBottomMargin)} key={option.abbr}>
+    <div
+      className={classnames(styles.inputWrapper, styles.noBottomMargin)}
+      key={option.abbr}
+    >
       <div className={styles.leftCol}>
         <div className={styles.nightTitle}>{option.title}</div>
       </div>
       <div className={styles.rightCol}>
-        <label className={styles.nightLabel} key={`no${option.abbr}`}>
+        <label
+          className={styles.nightLabel}
+          key={`no${option.abbr}`}
+        >
           <input
             type="radio"
             name={`no${option.abbr}`}
@@ -189,7 +191,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
           {' '}
           Non
         </label>
-        <label className={styles.nightLabelLong} key={option.abbr.toLowerCase()}>
+        <label
+          className={styles.nightLabelLong}
+          key={option.abbr.toLowerCase()}
+        >
           <input
             type="radio"
             name={option.abbr.toLowerCase()}
@@ -202,7 +207,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
           />
           {maybeText}
         </label>
-        <label className={styles.nightLabel} key={option.abbr}>
+        <label
+          className={styles.nightLabel}
+          key={option.abbr}
+        >
           <input
             type="radio"
             name={option.abbr}
@@ -224,13 +232,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
     <div>
       <div className={styles.title}>Mon hébergement</div>
 
-      <div
-        className={classnames(
-          styles.inputWrapper,
-          styles.noBottomMargin,
-          styles.hostingTypeForm,
-        )}
-      >
+      <div className={classnames(styles.inputWrapper, styles.noBottomMargin, styles.hostingTypeForm)}>
         <div className={styles.rightCol}>
           <label className={styles.hostingTypeLabel}>
             <input
@@ -265,44 +267,36 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         </div>
       </div>
 
-      <div
-        className={classnames([
-          styles.inputWrapper,
-          hostingType !== 'propose' && styles.hide,
-        ])}
-      >
+      <div className={classnames([styles.inputWrapper, hostingType !== 'propose' && styles.hide])}>
         <div className={styles.leftCol}>
-          <div className={styles.canHostCountTitle}>
-            Combien de bénévoles peux-tu héberger ?
-          </div>
+          <div className={styles.canHostCountTitle}>Combien de bénévoles peux-tu héberger ?</div>
         </div>
         <div className={styles.rightCol}>
-          <input className={styles.canHostCountLabel} type="text" ref={canHostCountRef} />
+          <input
+            className={styles.canHostCountLabel}
+            type="text"
+            ref={canHostCountRef}
+          />
         </div>
       </div>
 
-      <div
-        className={classnames([
-          styles.inputWrapper,
-          hostingType !== 'propose' && styles.hide,
-        ])}
-      >
+      <div className={classnames([styles.inputWrapper, hostingType !== 'propose' && styles.hide])}>
         <div className={styles.leftCol}>
           <div className={styles.petAllergiesTitle}>
             As-tu un animal de compagnie ? (Possibles allergies ou phobies) ?
           </div>
         </div>
         <div className={styles.rightCol}>
-          <input className={styles.petAllergiesLabel} type="text" ref={petAllergiesRef} />
+          <input
+            className={styles.petAllergiesLabel}
+            type="text"
+            ref={petAllergiesRef}
+          />
         </div>
       </div>
 
       <div
-        className={classnames([
-          styles.inputWrapper,
-          styles.noBottomMargin,
-          hostingType !== 'cherche' && styles.hide,
-        ])}
+        className={classnames([styles.inputWrapper, styles.noBottomMargin, hostingType !== 'cherche' && styles.hide])}
       >
         <div className={styles.leftCol}>
           <div className={styles.backProblemsTitle}>As-tu des problèmes de dos ?</div>
@@ -331,11 +325,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         </div>
       </div>
 
-      <div
-        className={classnames([
-          hostingType === '' || hostingType === 'neither' ? styles.hide : null,
-        ])}
-      >
+      <div className={classnames([hostingType === '' || hostingType === 'neither' ? styles.hide : null])}>
         {nightList.map(nightOption =>
           getNightElement(
             nightOption,
@@ -347,18 +337,17 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       </div>
 
       <div
-        className={classnames([
-          styles.inputWrapper,
-          styles.noBottomMargin,
-          hostingType !== 'propose' && styles.hide,
-        ])}
+        className={classnames([styles.inputWrapper, styles.noBottomMargin, hostingType !== 'propose' && styles.hide])}
       >
         <div className={styles.leftCol}>
           <div className={styles.bedTypeTitle}>Le couchage que tu proposes est-il :</div>
         </div>
         <div className={styles.rightCol}>
           {bedList.map(bed => (
-            <label className={styles.bedTypeLabel} key={bed}>
+            <label
+              className={styles.bedTypeLabel}
+              key={bed}
+            >
               <input
                 type="checkbox"
                 value="oui"
@@ -374,16 +363,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       </div>
 
       <div
-        className={classnames([
-          styles.inputWrapper,
-          styles.noBottomMargin,
-          hostingType !== 'propose' && styles.hide,
-        ])}
+        className={classnames([styles.inputWrapper, styles.noBottomMargin, hostingType !== 'propose' && styles.hide])}
       >
         <div className={styles.leftCol}>
-          <div className={styles.isolatedBedTitle}>
-            Le couchage est-il dans une pièce séparée ?
-          </div>
+          <div className={styles.isolatedBedTitle}>Le couchage est-il dans une pièce séparée ?</div>
         </div>
         <div className={styles.rightCol}>
           <label className={styles.isolatedBedLabel}>
@@ -418,12 +401,14 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       >
         <div className={styles.leftCol}>
           <div className={styles.bedConfigurationTitle}>
-            Si tu peux héberger plusieurs bénévoles, quelle est la configuration des
-            couchages proposés ?
+            Si tu peux héberger plusieurs bénévoles, quelle est la configuration des couchages proposés ?
           </div>
         </div>
         <div className={styles.rightCol}>
-          <textarea id="bedConfiguration-comment" ref={bedConfigurationRef} />
+          <textarea
+            id="bedConfiguration-comment"
+            ref={bedConfigurationRef}
+          />
         </div>
       </div>
 
@@ -435,28 +420,28 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         ])}
       >
         <div className={styles.leftCol}>
-          <div className={styles.hostAddressTitle}>
-            Où habites-tu ? Au minium, quelle ville ?
-          </div>
+          <div className={styles.hostAddressTitle}>Où habites-tu ? Au minium, quelle ville ?</div>
         </div>
         <div className={styles.rightCol}>
-          <textarea id="hostAddress" ref={hostAddressRef} />
+          <textarea
+            id="hostAddress"
+            ref={hostAddressRef}
+          />
         </div>
       </div>
 
       <div
-        className={classnames([
-          styles.inputWrapper,
-          styles.noBottomMargin,
-          hostingType !== 'cherche' && styles.hide,
-        ])}
+        className={classnames([styles.inputWrapper, styles.noBottomMargin, hostingType !== 'cherche' && styles.hide])}
       >
         <div className={styles.leftCol}>
           <div className={styles.festivalProximityTitle}>Où habites-tu ?</div>
         </div>
         <div className={styles.rightCol}>
           {hostLocations.map(hostLocation => (
-            <label className={styles.festivalProximityLabel} key={hostLocation}>
+            <label
+              className={styles.festivalProximityLabel}
+              key={hostLocation}
+            >
               <input
                 type="radio"
                 name="festivalProximity"
@@ -470,12 +455,7 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         </div>
       </div>
 
-      <div
-        className={classnames([
-          styles.inputWrapper,
-          hostingType !== 'propose' && styles.hide,
-        ])}
-      >
+      <div className={classnames([styles.inputWrapper, hostingType !== 'propose' && styles.hide])}>
         <div className={styles.leftCol}>
           <div className={styles.transportTypeTitle}>
             Par quel moyen de transport prévois-tu de venir avec le/les bénévole(s) ?
@@ -494,11 +474,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         className={classnames([
           styles.inputWrapper,
           (hostingType === ''
-                        || hostingType === 'neither'
-                        || (hostingType === 'cherche'
-                            && (festivalProximity === 'hors région parisienne'
-                                || festivalProximity === '')))
-                        && styles.hide,
+            || hostingType === 'neither'
+            || (hostingType === 'cherche'
+              && (festivalProximity === 'hors région parisienne' || festivalProximity === '')))
+            && styles.hide,
         ])}
       >
         <div className={styles.leftCol}>
@@ -518,27 +497,23 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       <div
         className={classnames([
           styles.hostingNeedReasonWrapper,
-          (hostingType !== 'cherche'
-                        || festivalProximity === 'hors région parisienne'
-                        || festivalProximity === '')
-                        && styles.hide,
+          (hostingType !== 'cherche' || festivalProximity === 'hors région parisienne' || festivalProximity === '')
+            && styles.hide,
         ])}
       >
         <label htmlFor="hostingNeedReason">Pourquoi as-tu besoin d'un hébergement ?</label>
-        <textarea id="hostingNeedReason" ref={hostingNeedReasonRef} />
+        <textarea
+          id="hostingNeedReason"
+          ref={hostingNeedReasonRef}
+        />
       </div>
 
       <div
-        className={classnames([
-          styles.inputWrapper,
-          styles.noBottomMargin,
-          hostingType !== 'cherche' && styles.hide,
-        ])}
+        className={classnames([styles.inputWrapper, styles.noBottomMargin, hostingType !== 'cherche' && styles.hide])}
       >
         <div className={styles.leftCol}>
           <div className={styles.hostingAbsoluteNeedTitle}>
-            Pourras-tu venir au festival même si on ne te trouve pas d’hébergement
-            bénévole ?
+            Pourras-tu venir au festival même si on ne te trouve pas d’hébergement bénévole ?
           </div>
         </div>
         <div className={styles.rightCol}>
@@ -570,7 +545,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -579,7 +557,10 @@ const HostingForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

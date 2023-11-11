@@ -31,8 +31,10 @@ import withUserConnected from '@/utils/withUserConnected'
 // import { useRetex } from "./retex.utils"
 
 const Board: FC = (): JSX.Element => (
+
   //     const [retex] = useRetex()
   //     return (
+
   <>
     <ContentTitle title="Profil spécifique au festival" />
     <PersonalInfo />
@@ -61,8 +63,10 @@ export default memo(withUserConnected(Board))
 
 export const fetchForBoard = [
   ...fetchForPersonalInfoForm,
+
   // ...fetchForRetexForm,
   // ...fetchForBrunchForm,
+
   ...fetchForDayWishesForm,
   ...fetchForHostingForm,
   ...fetchForMealsForm,

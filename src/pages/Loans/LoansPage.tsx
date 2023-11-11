@@ -15,11 +15,14 @@ export type Props = RouteComponentProps
 
 const LoansPage: FC<Props> = (): JSX.Element => {
   const jwtToken = useSelector(selectUserJwtToken)
-  if (jwtToken === undefined)
+
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
   if (!jwtToken) {
     return <LoginForm loginNeeded />
   }
+
   return (
     <div className={styles.loaningPage}>
       <div className={styles.loaningContent}>
@@ -31,6 +34,6 @@ const LoansPage: FC<Props> = (): JSX.Element => {
   )
 }
 
-export const loadData = (): AppThunk[] => [...fetchForLoans.map((f) => f())]
+export const loadData = (): AppThunk[] => [...fetchForLoans.map(f => f())]
 
 export default memo(LoansPage)

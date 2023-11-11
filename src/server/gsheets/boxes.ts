@@ -7,21 +7,24 @@ import { Game, translationGame } from '@/services/games'
 
 const expressAccessor = new ExpressAccessors<BoxWithoutId, Box>('Boxes', new Box(), translationBox)
 
-export const detailedBoxListGet = expressAccessor.get(async (list) => {
+export const detailedBoxListGet = expressAccessor.get(async list => {
   const gameSheet = await getSheet<GameWithoutId, Game>('Games', new Game(), translationGame)
 
   const gameList = await gameSheet.getList()
+
   if (!gameList) {
     throw new Error('Unable to load gameList')
   }
 
   const toBeAsked: DetailedBox[] = []
 
-  gameList.forEach((game) => {
-    const box: Box | undefined = list.find((b) => b.gameId === game.id)
+  gameList.forEach(game => {
+    const box: Box | undefined = list.find(b => b.gameId === game.id)
+
     if ((box && box.unplayable) || (!box && !game.toBeKnown)) {
       return
     }
+
     toBeAsked.push({
       id: box?.id || 10000 + game.id,
       gameId: game.id,

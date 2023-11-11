@@ -30,16 +30,16 @@ export function AskRetex(asks: JSX.Element[], id: number): void {
   const question9 = get(retex, 'question9', '')
   const wasHereBeforeAfter = dayWishes.match(/M|J|V|L/)
   const needToShow
-        = !!retex
-        && (question1 === -1
-            || !question2
-            || !question3
-            || !question4
-            || (wasHereBeforeAfter && !question5)
-            || !question6
-            || !question7
-            || !question8
-            || !question9)
+    = !!retex
+    && (question1 === -1
+      || !question2
+      || !question3
+      || !question4
+      || (wasHereBeforeAfter && !question5)
+      || !question6
+      || !question7
+      || !question8
+      || !question9)
 
   addAsk(
     asks,
@@ -53,8 +53,7 @@ export function AskRetex(asks: JSX.Element[], id: number): void {
       {' '}
       <a href="/profil">Mon profil</a>
       {' '}
-      jusqu'au 23
-      septembre.
+      jusqu'au 23 septembre.
     </>,
   )
 }

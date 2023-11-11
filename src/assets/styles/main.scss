@@ -1,15 +1,15 @@
-@import "./variables";
-@import "./fonts";
-@import "./reset";
-@import "./form";
+@import './variables';
+@import './fonts';
+@import './reset';
+@import './form';
 
 body {
-    padding: 0;
-    font-family: "Helvetica-Light", Helvetica, Arial, sans-serif;
-    background-color: $color-orange;
+  padding: 0;
+  font-family: 'Helvetica-Light', Helvetica, Arial, sans-serif;
+  background-color: $color-orange;
 }
 
 a {
-    color: $color-green;
-    text-decoration: underline;
+  color: $color-green;
+  text-decoration: underline;
 }

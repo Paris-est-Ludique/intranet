@@ -33,11 +33,19 @@ const FormButton: FC<Props> = ({ children, text, onClick }): JSX.Element => {
       </button>
       {doShowMessage && (
         <div className={styles.infoBeforeIgnore}>
-          <button type="button" className={styles.closeButton} onClick={onCloseIgnore}>
+          <button
+            type="button"
+            className={styles.closeButton}
+            onClick={onCloseIgnore}
+          >
             &#10005;
           </button>
           <div>{children}</div>
-          <button type="button" className={styles.greyButton} onClick={onIgnore}>
+          <button
+            type="button"
+            className={styles.greyButton}
+            onClick={onIgnore}
+          >
             Vraiment passer au questionnaire suivant
           </button>
         </div>

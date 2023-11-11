@@ -3,10 +3,7 @@ import first from 'lodash/first'
 import get from 'lodash/get'
 import { useSelector } from 'react-redux'
 import styles from './styles.module.scss'
-import {
-  fetchVolunteerOnSiteInfoIfNeed,
-  selectVolunteerOnSiteInfo,
-} from '@/store/volunteerOnSiteInfo'
+import { fetchVolunteerOnSiteInfoIfNeed, selectVolunteerOnSiteInfo } from '@/store/volunteerOnSiteInfo'
 import type { Contact, VolunteerOnSiteInfo } from '@/services/volunteers'
 
 export function OnSiteInfo(): JSX.Element {
@@ -14,7 +11,9 @@ export function OnSiteInfo(): JSX.Element {
   const teamId = get(userOnSiteInfo, 'team', [])
   const referents = get(userOnSiteInfo, 'referents', [])
   const members = get(userOnSiteInfo, 'members', [])
+
   // const isReferent = get(userOnSiteInfo, "isReferent", false)
+
   const CAPilots = get(userOnSiteInfo, 'CAPilots', [])
 
   const pincipalReferent = first(referents)
@@ -34,7 +33,6 @@ export function OnSiteInfo(): JSX.Element {
                   {secondaryReferents.length > 0 && <> principal.e</>}
                   {' '}
                   :
-                  {' '}
                   {contactElement(pincipalReferent)}
                   <br />
                   <br />
@@ -46,9 +44,7 @@ export function OnSiteInfo(): JSX.Element {
                   {' '}
                   <div className={styles.contactList}>
                     {secondaryReferents.map(contact => (
-                      <div key={contact.firstname}>
-                        {contactElement(contact)}
-                      </div>
+                      <div key={contact.firstname}>{contactElement(contact)}</div>
                     ))}
                     <br />
                   </div>
@@ -74,9 +70,7 @@ export function OnSiteInfo(): JSX.Element {
                   {' '}
                   <div className={styles.contactList}>
                     {CAPilots.map(contact => (
-                      <div key={contact.firstname}>
-                        {contactElement(contact)}
-                      </div>
+                      <div key={contact.firstname}>{contactElement(contact)}</div>
                     ))}
                   </div>
                   <br />
@@ -91,9 +85,7 @@ export function OnSiteInfo(): JSX.Element {
                   {' '}
                   <div className={styles.contactList}>
                     {members.map(contact => (
-                      <div key={contact.firstname}>
-                        {contactElement(contact)}
-                      </div>
+                      <div key={contact.firstname}>{contactElement(contact)}</div>
                     ))}
                     <br />
                   </div>

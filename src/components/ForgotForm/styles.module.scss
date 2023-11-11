@@ -1,43 +1,43 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .forgotIntro {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .formLine {
-    padding: 5px 0;
+  padding: 5px 0;
 
-    label {
-        display: block;
-        margin-left: 5px;
-    }
-    input {
-        width: 100%;
-        border: 1px solid #333;
-        border-radius: 4px;
-    }
+  label {
+    display: block;
+    margin-left: 5px;
+  }
+  input {
+    width: 100%;
+    border: 1px solid #333;
+    border-radius: 4px;
+  }
 }
 
 .formButtons {
-    margin-top: 10px;
-    padding: 5px 0;
-    text-align: center;
+  margin-top: 10px;
+  padding: 5px 0;
+  text-align: center;
 }
 
 .message {
-    margin-top: 10px;
-    color: rgb(11, 138, 0);
-    text-align: center;
+  margin-top: 10px;
+  color: rgb(11, 138, 0);
+  text-align: center;
 }
 
 .error {
-    margin-top: 10px;
-    color: rgb(255, 0, 0);
-    text-align: center;
+  margin-top: 10px;
+  color: rgb(255, 0, 0);
+  text-align: center;
 }
 
 .link {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+  text-align: center;
 }

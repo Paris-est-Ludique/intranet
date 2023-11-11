@@ -38,10 +38,8 @@ const volunteerKnowledgeSetSlice = createSlice({
   },
 })
 
-export const {
-  reducer: volunteerKnowledgeSetReducer,
-  actions: volunteerKnowledgeSetActions,
-} = volunteerKnowledgeSetSlice
+export const { reducer: volunteerKnowledgeSetReducer, actions: volunteerKnowledgeSetActions }
+  = volunteerKnowledgeSetSlice
 
 export const fetchVolunteerKnowledgeSet = elementFetch(
   volunteerKnowledgeSet,
@@ -50,34 +48,34 @@ export const fetchVolunteerKnowledgeSet = elementFetch(
 )
 
 function selectShouldFetchVolunteerKnowledgeSet(state: AppState, id: number) {
-  return state.volunteerKnowledgeSet?.readyStatus !== 'success'
+  return (
+    state.volunteerKnowledgeSet?.readyStatus !== 'success'
     || (state.volunteerKnowledgeSet?.entity && state.volunteerKnowledgeSet?.entity?.id !== id)
+  )
 }
 
-export const fetchVolunteerKnowledgeSetIfNeed: AppThunk = (id = 0, knowledge: Partial<VolunteerKnowledge> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
-  let jwt = ''
+export const fetchVolunteerKnowledgeSetIfNeed: AppThunk
+  = (id = 0, knowledge: Partial<VolunteerKnowledge> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+    let jwt = ''
 
-  if (!id) {
-    ;({ jwt, id } = getState().auth)
-  }
+    if (!id) {
+      ;({ jwt, id } = getState().auth)
+    }
 
-  if (selectShouldFetchVolunteerKnowledgeSet(getState(), id)) {
-    dispatch(fetchVolunteerKnowledgeSet(jwt, id, knowledge))
+    if (selectShouldFetchVolunteerKnowledgeSet(getState(), id)) {
+      dispatch(fetchVolunteerKnowledgeSet(jwt, id, knowledge))
+    }
   }
-}
 
 type SetFunction = (newVolunteerKnowledge: VolunteerKnowledge) => void
 
 export function useVolunteerKnowledge(): [VolunteerKnowledge | undefined, SetFunction] {
   const save = useAction(fetchVolunteerKnowledgeSet)
   const jwtToken = useSelector(selectUserJwtToken)
-  const volunteerKnowledge = useSelector(
-    (state: AppState) => state.volunteerKnowledgeSet?.entity,
-    shallowEqual,
-  )
+  const volunteerKnowledge = useSelector((state: AppState) => state.volunteerKnowledgeSet?.entity, shallowEqual)
 
   const saveVolunteerKnowledge: SetFunction = useCallback(
-    (newVolunteerKnowledge) => {
+    newVolunteerKnowledge => {
       save(jwtToken, 0, newVolunteerKnowledge)
     },
     [save, jwtToken],

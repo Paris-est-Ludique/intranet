@@ -18,7 +18,7 @@ const gameDetailsUpdateSlice = createSlice({
   name: 'gameDetailsUpdate',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Game[]>) => {
@@ -32,10 +32,7 @@ const gameDetailsUpdateSlice = createSlice({
   },
 })
 
-export const {
-  reducer: gameDetailsUpdateReducer,
-  actions: gameDetailsUpdateActions,
-} = gameDetailsUpdateSlice
+export const { reducer: gameDetailsUpdateReducer, actions: gameDetailsUpdateActions } = gameDetailsUpdateSlice
 
 export const fetchGameDetailsUpdate = elementListFetch(
   gameDetailsUpdate,

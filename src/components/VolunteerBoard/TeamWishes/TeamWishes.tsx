@@ -18,7 +18,7 @@ const TeamWishes: FC<Props> = (): JSX.Element | null => {
   const teamWishesString = get(teamWishesData, 'teamWishes', [])
     .map((id: number): string =>
       get(
-        teams.find((team) => team && team.id === id),
+        teams.find(team => team && team.id === id),
         'name',
         '',
       ),
@@ -47,7 +47,10 @@ const TeamWishes: FC<Props> = (): JSX.Element | null => {
         </div>
       )}
       <div className={styles.editButton}>
-        <button type="button" onClick={onEdit}>
+        <button
+          type="button"
+          onClick={onEdit}
+        >
           Modifier
         </button>
       </div>

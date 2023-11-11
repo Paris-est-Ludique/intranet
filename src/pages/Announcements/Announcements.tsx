@@ -40,14 +40,23 @@ const AnnouncementsPage: FC<Props> = (): JSX.Element => {
     return prevAnnouncements
   }, shallowEqual)
 
-  if (jwtToken === undefined)
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
 
   if (jwtToken && announcementList) {
     const list = orderBy(announcementList.ids, identity, 'desc')
-    const listElements = list.map((id) => {
+    const listElements = list.map(id => {
       const announcement = announcementList.entities[id] as Announcement
-      return announcement && <AnnouncementLink key={id} announcement={announcement} />
+
+      return (
+        announcement && (
+          <AnnouncementLink
+            key={id}
+            announcement={announcement}
+          />
+        )
+      )
     })
 
     return (

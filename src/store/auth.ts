@@ -25,6 +25,7 @@ export const authSlice = createSlice({
     },
     authLogoutUser: (state: AuthState) => {
       // Unused, just reload page :/
+
       state.jwt = ''
       state.id = 0
       state.roles = []
@@ -32,10 +33,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const {
-  actions: authActions,
-  reducer: authReducer,
-} = authSlice
+export const { actions: authActions, reducer: authReducer } = authSlice
 
 export const { authSetCurrentUser, authLogoutUser } = authActions
 

@@ -1,90 +1,90 @@
-@import "@/assets/styles/variables";
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .title {
-    padding: 4px;
-    margin: 15px 0;
-    font-weight: bold;
-    text-align: center;
+  padding: 4px;
+  margin: 15px 0;
+  font-weight: bold;
+  text-align: center;
 }
 
 .inputWrapper {
-    margin: 25px 0;
+  margin: 25px 0;
 
-    @include desktop {
-        display: flex;
-    }
+  @include desktop {
+    display: flex;
+  }
 
-    input[type="text"] {
-        min-width: 175px;
-        border: 1px solid $color-grey-medium;
-        outline: 0;
-    }
+  input[type='text'] {
+    min-width: 175px;
+    border: 1px solid $color-grey-medium;
+    outline: 0;
+  }
 }
 
 .leftCol {
-    flex: 0 0 240px;
+  flex: 0 0 240px;
 }
 
 .rightCol {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 .tshirtCountTitle,
 .tshirtSizesTitle,
 .adultTitle {
-    display: inline-block;
-    width: 280px;
-    margin-bottom: 10px;
+  display: inline-block;
+  width: 280px;
+  margin-bottom: 10px;
 }
 
 .tshirtCountLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
-    width: 220px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 220px;
 }
 
 .tshirtSizeLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
-    width: 220px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 220px;
 }
 
 .tshirtSizeSelect {
-    border: 1px solid $color-grey-medium;
-    border-radius: 4px;
-    background-color: $color-white;
-    outline: 0;
+  border: 1px solid $color-grey-medium;
+  border-radius: 4px;
+  background-color: $color-white;
+  outline: 0;
 }
 
 .adultLabel {
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 10px;
-    width: 220px;
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: 220px;
 }
 
 .dietWrapper {
-    margin: 6px 0 14px;
+  margin: 6px 0 14px;
 
-    label {
-        display: block;
-        padding: 6px 0 2px 4px;
-    }
-    textarea {
-        width: 100%;
-        height: 50px;
-        padding: 5px;
-        border: 1px solid $color-grey-light;
-        background-color: $color-grey-lighter;
-        outline: 0;
-    }
+  label {
+    display: block;
+    padding: 6px 0 2px 4px;
+  }
+  textarea {
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    border: 1px solid $color-grey-light;
+    background-color: $color-grey-lighter;
+    outline: 0;
+  }
 }
 
 .buttonWrapper {
-    margin-bottom: 10px;
-    text-align: center;
+  margin-bottom: 10px;
+  text-align: center;
 }

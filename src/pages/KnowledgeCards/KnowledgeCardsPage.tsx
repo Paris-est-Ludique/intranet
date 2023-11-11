@@ -12,14 +12,19 @@ export type Props = RouteComponentProps
 
 const KnowledgeCardsPage: FC<Props> = (): JSX.Element => {
   const jwtToken = useSelector(selectUserJwtToken)
-  if (jwtToken === undefined)
+
+  if (jwtToken === undefined) {
     return <p>Loading...</p>
+  }
   if (!jwtToken) {
     return <LoginForm loginNeeded />
   }
+
   return <KnowledgeCard />
 }
 
-export const loadData = (): AppThunk[] => [...fetchForKnowledgeCard.map((f) => f())]
+export function loadData(): AppThunk[] {
+  return [...fetchForKnowledgeCard.map(f => f())]
+}
 
 export default memo(KnowledgeCardsPage)

@@ -21,7 +21,7 @@ const gameWithVolunteersListSlice = createSlice({
   name: 'gameWithVolunteersList',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<GameWithVolunteers[]>) => {
@@ -35,10 +35,8 @@ const gameWithVolunteersListSlice = createSlice({
   },
 })
 
-export const {
-  reducer: gameWithVolunteersListReducer,
-  actions: gameWithVolunteersListActions,
-} = gameWithVolunteersListSlice
+export const { reducer: gameWithVolunteersListReducer, actions: gameWithVolunteersListActions }
+  = gameWithVolunteersListSlice
 
 export const fetchGameWithVolunteersList = elementListFetch(
   gameWithVolunteersListGet,
@@ -65,16 +63,16 @@ export function selectGameWithVolunteersListState(state: AppState): EntitiesRequ
 export const selectGameWithVolunteersList = createSelector(
   selectGameWithVolunteersListState,
   ({ ids, entities, readyStatus }) => {
-    if (readyStatus !== 'success')
+    if (readyStatus !== 'success') {
       return []
+    }
+
     return ids.map(id => entities[id])
   },
 )
 
-export const selectSortedUniqueGamesWithVolunteers = createSelector(
-  selectGameWithVolunteersList,
-  (games: []) => {
-    const gameWithVolunteers = games.filter(game => game) as GameWithVolunteers[]
-    return sortedUniqBy(sortBy(gameWithVolunteers, gameTitleOrder), gameTitleOrder)
-  },
-)
+export const selectSortedUniqueGamesWithVolunteers = createSelector(selectGameWithVolunteersList, (games: []) => {
+  const gameWithVolunteers = games.filter(game => game) as GameWithVolunteers[]
+
+  return sortedUniqBy(sortBy(gameWithVolunteers, gameTitleOrder), gameTitleOrder)
+})

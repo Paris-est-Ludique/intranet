@@ -16,7 +16,7 @@ const postulantAddSlice = createSlice({
   name: 'postulantAdd',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<Postulant>) => {
@@ -30,10 +30,7 @@ const postulantAddSlice = createSlice({
   },
 })
 
-export const {
-  reducer: postulantAddReducer,
-  actions: postulantAddActions,
-} = postulantAddSlice
+export const { reducer: postulantAddReducer, actions: postulantAddActions } = postulantAddSlice
 
 export const fetchPostulantAdd = elementAddFetch(
   postulantAdd,

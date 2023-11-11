@@ -19,7 +19,7 @@ const miscDiscordInvitationSlice = createSlice({
   name: 'miscDiscordInvitation',
   initialState,
   reducers: {
-    getRequesting: (state) => {
+    getRequesting: state => {
       state.readyStatus = 'request'
     },
     getSuccess: (state, { payload }: PayloadAction<MiscDiscordInvitation[]>) => {
@@ -33,10 +33,8 @@ const miscDiscordInvitationSlice = createSlice({
   },
 })
 
-export const {
-  reducer: miscDiscordInvitationReducer,
-  actions: miscDiscordInvitationActions,
-} = miscDiscordInvitationSlice
+export const { reducer: miscDiscordInvitationReducer, actions: miscDiscordInvitationActions }
+  = miscDiscordInvitationSlice
 
 export const fetchMiscDiscordInvitation = elementListFetch(
   miscDiscordInvitation,
@@ -50,12 +48,14 @@ function selectShouldFetchMiscDiscordInvitation(state: AppState) {
 
 export const fetchMiscDiscordInvitationIfNeed: AppThunk = () => (dispatch: AppDispatch, getState: () => AppState) => {
   const { jwt } = getState().auth
+
   if (selectShouldFetchMiscDiscordInvitation(getState())) {
     dispatch(fetchMiscDiscordInvitation(jwt))
   }
 }
 
-export const refreshMiscDiscordInvitation: AppThunk = (jwt: string) => (dispatch: AppDispatch) => dispatch(fetchMiscDiscordInvitation(jwt))
+export const refreshMiscDiscordInvitation: AppThunk = (jwt: string) => (dispatch: AppDispatch) =>
+  dispatch(fetchMiscDiscordInvitation(jwt))
 
 export function selectMiscDiscordInvitationState(state: AppState): EntitiesRequest<MiscDiscordInvitation> {
   return state.miscDiscordInvitation
@@ -64,11 +64,15 @@ export function selectMiscDiscordInvitationState(state: AppState): EntitiesReque
 export const selectMiscDiscordInvitation = createSelector(
   selectMiscDiscordInvitationState,
   ({ ids, entities, readyStatus }) => {
-    if (readyStatus !== 'success')
+    if (readyStatus !== 'success') {
       return ''
+    }
     const id = first(ids)
-    if (id === undefined)
+
+    if (id === undefined) {
       return ''
+    }
+
     return entities[id]?.discordInvitation || ''
   },
 )

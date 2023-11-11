@@ -8,24 +8,13 @@ import type {
   SlashCommandBuilder,
   User,
 } from 'discord.js'
-import {
-  Client,
-  Collection,
-  Events,
-  GatewayIntentBits,
-  /* REST, Routes, */ Partials,
-} from 'discord.js'
+import { Client, Collection, Events, GatewayIntentBits, Partials } from 'discord.js'
 
 import { getSheet } from '@/server/gsheets/accessors'
 import type { VolunteerWithoutId } from '@/services/volunteers'
 import { Volunteer, translationVolunteer } from '@/services/volunteers'
-import type {
-  DiscordRoleWithoutId,
-} from '@/services/discordRoles'
-import {
-  DiscordRole,
-  translationDiscordRoles,
-} from '@/services/discordRoles'
+import type { DiscordRoleWithoutId } from '@/services/discordRoles'
+import { DiscordRole, translationDiscordRoles } from '@/services/discordRoles'
 
 const { DISCORD_TOKEN, DISCORD_GUILD_ID } = env
 
@@ -44,6 +33,7 @@ export async function discordBot(): Promise<void> {
 
     if (!DISCORD_TOKEN) {
       console.error(`Discord bot: no creds found, not running bot`)
+
       return
     }
 
@@ -60,7 +50,7 @@ export async function discordBot(): Promise<void> {
 
     // commands.set(userCommand.data.name, userCommand)
 
-    client.once(Events.ClientReady, (localClient) => {
+    client.once(Events.ClientReady, localClient => {
       setInterval(() => setBotReactions(localClient), 5 * 60 * 1000)
       setTimeout(() => setBotReactions(localClient), 20 * 1000)
 
@@ -68,21 +58,22 @@ export async function discordBot(): Promise<void> {
       setTimeout(() => setAllRoles(localClient), 5 * 1000)
     })
 
-    client.on(Events.InteractionCreate, async (interaction) => {
-      if (!interaction.isChatInputCommand())
+    client.on(Events.InteractionCreate, async interaction => {
+      if (!interaction.isChatInputCommand()) {
         return
+      }
 
       const command = commands.get(interaction.commandName)
 
       if (!command) {
         console.error(`No command matching ${interaction.commandName} was found.`)
+
         return
       }
 
       try {
         await command.execute(interaction)
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error)
       }
     })
@@ -100,8 +91,7 @@ export async function discordBot(): Promise<void> {
     })
 
     client.login(DISCORD_TOKEN)
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Discord error', error)
   }
 }
@@ -114,35 +104,35 @@ async function setBotReactions(client: Client) {
       translationDiscordRoles,
     )
     const discordRolesList = await discordRolesSheet.getList()
+
     if (!discordRolesList) {
       return
     }
 
-    client.channels.cache.each(async (channel) => {
+    client.channels.cache.each(async channel => {
       if (!channel.isTextBased()) {
         return
       }
 
       discordRolesList.forEach(async (discordRole: DiscordRole) => {
         let message
+
         try {
           message = await channel.messages.fetch(discordRole.messageId)
-        }
-        catch (error) {
+        } catch (error) {
           return
         }
 
-        const reaction = message.reactions.cache.find(
-          r => r.emoji.name === discordRole.emoji,
-        )
+        const reaction = message.reactions.cache.find(r => r.emoji.name === discordRole.emoji)
+
         if (reaction) {
           return
         }
+
         await message.react(discordRole.emoji)
       })
     })
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error in setBotReactions', error)
   }
 }
@@ -155,6 +145,7 @@ async function setAllRoles(client: Client) {
       translationVolunteer,
     )
     const volunteerList = await volunteerSheet.getList()
+
     if (!volunteerList) {
       return
     }
@@ -179,12 +170,7 @@ async function setAllRoles(client: Client) {
       v => (_.isEmpty(v) ? '' : guild.roles.cache.find(role => role.name === v)?.id || ''),
     )
 
-    await setVolunteersRoles(
-      guild,
-      volunteerByDiscordId,
-      volunteerRoleIds,
-      (volunteer: Volunteer) => volunteer.active,
-    )
+    await setVolunteersRoles(guild, volunteerByDiscordId, volunteerRoleIds, (volunteer: Volunteer) => volunteer.active)
 
     // Set Team- and Référent- roles
 
@@ -193,7 +179,9 @@ async function setAllRoles(client: Client) {
       5: 'paillante',
       21: 'photo',
       4: 'tournois',
+
       // "19": "exposants-asso", ignored because it's mixed with volunteers of last edition
+
       2: 'jav',
       18: 'jeux-xl',
       27: 'ring',
@@ -209,41 +197,21 @@ async function setAllRoles(client: Client) {
       0: '',
     }
 
-    const volunteerByDiscordIdNoOrga = _.pickBy(
-      volunteerByDiscordId,
-      (volunteer: Volunteer) => volunteer.team !== 13,
-    )
+    const volunteerByDiscordIdNoOrga = _.pickBy(volunteerByDiscordId, (volunteer: Volunteer) => volunteer.team !== 13)
 
     const teamRoleIds: { [key: string]: string } = _.mapValues(teamIds, v =>
-      _.isEmpty(v)
-        ? ''
-        : guild.roles.cache.find(role => role.name === `Team-${v}`)?.id || '')
+      _.isEmpty(v) ? '' : guild.roles.cache.find(role => role.name === `Team-${v}`)?.id || '')
 
-    await setVolunteersRoles(
-      guild,
-      volunteerByDiscordIdNoOrga,
-      teamRoleIds,
-      (volunteer: Volunteer) =>
-        _.includes(['oui', 'peut-etre', 'à distance'], volunteer.active)
-          ? `${volunteer.team}`
-          : '',
-    )
+    await setVolunteersRoles(guild, volunteerByDiscordIdNoOrga, teamRoleIds, (volunteer: Volunteer) =>
+      _.includes(['oui', 'peut-etre', 'à distance'], volunteer.active) ? `${volunteer.team}` : '')
 
     const teamReferentRoleIds: { [key: string]: string } = _.mapValues(teamIds, v =>
-      _.isEmpty(v)
-        ? ''
-        : guild.roles.cache.find(role => role.name === `Référent-${v}`)?.id || '')
+      _.isEmpty(v) ? '' : guild.roles.cache.find(role => role.name === `Référent-${v}`)?.id || '')
 
-    await setVolunteersRoles(
-      guild,
-      volunteerByDiscordIdNoOrga,
-      teamReferentRoleIds,
-      (volunteer: Volunteer) =>
-        _.includes(['oui', 'peut-etre', 'à distance'], volunteer.active)
-                && volunteer.roles.includes('référent')
-          ? `${volunteer.team}`
-          : '0',
-    )
+    await setVolunteersRoles(guild, volunteerByDiscordIdNoOrga, teamReferentRoleIds, (volunteer: Volunteer) =>
+      _.includes(['oui', 'peut-etre', 'à distance'], volunteer.active) && volunteer.roles.includes('référent')
+        ? `${volunteer.team}`
+        : '0')
 
     const referentRoleId = guild.roles.cache.find(role => role.name === `Référent`)?.id
 
@@ -252,13 +220,11 @@ async function setAllRoles(client: Client) {
       volunteerByDiscordIdNoOrga,
       referentRoleId ? { ref: referentRoleId } : {},
       (volunteer: Volunteer) =>
-        _.includes(['oui', 'peut-etre', 'à distance'], volunteer.active)
-                && volunteer.roles.includes('référent')
+        _.includes(['oui', 'peut-etre', 'à distance'], volunteer.active) && volunteer.roles.includes('référent')
           ? 'ref'
           : '',
     )
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error in setAllRoles', error)
   }
 }
@@ -270,8 +236,10 @@ async function setVolunteersRoles(
   funcKey: (volunteer: Volunteer) => string,
 ) {
   const members = await guild.members.fetch()
-  members.each(async (member) => {
+
+  members.each(async member => {
     const volunteer = volunteerByDiscordId[member.id]
+
     if (!volunteer) {
       return
     }
@@ -286,8 +254,7 @@ async function setVolunteersRoles(
 
       if (hasRole && !shouldHaveRole) {
         member.roles.remove(roleId)
-      }
-      else if (!hasRole && shouldHaveRole) {
+      } else if (!hasRole && shouldHaveRole) {
         member.roles.add(roleId)
       }
     })
@@ -306,6 +273,7 @@ async function setRolesFromEmoji(
     translationDiscordRoles,
   )
   const discordRolesList = await discordRolesSheet.getList()
+
   if (!discordRolesList) {
     return
   }
@@ -318,24 +286,24 @@ async function setRolesFromEmoji(
   }
 
   discordRolesList.forEach(async (discordRole: DiscordRole) => {
-    if (
-      reaction.message.id === discordRole.messageId
-            && reaction.emoji.name === discordRole.emoji
-    ) {
+    if (reaction.message.id === discordRole.messageId && reaction.emoji.name === discordRole.emoji) {
       const roleId = guild.roles.cache.find(role => role.name === discordRole.role)
+
       if (!roleId) {
         return
       }
 
       const member = guild.members.cache.find(m => m.id === user.id)
+
       if (!member) {
         return
       }
+
       await member.fetch()
+
       if (action === 'add') {
         member.roles.add(roleId)
-      }
-      else if (action === 'remove') {
+      } else if (action === 'remove') {
         member.roles.remove(roleId)
       }
     }
@@ -346,11 +314,12 @@ async function fetchPartial(reaction: MessageReaction | PartialMessageReaction):
   if (reaction.partial) {
     try {
       await reaction.fetch()
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Something went wrong when fetching the message', error)
+
       return false
     }
   }
+
   return true
 }

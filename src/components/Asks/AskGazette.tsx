@@ -23,7 +23,10 @@ export function AskGazette(asks: JSX.Element[], id: number): void {
     true,
     true,
     <form>
-      <div className={classnames(styles.notifIntro, styles.notifCentered)} key="login-intro">
+      <div
+        className={classnames(styles.notifIntro, styles.notifCentered)}
+        key="login-intro"
+      >
         La
         {' '}
         <a

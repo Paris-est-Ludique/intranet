@@ -38,17 +38,12 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
 
   const onChoiceSubmit = useCallback(() => {
     const food = get(foodRef, 'current.value', '')
+
     saveMeals([saturdayLunchMeal, saturdayDinnerMeal, sundayLunchMeal, sundayDinnerMeal], food)
-    if (afterSubmit)
+    if (afterSubmit) {
       afterSubmit()
-  }, [
-    saveMeals,
-    saturdayLunchMeal,
-    saturdayDinnerMeal,
-    sundayLunchMeal,
-    sundayDinnerMeal,
-    afterSubmit,
-  ])
+    }
+  }, [saveMeals, saturdayLunchMeal, saturdayDinnerMeal, sundayLunchMeal, sundayDinnerMeal, afterSubmit])
 
   const getBreakfeastElement = (dayName: string): JSX.Element => (
     <div key={`${dayName}Matin`}>
@@ -72,7 +67,10 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       </div>
       <div className={styles.rightCol}>
         {mealDays[i].options.map((option: MealOption) => (
-          <label className={styles.mealsLabel} key={option.abbr}>
+          <label
+            className={styles.mealsLabel}
+            key={option.abbr}
+          >
             <input
               type="radio"
               name={`meal${i}`}
@@ -94,20 +92,20 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         {' '}
         matin/midi/soir
       </b>
-      , comme tu n'es pas bénévole ce jour-là, on a rien
-      prévu. Mais
+      , comme tu n'es pas bénévole ce jour-là, on a rien prévu. Mais
       {' '}
-      <a href="mailto:benevoles@parisestludique.fr" target="_blank" rel="noreferrer">
+      <a
+        href="mailto:benevoles@parisestludique.fr"
+        target="_blank"
+        rel="noreferrer"
+      >
         contacte-nous
       </a>
       {' '}
       si tu veux qu'on te prévoie un dîner.
       {' '}
       {dayName === 'Dimanche' && (
-        <>
-          Surtout dimanche soir si tu redeviens bénévole pour nous aider à ranger un peu
-          le festival !
-        </>
+        <>Surtout dimanche soir si tu redeviens bénévole pour nous aider à ranger un peu le festival !</>
       )}
     </div>
   )
@@ -117,9 +115,9 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       <div className={styles.title}>Mes repas</div>
       <div className={classnames(styles.inputWrapper)}>
         <div>
-          La composition exacte des repas ne sera pas connues avant le festival (risque de
-          changement d'ingrédient au dernier moment). Elle sera disponible au moment de
-          récupérer ton repas pour que tu puisses contrôler l'absence d'allergène.
+          La composition exacte des repas ne sera pas connues avant le festival (risque de changement d'ingrédient au
+          dernier moment). Elle sera disponible au moment de récupérer ton repas pour que tu puisses contrôler l'absence
+          d'allergène.
         </div>
       </div>
       {dayWishesString.includes('S')
@@ -151,14 +149,16 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
       <div className={classnames(styles.inputWrapper)}>
         <div>
           <b>Jeudi, vendredi et lundi</b>
-          , cocktail dejeunatoire avec salades composées,
-          charcuterie, fromage...
+          , cocktail dejeunatoire avec salades composées, charcuterie, fromage...
         </div>
       </div>
 
       <div className={styles.foodWrapper}>
         <label htmlFor="food">As-tu des restrictions alimentaires ?</label>
-        <textarea id="food" ref={foodRef} />
+        <textarea
+          id="food"
+          ref={foodRef}
+        />
       </div>
 
       <div className={styles.buttonWrapper}>
@@ -166,7 +166,10 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         {children === undefined && (
           <>
             {' '}
-            <FormButton onClick={afterSubmit} type="grey">
+            <FormButton
+              onClick={afterSubmit}
+              type="grey"
+            >
               Annuler
             </FormButton>
             {' '}
@@ -175,7 +178,10 @@ const MealsForm: FC<Props> = ({ children, afterSubmit }): JSX.Element => {
         {children !== undefined && (
           <>
             {' '}
-            <IgnoreButton onClick={afterSubmit} text="Ignorer pour l'instant">
+            <IgnoreButton
+              onClick={afterSubmit}
+              text="Ignorer pour l'instant"
+            >
               {children}
             </IgnoreButton>
             {' '}

@@ -16,8 +16,9 @@ const selectVolunteersWithTeamWishes = createSelector(
       ...volunteer,
       teamWishes: volunteer.teamWishes
         .filter(wishId => wishId !== volunteer.team)
-        .map((wishId) => {
+        .map(wishId => {
           const matchingTeam = teams.find((team: any) => wishId === team?.id)
+
           return matchingTeam?.name
         }),
       teamObject: teams.find((team: any) => volunteer.team === team?.id),
@@ -44,23 +45,21 @@ const VolunteersWithTeamWishes: FC = (): JSX.Element => {
           ) :
         </div>
         <ul>
-          {volunteersWithoutTeam.map(
-            ({ id, lastname, firstname, teamWishes, teamObject }) => (
-              <li key={id}>
-                <span className={styles.volunteerName}>
-                  {firstname}
-                  {' '}
-                  {lastname}
-                  {' '}
-                </span>
-                <span className={styles.teamActive}>
-                  {teamObject?.name}
-                  {' '}
-                </span>
-                <span>{teamWishes.join(', ')}</span>
-              </li>
-            ),
-          )}
+          {volunteersWithoutTeam.map(({ id, lastname, firstname, teamWishes, teamObject }) => (
+            <li key={id}>
+              <span className={styles.volunteerName}>
+                {firstname}
+                {' '}
+                {lastname}
+                {' '}
+              </span>
+              <span className={styles.teamActive}>
+                {teamObject?.name}
+                {' '}
+              </span>
+              <span>{teamWishes.join(', ')}</span>
+            </li>
+          ))}
         </ul>
         <div>
           Bénévoles dans une équipe (
@@ -68,23 +67,21 @@ const VolunteersWithTeamWishes: FC = (): JSX.Element => {
           ) :
         </div>
         <ul>
-          {volunteersWithTeam.map(
-            ({ id, lastname, firstname, teamWishes, teamObject }) => (
-              <li key={id}>
-                <span className={styles.volunteerName}>
-                  {firstname}
-                  {' '}
-                  {lastname}
-                  {' '}
-                </span>
-                <span className={styles.teamActive}>
-                  {teamObject?.name}
-                  {' '}
-                </span>
-                <span>{teamWishes.join(', ')}</span>
-              </li>
-            ),
-          )}
+          {volunteersWithTeam.map(({ id, lastname, firstname, teamWishes, teamObject }) => (
+            <li key={id}>
+              <span className={styles.volunteerName}>
+                {firstname}
+                {' '}
+                {lastname}
+                {' '}
+              </span>
+              <span className={styles.teamActive}>
+                {teamObject?.name}
+                {' '}
+              </span>
+              <span>{teamWishes.join(', ')}</span>
+            </li>
+          ))}
         </ul>
       </div>
     </>

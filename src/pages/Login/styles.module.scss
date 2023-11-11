@@ -1,9 +1,9 @@
-@import "@/assets/styles/mixins";
+@import '@/assets/styles/mixins';
 
 .loginPage {
-    @include page-wrapper-center;
+  @include page-wrapper-center;
 }
 
 .loginContent {
-    @include page-content-wrapper;
+  @include page-content-wrapper;
 }
