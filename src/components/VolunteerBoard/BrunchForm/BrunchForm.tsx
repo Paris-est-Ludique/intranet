@@ -42,7 +42,7 @@ const BrunchForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null =>
     const question1 = +get(retex, 'question1', question1Default)
 
     set(question1Ref, 'current.value', `${question1}`)
-    
+
     if (question1 >= 1) {
       setBrunchPresence('oui')
     }

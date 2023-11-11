@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-import type { StateRequest } from './utils'
-import { elementAddFetch } from './utils'
+import type { StateRequest } from '@/utils/elements'
+import { elementAddFetch } from '@/utils/elements'
 
 import type { Postulant } from '@/services/postulants'
 import { postulantAdd } from '@/services/postulantsAccessors'

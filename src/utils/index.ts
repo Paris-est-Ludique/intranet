@@ -1,25 +1,21 @@
-export const pick = <T extends {}, K extends keyof T>(obj: T, ...keys: K[]) => (
-  Object.fromEntries(
+export function pick<T extends {}, K extends keyof T>(obj: T, ...keys: K[]) {
+  return Object.fromEntries(
     keys
-    .filter(key => key in obj)
-    .map(key => [key, obj[key]])
+      .filter(key => key in obj)
+      .map(key => [key, obj[key]]),
   ) as Pick<T, K>
-);
+}
 
-export const inclusivePick = <T extends {}, K extends (string | number | symbol)>(
-  obj: T, ...keys: K[]
-) => (
-  Object.fromEntries(
+export function inclusivePick<T extends {}, K extends (string | number | symbol)>(obj: T, ...keys: K[]) {
+  return Object.fromEntries(
     keys
-    .map(key => [key, obj[key as unknown as keyof T]])
-  ) as {[key in K]: key extends keyof T ? T[key] : undefined}
-)
+      .map(key => [key, obj[key as unknown as keyof T]]),
+  ) as { [key in K]: key extends keyof T ? T[key] : undefined }
+}
 
-export const omit = <T extends {}, K extends keyof T>(
-  obj: T, ...keys: K[]
-) =>(
-  Object.fromEntries(
+export function omit<T extends {}, K extends keyof T>(obj: T, ...keys: K[]) {
+  return Object.fromEntries(
     Object.entries(obj)
-    .filter(([key]) => !keys.includes(key as K))
+      .filter(([key]) => !keys.includes(key as K)),
   ) as Omit<T, K>
-)
+}

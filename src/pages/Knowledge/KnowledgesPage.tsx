@@ -1,17 +1,17 @@
 import type { FC } from 'react'
 import { memo } from 'react'
-import styles from './styles.module.scss'
 import { useSelector } from 'react-redux'
 import type { RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import styles from './styles.module.scss'
 
 import type { AppThunk } from '@/store'
 import LoginForm from '@/components/LoginForm/LoginForm'
 import KnowledgeBoxList, { fetchForKnowledgeBoxList } from '@/components/Knowledge/KnowledgeBoxList'
 import KnowledgeIntro from '@/components/Knowledge/KnowledgeIntro'
 
-
 import { selectUserJwtToken } from '@/store/auth'
+
 export type Props = RouteComponentProps
 
 const KnowledgesPage: FC<Props> = (): JSX.Element => {

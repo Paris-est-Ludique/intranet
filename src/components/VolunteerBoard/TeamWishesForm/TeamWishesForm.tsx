@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useRef } from 'react'
 import get from 'lodash/get'
 import set from 'lodash/set'
 import classnames from 'classnames'
+import { useSelector } from 'react-redux'
 import { useUserTeamWishes } from '../teamWishes.utils'
 import useSelection from '../useSelection'
 import FormButton from '../../Form/FormButton/FormButton'
@@ -10,7 +11,6 @@ import IgnoreButton from '../../Form/IgnoreButton/IgnoreButton'
 import styles from './styles.module.scss'
 import { fetchVolunteerTeamWishesSetIfNeed } from '@/store/volunteerTeamWishesSet'
 import { fetchTeamListIfNeed, selectSortedActiveTeams } from '@/store/teamList'
-import { useSelector } from 'react-redux'
 
 interface Props {
   children?: ReactNode | undefined

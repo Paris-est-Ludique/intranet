@@ -2,11 +2,10 @@ import type { FC } from 'react'
 import { memo, useCallback } from 'react'
 import get from 'lodash/get'
 
-import { MODAL_IDS, displayModal } from '@/store/ui'
-import useAction from '@/utils/useAction'
-
 import { useRetex } from '../retex.utils'
 import styles from './styles.module.scss'
+import { MODAL_IDS, displayModal } from '@/store/ui'
+import useAction from '@/utils/useAction'
 
 interface Props {
   afterSubmit?: () => void | undefined

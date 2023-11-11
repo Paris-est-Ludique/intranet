@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { memo } from 'react'
-import styles from './styles.module.scss'
 import { useSelector } from 'react-redux'
 import type { RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import styles from './styles.module.scss'
 
 import type { AppThunk } from '@/store'
 import { selectUserJwtToken } from '@/store/auth'

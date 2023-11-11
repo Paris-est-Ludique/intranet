@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import type { StateRequest } from './utils'
-import { elementFetch } from './utils'
+import type { StateRequest } from '@/utils/elements'
+import { elementFetch } from '@/utils/elements'
 
 import type { VolunteerForgot } from '@/services/volunteers'
 import { volunteerForgot } from '@/services/volunteersAccessors'

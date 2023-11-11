@@ -18,7 +18,7 @@ import type { VolunteerWithoutId } from '@/services/volunteers'
 import { Volunteer, translationVolunteer } from '@/services/volunteers'
 import type { BoxWithoutId } from '@/services/boxes'
 import { Box, translationBox } from '@/services/boxes'
-import { gameTitleCategory, gameTitleExactCategory, gameTitleOrder } from '@/store/utils'
+import { gameTitleCategory, gameTitleExactCategory, gameTitleOrder } from '@/utils/games'
 
 const expressAccessor = new ExpressAccessors<GameWithoutId, Game>(
   'Games',

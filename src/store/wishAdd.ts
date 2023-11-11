@@ -1,7 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-import type { StateRequest } from './utils'
-import { elementAddFetch, toastError, toastSuccess } from './utils'
+import type { StateRequest } from '@/utils/elements'
+import { elementAddFetch } from '@/utils/elements'
+import { toastError, toastSuccess } from '@/utils/toast'
 
 import type { Wish } from '@/services/wishes'
 import { wishAdd } from '@/services/wishesAccessors'

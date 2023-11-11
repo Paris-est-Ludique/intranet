@@ -3,7 +3,6 @@ import { loadData } from './TeamAssignmentPage'
 import loadable from '@/components/Loadable'
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary'
-import Loading from '@/components/Loading/Loading'
 
 const TeamAssignmentPage = loadable(() => import('./TeamAssignmentPage'))
 

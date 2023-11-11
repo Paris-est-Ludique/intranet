@@ -2,10 +2,11 @@ import { useCallback } from 'react'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 import { shallowEqual, useSelector } from 'react-redux'
-import type { StateRequest } from './utils'
-import { elementFetch, toastError } from './utils'
 import { selectUserJwtToken } from './auth'
 import type { AppDispatch, AppState, AppThunk } from '.'
+import type { StateRequest } from '@/utils/elements'
+import { elementFetch } from '@/utils/elements'
+import { toastError } from '@/utils/toast'
 import type { VolunteerLoan } from '@/services/volunteers'
 import { volunteerLoanSet } from '@/services/volunteersAccessors'
 import useAction from '@/utils/useAction'
@@ -52,19 +53,18 @@ function selectShouldFetchVolunteerLoanSet(state: AppState, id: number) {
     || (state.volunteerLoanSet?.entity && state.volunteerLoanSet?.entity?.id !== id)
 }
 
-export const fetchVolunteerLoanSetIfNeed: AppThunk = (id = 0, loan: Partial<VolunteerLoan> = {}) =>
-  (dispatch: AppDispatch, getState: () => AppState) => {
-    let jwt = ''
+export const fetchVolunteerLoanSetIfNeed: AppThunk = (id = 0, loan: Partial<VolunteerLoan> = {}) => (dispatch: AppDispatch, getState: () => AppState) => {
+  let jwt = ''
 
-    if (!id) {
-      ;({ jwt, id } = getState().auth)
-    }
-
-    if (selectShouldFetchVolunteerLoanSet(getState(), id))
-      return dispatch(fetchVolunteerLoanSet(jwt, id, loan))
-
-    return null
+  if (!id) {
+    ;({ jwt, id } = getState().auth)
   }
+
+  if (selectShouldFetchVolunteerLoanSet(getState(), id))
+    return dispatch(fetchVolunteerLoanSet(jwt, id, loan))
+
+  return null
+}
 
 type SetFunction = (newVolunteerLoan: VolunteerLoan) => void
 

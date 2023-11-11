@@ -6,7 +6,7 @@ import withUserConnected from '@/utils/withUserConnected'
 import withUserRole from '@/utils/withUserRole'
 import ROLES from '@/utils/roles.constants'
 import { Volunteer } from '@/services/volunteers'
-import { toastError } from '@/store/utils'
+import { toastError } from '@/utils/toast'
 
 interface Props extends JSX.IntrinsicAttributes {
   volunteer: Volunteer

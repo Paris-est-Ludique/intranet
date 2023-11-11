@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react'
 import styles from './styles.module.scss'
-import { toastError } from '@/store/utils'
+import { toastError } from '@/utils/toast'
 
 interface Props {
   type?: 'grey'

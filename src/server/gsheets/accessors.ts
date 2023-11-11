@@ -1,9 +1,10 @@
 import _ from 'lodash'
 import assign from 'lodash/assign'
+import { JWT } from 'google-auth-library'
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
-import { pick } from '@/utils'
 import { SheetNames, loadLocalDb, saveLocalDb } from './localDb'
+import { pick } from '@/utils'
 
 export { SheetNames } from './localDb'
 
@@ -15,16 +16,21 @@ const DELAY_BETWEEN_FIRST_LOAD = 1500
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 export const sheetNames = new SheetNames()
+
 type SheetList = { [sheetName in keyof SheetNames]?: Sheet<object, ElementWithId<object>> }
 const sheetList: SheetList = {}
 
+type TKey<T> = keyof T
+type TKeys<T> = (keyof T)[]
+type TStringified<T> = { [k in TKey<T>]: string }
+
 export async function getSheet<
-    ElementNoId extends object,
-    Element extends ElementNoId & ElementWithId<ElementNoId>,
+  ElementNoId extends object,
+  Element extends ElementNoId & ElementWithId<ElementNoId>,
 >(
   sheetName: keyof SheetNames,
   specimen: Element,
-  translation: { [k in keyof Element]: string },
+  translation: { [k in TKey<Element>]: string },
 ): Promise<Sheet<ElementNoId, Element>> {
   let sheet: Sheet<ElementNoId, Element>
 
@@ -47,7 +53,7 @@ export class Sheet<
 > {
   sheetName: string
   _state: Element[] | undefined
-  _type: Record<keyof Element, string> | undefined
+  _type: TStringified<Element> | undefined
   toRunAfterLoad: (() => void)[] | undefined = []
   saveTimestamp = 0
   modifiedSinceSave = false
@@ -57,7 +63,7 @@ export class Sheet<
   constructor(
     readonly name: keyof SheetNames,
     readonly specimen: Element,
-    readonly translation: { [k in keyof Element]: string },
+    readonly translation: { [k in TKey<Element>]: string },
   ) {
     this.invertedTranslation = _.invert(this.translation)
     this.sheetName = sheetNames[name] || name
@@ -150,11 +156,11 @@ export class Sheet<
   async loadLocalDb(): Promise<void> {
     const db = await loadLocalDb(this.name)
     this._state = db.state as Element[]
-    this._type = db.type as Record<keyof Element, string>
+    this._type = db.type as TStringified<Element>
   }
 
   parseRawPartialElement(
-    rawPartialElement: Partial<Record<keyof Element, string>>,
+    rawPartialElement: Partial<TStringified<Element>>,
   ): Partial<Element> | undefined {
     if (this._type === undefined) {
       return undefined
@@ -175,9 +181,7 @@ export class Sheet<
       (frenchProp: string) => (frenchElement as any)[frenchProp],
     ) as Element
 
-    const partialElement = pick(element, ...(Object.keys(rawPartialElement) as (keyof Element)[]))
-
-    return partialElement
+    return pick(element, ...(Object.keys(rawPartialElement) as TKeys<Element>))
   }
 
   dbSave(): void {
@@ -237,7 +241,7 @@ export class Sheet<
     await tryNTimesVoidReturn(async () => {
       console.info(`dbSaveAsync on ${this.name} at ${new Date()}`)
       // Load sheet into an array of objects
-      const rows = await sheet.getRows()
+      const rows = await sheet.getRows<TStringified<Element>>()
 
       if (!rows[0]) {
         throw new Error(`No column types defined in sheet ${this.name}`)
@@ -245,10 +249,7 @@ export class Sheet<
 
       const elements = this._state as Element[]
 
-      this._type = pick(rows[0], ...Object.values(this.translation)) as Record<
-        keyof Element,
-        string
-      >
+      this._type = pick(rows[0].toObject() as TStringified<Element>, ...Object.values(this.translation) as TKeys<Element>)
 
       // Update received rows
       let rowid = 1
@@ -259,21 +260,21 @@ export class Sheet<
           this.invertedTranslation,
           (englishProp: string) => (element as any)[englishProp],
         ) as Element
-        const stringifiedRow = this.stringifyElement(frenchElement, this._type)
+        const stringifiedRow: TStringified<Element> = this.stringifyElement(frenchElement, this._type)
 
         if (!row) {
           await sheet.addRow(stringifiedRow)
         }
         else {
-          const keys = Object.keys(stringifiedRow)
-          const sameCells = _.every(keys, (key: keyof Element) => {
-            const rawVal = row[key as string]
+          const keys = Object.keys(stringifiedRow) as TKeys<Element>
+          const sameCells = _.every(keys, (key: TKey<Element>) => {
+            const rawVal = row.get(key)
             const val: string = rawVal === undefined ? '' : rawVal
             return val === stringifiedRow[key]
           })
           if (!sameCells) {
             keys.forEach((key) => {
-              row[key] = stringifiedRow[key as keyof Element]
+              row.set(key, stringifiedRow[key])
             })
 
             await row.save()
@@ -289,12 +290,12 @@ export class Sheet<
           await rows[rowToDelete].delete()
         }
       }
+
       console.info(`dbSaveAsync successful on ${this.name} at ${new Date()}`)
     })
   }
 
   private async dbLoadAsync(): Promise<void> {
-    type StringifiedElement = Record<keyof Element, string>
     const sheet = await this.getGSheet(20)
 
     if (!sheet) {
@@ -305,26 +306,21 @@ export class Sheet<
       // Load sheet into an array of objects
       console.info(`dbLoadAsync on ${this.name} at ${new Date()}`)
 
-      const rows = (await sheet.getRows()) as StringifiedElement[]
+      const rows = await sheet.getRows<TStringified<Element>>()
       const elements: Element[] = []
 
       if (!rows[0]) {
         throw new Error(`No column types defined in sheet ${this.name}`)
       }
 
-      const typeList = pick(rows[0], ...(Object.values(this.translation) as (keyof Element)[])) as Record<
-        keyof Element,
-        string
-      >
+      const typeList = pick(rows[0].toObject() as TStringified<Element>, ...(Object.values(this.translation) as TKeys<Element>))
 
       this._type = typeList
       rows.shift()
       rows.forEach((row) => {
-        const stringifiedElement = pick(row, ...(Object.values(this.translation) as (keyof Element)[])) as Record<
-          keyof Element,
-          string
-        >
+        const stringifiedElement = pick(row.toObject() as TStringified<Element>, ...(Object.values(this.translation) as TKeys<Element>))
         const frenchData: any = this.parseElement(stringifiedElement, typeList)
+
         if (frenchData !== undefined) {
           const englishElement = _.mapValues(
             this.translation,
@@ -335,6 +331,7 @@ export class Sheet<
       })
 
       this._state = elements
+
       console.info(`dbLoadAsync successful on ${this.name} at ${new Date()}`)
     })
   }
@@ -347,12 +344,18 @@ export class Sheet<
         }
 
         // Authentication
-        const doc = new GoogleSpreadsheet('1p8TDSNlgKC7sm1a_wX44NrkpWEH3-Zey1O2ZjYfPsn4')
+        const serviceAccountJWT = new JWT({
+          email: import.meta.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+          key: import.meta.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY,
+          scopes: [
+            'https://www.googleapis.com/auth/spreadsheets',
+            'https://www.googleapis.com/auth/drive.file',
+          ],
+        })
 
-        // TODO replace with good credentials
-        await doc.useServiceAccountAuth({})
-        await doc.loadInfo()
+        const doc = new GoogleSpreadsheet(import.meta.env.GOOGLE_SHEET_ID, serviceAccountJWT)
 
+        await doc.loadInfo() // loads sheets
         return doc.sheetsByTitle[this.sheetName]
       },
       () => null,
@@ -362,13 +365,13 @@ export class Sheet<
   }
 
   private parseElement(
-    rawElement: Record<keyof Element, string>,
-    typeList: Record<keyof Element, string>,
+    rawElement: TStringified<Element>,
+    typeList: TStringified<Element>,
   ): Element {
-    const fullElement = _.reduce(
-      typeList,
-      (element: any, type: string, prop: string) => {
-        const rawProp: string = rawElement[prop as keyof Element]
+    const fullElement = Object.entries(typeList).reduce(
+      (element, [type, prop]) => {
+        const rawProp: string = rawElement[prop as TKey<Element>]
+
         switch (type) {
           case 'string':
             if (rawProp === undefined) {
@@ -470,34 +473,35 @@ export class Sheet<
         }
         return element
       },
-      JSON.parse(JSON.stringify(this.frenchSpecimen)),
+      structuredClone(this.frenchSpecimen) as Element,
     )
+
     return fullElement
   }
 
   private stringifyElement(
     element: Element,
-    typeList: Record<keyof Element, string>,
-  ): Record<keyof Element, string> {
-    const rawElement: Record<keyof Element, string> = _.reduce(
-      typeList,
-      (stringifiedElement: Record<keyof Element, string>, type: string, prop: string) => {
-        const value = element[prop as keyof Element]
+    typeList: TStringified<Element>,
+  ): TStringified<Element> {
+    const rawElement: TStringified<Element> = Object.entries(typeList).reduce(
+      (stringifiedElement, [type, prop]) => {
+        const value = element[prop as TKey<Element>]
+
         switch (type) {
           case 'string':
-            stringifiedElement[prop as keyof Element] = formulaSafe(`${value}`)
+            stringifiedElement[prop as TKey<Element>] = formulaSafe(`${value}`)
             break
 
           case 'number':
-            stringifiedElement[prop as keyof Element] = `${value}`
+            stringifiedElement[prop as TKey<Element>] = `${value}`
             break
 
           case 'boolean':
-            stringifiedElement[prop as keyof Element] = value ? 'X' : ''
+            stringifiedElement[prop as TKey<Element>] = value ? 'X' : ''
             break
 
           case 'date':
-            stringifiedElement[prop as keyof Element] = stringifiedDate(value)
+            stringifiedElement[prop as TKey<Element>] = stringifiedDate(value)
             break
 
           default: {
@@ -523,7 +527,7 @@ export class Sheet<
                     `In ${prop}, each item of ${value} is not a string`,
                   )
                 }
-                stringifiedElement[prop as keyof Element] = formulaSafe(
+                stringifiedElement[prop as TKey<Element>] = formulaSafe(
                   value.join(delimiter),
                 )
                 break
@@ -534,7 +538,7 @@ export class Sheet<
                     `In ${prop}, each item of ${value} is not a number`,
                   )
                 }
-                stringifiedElement[prop as keyof Element] = value.join(delimiter)
+                stringifiedElement[prop as TKey<Element>] = value.join(delimiter)
                 break
 
               case 'boolean':
@@ -543,7 +547,7 @@ export class Sheet<
                     `In ${prop}, each item of ${value} is not a boolean`,
                   )
                 }
-                stringifiedElement[prop as keyof Element] = _.map(value, val =>
+                stringifiedElement[prop as TKey<Element>] = _.map(value, val =>
                   val ? 'X' : '').join(delimiter)
                 break
 
@@ -553,7 +557,7 @@ export class Sheet<
                     `In ${prop}, each item of ${value} is not a date`,
                   )
                 }
-                stringifiedElement[prop as keyof Element] = _.map(
+                stringifiedElement[prop as TKey<Element>] = _.map(
                   value,
                   stringifiedDate,
                 ).join(delimiter)
@@ -567,7 +571,7 @@ export class Sheet<
 
         return stringifiedElement
       },
-      JSON.parse(JSON.stringify(this.frenchSpecimen)),
+      structuredClone(this.frenchSpecimen) as TStringified<Element>,
     )
 
     return rawElement

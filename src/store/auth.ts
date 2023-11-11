@@ -52,5 +52,3 @@ export const selectUserRoles = createSelector(selectAuthData, authData => authDa
 export const selectUserId = createSelector(selectAuthData, authData => authData.id)
 
 export const isUserConnected = createSelector(selectUserJwtToken, token => !!token)
-
-

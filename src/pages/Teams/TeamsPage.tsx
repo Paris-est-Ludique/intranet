@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 import { memo } from 'react'
-import styles from './styles.module.scss'
 import type { RouteComponentProps } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import styles from './styles.module.scss'
 
 import type { AppThunk } from '@/store'
 import { fetchTeamListIfNeed } from '@/store/teamList'

@@ -75,6 +75,7 @@ export default class ServiceAccessors<
       try {
         const auth = { headers: { Authorization: `Bearer ${jwt}` } }
         const fullAxiosConfig = defaultsDeep(auth, axiosConfig)
+
         const { data } = await axios.get(
           `${API_URL}/${this.elementName}ListGet`,
           fullAxiosConfig,

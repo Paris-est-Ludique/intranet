@@ -8,13 +8,13 @@ import max from 'lodash/max'
 import omit from 'lodash/omit'
 import some from 'lodash/some'
 
-import { pick } from '@/utils'
 import sgMail from '@sendgrid/mail'
 import bcrypt from 'bcrypt'
 import { getJwt } from '../secure'
 import ExpressAccessors from './expressAccessors'
 import { getUniqueNickname } from './tools'
 import { getSheet } from './accessors'
+import { pick } from '@/utils'
 
 import type {
   Contact,

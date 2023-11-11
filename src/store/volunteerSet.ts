@@ -1,8 +1,9 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
-import type { StateRequest } from './utils'
-import { elementFetch, toastError, toastSuccess } from './utils'
-import type { AppDispatch, AppState, AppThunk } from '.'
+import type { StateRequest } from '@/utils/elements'
+import { elementFetch } from '@/utils/elements'
+import { toastError, toastSuccess } from '@/utils/toast'
+import type { AppDispatch, AppState, AppThunk } from '@/store'
 
 import type { Volunteer } from '@/services/volunteers'
 import { volunteerSet } from '@/services/volunteersAccessors'

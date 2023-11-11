@@ -19,66 +19,72 @@ const test = {
   watch: false,
 } as UserConfig['test']
 
-const baseConfig = (env) => ({
-  cacheDir: '.vite',
-  resolve: {
-    alias: {
-      '@/': `${path.resolve(__dirname, './src')}/`,
-    },
-  },
-  build: {
-    sourcemap: env.NODE_ENV === 'development' ? 'inline' : false,
-    cssCodeSplit: true,
-  },
-  optimizeDeps: { exclude: ['fsevents', 'lodash/pick'] },
-  plugins: [
-    react(),
-    LightningCSS(),
-    AutoImport({
-      dts: './src/auto-import.d.ts',
-      defaultExportByFilename: false,
-      include: [
-        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-      ],
-      dirs: [
-        './src/hooks/**/*',
-        './src/components/**/*',
-        './src/services/**/*',
-        './src/store/**/*',
-        './src/utils/**/*',
-      ],
-      imports: [
-        'react',
-        'react-router',
-      ],
-      eslintrc: {
-        enabled: true,
-        filepath: './.eslintrc-auto-import.json',
-        globalsPropValue: true,
+function baseConfig(env) {
+  return {
+    cacheDir: '.vite',
+    resolve: {
+      alias: {
+        '@/': `${path.resolve(__dirname, './src')}/`,
       },
-    }),
-  ],
-  test,
-})
+    },
+    build: {
+      sourcemap: env.NODE_ENV === 'development' ? 'inline' : false,
+      cssCodeSplit: true,
+    },
+    optimizeDeps: { exclude: ['fsevents', 'lodash/pick'] },
+    plugins: [
+      react(),
+      LightningCSS(),
+      AutoImport({
+        dts: './src/auto-import.d.ts',
+        defaultExportByFilename: false,
+        include: [
+          /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        ],
+        dirs: [
+          './src/hooks/**/*',
+          './src/components/**/*',
+          './src/services/**/*',
+          './src/store/**/*',
+          './src/utils/**/*',
+        ],
+        imports: [
+          'react',
+          'react-router',
+        ],
+        eslintrc: {
+          enabled: true,
+          filepath: './.eslintrc-auto-import.json',
+          globalsPropValue: true,
+        },
+      }),
+    ],
+    test,
+  }
+}
 
-export const serverConfig = (env: Record<string, string>) => ({
-  ...baseConfig(env),
-  define: {
-    'import.meta.env.USERNAME': JSON.stringify(env.LOGNAME),
-    'import.meta.env.PORT': JSON.stringify(env.PORT),
-    'import.meta.env.HOST': JSON.stringify(env.HOST),
-    'import.meta.env.JWT_SECRET': JSON.stringify(env.JWT_SECRET),
-    'import.meta.env.DISCORD_TOKEN': JSON.stringify(env.DISCORD_TOKEN),
-    'import.meta.env.DISCORD_GUILD_ID': JSON.stringify(env.DISCORD_GUILD_ID),
-    'import.meta.env.SENDGRID_API_KEY': JSON.stringify(env.SENDGRID_API_KEY),
-    'import.meta.env.FORCE_ORANGE_PUBLIC_VAPID_KEY': JSON.stringify(env.FORCE_ORANGE_PUBLIC_VAPID_KEY),
-    'import.meta.env.FORCE_ORANGE_PRIVATE_VAPID_KEY': JSON.stringify(env.FORCE_ORANGE_PRIVATE_VAPID_KEY),
-  },
-})
+export function serverConfig(env: Record<string, string>) {
+  return {
+    ...baseConfig(env),
+    define: {
+      'import.meta.env.USERNAME': JSON.stringify(env.LOGNAME),
+      'import.meta.env.PORT': JSON.stringify(env.PORT),
+      'import.meta.env.HOST': JSON.stringify(env.HOST),
+      'import.meta.env.JWT_SECRET': JSON.stringify(env.JWT_SECRET),
+      'import.meta.env.DISCORD_TOKEN': JSON.stringify(env.DISCORD_TOKEN),
+      'import.meta.env.DISCORD_GUILD_ID': JSON.stringify(env.DISCORD_GUILD_ID),
+      'import.meta.env.SENDGRID_API_KEY': JSON.stringify(env.SENDGRID_API_KEY),
+      'import.meta.env.FORCE_ORANGE_PUBLIC_VAPID_KEY': JSON.stringify(env.FORCE_ORANGE_PUBLIC_VAPID_KEY),
+      'import.meta.env.FORCE_ORANGE_PRIVATE_VAPID_KEY': JSON.stringify(env.FORCE_ORANGE_PRIVATE_VAPID_KEY),
+    },
+  }
+}
 
-export const clientConfig = (env: Record<string, string>) =>  ({
-  ...baseConfig(env),
-})
+export function clientConfig(env: Record<string, string>) {
+  return {
+    ...baseConfig(env),
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { fetchPostulantAdd } from '@/store/postulantAdd'
 import type { AppDispatch, AppState } from '@/store'
 import { validEmail } from '@/utils/standardization'
-import { toastError } from '@/store/utils'
+import { toastError } from '@/utils/toast'
 import {
   fetchMiscFestivalDateListIfNeed,
   selectMiscFestivalDateList,

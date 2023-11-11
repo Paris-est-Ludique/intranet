@@ -2,10 +2,10 @@ import { createBrowserHistory, createMemoryHistory } from 'history'
 import { configureStore } from '@reduxjs/toolkit'
 import type { Action, EntityState } from '@reduxjs/toolkit'
 import type { ThunkAction } from 'redux-thunk'
-
 import { combineReducers } from 'redux'
 import { createReduxHistoryContext } from 'redux-first-history'
-import type { StateRequest } from './utils'
+
+import type { StateRequest } from '@/utils/elements'
 
 const {
   createReduxHistory,

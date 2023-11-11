@@ -1,8 +1,9 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import type { StateRequest } from './utils'
-import { elementFetch, toastError } from './utils'
 import type { AppDispatch, AppState, AppThunk } from '.'
+import type { StateRequest } from '@/utils/elements'
+import { elementFetch } from '@/utils/elements'
+import { toastError } from '@/utils/toast'
 
 import type { VolunteerHosting } from '@/services/volunteers'
 import { volunteerHostingSet } from '@/services/volunteersAccessors'

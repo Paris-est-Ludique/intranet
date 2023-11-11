@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import VolunteerInfo from '../VolunteerInfo'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import VolunteerInfo from '../VolunteerInfo'
 import { volunteerExample } from '@/services/volunteers'
 
 describe('<VolunteerInfo />', () => {

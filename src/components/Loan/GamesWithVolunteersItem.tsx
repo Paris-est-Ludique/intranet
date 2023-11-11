@@ -3,7 +3,7 @@ import { memo } from 'react'
 import classnames from 'classnames'
 import styles from './styles.module.scss'
 import type { GameWithVolunteers } from '@/services/games'
-import { gameTitleExactCategory } from '@/store/utils'
+import { gameTitleExactCategory } from '@/utils/games'
 
 interface Props {
   gameWithLoans: GameWithVolunteers

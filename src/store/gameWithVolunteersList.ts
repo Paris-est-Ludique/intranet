@@ -3,9 +3,11 @@ import sortedUniqBy from 'lodash/sortedUniqBy'
 
 import { createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { StateRequest } from './utils'
-import { elementListFetch, gameTitleOrder, toastError } from './utils'
 import type { AppDispatch, AppState, AppThunk, EntitiesRequest } from '.'
+import type { StateRequest } from '@/utils/elements'
+import { elementListFetch } from '@/utils/elements'
+import { toastError } from '@/utils/toast'
+import { gameTitleOrder } from '@/utils/games'
 import type { GameWithVolunteers } from '@/services/games'
 import { gameWithVolunteersListGet } from '@/services/gamesAccessors'
 

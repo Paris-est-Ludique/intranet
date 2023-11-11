@@ -254,6 +254,7 @@
     "hideModal": true,
     "history": true,
     "hostLocations": true,
+    "inclusivePick": true,
     "isUserConnected": true,
     "lazy": true,
     "mealDays": true,
@@ -270,7 +271,9 @@
     "mockStore": true,
     "nightChoiceSelectionDefaultState": true,
     "nightList": true,
+    "omit": true,
     "passwordMinLength": true,
+    "pick": true,
     "postulantAdd": true,
     "postulantAddActions": true,
     "postulantAddReducer": true,
@@ -453,9 +456,6 @@
     "wishListReducer": true,
     "wishSet": true,
     "withUserConnected": true,
-    "withUserRole": true,
-    "pick": true,
-    "inclusivePick": true,
-    "omit": true
+    "withUserRole": true
   }
 }
