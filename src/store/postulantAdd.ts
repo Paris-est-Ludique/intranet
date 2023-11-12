@@ -30,7 +30,8 @@ const postulantAddSlice = createSlice({
   },
 })
 
-export const { reducer: postulantAddReducer, actions: postulantAddActions } = postulantAddSlice
+export const postulantAddActions = postulantAddSlice.actions
+export const postulantAddReducer = postulantAddSlice.reducer
 
 export const fetchPostulantAdd = elementAddFetch(
   postulantAdd,

@@ -32,7 +32,8 @@ const volunteerOnSiteInfoSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerOnSiteInfoReducer, actions: volunteerOnSiteInfoActions } = volunteerOnSiteInfoSlice
+export const volunteerOnSiteInfoActions = volunteerOnSiteInfoSlice.actions
+export const volunteerOnSiteInfoReducer = volunteerOnSiteInfoSlice.reducer
 
 export const fetchVolunteerOnSiteInfo = elementFetch(
   volunteerOnSiteInfoGet,

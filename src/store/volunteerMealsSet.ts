@@ -32,7 +32,8 @@ const volunteerMealsSetSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerMealsSetReducer, actions: volunteerMealsSetActions } = volunteerMealsSetSlice
+export const volunteerMealsSetActions = volunteerMealsSetSlice.actions
+export const volunteerMealsSetReducer = volunteerMealsSetSlice.reducer
 
 export const fetchVolunteerMealsSet = elementFetch(volunteerMealsSet, volunteerMealsSetActions, (error: Error) =>
   toastError(`Erreur lors du chargement des choix des repas: ${error.message}`))

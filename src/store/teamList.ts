@@ -33,7 +33,8 @@ const teamListSlice = createSlice({
   },
 })
 
-export const { reducer: teamListReducer, actions: teamListActions } = teamListSlice
+export const teamListActions = teamListSlice.actions
+export const teamListReducer = teamListSlice.reducer
 
 export const fetchTeamList = elementListFetch(teamListGet, teamListActions, (error: Error) =>
   toastError(`Erreur lors du chargement des équipes: ${error.message}`))

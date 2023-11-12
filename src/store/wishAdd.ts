@@ -30,7 +30,8 @@ const wishAddSlice = createSlice({
   },
 })
 
-export const { reducer: wishAddReducer, actions: wishAddActions } = wishAddSlice
+export const wishAddActions = wishAddSlice.actions
+export const wishAddReducer = wishAddSlice.reducer
 
 export const fetchWishAdd = elementAddFetch(
   wishAdd,

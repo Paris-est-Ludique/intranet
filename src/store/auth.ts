@@ -33,7 +33,8 @@ export const authSlice = createSlice({
   },
 })
 
-export const { actions: authActions, reducer: authReducer } = authSlice
+export const authActions = authSlice.actions
+export const authReducer = authSlice.reducer
 
 export const { authSetCurrentUser, authLogoutUser } = authActions
 

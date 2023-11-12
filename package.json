@@ -32,10 +32,10 @@
   },
   "scripts": {
     "dev": "vite-node server.ts",
-    "build": "rimraf dist && tsc -p tsconfig.json && yarn build:client && yarn build:server",
+    "build": "yarn clean && yarn build:client && yarn build:server",
     "build:client": "vite build --outDir dist/client --ssrManifest",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.ts",
-    "generate": "vite build --outDir dist/static && yarn run build:server && node prerender",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
+    "generate": "vite build --outDir dist/static && yarn build:server && vite-node prerender.ts",
     "serve": "NODE_ENV=production vite-node server.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -46,7 +46,8 @@
     "coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "prepare": "husky install",
-    "discord-register": "cross-env REGISTER_DISCORD_COMMANDS=true yarn build && yarn prod"
+    "clean": "rimraf dist/",
+    "discord-register": "REGISTER_DISCORD_COMMANDS=true yarn build && yarn serve"
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.9.7",

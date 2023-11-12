@@ -32,7 +32,8 @@ const miscMeetingDateListSlice = createSlice({
   },
 })
 
-export const { reducer: miscMeetingDateListReducer, actions: miscMeetingDateListActions } = miscMeetingDateListSlice
+export const miscMeetingDateListActions = miscMeetingDateListSlice.actions
+export const miscMeetingDateListReducer = miscMeetingDateListSlice.reducer
 
 export const fetchMiscMeetingDateList = elementListFetch(
   miscMeetingDateListGet,

@@ -32,7 +32,8 @@ const volunteerListSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerListReducer, actions: volunteerListActions } = volunteerListSlice
+export const volunteerListActions = volunteerListSlice.actions
+export const volunteerListReducer = volunteerListSlice.reducer
 
 export const fetchVolunteerList = elementListFetch(volunteerListGet, volunteerListActions, (error: Error) =>
   toastError(`Erreur lors du chargement des bénévoles: ${error.message}`))

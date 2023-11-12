@@ -4,12 +4,13 @@ import { PureComponent } from 'react'
 interface Props {
   children: ReactNode | undefined
 }
+
 interface State {
   error: Error | null
   errorInfo: { componentStack: string } | null
 }
 
-class ErrorBoundary extends PureComponent<Props, State> {
+export default class ErrorBoundary extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
 
@@ -46,5 +47,3 @@ class ErrorBoundary extends PureComponent<Props, State> {
         )
   }
 }
-
-export default ErrorBoundary

@@ -32,7 +32,8 @@ const volunteerHostingSetSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerHostingSetReducer, actions: volunteerHostingSetActions } = volunteerHostingSetSlice
+export const volunteerHostingSetActions = volunteerHostingSetSlice.actions
+export const volunteerHostingSetReducer = volunteerHostingSetSlice.reducer
 
 export const fetchVolunteerHostingSet = elementFetch(volunteerHostingSet, volunteerHostingSetActions, (error: Error) =>
   toastError(`Erreur lors du chargement des choix de jours de présence: ${error.message}`))

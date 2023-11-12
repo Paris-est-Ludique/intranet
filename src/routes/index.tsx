@@ -23,109 +23,109 @@ export const routes = [
   {
     path: '/',
     exact: true,
-    element: <AsyncHome />,
+    component: AsyncHome,
     loadData: loadHomeData,
   },
   {
     path: '/edit',
-    element: <AsyncEdit />,
+    component: AsyncEdit,
     loadData: loadDbEdit,
   },
   {
     path: '/updateGameDetails',
-    element: <AsyncGameDetailsUpdate />,
+    component: AsyncGameDetailsUpdate,
     loadData: loadGameDetailsUpdate,
   },
   {
     path: '/connaissances',
-    element: <AsyncKnowledge />,
+    component: AsyncKnowledge,
     loadData: loadKnowledgeData,
   },
   {
     path: '/stats',
-    element: <AsyncKnowledgeStats />,
+    component: AsyncKnowledgeStats,
     loadData: loadKnowledgeStatsData,
   },
 
   // {
   //     path: "/emprunts",
-  //     element: AsyncLoans,
+  //     component: AsyncLoans,
   //     loadData: loadLoansData,
   // },
 
   {
     path: '/emprunter',
-    element: <AsyncLoaning />,
+    component: AsyncLoaning,
     loadData: loadLoaningData,
   },
   {
     path: '/fiches',
-    element: <AsyncKnowledgeCards />,
+    component: AsyncKnowledgeCards,
     loadData: loadCardKnowledgeData,
     meh: 'doh',
   },
   {
     path: '/preRegister',
-    element: <AsyncRegisterPage />,
+    component: AsyncRegisterPage,
     loadData: loadRegisterPage,
   },
   {
     path: '/sinscrire',
-    element: <AsyncRegisterPage />,
+    component: AsyncRegisterPage,
     loadData: loadRegisterPage,
   },
   {
     path: '/login',
-    element: <Login />,
+    component: Login,
   },
   {
     path: '/sidentifier',
-    element: <Login />,
+    component: Login,
   },
   {
     path: '/forgot',
-    element: <Forgot />,
+    component: Forgot,
   },
   {
     path: '/oubli',
-    element: <Forgot />,
+    component: Forgot,
   },
   {
     path: '/equipes',
-    element: <AsyncTeams />,
+    component: AsyncTeams,
     loadData: loadTeamsData,
   },
   {
     path: '/teams',
-    element: <AsyncTeams />,
+    component: AsyncTeams,
     loadData: loadTeamsData,
   },
   {
     path: '/wish',
-    element: <AsyncWish />,
+    component: AsyncWish,
     loadData: loadWishData,
   },
   {
     path: '/profil',
-    element: <AsyncBoard />,
+    component: AsyncBoard,
     loadData: loadBoardData,
   },
   {
     path: '/benevoles',
-    element: <AsyncVolunteers />,
+    component: AsyncVolunteers,
     loadData: loadVolunteersData,
   },
   {
     path: '/annonces',
-    element: <AsyncAnnouncements />,
+    component: AsyncAnnouncements,
     loadData: loadAnnouncementsData,
   },
   {
     path: '/team-assign',
-    element: <AsyncTeamAssignment />,
+    component: AsyncTeamAssignment,
     loadData: loadTeamAssignmentData,
   },
   {
-    element: NotFound,
+    component: NotFound,
   },
 ]

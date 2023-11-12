@@ -31,7 +31,8 @@ const volunteerLoginSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerLoginReducer, actions: volunteerLoginActions } = volunteerLoginSlice
+export const volunteerLoginActions = volunteerLoginSlice.actions
+export const volunteerLoginReducer = volunteerLoginSlice.reducer
 
 export const fetchVolunteerLoginToRoot = elementFetch<VolunteerLogin, Parameters<typeof volunteerLogin>>(
   volunteerLogin,

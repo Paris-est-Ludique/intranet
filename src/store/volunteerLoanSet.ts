@@ -37,7 +37,8 @@ const volunteerLoanSetSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerLoanSetReducer, actions: volunteerLoanSetActions } = volunteerLoanSetSlice
+export const volunteerLoanSetActions = volunteerLoanSetSlice.actions
+export const volunteerLoanSetReducer = volunteerLoanSetSlice.reducer
 
 export const fetchVolunteerLoanSet = elementFetch(volunteerLoanSet, volunteerLoanSetActions, (error: Error) =>
   toastError(`Erreur lors du chargement des emprunts: ${error.message}`))

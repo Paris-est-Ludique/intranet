@@ -32,7 +32,8 @@ const retexSetSlice = createSlice({
   },
 })
 
-export const { reducer: retexSetReducer, actions: retexSetActions } = retexSetSlice
+export const retexSetActions = retexSetSlice.actions
+export const retexSetReducer = retexSetSlice.reducer
 
 export const fetchRetexSet = elementFetch(retexSet, retexSetActions, (error: Error) =>
   toastError(`Erreur lors de la modification d'un retex: ${error.message}`))

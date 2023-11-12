@@ -5,13 +5,16 @@ import type { Request, Response } from 'express'
 
 import { App } from './App'
 
-import { store } from '@/store'
+import { getHeadersJWT } from './services/auth'
+import { authLogoutUser, authSetCurrentUser } from './store/auth'
+import { setupStore } from '@/store'
 import loadDataOnRoute from '@/server/loadDataOnRoute'
 
 export async function render(request: Request, response: Response, context: MyContext, stream: NodeJS.WritableStream) {
   // [SSR] prepare the store
 
   const { jwt, id, roles } = getHeadersJWT(request.headers.cookie)
+  const { store } = setupStore({ pathname: request.url })
 
   if (jwt && id && roles) {
     store.dispatch(authSetCurrentUser({ jwt, id, roles }))

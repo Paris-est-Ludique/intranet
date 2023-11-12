@@ -1,5 +1,4 @@
-import type { Route } from 'react-router-dom'
-import { useRoutes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { ToastContainer } from 'react-toastify'
 import styles from './App.module.scss'
@@ -27,12 +26,12 @@ const helmetSettings = {
   ],
 }
 
-export function App({ route, location }: { route: Route; location: Location }): JSX.Element {
-  if (location?.pathname === '/fiches') {
-    // TODO use a better way to handle this
+export function App(): JSX.Element {
+  // if (location?.pathname === '/fiches') {
+  //   // TODO use a better way to handle this
 
-    return <div className={styles.cardPage}>{useRoutes(route)}</div>
-  }
+  //   return <div className={styles.cardPage}>{useRoutes(route)}</div>
+  // }
 
   return (
     <div>
@@ -57,7 +56,11 @@ export function App({ route, location }: { route: Route; location: Location }): 
           <LogoutButton />
         </div>
       </header>
-      {useRoutes(routes)}
+      <Routes>
+        {routes.map(({ path, component: RouteComp }) => {
+          return <Route key={path || 'notFound'} path={path} element={<RouteComp />}></Route>
+        })}
+      </Routes>
       <ToastContainer />
     </div>
   )

@@ -32,7 +32,8 @@ const gameDetailsUpdateSlice = createSlice({
   },
 })
 
-export const { reducer: gameDetailsUpdateReducer, actions: gameDetailsUpdateActions } = gameDetailsUpdateSlice
+export const gameDetailsUpdateActions = gameDetailsUpdateSlice.actions
+export const gameDetailsUpdateReducer = gameDetailsUpdateSlice.reducer
 
 export const fetchGameDetailsUpdate = elementListFetch(
   gameDetailsUpdate,

@@ -32,7 +32,8 @@ const volunteerAsksSetSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerAsksSetReducer, actions: volunteerAsksSetActions } = volunteerAsksSetSlice
+export const volunteerAsksSetActions = volunteerAsksSetSlice.actions
+export const volunteerAsksSetReducer = volunteerAsksSetSlice.reducer
 
 export const fetchVolunteerAsksSet = elementFetch(volunteerAsksSet, volunteerAsksSetActions, (error: Error) =>
   toastError(`Erreur lors du chargement des notifications: ${error.message}`))

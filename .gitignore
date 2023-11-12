@@ -16,6 +16,7 @@ public/*
 !public/logo192.png
 !public/logo512.png
 !public/manifest.json
+dist/*
 
 # Access
 access/*

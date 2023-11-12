@@ -10,7 +10,7 @@ import reactJsx from 'eslint-plugin-react/configs/jsx-runtime.js'
 export default antfu(
   {
     typescript: true,
-    ignores: ['!.yarn/', '!.vite/', '.yarn/*', '.vite/*', '.pnp.cjs', '.pnp.loader.mjs', '**/*.config.js'],
+    ignores: ['!.yarn/', '!.vite/', '.yarn/*', '.vite/*', '.pnp.cjs', '.pnp.loader.mjs', '**/*.config.js', 'dist'],
     plugins: {
       reactRefresh,
     },

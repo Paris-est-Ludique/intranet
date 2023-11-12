@@ -31,7 +31,8 @@ const volunteerAddNewSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerAddNewReducer, actions: volunteerAddNewActions } = volunteerAddNewSlice
+export const volunteerAddNewActions = volunteerAddNewSlice.actions
+export const volunteerAddNewReducer = volunteerAddNewSlice.reducer
 
 export const fetchVolunteerAddNew = elementAddFetch(
   volunteerAddNew,

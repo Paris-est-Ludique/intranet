@@ -30,6 +30,7 @@ const volunteerForgotSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerForgotReducer, actions: volunteerForgotActions } = volunteerForgotSlice
+export const volunteerForgotActions = volunteerForgotSlice.actions
+export const volunteerForgotReducer = volunteerForgotSlice.reducer
 
 export const fetchVolunteerForgot = elementFetch(volunteerForgot, volunteerForgotActions)

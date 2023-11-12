@@ -31,7 +31,8 @@ const wishListSlice = createSlice({
   },
 })
 
-export const { reducer: wishListReducer, actions: wishListActions } = wishListSlice
+export const wishListActions = wishListSlice.actions
+export const wishListReducer = wishListSlice.reducer
 
 export const fetchWishList = elementListFetch(wishListGet, wishListActions, (error: Error) =>
   toastError(`Erreur lors du chargement des envies: ${error.message}`))

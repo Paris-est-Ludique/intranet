@@ -32,7 +32,8 @@ const volunteerSetSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerSetReducer, actions: volunteerSetActions } = volunteerSetSlice
+export const volunteerSetActions = volunteerSetSlice.actions
+export const volunteerSetReducer = volunteerSetSlice.reducer
 
 export const fetchVolunteerSet = elementFetch(
   volunteerSet,

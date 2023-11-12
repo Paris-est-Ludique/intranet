@@ -32,7 +32,8 @@ const volunteerDiscordIdSlice = createSlice({
   },
 })
 
-export const { reducer: volunteerDiscordIdReducer, actions: volunteerDiscordIdActions } = volunteerDiscordIdSlice
+export const volunteerDiscordIdActions = volunteerDiscordIdSlice.actions
+export const volunteerDiscordIdReducer = volunteerDiscordIdSlice.reducer
 
 export const fetchVolunteerDiscordId = elementFetch(volunteerDiscordIdGet, volunteerDiscordIdActions, (error: Error) =>
   toastError(`Erreur lors du chargement du discordId d'un bénévole: ${error.message}`))

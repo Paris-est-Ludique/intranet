@@ -32,7 +32,8 @@ const gameListSlice = createSlice({
   },
 })
 
-export const { reducer: gameListReducer, actions: gameListActions } = gameListSlice
+export const gameListActions = gameListSlice.actions
+export const gameListReducer = gameListSlice.reducer
 
 export const fetchGameList = elementListFetch(gameListGet, gameListActions, (error: Error) =>
   toastError(`Erreur lors du chargement des jeux JAV: ${error.message}`))
