@@ -34,7 +34,7 @@ const Retex: FC<Props> = (): JSX.Element | null => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.title}>Retour sur PeL 2022</div>
+            <div className={styles.title}>Retour sur PeL 2023</div>
             <div className={styles.line}>
                 <span
                     className={answeredQuestionCount < expectedAnswerCount ? styles.lineEmpty : ""}
