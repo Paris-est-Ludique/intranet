@@ -96,7 +96,7 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
 
     return (
         <div>
-            <div className={styles.title}>Retour sur PeL 2022</div>
+            <div className={styles.title}>Retour sur PeL 2023</div>
 
             <div className={styles.questionWrapper}>
                 On aimerait savoir comment s'est passé ton festival !<br />
@@ -303,7 +303,7 @@ const RetexForm: FC<Props> = ({ children, afterSubmit }): JSX.Element | null => 
 
             <div className={styles.questionWrapper}>
                 <label htmlFor="question8">
-                    Envisages-tu d’être bénévole pour PeL 2023 ? Dans la même équipe, ou tu aurais
+                    Envisages-tu d’être bénévole pour PeL 2024 ? Dans la même équipe, ou tu aurais
                     envie d’en changer ? Libre à toi d’expliquer ou non pourquoi.
                 </label>
                 <div className={styles.preAnswerWrapper}>

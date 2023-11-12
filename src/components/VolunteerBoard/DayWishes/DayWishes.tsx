@@ -25,28 +25,28 @@ const DayWishes: FC = (): JSX.Element | null => {
 
             {participation === "non" && (
                 <div className={styles.participationLabel}>
-                    Je <b>ne participerai pas</b> à PeL 2023 :(
+                    Je <b>ne participerai pas</b> à PeL 2024 :(
                 </div>
             )}
             {participation === "oui" && (
                 <div className={styles.participationLabel}>
-                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2023 !
+                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2024 !
                 </div>
             )}
             {participation === "peut-etre" && (
                 <div className={styles.participationLabel}>
-                    Je <b>ne sais pas encore</b> si je participerai à PeL 2023
+                    Je <b>ne sais pas encore</b> si je participerai à PeL 2024
                 </div>
             )}
             {participation === "à distance" && (
                 <div className={styles.participationLabel}>
-                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2023 ! Sans y
+                    Je <b className={styles.yesParticipation}>participerai</b> à PeL 2024 ! Sans y
                     être pendant le weekend.
                 </div>
             )}
             {participation === "inconnu" && (
                 <div className={styles.lineEmpty}>
-                    Participation à PeL 2023{" "}
+                    Participation à PeL 2024{" "}
                     <span className={styles.lineEmpty}>non renseignées</span>
                 </div>
             )}

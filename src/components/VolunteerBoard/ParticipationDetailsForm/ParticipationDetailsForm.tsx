@@ -45,7 +45,7 @@ const ParticipationDetailsForm: FC<Props> = ({ children, afterSubmit }): JSX.Ele
 
             <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
-                    <div className={styles.adultTitle}>Seras-tu majeur·e au 1 juillet 2023 ?</div>
+                    <div className={styles.adultTitle}>Seras-tu majeur·e au 1 juillet 2024 ?</div>
                 </div>
                 <div className={styles.rightCol}>
                     <label className={styles.adultLabel}>

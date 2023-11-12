@@ -51,14 +51,15 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
     const [alreadySignup, setAlreadySignup] = useState(false)
     const [firstMeeting, setFirstMeeting] = useState("")
     const [commentFirstMeeting, setCommentFirstMeeting] = useState("")
-    const [howToContact, setHowToContact] = useState("Email")
+    // const [howToContact, setHowToContact] = useState("Email")
+    const howToContact = ""
     const [sending, setSending] = useState(false)
     const [changingBackground, setChangingBackground] = useState(0)
 
     const festivalDateList = useSelector(selectMiscFestivalDateList)
     const meetingDateList = useSelector(selectMiscMeetingDateList)
 
-    const enableRegistering = false
+    const enableRegistering = true
     const hasMeetingDates = meetingDateList.length > 0
 
     useEffect(() => {
@@ -157,6 +158,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
         )
     }
 
+    // TODO update festivalDate from BDD
     const festivalFullDate = _.find(festivalDateList, { id: 1 })?.date
 
     const intro = (
@@ -168,7 +170,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     leurs formes.{festivalFullDate && ` Les ${festivalFullDate} !`}
                 </p>
                 <p>
-                    En 2022, ce sont <b>18 000</b> visiteurs qui sont venus sous 300 chapiteaux et 2
+                    En 2023, ce sont <b>18 000</b> visiteurs qui sont venus sous 300 chapiteaux et 2
                     000 tables.
                 </p>
                 <p>
@@ -195,7 +197,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     toute l&apos;année ^^
                 </p>
                 <p>
-                    Pendant le festival de 2022, nous étions <b>196 bénévoles</b> organisés en
+                    Pendant le festival de 2023, nous étions <b>220 bénévoles</b> organisés en
                     équipes qui chouchoutent les visiteurs en les accueillant, en s&apos;assurant
                     que tout se passe bien, ou encore en expliquant des règles de jeux.
                 </p>
@@ -232,9 +234,12 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
 
             {enableRegistering && (
                 <dt>
-                    Si tu as envie de donner le sourire à des milliers de gens, remplis le
+                    Si l'experience te tente, remplis le formulaire suivant pour devenir bénévole à
+                    PEL 2024. Dès à présent, on peut se rencontrer, sur Paris ou en visio, en petits
+                    groupes pour discuter du festival, du bénévolat et surtout faire connaissance :)
+                    {/* Si tu as envie de donner le sourire à des milliers de gens, remplis le
                     formulaire suivant pour rencontrer une poignée d'entre nous dans un bar/resto
-                    près de Châtelet, avant de te décider ou non à devenir bénévole :)
+                    près de Châtelet, avant de te décider ou non à devenir bénévole :) */}
                     <br />
                 </dt>
             )}
@@ -617,7 +622,13 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     />
                 </div>
             </div>
-            <div className={styles.inputWrapper}>
+            <div className={styles.leftCol}>
+                <div className={styles.multipleChoiceTitle}>
+                    Nous te contacterons principalement par courriel, par téléphone/texto seulement
+                    si nécéssaire.
+                </div>
+            </div>
+            {/* <div className={styles.inputWrapper}>
                 <div className={styles.leftCol}>
                     <div className={styles.multipleChoiceTitle}>
                         Par quel moyen fiable et rapide préfères-tu être contacté si on en a besoin
@@ -654,7 +665,7 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                         </p>
                     </dd>
                 </dl>
-            )}
+            )} */}
         </>
     )
 
@@ -683,7 +694,8 @@ const RegisterForm = ({ dispatch }: Props): JSX.Element => {
                     {pelMember}
                     {nameMobileEmail}
                     {!enableRegistering && commentQuestion}
-                    {howToContact !== "Aucun" && submitButton}
+                    {/* {howToContact !== "Aucun" && submitButton} */}
+                    {submitButton}
                 </form>
             )}
         </>
