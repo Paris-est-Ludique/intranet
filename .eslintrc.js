@@ -55,11 +55,10 @@ module.exports = {
         "jsx-a11y/control-has-associated-label": "off",
     },
     globals: {
-        __CLIENT__: true,
-        __SERVER__: true,
-        __DEV__: true,
-        __LOCAL__: false,
-        __REGISTER_DISCORD_COMMANDS__: false,
-        __TEST__: false,
+        API_URL: false,
+        SSR: true,
+        DEV: true,
+        REGISTER_DISCORD_COMMANDS: false,
+        TEST: false,
     },
 }

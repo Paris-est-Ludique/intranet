@@ -48,8 +48,6 @@ export class Volunteer implements VolunteerPartial {
 
     password2 = ""
 
-    pushNotifSubscription = ""
-
     acceptsNotifs = ""
 
     team2022 = 0
@@ -128,7 +126,6 @@ export const translationVolunteer: { [k in keyof Volunteer]: string } = {
     created: "creation",
     password1: "passe1",
     password2: "passe2",
-    pushNotifSubscription: "pushNotifSubscription",
     acceptsNotifs: "accepteLesNotifs",
     team2022: "équipe2022",
     ok: "OK",
@@ -194,7 +191,6 @@ export const volunteerExample: Volunteer = {
     created: new Date(0),
     password1: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
     password2: "$2y$10$fSxY9AIuxSiEjwF.J3eXGubIxUPkdq9d5fqpbl8ASimSjNj4SR.9O",
-    pushNotifSubscription: "",
     acceptsNotifs: "",
     team2022: 0,
     ok: [5, 7, 24, 26, 31, 38, 50, 52, 54, 58],
@@ -248,7 +244,6 @@ export interface VolunteerAsks {
     id: Volunteer["id"]
     firstname: Volunteer["firstname"]
     hiddenAsks: Volunteer["hiddenAsks"]
-    pushNotifSubscription: Volunteer["pushNotifSubscription"]
     acceptsNotifs: Volunteer["acceptsNotifs"]
 }
 

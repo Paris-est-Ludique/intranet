@@ -13,14 +13,6 @@
     @include page-content-wrapper(520px);
 }
 
-.pushNotificationsPage {
-    @include page-wrapper-center;
-}
-
-.pushNotificationsContent {
-    @include page-content-wrapper;
-}
-
 .title {
     padding-bottom: 10px;
     font-weight: bold;

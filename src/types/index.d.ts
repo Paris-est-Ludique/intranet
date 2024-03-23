@@ -1,9 +1,8 @@
-declare const __CLIENT__: boolean
-declare const __SERVER__: boolean
-declare const __DEV__: boolean
-declare const __LOCAL__: boolean
-declare const __REGISTER_DISCORD_COMMANDS__: boolean
-declare const __TEST__: boolean
+declare const API_URL: string
+declare const SSR: boolean
+declare const DEV: boolean
+declare const REGISTER_DISCORD_COMMANDS: boolean
+declare const TEST: boolean
 
 declare module "*.svg"
 declare module "*.gif"
@@ -16,12 +15,11 @@ declare module "*.scss"
 
 declare namespace NodeJS {
     interface Global {
-        __CLIENT__: boolean
-        __SERVER__: boolean
-        __DEV__: boolean
-        __LOCAL__: boolean
-        __REGISTER_DISCORD_COMMANDS__: boolean
-        __TEST__: boolean
+        API_URL: string
+        SSR: boolean
+        DEV: boolean
+        REGISTER_DISCORD_COMMANDS: boolean
+        TEST: boolean
         $RefreshReg$: () => void
         $RefreshSig$$: () => void
     }

@@ -69,7 +69,7 @@ async function sendMeetingEmail(
     const hasMeetingDates = miscList?.[0]?.meetingId !== ""
 
     if (!hasMeetingDates || firstMeeting === "") {
-        if (__DEV__ || apiKey === "") {
+        if (DEV || apiKey === "") {
             console.error(`Fake sending meeting email to ${email}`)
         } else {
             sgMail.setApiKey(apiKey)
@@ -93,7 +93,7 @@ async function sendMeetingEmail(
     }
     const { meetingTitle, meetingUrl } = meetingLine
 
-    if (__DEV__ || apiKey === "") {
+    if (DEV || apiKey === "") {
         console.error(
             `Fake sending meeting email to ${email} for ${meetingTitle} and url ${meetingUrl}`
         )

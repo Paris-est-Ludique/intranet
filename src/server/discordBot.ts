@@ -23,7 +23,6 @@ import {
     DiscordRoleWithoutId,
 } from "../services/discordRoles"
 import { getSheet } from "./gsheets/accessors"
-import config from "../config"
 
 let cachedToken: string
 // let cachedClientId: string
@@ -68,7 +67,7 @@ export async function hasDiscordAccess(): Promise<boolean> {
 }
 
 // export async function discordRegisterCommands(): Promise<void> {
-//     if (!__REGISTER_DISCORD_COMMANDS__) {
+//     if (!REGISTER_DISCORD_COMMANDS) {
 //         return
 //     }
 
@@ -98,7 +97,7 @@ export async function hasDiscordAccess(): Promise<boolean> {
 
 export async function discordBot(): Promise<void> {
     try {
-        if (__REGISTER_DISCORD_COMMANDS__) {
+        if (REGISTER_DISCORD_COMMANDS) {
             return
         }
 
@@ -421,7 +420,7 @@ async function getCreds(): Promise<void> {
             // cachedClientId = parsedCreds.clientId
             cachedGuildId = parsedCreds.guildId
         } catch (e: any) {
-            cachedToken = config.DEV_DISCORD_TOKEN
+            cachedToken = "fakeqA6uF#msq2312bebf2FLFn4XzWQ6dttXSJwBX#?gL2JWf!" // DEV_DISCORD_TOKEN
         }
     }
 }

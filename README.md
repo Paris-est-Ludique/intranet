@@ -54,7 +54,7 @@ Now the app should be serving at <http://localhost:3000>.
 ## Using Docker
 
 `docker build . -t force-orange`
-`docker run -d -p 3000:8080 -t force-orange`
+`docker run -d -p 3000:3000 -t force-orange`
 
 ### Commands
 

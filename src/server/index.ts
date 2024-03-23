@@ -8,14 +8,10 @@ import hpp from "hpp"
 import favicon from "serve-favicon"
 import chalk from "chalk"
 import * as http from "http"
-import * as https from "https"
-import * as fs from "fs"
-import _ from "lodash"
 
 import devServer from "./devServer"
 import ssr from "./ssr"
 
-import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
 import { detailedBoxListGet } from "./gsheets/boxes"
@@ -49,12 +45,10 @@ import {
     volunteerOnSiteInfo,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
-import config from "../config"
-import { notificationsSubscribe, notificationMain } from "./notifications"
 import { /* discordRegisterCommands, */ discordBot, hasDiscordAccess } from "./discordBot"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
-import { addStatus, showStatusAt } from "./status"
+import { addStatus } from "./status"
 import {
     miscDiscordInvitation,
     miscFestivalDateListGet,
@@ -64,10 +58,10 @@ import { retexSet } from "./gsheets/retex"
 
 checkAccess()
 
-notificationMain()
-
 // discordRegisterCommands()
 discordBot()
+
+const { PORT } = process.env
 
 const app = express()
 
@@ -81,10 +75,6 @@ app.use(helmet({ contentSecurityPolicy: false }))
 app.use(hpp())
 // Compress all requests
 app.use(compression())
-// Https with certbot and Let's Encrypt
-if (!__DEV__) {
-    app.use("/.well-known/acme-challenge", certbotRouter)
-}
 
 // Use for http request debug (show errors only)
 app.use(logger("dev", { skip: (_req, res) => res.statusCode < 400 }))
@@ -92,7 +82,7 @@ app.use(favicon(path.resolve(process.cwd(), "public/favicon.ico")))
 app.use(express.static(path.resolve(process.cwd(), "public")))
 
 // Enable dev-server in development
-if (__DEV__) devServer(app)
+if (DEV) devServer(app)
 
 app.use(express.json())
 app.use(cookieParser())
@@ -106,126 +96,81 @@ app.get(
     }
 )
 
+const apiRouter = express.Router()
+
 /**
  * APIs
  */
 // Google Sheets API
-app.get("/GameDetailsUpdate", gameDetailsUpdate)
-app.get("/BoxDetailedListGet", detailedBoxListGet)
-app.get("/GameListGet", gameListGet)
-app.get("/GamesToGiveListGet", gamesToGiveListGet)
-app.get("/GameTitleOrderCategories", gameTitleOrderCategories)
-app.get("/MiscFestivalDateListGet", miscFestivalDateListGet)
-app.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
-app.get("/WishListGet", wishListGet)
-app.post("/WishAdd", wishAdd)
-app.post("/PostulantAdd", postulantAdd)
-// Disabling registration app.post("/VolunteerPartialAdd", volunteerPartialAdd)
-app.post("/VolunteerLogin", volunteerLogin)
-app.post("/VolunteerForgot", volunteerForgot)
-app.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
+apiRouter.get("/GameDetailsUpdate", gameDetailsUpdate)
+apiRouter.get("/BoxDetailedListGet", detailedBoxListGet)
+apiRouter.get("/GameListGet", gameListGet)
+apiRouter.get("/GamesToGiveListGet", gamesToGiveListGet)
+apiRouter.get("/GameTitleOrderCategories", gameTitleOrderCategories)
+apiRouter.get("/MiscFestivalDateListGet", miscFestivalDateListGet)
+apiRouter.get("/MiscMeetingDateListGet", miscMeetingDateListGet)
+apiRouter.get("/WishListGet", wishListGet)
+apiRouter.post("/WishAdd", wishAdd)
+apiRouter.post("/PostulantAdd", postulantAdd)
+// Disabling registration apiRouter.post("/VolunteerPartialAdd", volunteerPartialAdd)
+apiRouter.post("/VolunteerLogin", volunteerLogin)
+apiRouter.post("/VolunteerForgot", volunteerForgot)
+apiRouter.get("/VolunteerListGet", secure as RequestHandler, volunteerListGet)
 
 // Secured APIs
-app.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
-app.get("/GameWithVolunteersListGet", secure as RequestHandler, gameWithVolunteersListGet)
-app.get("/MiscDiscordInvitationGet", secure as RequestHandler, miscDiscordInvitation)
-app.post("/RetexSet", secure as RequestHandler, retexSet)
-app.get("/TeamListGet", teamListGet)
-app.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
-app.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
-app.post("/VolunteerKnowledgeSet", secure as RequestHandler, volunteerKnowledgeSet)
-app.post(
+apiRouter.get("/AnnouncementListGet", secure as RequestHandler, announcementListGet)
+apiRouter.get("/GameWithVolunteersListGet", secure as RequestHandler, gameWithVolunteersListGet)
+apiRouter.get("/MiscDiscordInvitationGet", secure as RequestHandler, miscDiscordInvitation)
+apiRouter.post("/RetexSet", secure as RequestHandler, retexSet)
+apiRouter.get("/TeamListGet", teamListGet)
+apiRouter.get("/VolunteerDiscordId", secure as RequestHandler, volunteerDiscordId)
+apiRouter.post("/VolunteerAsksSet", secure as RequestHandler, volunteerAsksSet)
+apiRouter.post("/VolunteerKnowledgeSet", secure as RequestHandler, volunteerKnowledgeSet)
+apiRouter.post(
     "/VolunteerDetailedKnowledgeListGet",
     secure as RequestHandler,
     volunteerDetailedKnowledgeList
 )
-app.post("/VolunteerLoanSet", secure as RequestHandler, volunteerLoanSet)
-app.post(
+apiRouter.post("/VolunteerLoanSet", secure as RequestHandler, volunteerLoanSet)
+apiRouter.post(
     "/VolunteerParticipationDetailsSet",
     secure as RequestHandler,
     volunteerParticipationDetailsSet
 )
-app.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
-app.post("/VolunteerHostingSet", secure as RequestHandler, volunteerHostingSet)
-app.post("/VolunteerMealsSet", secure as RequestHandler, volunteerMealsSet)
-app.post("/VolunteerPersonalInfoSet", secure as RequestHandler, volunteerPersonalInfoSet)
-app.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
-app.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
-app.get("/VolunteerOnSiteInfo", secure as RequestHandler, volunteerOnSiteInfo)
+apiRouter.post("/VolunteerDayWishesSet", secure as RequestHandler, volunteerDayWishesSet)
+apiRouter.post("/VolunteerHostingSet", secure as RequestHandler, volunteerHostingSet)
+apiRouter.post("/VolunteerMealsSet", secure as RequestHandler, volunteerMealsSet)
+apiRouter.post("/VolunteerPersonalInfoSet", secure as RequestHandler, volunteerPersonalInfoSet)
+apiRouter.post("/VolunteerTeamWishesSet", secure as RequestHandler, volunteerTeamWishesSet)
+apiRouter.post("/VolunteerTeamAssignSet", secure as RequestHandler, volunteerTeamAssignSet)
+apiRouter.get("/VolunteerOnSiteInfo", secure as RequestHandler, volunteerOnSiteInfo)
 
 // Admin only
-app.post("/VolunteerAddNew", secure as RequestHandler, volunteerAddNew)
-app.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
+apiRouter.post("/VolunteerAddNew", secure as RequestHandler, volunteerAddNew)
+apiRouter.post("/VolunteerSet", secure as RequestHandler, volunteerSet)
 
-// Push notification subscription
-app.post("/notifications/subscribe", notificationsSubscribe)
+app.use("/api", apiRouter)
 
 // Use React server-side rendering middleware
 app.get("*", ssr)
 
 /**
- * Create HTTP and HTTPS server.
- */
-
-const servers = [{ protocol: "http", server: http.createServer(app) }]
-
-interface Cert {
-    key: string
-    cert: string
-}
-const certPaths: Cert[] = [
-    {
-        // Prod
-        key: "/root/certbot/config/live/fo.parisestludique.fr/privkey.pem",
-        cert: "/root/certbot/config/live/fo.parisestludique.fr/fullchain.pem",
-    },
-    {
-        // Local
-        key: "../certbot/key.pem",
-        cert: "../certbot/cert.pem",
-    },
-]
-const validCertPath: Cert | undefined = certPaths.find((certPath: Cert) =>
-    _.every(certPath, (pemPath: string) => fs.existsSync(pemPath))
-)
-if (validCertPath) {
-    const httpsOptions = _.mapValues(validCertPath, (pemPath: string) => fs.readFileSync(pemPath))
-
-    servers.push({ protocol: "https", server: https.createServer(httpsOptions, app) })
-
-    showStatusAt(6)
-} else {
-    showStatusAt(5)
-}
-
-/**
  * Listen on provided port, on all network interfaces.
  */
-servers.forEach(({ protocol, server }) => {
-    server.listen(protocol === "http" ? config.PORT : <number>config.PORT + 2)
-    server.on("error", onError)
-    server.on("listening", () => onListening(server))
-})
 
-/**
- * Event listener for HTTP server 'error' event.
- */
+const server = http.createServer(app)
 
-function onError(error: any) {
+server.listen(PORT)
+server.on("error", (error) => {
     if (error) {
         addStatus("Server listening:", chalk.red(`==> 😭  OMG!!! ${error}`))
     }
-}
-
-/**
- * Event listener for HTTP server 'listening' event.
- */
-
-function onListening(server: any) {
+})
+server.on("listening", () => {
     const addr = server.address()
-    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`
+    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`
     addStatus("Server listening:", chalk.green(`✅ ${bind}`))
-}
+})
 
 hasGSheetsAccess().then((hasApiAccess: boolean) => {
     if (hasApiAccess) {
@@ -240,13 +185,6 @@ if (hasSendGridApiAccess) {
     addStatus("Emailing:", chalk.green(`✅ online through SendGrid`))
 } else {
     addStatus("Emailing:", chalk.blue(`🚧 offline, simulated`))
-}
-
-const hasPushNotifAccess = !!process.env.FORCE_ORANGE_PUBLIC_VAPID_KEY
-if (hasPushNotifAccess) {
-    addStatus("Push notif:", chalk.green(`✅ online with a Vapid key`))
-} else {
-    addStatus("Push notif:", chalk.blue(`🚧 offline, simulated`))
 }
 
 hasDiscordAccess().then((hasApiAccess: boolean) => {

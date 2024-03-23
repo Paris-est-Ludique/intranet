@@ -2,7 +2,6 @@ import { RouteConfig, renderRoutes } from "react-router-config"
 import { Helmet } from "react-helmet"
 import { ToastContainer } from "react-toastify"
 
-import config from "../config"
 // Import your global styles here
 import "normalize.css/normalize.css"
 import "react-toastify/dist/ReactToastify.css"
@@ -17,6 +16,19 @@ interface Route {
 
 export const reactAppId = "react-view"
 
+const app = {
+    htmlAttributes: { lang: "en" },
+    title: "Force Orange",
+    description: "Le site des bénévoles",
+    titleTemplate: "Force Orange - %s",
+    meta: [
+        {
+            name: "description",
+            content: "The best react universal starter boilerplate in the world.",
+        },
+    ],
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const App = ({ route, location }: Route): JSX.Element => {
     if (location.pathname === "/fiches") {
@@ -26,7 +38,7 @@ const App = ({ route, location }: Route): JSX.Element => {
 
     return (
         <div>
-            <Helmet {...config.APP}>
+            <Helmet {...app}>
                 <meta
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
@@ -36,9 +48,9 @@ const App = ({ route, location }: Route): JSX.Element => {
                 <div className={styles.logo} />
                 <div>
                     <h1 className={styles.siteName}>
-                        <a href="/">{config.APP.title}</a>
+                        <a href="/">Force Orange</a>
                     </h1>
-                    <div className={styles.siteDescription}>{config.APP.description}</div>
+                    <div className={styles.siteDescription}>Le site des bénévoles</div>
                 </div>
                 <div className={styles.menuWrapper}>
                     <MainMenu />
