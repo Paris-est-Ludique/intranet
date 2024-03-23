@@ -1,7 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import path from "path"
 import _, { assign, pick } from "lodash"
-import { promises as fs, constants } from "fs"
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet"
 import { SheetNames, saveLocalDb, loadLocalDb } from "./localDb"
 
@@ -9,13 +7,9 @@ export { SheetNames } from "./localDb"
 
 // Test write attack with: wget --header='Content-Type:application/json' --post-data='{"prenom":"Pierre","nom":"SCELLES","email":"test@gmail.com","telephone":"0601010101","dejaBenevole":false,"commentaire":""}' http://localhost:3000/PostulantAdd
 
-const CRED_PATH = path.resolve(process.cwd(), "access/gsheets.json")
-
 const REMOTE_UPDATE_DELAY = 120000
 const DELAY_BETWEEN_ATTEMPTS = 30000
 const DELAY_BETWEEN_FIRST_LOAD = 1500
-
-let creds: string | undefined | null
 
 export type ElementWithId<ElementNoId> = { id: number } & ElementNoId
 
@@ -25,23 +19,16 @@ export const sheetNames = new SheetNames()
 type SheetList = { [sheetName in keyof SheetNames]?: Sheet<object, ElementWithId<object>> }
 const sheetList: SheetList = {}
 
-let hasGSheetsAccessReturn: boolean | undefined
-export async function hasGSheetsAccess(): Promise<boolean> {
-    if (hasGSheetsAccessReturn !== undefined) {
-        return hasGSheetsAccessReturn
-    }
-    try {
-        // eslint-disable-next-line no-bitwise
-        await fs.access(CRED_PATH, constants.R_OK | constants.W_OK)
-        hasGSheetsAccessReturn = true
-    } catch {
-        hasGSheetsAccessReturn = false
-    }
-    return hasGSheetsAccessReturn
+export function hasGSheetsAccess(): boolean {
+    return Boolean(
+        process.env.GSHEET_ID &&
+            process.env.GCP_SERVICE_ACCOUNT_CLIENT_EMAIL &&
+            process.env.GCP_SERVICE_ACCOUNT_PRIVATE_KEY
+    )
 }
 
 export async function checkGSheetsAccess(): Promise<void> {
-    if (!(await hasGSheetsAccess())) {
+    if (!hasGSheetsAccess()) {
         console.error(`Google Sheets: no creds found, loading local database instead`)
     }
 }
@@ -367,22 +354,17 @@ export class Sheet<
     private async getGSheet(attempts = 3): Promise<GoogleSpreadsheetWorksheet | null> {
         return tryNTimes(
             async () => {
-                if (creds === undefined) {
-                    if (await hasGSheetsAccess()) {
-                        const credsBuffer = await fs.readFile(CRED_PATH)
-                        creds = credsBuffer?.toString() || null
-                    } else {
-                        creds = null
-                    }
+                if (hasGSheetsAccess()) {
+                    // Authentication
+                    const doc = new GoogleSpreadsheet(process.env.GSHEET_ID)
+                    await doc.useServiceAccountAuth({
+                        client_email: process.env.GCP_SERVICE_ACCOUNT_CLIENT_EMAIL || "",
+                        private_key: process.env.GCP_SERVICE_ACCOUNT_PRIVATE_KEY || "",
+                    })
+                    await doc.loadInfo()
+                    return doc.sheetsByTitle[this.sheetName]
                 }
-                if (creds === null) {
-                    return null
-                }
-                // Authentication
-                const doc = new GoogleSpreadsheet("1g-GB1NHLtUAQnQkbyo_5Lv6GzJ58DeOsUTrHlIVi01M")
-                await doc.useServiceAccountAuth(JSON.parse(creds))
-                await doc.loadInfo()
-                return doc.sheetsByTitle[this.sheetName]
+                return null
             },
             () => null,
             attempts,
