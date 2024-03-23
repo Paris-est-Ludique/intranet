@@ -49,7 +49,7 @@ import {
     volunteerOnSiteInfo,
 } from "./gsheets/volunteers"
 import { wishListGet, wishAdd } from "./gsheets/wishes"
-import config from "../config"
+
 import { notificationsSubscribe, notificationMain } from "./notifications"
 import { /* discordRegisterCommands, */ discordBot, hasDiscordAccess } from "./discordBot"
 import checkAccess from "./checkAccess"
@@ -202,7 +202,9 @@ if (validCertPath) {
  * Listen on provided port, on all network interfaces.
  */
 servers.forEach(({ protocol, server }) => {
-    server.listen(protocol === "http" ? config.PORT : <number>config.PORT + 2)
+    const port = Number(process.env.PORT) || 3000
+
+    server.listen(protocol === "http" ? port : port + 2)
     server.on("error", onError)
     server.on("listening", () => onListening(server))
 })
@@ -227,13 +229,11 @@ function onListening(server: any) {
     addStatus("Server listening:", chalk.green(`✅ ${bind}`))
 }
 
-hasGSheetsAccess().then((hasApiAccess: boolean) => {
-    if (hasApiAccess) {
-        addStatus("Database:", chalk.green(`✅ online from Google Sheet`))
-    } else {
-        addStatus("Database:", chalk.blue(`🚧 offline, simulated from local db file`))
-    }
-})
+if (hasGSheetsAccess()) {
+    addStatus("Database:", chalk.green(`✅ online from Google Sheet`))
+} else {
+    addStatus("Database:", chalk.blue(`🚧 offline, simulated from local db file`))
+}
 
 const hasSendGridApiAccess = !!process.env.SENDGRID_API_KEY
 if (hasSendGridApiAccess) {
@@ -249,13 +249,11 @@ if (hasPushNotifAccess) {
     addStatus("Push notif:", chalk.blue(`🚧 offline, simulated`))
 }
 
-hasDiscordAccess().then((hasApiAccess: boolean) => {
-    if (hasApiAccess) {
-        addStatus("Discord bot:", chalk.green(`✅ online through discord.js`))
-    } else {
-        addStatus("Discord bot:", chalk.blue(`🚧 no creds, disabled`))
-    }
-})
+if (hasDiscordAccess()) {
+    addStatus("Discord bot:", chalk.green(`✅ online through discord.js`))
+} else {
+    addStatus("Discord bot:", chalk.blue(`🚧 no creds, disabled`))
+}
 
 hasSecret().then((has: boolean) => {
     if (has) {

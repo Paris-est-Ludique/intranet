@@ -60,5 +60,6 @@ module.exports = {
         __LOCAL__: false,
         __REGISTER_DISCORD_COMMANDS__: false,
         __TEST__: false,
+        API_URL: false,
     },
 }

@@ -13,8 +13,6 @@ import {
     User,
     PartialUser,
 } from "discord.js"
-import { promises as fs, constants } from "fs"
-import path from "path"
 
 import { translationVolunteer, Volunteer, VolunteerWithoutId } from "../services/volunteers"
 import {
@@ -23,13 +21,8 @@ import {
     DiscordRoleWithoutId,
 } from "../services/discordRoles"
 import { getSheet } from "./gsheets/accessors"
-import config from "../config"
 
-let cachedToken: string
-// let cachedClientId: string
-let cachedGuildId: string
-const CREDS_PATH = path.resolve(process.cwd(), "access/discordToken.json")
-getCreds() // Necessary until we can make async express middleware
+const { DISCORD_TOKEN, DISCORD_CLIENTID, DISCORD_GUILDID } = process.env
 
 type Command = {
     data: SlashCommandBuilder
@@ -52,19 +45,8 @@ const commands: Collection<string, Command> = new Collection()
 //     },
 // }
 
-let hasDiscordAccessReturn: boolean | undefined
-export async function hasDiscordAccess(): Promise<boolean> {
-    if (hasDiscordAccessReturn !== undefined) {
-        return hasDiscordAccessReturn
-    }
-    try {
-        // eslint-disable-next-line no-bitwise
-        await fs.access(CREDS_PATH, constants.R_OK | constants.W_OK)
-        hasDiscordAccessReturn = true
-    } catch {
-        hasDiscordAccessReturn = false
-    }
-    return hasDiscordAccessReturn
+export function hasDiscordAccess(): boolean {
+    return Boolean(DISCORD_TOKEN && DISCORD_CLIENTID && DISCORD_GUILDID)
 }
 
 // export async function discordRegisterCommands(): Promise<void> {
@@ -72,7 +54,7 @@ export async function hasDiscordAccess(): Promise<boolean> {
 //         return
 //     }
 
-//     if (!(await hasDiscordAccess())) {
+//     if (!(hasDiscordAccess())) {
 //         console.error(`Discord bot: no creds found, not running bot`)
 //         return
 //     }
@@ -82,11 +64,11 @@ export async function hasDiscordAccess(): Promise<boolean> {
 //     const commandsToRegister = []
 //     commandsToRegister.push(userCommand.data.toJSON())
 
-//     const rest = new REST({ version: '10' }).setToken(cachedToken)
+//     const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN)
 
 //     try {
 // 		await rest.put(
-// 			Routes.applicationGuildCommands(cachedClientId, cachedGuildId),
+// 			Routes.applicationGuildCommands(DISCORD_CLIENTID, DISCORD_GUILDID),
 // 			{ body: commandsToRegister },
 // 		)
 // 	} catch (error) {
@@ -102,11 +84,10 @@ export async function discordBot(): Promise<void> {
             return
         }
 
-        if (!(await hasDiscordAccess())) {
+        if (!hasDiscordAccess()) {
             console.error(`Discord bot: no creds found, not running bot`)
             return
         }
-        await getCreds()
 
         const client = new Client({
             intents: [
@@ -158,7 +139,7 @@ export async function discordBot(): Promise<void> {
             await setRolesFromEmoji(client, user, reaction, "remove")
         })
 
-        client.login(cachedToken)
+        client.login(DISCORD_TOKEN)
     } catch (error) {
         console.error("Discord error", error)
     }
@@ -205,6 +186,8 @@ async function setBotReactions(client: Client) {
 
 async function setAllRoles(client: Client) {
     try {
+        if (!DISCORD_GUILDID) return
+
         const volunteerSheet = await getSheet<VolunteerWithoutId, Volunteer>(
             "Volunteers",
             new Volunteer(),
@@ -216,8 +199,7 @@ async function setAllRoles(client: Client) {
         }
 
         const volunteerByDiscordId = _.mapKeys(volunteerList, (v) => v.discordId.toString())
-
-        const guild = await client.guilds.fetch(cachedGuildId)
+        const guild = await client.guilds.fetch(DISCORD_GUILDID)
 
         if (!guild || !guild.members.cache) {
             return
@@ -356,6 +338,8 @@ async function setRolesFromEmoji(
     reaction: MessageReaction | PartialMessageReaction,
     action: "add" | "remove"
 ) {
+    if (!DISCORD_GUILDID) return
+
     const discordRolesSheet = await getSheet<DiscordRoleWithoutId, DiscordRole>(
         "DiscordRoles",
         new DiscordRole(),
@@ -367,7 +351,7 @@ async function setRolesFromEmoji(
     }
 
     await client.guilds.fetch()
-    const guild = client.guilds.resolve(cachedGuildId)
+    const guild = client.guilds.resolve(DISCORD_GUILDID)
 
     if (!guild || !guild.members.cache) {
         return
@@ -407,21 +391,4 @@ async function fetchPartial(reaction: MessageReaction | PartialMessageReaction):
         }
     }
     return true
-}
-
-async function getCreds(): Promise<void> {
-    if (!cachedToken) {
-        try {
-            const credsContent = await fs.readFile(CREDS_PATH)
-            const parsedCreds = credsContent && JSON.parse(credsContent.toString())
-            if (!parsedCreds) {
-                return
-            }
-            cachedToken = parsedCreds.token
-            // cachedClientId = parsedCreds.clientId
-            cachedGuildId = parsedCreds.guildId
-        } catch (e: any) {
-            cachedToken = config.DEV_DISCORD_TOKEN
-        }
-    }
 }

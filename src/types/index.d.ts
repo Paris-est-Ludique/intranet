@@ -4,6 +4,7 @@ declare const __DEV__: boolean
 declare const __LOCAL__: boolean
 declare const __REGISTER_DISCORD_COMMANDS__: boolean
 declare const __TEST__: boolean
+declare const API_URL: string
 
 declare module "*.svg"
 declare module "*.gif"
@@ -22,6 +23,7 @@ declare namespace NodeJS {
         __LOCAL__: boolean
         __REGISTER_DISCORD_COMMANDS__: boolean
         __TEST__: boolean
+        API_URL: string
         $RefreshReg$: () => void
         $RefreshSig$$: () => void
     }
@@ -30,6 +32,13 @@ declare namespace NodeJS {
         SENDGRID_API_KEY?: string
         FORCE_ORANGE_PUBLIC_VAPID_KEY?: string
         FORCE_ORANGE_PRIVATE_VAPID_KEY?: string
+        PORT?: string
+        HOST?: string
+        API_URL?: string
+        GCP_SERVICE_ACCOUNT_CLIENT_ID?: string
+        GCP_SERVICE_ACCOUNT_PRIVATE_KEY?: string
+        GCP_SERVICE_ACCOUNT_CLIENT_EMAIL?: string
+        GSHEET_ID?: string
     }
 }
 
