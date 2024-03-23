@@ -52,6 +52,7 @@ module.exports = {
         "testing-library/no-node-access": "off",
         "testing-library/render-result-naming-convention": "off",
         "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/control-has-associated-label": "off",
     },
     globals: {
         __CLIENT__: true,

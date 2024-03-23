@@ -30,6 +30,9 @@ declare namespace NodeJS {
         SENDGRID_API_KEY?: string
         FORCE_ORANGE_PUBLIC_VAPID_KEY?: string
         FORCE_ORANGE_PRIVATE_VAPID_KEY?: string
+        GCP_SERVICE_ACCOUNT_PRIVATE_KEY?: string
+        GCP_SERVICE_ACCOUNT_CLIENT_EMAIL?: string
+        GSHEET_ID?: string
     }
 }
 

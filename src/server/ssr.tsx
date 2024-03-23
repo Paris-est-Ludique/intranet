@@ -45,7 +45,7 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
         // Load data from server-side first
         await loadBranchData()
 
-        const statsFile = path.resolve(process.cwd(), "public/loadable-stats")
+        const statsFile = path.resolve(process.cwd(), "public/loadable-stats.json")
         const extractor = new ChunkExtractor({ statsFile })
 
         const staticContext: Record<string, any> = {}
