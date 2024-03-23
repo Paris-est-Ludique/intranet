@@ -1,0 +1,40 @@
+Dockerfile*
+.git
+postgres
+dump.sql
+.DS_Store
+node_modules*
+build
+.cache
+
+## Tests
+
+tests
+*.tests.js
+
+# local env files
+.env.local
+.env
+.env.*.local
+
+# Log files
+*.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+.pnp.*
