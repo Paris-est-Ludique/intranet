@@ -379,7 +379,7 @@ export class Sheet<
                     return null
                 }
                 // Authentication
-                const doc = new GoogleSpreadsheet("1p8TDSNlgKC7sm1a_wX44NrkpWEH3-Zey1O2ZjYfPsn4")
+                const doc = new GoogleSpreadsheet("1g-GB1NHLtUAQnQkbyo_5Lv6GzJ58DeOsUTrHlIVi01M")
                 await doc.useServiceAccountAuth(JSON.parse(creds))
                 await doc.loadInfo()
                 return doc.sheetsByTitle[this.sheetName]
