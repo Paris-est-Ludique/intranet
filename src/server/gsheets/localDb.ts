@@ -50,11 +50,11 @@ export async function saveLocalDb(
     states[name] = state
     types[name] = type
     const toSave = { states, types }
-    const jsonDB = __DEV__ ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
+    const jsonDB = DEV ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
     await fs.writeFile(DB_PATH, jsonDB)
 
     toSave.states = anonimizedDb(toSave.states)
-    const jsonAnonimizedDB = __DEV__ ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
+    const jsonAnonimizedDB = DEV ? JSON.stringify(toSave, null, 4) : JSON.stringify(toSave)
     await fs.writeFile(ANONYMIZED_DB_PATH, jsonAnonimizedDB)
 }
 
@@ -341,10 +341,6 @@ function anonimizedNotifs(v: Volunteer): void {
     } else if (v.id % 251 === 0) {
         v.acceptsNotifs = "non"
     }
-    v.pushNotifSubscription =
-        v.id % 13 === 0
-            ? '{"endpoint":"https://fcm.googleapis.com/fcm/send/f-EAfakedfakedU:APA91fakedfakedzIk-DEglfakedfaked9ugI--ljtfakedfakedfakedfakedfakedfakedP3t-ggU7Afakedfakedfakedkai","expirationTime":null,"keys":{"p256dh":"BEZOJSfakedfakedfakedfakedfakedfakedfakedfakedfakedfakedgYs-cafakedw","auth":"GlMfakedfakedFRg"}}'
-            : ""
 }
 
 function numberToRand(n: number) {

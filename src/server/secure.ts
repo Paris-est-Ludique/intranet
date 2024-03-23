@@ -3,8 +3,6 @@ import path from "path"
 import { constants, promises as fs } from "fs"
 import { verify, sign } from "jsonwebtoken"
 
-import config from "../config"
-
 type AuthorizedRequest = Request & { headers: { authorization: string } }
 
 let cachedSecret: string
@@ -57,7 +55,7 @@ async function getSecret() {
             const secretContent = await fs.readFile(SECRET_PATH)
             cachedSecret = secretContent && JSON.parse(secretContent.toString()).secret
         } catch (e: any) {
-            cachedSecret = config.DEV_JWT_SECRET
+            cachedSecret = "fakeqA6uF#msq2312bebf2FLFn4XzWQ6dttXSJwBX#?gL2JWf!" // DEV_JWT_SECRET
         }
     }
 

@@ -71,7 +71,7 @@ const BoxItem: React.FC<Props> = ({
                 target="_blank"
                 rel="noreferrer"
             >
-                <div className={poufpaf ? styles.poufpaf : styles.noPoufpaf}> </div>
+                <div className={poufpaf ? styles.poufpaf : styles.noPoufpaf}>&nbsp;</div>
             </a>
             <ul className={styles.knowledgeList}>
                 {knowledgeChoices.map(({ name, value }) => (

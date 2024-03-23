@@ -16,8 +16,6 @@ This project is open to contribution, but you will likely need to be in touch wi
 
 ### Requirements
 
-
-
 -   An account on GitHub
 -   [git](https://git-scm.com/)
 -   [node](https://nodejs.org/en) >= 12.0
@@ -52,6 +50,11 @@ yarn dev  # Build, hosts, and hot reload saved modifications
 ```
 
 Now the app should be serving at <http://localhost:3000>.
+
+## Using Docker
+
+`docker build . -t force-orange`
+`docker run -d -p 3000:3000 -t force-orange`
 
 ### Commands
 

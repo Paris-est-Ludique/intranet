@@ -17,7 +17,6 @@ import {
 } from "./AskParticipationDetails"
 
 import { OnSiteInfo, fetchFor as fetchForOnSiteInfo } from "./OnSiteInfo"
-// import { AskPushNotif } from "./AskPushNotif"
 
 const Asks = (): JSX.Element | null => {
     const { volunteerAsks } = useAskTools()
@@ -34,8 +33,6 @@ const Asks = (): JSX.Element | null => {
     // AskPersonalInfo(asks, 16)
     AskHosting(asks, 20)
     AskParticipationDetails(asks, 22)
-
-    // AskPushNotif(asks, 99)
 
     const onSiteInfoElement = OnSiteInfo()
     if (_.isEmpty(asks)) {

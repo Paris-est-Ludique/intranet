@@ -1,7 +1,5 @@
 import axios from "axios"
 import _ from "lodash"
-
-import config from "../config"
 import { axiosConfig } from "./auth"
 
 export type ElementWithId = unknown & { id: number }
@@ -26,7 +24,7 @@ export default class ServiceAccessors<
         }
         return async (id: number): Promise<ElementGetResponse> => {
             try {
-                const { data } = await axios.get(`${config.API_URL}/${this.elementName}Get`, {
+                const { data } = await axios.get(`${API_URL}/${this.elementName}Get`, {
                     ...axiosConfig,
                     params: { id },
                 })
@@ -51,7 +49,7 @@ export default class ServiceAccessors<
         return async (): Promise<ElementListGetResponse> => {
             try {
                 const { data } = await axios.get(
-                    `${config.API_URL}/${this.elementName}ListGet`,
+                    `${API_URL}/${this.elementName}ListGet`,
                     axiosConfig
                 )
                 if (data.error) {
@@ -77,7 +75,7 @@ export default class ServiceAccessors<
                 const auth = { headers: { Authorization: `Bearer ${jwt}` } }
                 const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
                 const { data } = await axios.get(
-                    `${config.API_URL}/${this.elementName}ListGet`,
+                    `${API_URL}/${this.elementName}ListGet`,
                     fullAxiosConfig
                 )
                 if (data.error) {
@@ -107,7 +105,7 @@ export default class ServiceAccessors<
             try {
                 const auth = { headers: { Authorization: `Bearer ${jwt}` } }
                 const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
-                const rawData = await axios.get(`${config.API_URL}/${this.elementName}${apiName}`, {
+                const rawData = await axios.get(`${API_URL}/${this.elementName}${apiName}`, {
                     ...fullAxiosConfig,
                     params,
                 })
@@ -135,7 +133,7 @@ export default class ServiceAccessors<
         return async (volunteerWithoutId: ElementNoId): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
-                    `${config.API_URL}/${this.elementName}Add`,
+                    `${API_URL}/${this.elementName}Add`,
                     volunteerWithoutId,
                     axiosConfig
                 )
@@ -160,10 +158,11 @@ export default class ServiceAccessors<
         return async (volunteer: Element): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
-                    `${config.API_URL}/${this.elementName}Set`,
+                    `${API_URL}/${this.elementName}Set`,
                     volunteer,
                     axiosConfig
                 )
+
                 if (data.error) {
                     throw Error(data.error)
                 }
@@ -185,7 +184,7 @@ export default class ServiceAccessors<
         return async (): Promise<ElementCountGetResponse> => {
             try {
                 const { data } = await axios.get(
-                    `${config.API_URL}/${this.elementName}CountGet`,
+                    `${API_URL}/${this.elementName}CountGet`,
                     axiosConfig
                 )
                 if (data.error) {
@@ -210,10 +209,10 @@ export default class ServiceAccessors<
         }
         return async (...params: InputElements): Promise<ElementGetResponse> => {
             try {
-                const { data } = await axios.get(
-                    `${config.API_URL}/${this.elementName}${apiName}`,
-                    { ...axiosConfig, params }
-                )
+                const { data } = await axios.get(`${API_URL}/${this.elementName}${apiName}`, {
+                    ...axiosConfig,
+                    params,
+                })
                 if (data.error) {
                     throw Error(data.error)
                 }
@@ -237,7 +236,7 @@ export default class ServiceAccessors<
         return async (...params: InputElements): Promise<ElementGetResponse> => {
             try {
                 const { data } = await axios.post(
-                    `${config.API_URL}/${this.elementName}${apiName}`,
+                    `${API_URL}/${this.elementName}${apiName}`,
                     params,
                     axiosConfig
                 )
@@ -268,10 +267,10 @@ export default class ServiceAccessors<
             try {
                 const auth = { headers: { Authorization: `Bearer ${jwt}` } }
                 const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
-                const { data } = await axios.get(
-                    `${config.API_URL}/${this.elementName}${apiName}`,
-                    { ...fullAxiosConfig, params }
-                )
+                const { data } = await axios.get(`${API_URL}/${this.elementName}${apiName}`, {
+                    ...fullAxiosConfig,
+                    params,
+                })
                 if (data.error) {
                     throw Error(data.error)
                 }
@@ -300,7 +299,7 @@ export default class ServiceAccessors<
                 const auth = { headers: { Authorization: `Bearer ${jwt}` } }
                 const fullAxiosConfig = _.defaultsDeep(auth, axiosConfig)
                 const { data } = await axios.post(
-                    `${config.API_URL}/${this.elementName}${apiName}`,
+                    `${API_URL}/${this.elementName}${apiName}`,
                     params,
                     fullAxiosConfig
                 )

@@ -136,8 +136,8 @@ export const volunteerPartialAdd = expressAccessor.add(async (list, body) => {
 })
 
 async function sendSignUpEmail(email: string, password: string): Promise<void> {
-    const apiKey = process.env.SENDGRID_API_KEY || ""
-    if (__DEV__ || apiKey === "") {
+    const apiKey = process.env.SENDGRID_API_KEY || null
+    if (DEV || !apiKey) {
         console.error(`Fake sending signup email to ${email} with password ${password}`)
     } else {
         sgMail.setApiKey(apiKey)
@@ -178,7 +178,7 @@ export const volunteerLogin = expressAccessor.get<VolunteerLogin>(async (list, b
     )
 
     const noSuccessfulLogin = !some(tries)
-    const isDevException = __DEV__ && [1, 508].includes(volunteer.id) // Amélie and Tom E
+    const isDevException = DEV && [1, 508].includes(volunteer.id) // Amélie and Tom E
     if (noSuccessfulLogin && !isDevException) {
         throw Error("Mauvais mot de passe pour cet email")
     }
@@ -234,8 +234,8 @@ function generatePassword(): string {
 }
 
 async function sendForgetEmail(email: string, password: string): Promise<void> {
-    const apiKey = process.env.SENDGRID_API_KEY || ""
-    if (__DEV__ || apiKey === "") {
+    const apiKey = process.env.SENDGRID_API_KEY || null
+    if (DEV || !apiKey) {
         console.error(`Fake sending forget email to ${email} with password ${password}`)
     } else {
         sgMail.setApiKey(apiKey)
@@ -265,8 +265,6 @@ export const volunteerAsksSet = expressAccessor.set(async (list, body, id) => {
     if (notifChanges.hiddenAsks !== undefined) newVolunteer.hiddenAsks = notifChanges.hiddenAsks
     if (notifChanges.acceptsNotifs !== undefined)
         newVolunteer.acceptsNotifs = notifChanges.acceptsNotifs
-    if (notifChanges.pushNotifSubscription !== undefined)
-        newVolunteer.pushNotifSubscription = notifChanges.pushNotifSubscription
 
     return {
         toDatabase: newVolunteer,
@@ -274,7 +272,6 @@ export const volunteerAsksSet = expressAccessor.set(async (list, body, id) => {
             id: newVolunteer.id,
             firstname: newVolunteer.firstname,
             hiddenAsks: newVolunteer.hiddenAsks,
-            pushNotifSubscription: newVolunteer.pushNotifSubscription,
             acceptsNotifs: newVolunteer.acceptsNotifs,
         } as VolunteerAsks,
     }
@@ -483,6 +480,7 @@ function setNewPhoto(id: number, photoData: string, prevFilename: string | undef
     const buffer = Buffer.from(base64Data, "base64")
     const filename = `${id}.${ext}`
     const filePath = path.resolve(process.cwd(), `public/photos/${filename}`)
+    //  TODO move picture in cloud storage
     if (prevFilename) {
         const prevFilePath = path.resolve(process.cwd(), `public/photos/${prevFilename}`)
         fs.unlinkSync(prevFilePath)

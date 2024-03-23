@@ -24,6 +24,8 @@ access/*
 *.log
 .idea
 announces/*
+.env
+*.local
 
 # VS Code stuff
 .vscode/settings.json

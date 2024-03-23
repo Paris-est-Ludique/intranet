@@ -17,7 +17,7 @@ const getPlugins = () => {
             chunkFilename: isDev ? "[id].css" : "[id].[contenthash].css",
         }),
         new webpack.DefinePlugin(getClientEnvironment(["FORCE_ORANGE_PUBLIC_VAPID_KEY"])),
-    ]
+    ] as any[]
 
     if (isDev)
         plugins = [
