@@ -23,7 +23,7 @@ WORKDIR $project_dir
 COPY --chown=$user .yarnrc.yml yarn.lock package.json ./
 RUN yarn install --frozen-lockfile
 
-COPY --chown=$user . .
+COPY --chown=$user . ./
 
 ## Build the app
 RUN yarn run build
