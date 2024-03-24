@@ -20,7 +20,7 @@ USER $user
 WORKDIR $project_dir
 
 ## Copy file for YARN then install all deps
-COPY --chown=$user .yarnrc.yml yarn.lock* package.json ./
+COPY --chown=$user .yarnrc.yml yarn.lock package.json ./
 RUN yarn install --frozen-lockfile
 
 COPY --chown=$user . .
