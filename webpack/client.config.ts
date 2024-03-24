@@ -4,7 +4,6 @@ import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin"
 import CompressionPlugin from "compression-webpack-plugin"
-import ImageMinimizerPlugin from "image-minimizer-webpack-plugin"
 import merge from "webpack-merge"
 
 import baseConfig, { isDev, getClientEnvironment } from "./base.config"
@@ -17,7 +16,7 @@ const getPlugins = () => {
             chunkFilename: isDev ? "[id].css" : "[id].[contenthash].css",
         }),
         new webpack.DefinePlugin(getClientEnvironment(["FORCE_ORANGE_PUBLIC_VAPID_KEY"])),
-    ]
+    ] as any[]
 
     if (isDev)
         plugins = [
@@ -34,13 +33,6 @@ const getPlugins = () => {
             ...plugins,
             // Prepare compressed versions of assets to serve them with Content-Encoding
             new CompressionPlugin(),
-            new ImageMinimizerPlugin({
-                // Lossless optimization with default option, feel free to experiment with options for better result for you
-                // See https://github.com/webpack-contrib/image-minimizer-webpack-plugin#getting-started
-                minimizerOptions: {
-                    plugins: [["gifsicle"], ["jpegtran"], ["optipng"], ["svgo"]],
-                },
-            }),
         ]
 
     return plugins

@@ -1,0 +1,32 @@
+**/Dockerfile*
+.git
+.DS_Store
+**/node_modules*
+build
+.cache
+
+## Vite
+app/dist
+app/**/.vite
+
+## Tests
+**/tests
+**/*.tests.js
+
+# local env files
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Log files
+**/*.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
