@@ -5,8 +5,6 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
-            args:
-                - NODE_ENV=development
         volumes:
             - ./:/opt/node_app/app:delegated
             - ./package.json:/opt/node_app/app/package.json

@@ -3,10 +3,8 @@ FROM node:20-alpine as build-stage
 
 ARG user=node
 ARG project_dir=/opt/node_app
-ARG NODE_ENV=production
 ARG PORT=3000
 
-ENV NODE_ENV $NODE_ENV
 ENV PORT $PORT
 ENV NODE_OPTIONS="--max_old_space_size=4096"
 
