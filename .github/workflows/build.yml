@@ -2,19 +2,20 @@ name: Build for production
 
 on:
     workflow_dispatch:
-        envType:
-            description: "Environment to deploy to"
-            required: true
-            default: "prod"
-            type: choice
-            options:
-                - prod
-                - staging
+        inputs:
+            envType:
+                description: "Environment to deploy to"
+                required: true
+                default: "prod"
+                type: choice
+                options:
+                    - prod
+                    - staging
 
 jobs:
     build:
         runs-on: ubuntu-latest
-        environment: ${{ github.event.inputs.envType }}
+        environment: ${{ inputs.envType }}
         steps:
             - uses: actions/checkout@v4
             - name: Login to Scaleway Container Registry
@@ -24,6 +25,6 @@ jobs:
                   password: ${{ secrets.SCALEWAY_API_KEY }}
                   registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
             - name: Build the Docker image
-              run: docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/fo-${{ github.event.inputs.envType }}
+              run: docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/fo-${{ inputs.envType }}
             - name: Push the Docker Image
-              run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/fo-${{ github.event.inputs.envType }}
+              run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/fo-${{ inputs.envType }}
