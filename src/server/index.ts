@@ -8,14 +8,10 @@ import hpp from "hpp"
 import favicon from "serve-favicon"
 import chalk from "chalk"
 import * as http from "http"
-import * as https from "https"
-import * as fs from "fs"
-import _ from "lodash"
 
 import devServer from "./devServer"
 import ssr from "./ssr"
 
-import certbotRouter from "../routes/certbot"
 import { hasSecret, secure } from "./secure"
 import { announcementListGet } from "./gsheets/announcements"
 import { detailedBoxListGet } from "./gsheets/boxes"
@@ -54,7 +50,7 @@ import { notificationsSubscribe, notificationMain } from "./notifications"
 import { /* discordRegisterCommands, */ discordBot, hasDiscordAccess } from "./discordBot"
 import checkAccess from "./checkAccess"
 import { hasGSheetsAccess } from "./gsheets/accessors"
-import { addStatus, showStatusAt } from "./status"
+import { addStatus } from "./status"
 import {
     miscDiscordInvitation,
     miscFestivalDateListGet,
@@ -81,10 +77,6 @@ app.use(helmet({ contentSecurityPolicy: false }))
 app.use(hpp())
 // Compress all requests
 app.use(compression())
-// Https with certbot and Let's Encrypt
-if (!__DEV__) {
-    app.use("/.well-known/acme-challenge", certbotRouter)
-}
 
 // Use for http request debug (show errors only)
 app.use(logger("dev", { skip: (_req, res) => res.statusCode < 400 }))
@@ -164,70 +156,21 @@ app.post("/notifications/subscribe", notificationsSubscribe)
 app.get("*", ssr)
 
 /**
- * Create HTTP and HTTPS server.
+ * Create server.
  */
 
-const servers = [{ protocol: "http", server: http.createServer(app) }]
-
-interface Cert {
-    key: string
-    cert: string
-}
-const certPaths: Cert[] = [
-    {
-        // Prod
-        key: "/root/certbot/config/live/fo.parisestludique.fr/privkey.pem",
-        cert: "/root/certbot/config/live/fo.parisestludique.fr/fullchain.pem",
-    },
-    {
-        // Local
-        key: "../certbot/key.pem",
-        cert: "../certbot/cert.pem",
-    },
-]
-const validCertPath: Cert | undefined = certPaths.find((certPath: Cert) =>
-    _.every(certPath, (pemPath: string) => fs.existsSync(pemPath))
-)
-if (validCertPath) {
-    const httpsOptions = _.mapValues(validCertPath, (pemPath: string) => fs.readFileSync(pemPath))
-
-    servers.push({ protocol: "https", server: https.createServer(httpsOptions, app) })
-
-    showStatusAt(6)
-} else {
-    showStatusAt(5)
-}
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-servers.forEach(({ protocol, server }) => {
-    const port = Number(process.env.PORT) || 3000
-
-    server.listen(protocol === "http" ? port : port + 2)
-    server.on("error", onError)
-    server.on("listening", () => onListening(server))
-})
-
-/**
- * Event listener for HTTP server 'error' event.
- */
-
-function onError(error: any) {
+const server = http.createServer(app)
+server.listen(process.env.PORT || 3000)
+server.on("error", (error: any) => {
     if (error) {
         addStatus("Server listening:", chalk.red(`==> 😭  OMG!!! ${error}`))
     }
-}
-
-/**
- * Event listener for HTTP server 'listening' event.
- */
-
-function onListening(server: any) {
+})
+server.on("listening", () => {
     const addr = server.address()
-    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`
+    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`
     addStatus("Server listening:", chalk.green(`✅ ${bind}`))
-}
+})
 
 if (hasGSheetsAccess()) {
     addStatus("Database:", chalk.green(`✅ online from Google Sheet`))

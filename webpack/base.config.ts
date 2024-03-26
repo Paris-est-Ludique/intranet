@@ -52,7 +52,7 @@ const getPlugins = (isWeb: boolean) => {
             __DEV__: isDev,
             __LOCAL__: isLocal,
             __REGISTER_DISCORD_COMMANDS__: isRegisterDiscordCommands,
-            API_URL: process.env.API_URL || "'http://localhost:3000'",
+            API_URL: `"${process.env.API_URL}"` || "'http://localhost:3000'",
         }),
     ]
 

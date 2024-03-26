@@ -1,29 +1,33 @@
 # App build
 FROM node:20-alpine as build-stage
 
-ARG user=node
-ARG project_dir=/opt/node_app
 ARG PORT=3000
+ARG API_URL="http://localhost:3000"
 
-ENV PORT $PORT
 ENV NODE_OPTIONS="--max_old_space_size=4096"
-
-EXPOSE $PORT
+ENV PORT=$PORT
+ENV API_URL=$API_URL
 
 ## Enable corepack for proper version of YARN
 RUN corepack enable
 
-RUN mkdir $project_dir && chown $user:$user $project_dir
-USER $user
-WORKDIR $project_dir
+WORKDIR /app
 
 ## Copy file for YARN then install all deps
-COPY --chown=$user .yarnrc.yml yarn.lock package.json ./
+COPY .yarnrc.yml yarn.lock package.json ./
 RUN yarn install --frozen-lockfile
 
-COPY --chown=$user . ./
-
 ## Build the app
+COPY . ./
 RUN yarn run build
 
-CMD ["yarn", "start"]
+## Run stage
+FROM node:20-alpine
+
+COPY --from=build-stage /app/public ./public
+COPY --from=build-stage /app/node_modules ./node_modules
+COPY --from=build-stage /app/access ./access
+
+EXPOSE $PORT
+
+CMD ["node", "./public/server"]

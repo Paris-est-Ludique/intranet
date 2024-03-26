@@ -24,7 +24,7 @@ module.exports = {
         __LOCAL__: false,
         __REGISTER_DISCORD_COMMANDS__: false,
         __TEST__: true,
-        API_URL: "http://localhost:3000",
+        API_URL: "http://localhost:3333",
     },
     maxConcurrency: 50,
     maxWorkers: 1,
