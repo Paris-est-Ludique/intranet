@@ -355,11 +355,12 @@ export class Sheet<
         return tryNTimes(
             async () => {
                 if (hasGSheetsAccess()) {
+                    const key = process.env.GCP_SERVICE_ACCOUNT_PRIVATE_KEY || ""
                     // Authentication
                     const doc = new GoogleSpreadsheet(process.env.GSHEET_ID)
                     await doc.useServiceAccountAuth({
                         client_email: process.env.GCP_SERVICE_ACCOUNT_CLIENT_EMAIL || "",
-                        private_key: process.env.GCP_SERVICE_ACCOUNT_PRIVATE_KEY || "",
+                        private_key: key.replace(/\\n/g, "\n"),
                     })
                     await doc.loadInfo()
                     return doc.sheetsByTitle[this.sheetName]
